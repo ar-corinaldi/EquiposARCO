@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd back && yarn dev\" \"cd front && yarn start\" ",
-    "dependencies": "concurrently \"cd back && yarn install\" \"cd front && yarn install\" \"yarn install\" "
+    "dep": "concurrently \"cd back && yarn install\" \"cd front && yarn install\" \"yarn install\" "
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,24 @@
+{
+  "name": "EquiposARCO",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd back && yarn dev\" \"cd front && yarn start\" ",
+    "dependencies": "concurrently \"cd back && yarn install\" \"cd front && yarn install\" \"yarn install\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ar-corinaldi/EquiposARCO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ar-corinaldi/EquiposARCO/issues"
+  },
+  "homepage": "https://github.com/ar-corinaldi/EquiposARCO#readme",
+  "devDependencies": {
+    "concurrently": "^5.2.0"
+  }
+}

@@ -1,0 +1,8 @@
+#contenido, html, body{
+    height: 100%;
+    background-color: #F2F3F8;
+}
+
+#sidebar-column{
+    align-content: stretch;
+}

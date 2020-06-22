@@ -1,6 +1,10 @@
-import React from "react";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import logo from "./logo.svg";
 import "./App.css";
+import "./prueba.css";
+
+console.log("hooooh");
 
 function App() {
   let a = "";
@@ -23,5 +27,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

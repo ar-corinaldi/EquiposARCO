@@ -1,0 +1,39 @@
+#navigationBar{
+    background-color: rgb(194, 25, 25);
+    font-family: 'Roboto';
+    color: #ff9f95;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 8px 6px -6px #522222ba;
+}
+
+a.white.navbar-brand{
+    color: white;
+}
+
+.noMargin{
+    margin: 0px;
+}
+
+.navbar-light .navbar-nav .nav-link.white {
+    color: #ff9f95;
+}
+.navbar-light .navbar-nav .nav-link.white.active, .navbar-light .navbar-nav .nav-link.white:hover, .show.dropdown.nav-item > #basic-nav-dropdown, #basic-nav-dropdown:hover  {
+    color: #ff9f95;
+    background-color: rgba(207, 207, 207, 0.384);
+    border-radius: 3px;
+}
+#basic-nav-dropdown{
+    color: #ff9f95;
+}
+
+#basic-nav-dropdown::after{
+    content: none;
+}
+
+@media (max-width: 768px){
+    .navbar-light .navbar-nav .nav-link.white.active, .navbar-light .navbar-nav .nav-link.white:hover, .show.dropdown.nav-item > #basic-nav-dropdown {
+        padding-left: 6px;
+    }
+
+}

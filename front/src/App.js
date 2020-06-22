@@ -1,7 +1,8 @@
 import React from "react";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import Container from "react-bootstrap/Container";
 function App() {
-  return <div>Hello Equipos ARCO</div>;
+  return <Container>Hello World!</Container>;
 }
 
 export default App;

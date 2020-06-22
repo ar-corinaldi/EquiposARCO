@@ -1,29 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 import logo from "./logo.svg";
 import "./App.css";
 import "./prueba.css";
-
+import NavigationBar from "./navbar";
+import SideBar from "./side_bar/sideBar";
+import Prueba from "./prueba";
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 console.log("hooooh");
 
 function App() {
-  let a = "";
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="contenido">
+      <Row>
+        <Col className="pr-0" sm={2}>
+          <SideBar />
+        </Col>
+
+        <Col className="m-0 p-0">
+          <NavigationBar />
+          <p>Holaaaa, Contenidoooo</p>
+        </Col>
+      </Row>
     </div>
   );
 }

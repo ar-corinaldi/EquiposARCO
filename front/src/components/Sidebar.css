@@ -1,7 +1,7 @@
-* {
+/* * {
     font-family: 'Karla';
     text-decoration: none;
-}
+} */
 .wrapper {
     display: flex;
     width: 100%;
@@ -90,13 +90,4 @@ li a{
 
 .visible{
     visibility: visible;
-}
-
-@media (max-width: 768px) {
-    #sidebar {
-        margin-left: -250px;
-    }
-    #sidebar.active {
-        margin-left: 0;
-    }
 }

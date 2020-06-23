@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-require("../db/mongoose");
+//require("../db/mongoose");
 
 //const validator = require("validator");
 
@@ -35,7 +35,7 @@ const Equipo = mongoose.model("Equipo", {
     required: true,
     lowercase: true,
     validate(value) {
-      isValid = (value) => tiposEquipo.includes(value);
+      isValid = tiposEquipo.includes(value);
       if (!isValid) {
         throw new Error("Tipo de equipo invalido");
       }
@@ -71,8 +71,8 @@ const Equipo = mongoose.model("Equipo", {
 });
 
 // const equipoPrueba = new Equipo({
-//   nombreEquipo: "Mezcladora (Ele)",
-//   tipoEquipo: "maquinaria liviana",
+//   nombreEquipo: "  Mezcladora (Gas/Die)  ",
+//   tipoEquipo: "  maquinaria liviana  ",
 //   fechaAdquision: Date.now(),
 // });
 

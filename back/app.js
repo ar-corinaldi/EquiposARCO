@@ -24,8 +24,4 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use(equiposRouter);
 
-app.listen(port, () => {
-  console.log("Server is up on port " + port);
-});
-
 module.exports = app;

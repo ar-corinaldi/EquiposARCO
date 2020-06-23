@@ -1,26 +1,27 @@
-#contenido, html, body{
-    height: 100%;
-    background-color: #F2F3F8;
+#contenido,
+html,
+body {
+  height: 100%;
+  background-color: #f2f3f8;
 }
 
-#sidebar-column{
-    align-content: stretch;
+#sidebar-column {
+  align-content: stretch;
 }
 
-#content-column{
-    font-size: 55px;
-    overflow: auto;
+#content-column {
+  overflow: auto;
 }
 
-.row{
-    position: absolute;
-    margin-right: -15px;
-    margin-left: -15px;
-    top: 60px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    
-    display: flex;
-    flex-wrap: nowrap;
+#rowWrapper {
+  position: absolute;
+  margin-right: -15px;
+  margin-left: -15px;
+  top: 60px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+
+  display: flex;
+  flex-wrap: nowrap;
 }

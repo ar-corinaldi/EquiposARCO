@@ -20,5 +20,8 @@
   "homepage": "https://github.com/ar-corinaldi/EquiposARCO#readme",
   "devDependencies": {
     "concurrently": "^5.2.0"
+  },
+  "dependencies": {
+    "mongoose": "^5.9.20"
   }
 }

@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+
 //require("../db/mongoose");
 
 //const validator = require("validator");
@@ -22,7 +24,7 @@ const tiposEquipo = [
 /*
  * Definición del modelo con sus propiedades
  */
-const Equipo = mongoose.model("Equipo", {
+const equipoSchema = new Schema({
   nombreEquipo: {
     type: String,
     trim: true,
@@ -87,4 +89,4 @@ const Equipo = mongoose.model("Equipo", {
 //     console.log(error);
 //   });
 
-module.exports = Equipo;
+module.exports = mongoose.model("Equipo", equipoSchema);

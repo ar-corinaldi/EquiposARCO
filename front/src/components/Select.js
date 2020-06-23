@@ -20,7 +20,6 @@ function Select(props) {
           onChange={(event, newText) => props.setFilter(newText)}
           inputValue={props.valor}
           onInputChange={(event, newInput) => {
-            props.cambiarValor(newInput);
             props.setFilter(newInput);
           }}
           renderInput={(params) => (

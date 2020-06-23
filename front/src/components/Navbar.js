@@ -21,10 +21,16 @@ function NavBar(params) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="nav-menu" activeKey="/home">
             <Nav.Item>
-              <Nav.Link>Alquiler</Nav.Link>
+              <Nav.Link>Invertario</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link>Facturación</Nav.Link>
+              <Nav.Link>Clientes</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link>Facturacion</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link>Cartera</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link>Contabilidad</Nav.Link>

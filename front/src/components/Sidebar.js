@@ -5,22 +5,22 @@ function Sidebar(params) {
   return (
     <div className="wraper">
       <nav id="sidebar" className="visible">
-        <div class="sidebar-header">
+        <div className="sidebar-header">
           <h5>Sidebar</h5>
         </div>
 
-        <ul class="list-unstyled components">
+        <ul className="list-unstyled components">
           <p>Heading</p>
-          <li class="active">
+          <li className="active">
             <a
               href="#homeSubmenu"
               data-toggle="collapse"
               aria-expanded="false"
-              class="dropdown-toggle"
+              className="dropdown-toggle"
             >
               Home
             </a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
+            <ul className="collapse list-unstyled" id="homeSubmenu">
               <li>
                 <a href="#">Home 1</a>
               </li>
@@ -40,11 +40,11 @@ function Sidebar(params) {
               href="#pageSubmenu"
               data-toggle="collapse"
               aria-expanded="false"
-              class="dropdown-toggle"
+              className="dropdown-toggle"
             >
               Pages
             </a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
+            <ul className="collapse list-unstyled" id="pageSubmenu">
               <li>
                 <a href="#">Page 1</a>
               </li>

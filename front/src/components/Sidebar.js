@@ -6,7 +6,7 @@ function Sidebar(params) {
     <div className="wraper">
       <nav id="sidebar" className="visible">
         <div class="sidebar-header">
-          <h4>Sidebar</h4>
+          <h5>Sidebar</h5>
         </div>
 
         <ul class="list-unstyled components">

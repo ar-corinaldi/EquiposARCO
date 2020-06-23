@@ -1,6 +1,6 @@
 * {
     font-family: 'Karla';
-
+    text-decoration: none;
 }
 .wrapper {
     display: flex;
@@ -10,19 +10,20 @@
 
 #sidebar {
     /* width: 100%; */
-    position: sticky;
+    /* position: sticky; */
     left: 0;
     height: 100vh;
-    z-index: 999;
+    /* z-index: 999; */
     background: #ffffff;
     color: #adb5bd;
+    box-shadow: 3px 0 20px -10px rgba(134, 118, 118, 0.12);
     transition: all 0.3s;
 }
 
 p {
-    font-size: 1.1em;
+    /* font-size: 1.1em;
     font-weight: 300;
-    line-height: 1.7em;
+    line-height: 1.7em; */
     color: #999;
 }
 
@@ -32,7 +33,6 @@ ul, li, a{
 
 a, a:hover, a:focus {
     color: #adb5bd;
-    text-decoration: none;
     transition: all 0.3s;
 }
 
@@ -44,7 +44,7 @@ a, a:hover, a:focus {
 }
 
 #sidebar ul.components {
-    padding: 20px 0;
+    padding: 20px 7px;
 }
 
 #sidebar ul p {
@@ -57,18 +57,19 @@ a, a:hover, a:focus {
     display: block;
 }
 #sidebar ul li a:hover {
-    color: #adb5bd;
-    background: #616268;
+    color: #BA1A1D;
+    /* background: rgba(134, 118, 118, 0.06) ; */
     text-decoration: none;
+    font-size: 20px;
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #adb5bd;
+    color: #BA1A1D;
     background: rgba(207, 207, 207, 0.15);
 }
 ul ul a {
     padding-left: 30px !important;
-    background: #adb5bd;
+    /* background: #adb5bd; */
 }
 
 a[data-toggle="collapse"] {

@@ -5,7 +5,7 @@ const router = new express.Router();
 /**
  *  Post de equipo
  */
-router.post("/equipos", async (req, res) => {
+router.post("/", async (req, res) => {
   const equipo = new Equipo(req.body);
   try {
     await equipo.save();
@@ -18,7 +18,7 @@ router.post("/equipos", async (req, res) => {
 /**
  *  Get de equipos
  */
-router.get("/equipos", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const equipos = await Equipo.find({});
     res.send(equipos);
@@ -30,7 +30,7 @@ router.get("/equipos", async (req, res) => {
 /**
  *  Get de equipo por su id
  */
-router.get("/equipos/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const equipo = await Equipo.findById(req.params.id);
     if (!equipo) {

@@ -15,7 +15,7 @@
     height: 100vh;
     /* z-index: 999; */
     background: #ffffff;
-    color: #adb5bd;
+    color: #959ba1;
     box-shadow: 3px 0 20px -10px rgba(134, 118, 118, 0.12);
     transition: all 0.3s;
 }
@@ -32,7 +32,7 @@ ul, li, a{
 }
 
 a, a:hover, a:focus {
-    color: #adb5bd;
+    color: #959ba1;
     transition: all 0.3s;
 }
 
@@ -48,7 +48,7 @@ a, a:hover, a:focus {
 }
 
 #sidebar ul p {
-    color: #adb5bd;
+    color: #959ba1;
     padding: 10px;
 }
 
@@ -80,7 +80,7 @@ a[data-toggle="collapse"] {
     content: none;
 }
 li a{
-    color: #adb5bd;
+    color: #959ba1;
 }
 
 .hidden{

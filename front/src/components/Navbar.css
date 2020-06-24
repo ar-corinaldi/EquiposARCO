@@ -50,16 +50,24 @@ Link:hover, Link:active{
 }
 
 @media(min-width: 768px){
-    a.navbar-brand{
+    span.navbar-brand{
         width: 85px;
         height: 60px;
+    }
+
+    span.navbar-brand .nav-link{
+        padding: 0%;
     }
 }
 
 @media(max-width: 767px){
-    a.navbar-brand{
+    span.navbar-brand{
         width: 70px;
         height: auto;
+    }
+
+    span.navbar-brand .nav-link{
+        padding: 0%;
     }
 
     a.nav-link.active, a.nav-link:hover{

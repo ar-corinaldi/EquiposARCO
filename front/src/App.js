@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 // Container
 import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/SidebarComponents/Sidebar";
 import Equipo from "./components/Equipo";
 
 // Bootstrap

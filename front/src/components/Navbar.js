@@ -27,31 +27,33 @@ function NavBar(params) {
     {
       nombre: "Contabilidad",
       ref: "/equipos",
-    }
+    },
   ];
 
   return (
     <div>
       <Navbar bg="light" expand="md" sticky="top" id="navbar">
-        <Navbar.Brand href="/">
-          <img
-            src={logo}
-            width="100%"
-            height="auto"
-            className="d-inline-block align-top"
-            alt="React Bootstrap logo"
-          />
+        <Navbar.Brand>
+          <Link to="/" className="nav-link">
+            <img
+              src={logo}
+              width="100%"
+              height="auto"
+              className="d-inline-block align-top"
+              alt="React Bootstrap logo"
+            />
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="nav-menu" activeKey="/home">
-            {opciones_menu.map((menu_item) => {
-              return (
-                <Nav.Item>
-                  <Link to={menu_item.ref} className="nav-link" >{menu_item.nombre}</Link>
-                </Nav.Item>
-              );
-            })}
+            {opciones_menu.map((menu_item) => (
+              <Nav.Item>
+                <Link to={menu_item.ref} className="nav-link">
+                  {menu_item.nombre}
+                </Link>
+              </Nav.Item>
+            ))}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

@@ -1,5 +1,5 @@
 const express = require("express");
-const Equipo = require("../models/equipo.model");
+const Equipo = require("../models/equipo-model");
 const router = new express.Router();
 
 /**
@@ -50,7 +50,7 @@ router.patch("/:id", async (req, res) => {
 
   try {
     if (!Equipo.fieldsNotAllowedUpdates(req.body)) {
-      return res.status(400).send({ error: "invalid updates" });
+      return res.status(400).send({ error: "Invalid updates" });
     }
 
     const equipo = await Equipo.findByIdAndUpdate(req.params.id, req.body, {

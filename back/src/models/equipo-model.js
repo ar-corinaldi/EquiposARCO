@@ -90,24 +90,23 @@ const equipoSchema = new Schema({
 //   });
 const Equipo = mongoose.model("Equipo", equipoSchema);
 
+// Arreglo de los campos que no queremos modificar
+const noUpdatable = ["fechaAdquision", "__v"];
+
 /**
  * @param body: Corresponde a los campos que se van a actualizar
- * @param ...fields: Cooresponde a los campos que no se pueden actualizar
  * @returns retorna true si todos los campos que se actualizan se pueden,
  *  retorna false en caso contrario.
  */
-Equipo.fieldsNotAllowedUpdates = (body, ...fields) => {
+Equipo.fieldsNotAllowedUpdates = (body) => {
   const updates = Object.keys(body);
-
-  // Obtener los campos que no queremos modificar
-  const noUpdable = fields;
 
   // Sirve para obtener los campos del modelo
   let allowedUpdates = Object.keys(Equipo.schema.paths);
 
   // Deja los campos que no queremos moficiar
   allowedUpdates = allowedUpdates.filter(
-    (update) => !noUpdable.includes(update)
+    (update) => !noUpdatable.includes(update)
   );
   const isValidOp = updates.every((update) => allowedUpdates.includes(update));
   console.log(updates);

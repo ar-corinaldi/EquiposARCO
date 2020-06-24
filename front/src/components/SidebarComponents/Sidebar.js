@@ -24,6 +24,11 @@ function Sidebar(props) {
       name: "Listar todos los equipos",
       ref: "/equipos",
     },
+    {
+      type: "Link",
+      name: "Listar todos los equipos x2",
+      ref: "/equipos",
+    },
   ];
 
   const home_menu = [

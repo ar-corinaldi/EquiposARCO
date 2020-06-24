@@ -8,7 +8,7 @@ function SidebarDetail(props) {
     console.log(props.menu);
     
     return(
-        <div>
+        <ul className="components">
             {menu.map((item) =>{
                 if(item.type == "Header"){
                     return Header(item);
@@ -24,24 +24,24 @@ function SidebarDetail(props) {
                 }
             })}
 
-        </div>
+        </ul>
     )
 }
 
 function Header(params) {
     const header = params.name;
-    return <h5>{header}</h5>;
+    return <div className="sidebar-header" ><h5>{header}</h5></div>;
     
 }
 
 function Title(params) {
     const title = params.name;
-    return <p>{title}</p>;
+    return <li><p>{title}</p></li>;
     
 }
 
 function Url(item, url) {
-return <Link to={url+item.ref}>{item.name}</Link>;
+return <li><Link to={url+item.ref}>{item.name}</Link></li>;
 
     
 }

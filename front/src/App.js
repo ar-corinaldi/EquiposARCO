@@ -24,7 +24,7 @@ function App() {
           </Col>
           <Col id="content-column">
             <Route path="/" exact />
-            <Route path="/equipo" component={Equipo} />
+            <Route path="/equipos" component={()=> <Equipo />} />
           </Col>
         </Row>
       </div>

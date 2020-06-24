@@ -5,21 +5,14 @@ var Schema = mongoose.Schema;
 
 //const validator = require("validator");
 
-const tiposEquipo = [
-  "maquinaria liviana",
-  "maquinaria pesada",
-  "motriz",
-  "escaleras industriales",
-  "andamio tubular",
-  "andamio colgante",
-  "andamio multidireccional",
-  "andamio universal",
-  "andamio carga",
-  "andamio colgante",
-  "fomaleteria tradicional",
-  "formaleta",
-  "fomaleteria industrial",
+const tiposEquipo = ["maquinaria", "andamios"];
+
+const nombresFamilia = [
+  "division de maquinaria tipo pesado",
+  "division andamiaje",
 ];
+
+const nombresGrupo = ["bomba cifa", "andamio multidireccional"];
 
 /*
  * Definición del modelo con sus propiedades
@@ -30,6 +23,30 @@ const equipoSchema = new Schema({
     trim: true,
     required: true,
     lowercase: true,
+  },
+  nombreGrupo: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+    validate(value) {
+      isValid = nombresGrupo.includes(value);
+      if (!isValid) {
+        throw new Error("Nombre Grupo invalido");
+      }
+    },
+  },
+  nombreFamilia: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+    validate(value) {
+      isValid = nombresFamilia.includes(value);
+      if (!isValid) {
+        throw new Error("Nombre Familia invalido");
+      }
+    },
   },
   tipoEquipo: {
     type: String,
@@ -43,24 +60,12 @@ const equipoSchema = new Schema({
       }
     },
   },
-  //   nombreFamilia: {
-  //     type: String,
-  //     trim: true,
-  //     required: true,
-  //     lowercase: true,
-  //   },
-  //   nombreGrupo: {
-  //     type: String,
-  //     trim: true,
-  //     required: true,
-  //     lowercase: true,
-  //   },
-  //   nombreFamilia: {
-  //     type: String,
-  //     trim: true,
-  //     required: true,
-  //     lowercase: true,
-  //   },
+  codigo: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true,
+  },
   cantidadInventario: {
     type: Number,
     required: false,
@@ -72,26 +77,28 @@ const equipoSchema = new Schema({
   },
 });
 
+const Equipo = mongoose.model("Equipo", equipoSchema);
+
+// Arreglo de los campos que no queremos modificar
+const noUpdatable = ["fechaAdquision", "__v"];
+
 // const equipoPrueba = new Equipo({
-//   nombreEquipo: "  Mezcladora (Gas/Die)  ",
-//   tipoEquipo: "  maquinaria liviana  ",
+//   codigo: "ABO008",
+//   nombreEquipo: "ABRAZADERA 4.5  FP",
+//   nombreGrupo: "BOMBA CIFA",
+//   nombreFamilia: "DIVISION DE MAQUINARIA TIPO PESADO",
+//   tipoEquipo: "MAQUINARIA",
 //   fechaAdquision: Date.now(),
 // });
 
 // equipoPrueba
 //   .save()
 //   .then((result) => {
-//     console.log("llega");
 //     console.log(result);
 //   })
 //   .catch((error) => {
-//     console.log("llega");
 //     console.log(error);
 //   });
-const Equipo = mongoose.model("Equipo", equipoSchema);
-
-// Arreglo de los campos que no queremos modificar
-const noUpdatable = ["fechaAdquision", "__v"];
 
 /**
  * @param body: Corresponde a los campos que se van a actualizar

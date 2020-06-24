@@ -1,5 +1,5 @@
 const express = require("express");
-const Equipo = require("../models/equipo");
+const Equipo = require("../models/equipo.model");
 const router = new express.Router();
 
 /**
@@ -46,15 +46,13 @@ router.get("/:id", async (req, res) => {
  *  Modifica un equipo
  */
 router.patch("/:id", async (req, res) => {
-  const updates = Object.keys(req.body);
-  // Sirve para obtener los campos del modelo
-  const allowedUpdates = Object.keys(Equipo.schema.paths);
-  console.log(allowedUpdates);
-  const isValidOp = updates.every((update) => allowedUpdates.includes(update));
-  if (!isValidOp) {
-    return res.status(400).send({ error: "invalid updates" });
-  }
+  // Se pueden pasar por parametro los campos no modificables
+
   try {
+    if (!Equipo.fieldsNotAllowedUpdates(req.body)) {
+      return res.status(400).send({ error: "invalid updates" });
+    }
+
     const equipo = await Equipo.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,

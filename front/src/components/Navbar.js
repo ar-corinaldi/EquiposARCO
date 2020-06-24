@@ -10,23 +10,23 @@ function NavBar(params) {
   const opciones_menu = [
     {
       nombre: "Inventario",
-      ref: "/equipos",
+      ref: "/inventario",
     },
     {
       nombre: "Clientes",
-      ref: "/equipos",
+      ref: "/inventario",
     },
     {
       nombre: "Facturación",
-      ref: "/equipos",
+      ref: "/inventario",
     },
     {
       nombre: "Cartera",
-      ref: "/equipos",
+      ref: "/inventario",
     },
     {
       nombre: "Contabilidad",
-      ref: "/equipos",
+      ref: "/inventario",
     },
   ];
 

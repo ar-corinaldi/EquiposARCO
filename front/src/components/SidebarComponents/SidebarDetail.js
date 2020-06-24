@@ -1,8 +1,10 @@
 import React from "react";
 import "./SidebarDetail.css"
+import { Link } from "react-router-dom";
 
 function SidebarDetail(props) {
     const menu = props.menu;
+    const url = props.baseUrl;
     console.log(props.menu);
     
     return(
@@ -15,7 +17,7 @@ function SidebarDetail(props) {
                     return Title(item);
                 }
                 else if (item.type == "Link"){
-                    return Link(item);
+                    return Url(item, url);
                 }
                 else if (item.type == "Menu"){
                     return Menu(item);
@@ -28,17 +30,19 @@ function SidebarDetail(props) {
 
 function Header(params) {
     const header = params.name;
-    return <h5>header</h5>;
+    return <h5>{header}</h5>;
     
 }
 
 function Title(params) {
     const title = params.name;
-    return <p>title</p>;
+    return <p>{title}</p>;
     
 }
 
-function Link(params) {
+function Url(item, url) {
+return <Link to={url+item.ref}>{item.name}</Link>;
+
     
 }
 

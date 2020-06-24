@@ -8,7 +8,7 @@ function NavBar(params) {
   return (
     <div>
       <Navbar bg="light" expand="md" sticky="top" id="navbar">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             src={logo}
             width="100%"
@@ -21,7 +21,7 @@ function NavBar(params) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="nav-menu" activeKey="/home">
             <Nav.Item>
-              <Nav.Link>Invertario</Nav.Link>
+              <Nav.Link href="/equipo">Invertario</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link>Clientes</Nav.Link>

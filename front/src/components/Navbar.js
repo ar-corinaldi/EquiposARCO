@@ -3,38 +3,57 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import "./Navbar.css";
 import logo from "../static-files/logo-letras.png";
+import { Link } from "react-router-dom";
 
 function NavBar(params) {
+  //Este arreglo tiene las opciones del menú y la url a la que va cuando se seleccionan
+  const opciones_menu = [
+    {
+      nombre: "Inventario",
+      ref: "/inventario",
+    },
+    {
+      nombre: "Clientes",
+      ref: "/inventario",
+    },
+    {
+      nombre: "Facturación",
+      ref: "/inventario",
+    },
+    {
+      nombre: "Cartera",
+      ref: "/inventario",
+    },
+    {
+      nombre: "Contabilidad",
+      ref: "/inventario",
+    },
+  ];
+
   return (
     <div>
       <Navbar bg="light" expand="md" sticky="top" id="navbar">
-        <Navbar.Brand href="#home">
-          <img
-            src={logo}
-            width="100%"
-            height="auto"
-            className="d-inline-block align-top"
-            alt="React Bootstrap logo"
-          />
+        <Navbar.Brand>
+          <Link to="/" className="nav-link">
+            <img
+              src={logo}
+              width="100%"
+              height="auto"
+              className="d-inline-block align-top"
+              alt="React Bootstrap logo"
+            />
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="nav-menu" activeKey="/home">
-            <Nav.Item>
-              <Nav.Link>Invertario</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link>Clientes</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link>Facturacion</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link>Cartera</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link>Contabilidad</Nav.Link>
-            </Nav.Item>
+            {opciones_menu.map((menu_item) => (
+              <Nav.Item>
+                <Link to={menu_item.ref} className="nav-link">
+                  {menu_item.nombre}
+                </Link>
+              </Nav.Item>
+            ))}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

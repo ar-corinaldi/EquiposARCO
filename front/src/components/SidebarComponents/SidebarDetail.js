@@ -28,6 +28,7 @@ function SidebarDetail(props) {
     )
 }
 
+//TODO: Estilizarlo más
 function Header(params) {
     const header = params.name;
     return <div className="sidebar-header" ><h5>{header}</h5></div>;
@@ -45,7 +46,7 @@ return <li><Link to={url+item.ref}>{item.name}</Link></li>;
 
     
 }
-
+//TODO: Todo. Ojo que esto es menu dropdown. 
 function Menu(params) {
     
 }

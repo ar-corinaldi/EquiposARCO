@@ -13,6 +13,7 @@ const usersRouter = require("./src/routers/users");
 const equiposRouter = require("./src/routers/equipos");
 const tercerosRouter = require("./src/routers/terceros");
 const bodegasRouter = require("./src/routers/bodegas");
+var preciosRouter = require("./src/routers/precios");
 
 //Servidor
 const app = express();
@@ -29,5 +30,6 @@ app.use("/users", usersRouter);
 app.use("/equipos", equiposRouter);
 app.use("/terceros", tercerosRouter);
 app.use("/bodegas", bodegasRouter);
+app.use("/precios", preciosRouter);
 
 module.exports = app;

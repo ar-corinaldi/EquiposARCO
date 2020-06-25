@@ -38,24 +38,28 @@ function Equipo(props) {
   const [equipos, setEquipos] = useState(equiposTmp);
   const [filterText, setFilterText] = useState("");
 
-  useEffect(() => {
+  const fetchEquipos = async () => {
     // El fetch al equipo viene ordenado por categoria
-    // const res = await fetch("/equipos");
-    // const newEquipos = await res.json();
-
+    const res = await fetch("/equipos");
+    const newEquipos = await res.json();
+    console.log(newEquipos);
     setEquipos(equiposTmp);
     console.log("filter", filterText);
+  };
+
+  useEffect(() => {
+    fetchEquipos();
   }, [filterText]);
 
   return (
-      <Container>
-        <Row>
-          <EquipoFilter filterText={filterText} setFilterText={setFilterText} />
-        </Row>
-        <Row>
-              <EquipoTable equipos={equipos} filterText={filterText} />
-        </Row>
-      </Container>
+    <Container>
+      <Row>
+        <EquipoFilter filterText={filterText} setFilterText={setFilterText} />
+      </Row>
+      <Row>
+        <EquipoTable equipos={equipos} filterText={filterText} />
+      </Row>
+    </Container>
   );
 }
 

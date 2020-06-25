@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-// Container
+// Components
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
 import Equipo from "./components/Equipo";
@@ -24,7 +24,7 @@ function App() {
           </Col>
           <Col id="content-column">
             <Route path="/" exact />
-            <Route path="/inventario/equipos" component={()=> <Equipo />} />
+            <Route path="/inventario/equipos" component={() => <Equipo />} />
           </Col>
         </Row>
       </div>

@@ -11,7 +11,7 @@ require("./src/db/mongoose");
 var indexRouter = require("./src/routers/index");
 var usersRouter = require("./src/routers/users");
 var equiposRouter = require("./src/routers/equipos");
-var clientesRouter = require("./src/routers/clientes");
+var tercerosRouter = require("./src/routers/terceros");
 
 //Servidor
 var app = express();
@@ -26,6 +26,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/equipos", equiposRouter);
-app.use("/clientes", clientesRouter);
+app.use("/terceros", tercerosRouter);
 
 module.exports = app;

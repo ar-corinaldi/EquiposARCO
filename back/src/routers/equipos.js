@@ -155,6 +155,7 @@ router.post("/:id/precios/:idP", async (req, res) => {
 
 /**
  * Obtiene los precios de un equipo
+ * Envia el equipo completo con sus precios.
  */
 router.get("/:id/precios", async (req, res) => {
   try {
@@ -196,6 +197,7 @@ router.post("/:id/componentes/:idC/:cant", async (req, res) => {
 
 /**
  * Obtiene los componentes de un equipo. Puede ser un poco demorado. No hice index join
+ * Envia el equipo completo con sus componentes.
  */
 router.get("/:id/componentes", async (req, res) => {
   try {

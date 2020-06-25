@@ -148,24 +148,6 @@ const Equipo = mongoose.model("Equipo", equipoSchema);
 // Arreglo de los campos que no queremos modificar
 const noUpdatable = ["fechaAdquision", "__v"];
 
-// const equipoPrueba = new Equipo({
-//   codigo: "ABO008",
-//   nombreEquipo: "ABRAZADERA 4.5  FP",
-//   nombreGrupo: "BOMBA CIFA",
-//   nombreFamilia: "DIVISION DE MAQUINARIA TIPO PESADO",
-//   tipoEquipo: "MAQUINARIA",
-//   fechaAdquision: Date.now(),
-// });
-
-// equipoPrueba
-//   .save()
-//   .then((result) => {
-//     console.log(result);
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
-
 /**
  * @param body: Corresponde a los campos que se van a actualizar
  * @returns retorna true si todos los campos que se actualizan se pueden,

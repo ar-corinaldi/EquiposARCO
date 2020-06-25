@@ -165,6 +165,35 @@ router.get("/:id/precios", async (req, res) => {
   }
 });
 
+/**
+ * Agrega un equipo creado a un equipo como componente
+ */
+router.post("/:id/componentes/:idC", async (req, res) => {
+  try {
+    const componente = await Equipo.findById(req.params.idC);
+    if (!componente) {
+      res.status(404).send("Ningun componente coincide con ese id");
+    }
+    const equipo = await Equipo.findById(req.params.id);
+    if (!equipo) {
+      res.status(404).send("Ningun equipo coincidio con ese id");
+    }
+    const componentesN = equipo.componentes;
+    componentesN.push(componente._id);
+    const prop = { componentes: componentesN };
+    const equipoN = await Equipo.findByIdAndUpdate(req.params.id, prop, {
+      new: true,
+      runValidators: true,
+    });
+    if (!equipoN) {
+      return res.status(404).send();
+    }
+    res.status(201).send(equipoN);
+  } catch (e) {
+    res.status(400).send("No se pudo agregar el precio al equipo " + e);
+  }
+});
+
 // Foreach asincrono
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {

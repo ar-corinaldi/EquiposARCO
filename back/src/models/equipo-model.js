@@ -85,6 +85,12 @@ const equipoSchema = new Schema({
       ref: "Precio",
     },
   ],
+  componentes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Equipo",
+    },
+  ],
 });
 
 const Equipo = mongoose.model("Equipo", equipoSchema);

@@ -14,10 +14,10 @@ router.post("", async (req, res) => {
       await asyncForEach(req.body.precios, async (element) => {
         const precio = new Precio(element);
         await precio.save();
-        console.log(precio._id);
+        //console.log(precio._id);
         preciosN.push(precio._id);
       });
-      console.log(preciosN, "ans");
+      //console.log(preciosN, "ans");
       req.body.precios = preciosN;
     }
     const equipo = new Equipo(req.body);
@@ -168,7 +168,7 @@ router.get("/:id/precios", async (req, res) => {
 /**
  * Agrega un equipo creado a un equipo como componente
  */
-router.post("/:id/componentes/:idC", async (req, res) => {
+router.post("/:id/componentes/:idC/:cant", async (req, res) => {
   try {
     const componente = await Equipo.findById(req.params.idC);
     if (!componente) {
@@ -179,7 +179,7 @@ router.post("/:id/componentes/:idC", async (req, res) => {
       res.status(404).send("Ningun equipo coincidio con ese id");
     }
     const componentesN = equipo.componentes;
-    componentesN.push(componente._id);
+    componentesN.push({ cantidad: req.params.cant, equipoID: componente._id });
     const prop = { componentes: componentesN };
     const equipoN = await Equipo.findByIdAndUpdate(req.params.id, prop, {
       new: true,
@@ -190,7 +190,23 @@ router.post("/:id/componentes/:idC", async (req, res) => {
     }
     res.status(201).send(equipoN);
   } catch (e) {
-    res.status(400).send("No se pudo agregar el precio al equipo " + e);
+    res.status(400).send("No se pudo agregar el componente al equipo " + e);
+  }
+});
+
+/**
+ * Obtiene los componentes de un equipo. Puede ser un poco demorado. No hice index join
+ */
+router.get("/:id/componentes", async (req, res) => {
+  try {
+    const ans = await Equipo.findById(req.params.id);
+    for (let index = 0; index < ans.componentes.length; index++) {
+      const equipoInfo = await Equipo.findById(ans.componentes[index].equipoID);
+      ans.componentes[index].equipoID = equipoInfo;
+    }
+    res.send(ans);
+  } catch (e) {
+    res.status(400).send("No se pudo agregar el componente al equipo " + e);
   }
 });
 

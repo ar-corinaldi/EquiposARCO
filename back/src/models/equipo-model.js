@@ -153,8 +153,15 @@ const equipoSchema = new Schema({
   ],
   componentes: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Equipo",
+      cantidad: {
+        type: Number,
+        required: false,
+        default: 1,
+      },
+      equipoID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Equipo",
+      },
     },
   ],
 });

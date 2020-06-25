@@ -1,16 +1,9 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-const categorias = [
-  "unidad",
-  "area",
-  "hora",
-  "dia",
-  "mes",
-  "año",
-  "volumen",
-  "venta",
-];
+const categorias = ["unidad", "metro", "metro2", "metro3", "venta"];
+
+const tiempo = ["unidad", "metro", "metro2", "metro3", "venta"];
 
 /*
  * Definición del modelo con sus propiedades
@@ -28,9 +21,15 @@ const precioSchema = new Schema({
       }
     },
   },
-  valor: {
+  valorAlquiler: {
     type: Number,
     required: true,
+    default: -1,
+  },
+  valorVenta: {
+    type: Number,
+    required: true,
+    default: -1,
   },
   tiempoMinimo: {
     type: Number,

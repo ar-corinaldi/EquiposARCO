@@ -5,11 +5,22 @@ const router = new express.Router();
 const Precio = require("../models/precio-model");
 
 /**
- *  Post de equipo
+ *  Post de equipo. Crea primero los precios en su tabla correspondiente y después pasa los ids
  */
 router.post("", async (req, res) => {
-  const equipo = new Equipo(req.body);
   try {
+    let preciosN = [];
+    if (req.body.precios != undefined) {
+      await asyncForEach(req.body.precios, async (element) => {
+        const precio = new Precio(element);
+        await precio.save();
+        console.log(precio._id);
+        preciosN.push(precio._id);
+      });
+      console.log(preciosN, "ans");
+      req.body.precios = preciosN;
+    }
+    const equipo = new Equipo(req.body);
     await equipo.save();
     res.status(201).send(equipo);
   } catch (e) {
@@ -153,5 +164,12 @@ router.get("/:id/precios", async (req, res) => {
     res.status(400).send("No se pudo agregar el precio al equipo " + e);
   }
 });
+
+// Foreach asincrono
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
 
 module.exports = router;

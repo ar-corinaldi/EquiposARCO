@@ -48,6 +48,12 @@ const terceroSchema = new Schema({
     type: String,
     trim: true,
   },
+  bodegas: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Bodega",
+    },
+  ],
 });
 
 const Tercero = mongoose.model("Tercero", terceroSchema);

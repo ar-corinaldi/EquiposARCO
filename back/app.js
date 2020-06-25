@@ -1,21 +1,22 @@
 //modulos npm
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 
 // Activa la coneccion con la base de datos
 require("./src/db/mongoose");
 
 // Routers
-var indexRouter = require("./src/routers/index");
-var usersRouter = require("./src/routers/users");
-var equiposRouter = require("./src/routers/equipos");
-var clientesRouter = require("./src/routers/clientes");
+const indexRouter = require("./src/routers/index");
+const usersRouter = require("./src/routers/users");
+const equiposRouter = require("./src/routers/equipos");
+const tercerosRouter = require("./src/routers/terceros");
+const bodegasRouter = require("./src/routers/bodegas");
 var preciosRouter = require("./src/routers/precios");
 
 //Servidor
-var app = express();
+const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -27,7 +28,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/equipos", equiposRouter);
-app.use("/clientes", clientesRouter);
+app.use("/terceros", tercerosRouter);
+app.use("/bodegas", bodegasRouter);
 app.use("/precios", preciosRouter);
 
 module.exports = app;

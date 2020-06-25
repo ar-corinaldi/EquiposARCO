@@ -9,14 +9,80 @@ var Schema = mongoose.Schema;
 
 //const validator = require("validator");
 
-const tiposEquipo = ["maquinaria", "andamios"];
-
-const nombresFamilia = [
-  "division de maquinaria tipo pesado",
-  "division andamiaje",
+const tiposEquipo = [
+  "andamios",
+  "elementos formaleta entrepiso",
+  "encofrado",
+  "formaleta",
+  "maquinaria",
+  "servicio",
 ];
 
-const nombresGrupo = ["bomba cifa", "andamio multidireccional"];
+const nombresFamilia = [
+  "division andamiaje",
+  "division de equipos menores",
+  "division de formaleteria",
+  "division de herramientas",
+  "division de maquinaria tipo liviano",
+  "division de maquinaria tipo pesado",
+  "insumos",
+  "servicio", //No lo se rick
+  "servicio de alquiler",
+  "servicio de transporte",
+  "servicio mantenimiento",
+  "servicio operador",
+];
+
+const nombresGrupo = [
+  "accesorio",
+  "allanadora",
+  "andamio colgante",
+  "andamio de carga",
+  "andamio multidireccional",
+  "andamio tubular",
+  "andamios multidireccionales",
+  "apisonador",
+  "bomba cifa",
+  "compresor",
+  "compresor de aire",
+  "contenedor",
+  "cortadora",
+  "derretidora",
+  "diferencial",
+  "elemento de seguridad",
+  "equipo samblasting",
+  "escaleras",
+  "formaleta",
+  "formaleta columna",
+  "formaleta entrepiso",
+  "formaleta industrializada",
+  "formaleta sardinel",
+  "generador",
+  "grua",
+  "herramienta",
+  "hidrolavadora",
+  "minicargadora",
+  "motobomba",
+  "motor b&s",
+  "motor honda",
+  "motor launtop",
+  "motor lesson",
+  "motor marathon",
+  "motor siemens",
+  "motor weg",
+  "motor yanmar",
+  "planta electrica",
+  "pluma",
+  "puente grua",
+  "rana vibrocompactadora",
+  "regla vibratoria",
+  "retroexcavadora",
+  "rodillo vibrocompactador",
+  "ruteadora",
+  "servicio",
+  "taladro",
+  "vibrador",
+];
 
 /*
  * Definición del modelo con sus propiedades

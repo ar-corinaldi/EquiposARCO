@@ -1,65 +1,65 @@
 const express = require("express");
-const Cliente = require("../models/cliente-model");
+const Tercero = require("../models/tercero-model");
 const router = new express.Router();
 
 /**
- *  Post de clientes
+ *  Post de tercero
  */
 router.post("", async (req, res) => {
-  const cliente = new Cliente(req.body);
+  const tercero = new Tercero(req.body);
   try {
-    await cliente.save();
-    res.status(201).send(cliente);
+    await tercero.save();
+    res.status(201).send(tercero);
   } catch (e) {
     res.status(400).send(e);
   }
 });
 
 /**
- *  Get de clientes
+ *  Get de terceros
  */
 router.get("", async (req, res) => {
   try {
-    const clientes = await Cliente.find({});
-    res.send(clientes);
+    const terceros = await Tercero.find({});
+    res.send(terceros);
   } catch (e) {
     res.status(500).send();
   }
 });
 
 /**
- *  Get de cliente por su id
+ *  Get de tercero por su id
  */
 router.get("/:id", async (req, res) => {
   try {
-    const cliente = await Cliente.findById(req.params.id);
-    if (!cliente) {
+    const tercero = await Tercero.findById(req.params.id);
+    if (!tercero) {
       res.status(404).send("No hubo coincidencia");
     }
-    res.send(cliente);
+    res.send(tercero);
   } catch (error) {
     res.status(500).send();
   }
 });
 
 /**
- *  Modifica un cliente
+ *  Modifica un tercero
  */
 router.patch("/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
   try {
-    if (!Cliente.fieldsNotAllowedUpdates(req.body)) {
+    if (!Tercero.fieldsNotAllowedUpdates(req.body)) {
       return res.status(400).send({ error: "Invalid updates" });
     }
 
-    const cliente = await Cliente.findByIdAndUpdate(req.params.id, req.body, {
+    const tercero = await Tercero.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
-    if (!cliente) {
+    if (!tercero) {
       return res.status(404).send();
     }
-    res.send(cliente);
+    res.send(tercero);
   } catch (e) {
     console.log(e);
     res.status(400).send(e);
@@ -67,15 +67,15 @@ router.patch("/:id", async (req, res) => {
 });
 
 /**
- * Elimina un cliente
+ * Elimina un tercero
  */
 router.delete("/:id", async (req, res) => {
   try {
-    const cliente = await cliente.findByIdAndDelete(req.params.id);
-    if (!cliente) {
+    const tercero = await Tercero.findByIdAndDelete(req.params.id);
+    if (!tercero) {
       return res.status(404).send();
     }
-    res.send(cliente);
+    res.send(tercero);
   } catch (error) {
     res.status(500).send();
   }

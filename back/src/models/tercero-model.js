@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-const clienteSchema = new Schema({
+const terceroSchema = new Schema({
   tipoDocumento: {
     type: String,
     trim: true,
@@ -50,15 +50,15 @@ const clienteSchema = new Schema({
   },
 });
 
-const Cliente = mongoose.model("Cliente", clienteSchema);
+const Tercero = mongoose.model("Tercero", terceroSchema);
 
 const noUpdatable = ["__v"];
 
-Cliente.fieldsNotAllowedUpdates = (body) => {
+Tercero.fieldsNotAllowedUpdates = (body) => {
   const updates = Object.keys(body);
 
   // Sirve para obtener los campos del modelo
-  let allowedUpdates = Object.keys(Cliente.schema.paths);
+  let allowedUpdates = Object.keys(Tercero.schema.paths);
 
   // Deja los campos que no queremos moficiar
   allowedUpdates = allowedUpdates.filter(
@@ -69,4 +69,4 @@ Cliente.fieldsNotAllowedUpdates = (body) => {
   return isValidOp;
 };
 
-module.exports = Cliente;
+module.exports = Tercero;

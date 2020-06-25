@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 const categorias = ["unidad", "metro", "metro2", "metro3", "venta"];
 
-const tiempo = ["unidad", "metro", "metro2", "metro3", "venta"];
+const tiempo = ["hora", "dia cal", "dia habil", "semana", "mes", "anio"];
 
 /*
  * Definición del modelo con sus propiedades
@@ -21,14 +21,24 @@ const precioSchema = new Schema({
       }
     },
   },
+  tiempo: {
+    type: String,
+    trim: true,
+    required: false,
+    lowercase: true,
+    validate(value) {
+      isValid = tiempo.includes(value);
+      if (!isValid) {
+        throw new Error("Tiempo invalido");
+      }
+    },
+  },
   valorAlquiler: {
     type: Number,
     required: true,
-    default: -1,
   },
   valorVenta: {
     type: Number,
-    required: true,
     default: -1,
   },
   tiempoMinimo: {

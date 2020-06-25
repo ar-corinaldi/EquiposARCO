@@ -12,6 +12,7 @@ var indexRouter = require("./src/routers/index");
 var usersRouter = require("./src/routers/users");
 var equiposRouter = require("./src/routers/equipos");
 var clientesRouter = require("./src/routers/clientes");
+var preciosRouter = require("./src/routers/precios");
 
 //Servidor
 var app = express();
@@ -27,5 +28,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/equipos", equiposRouter);
 app.use("/clientes", clientesRouter);
+app.use("/precios", preciosRouter);
 
 module.exports = app;

@@ -10,7 +10,7 @@ function Sidebar(props) {
   console.log(location);
   
   //Header, Title, link, menu
-  const menu_equipos = [
+  const menu_inventario = [
     {
       type: "Header",
       name: "Inventario",
@@ -36,7 +36,7 @@ function Sidebar(props) {
   ]
 
   const menus_disponibles = {
-    "/inventario": menu_equipos,
+    "/inventario": menu_inventario,
     "/": home_menu,
   };
 

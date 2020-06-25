@@ -1,81 +1,81 @@
 const express = require("express");
-const Equipo = require("../models/equipo-model");
+const Cliente = require("../models/cliente-model");
 const router = new express.Router();
 
 /**
- *  Post de equipo
+ *  Post de clientes
  */
 router.post("", async (req, res) => {
-  const equipo = new Equipo(req.body);
+  const cliente = new Cliente(req.body);
   try {
-    await equipo.save();
-    res.status(201).send(equipo);
+    await cliente.save();
+    res.status(201).send(cliente);
   } catch (e) {
     res.status(400).send(e);
   }
 });
 
 /**
- *  Get de equipos
+ *  Get de clientes
  */
 router.get("", async (req, res) => {
   try {
-    const equipos = await Equipo.find({});
-    res.send(equipos);
+    const clientes = await Cliente.find({});
+    res.send(clientes);
   } catch (e) {
     res.status(500).send();
   }
 });
 
 /**
- *  Get de equipo por su id
+ *  Get de cliente por su id
  */
 router.get("/:id", async (req, res) => {
   try {
-    const equipo = await Equipo.findById(req.params.id);
-    if (!equipo) {
+    const cliente = await Cliente.findById(req.params.id);
+    if (!cliente) {
       res.status(404).send("No hubo coincidencia");
     }
-    res.send(equipo);
+    res.send(cliente);
   } catch (error) {
     res.status(500).send();
   }
 });
 
 /**
- *  Modifica un equipo
+ *  Modifica un cliente
  */
 router.patch("/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
-
   try {
-    if (!Equipo.fieldsNotAllowedUpdates(req.body)) {
+    if (!Cliente.fieldsNotAllowedUpdates(req.body)) {
       return res.status(400).send({ error: "Invalid updates" });
     }
 
-    const equipo = await Equipo.findByIdAndUpdate(req.params.id, req.body, {
+    const cliente = await Cliente.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
-    if (!equipo) {
+    if (!cliente) {
       return res.status(404).send();
     }
-    res.send(equipo);
+    res.send(cliente);
   } catch (e) {
+    console.log(e);
     res.status(400).send(e);
   }
 });
 
 /**
- * Elimina un equipo
+ * Elimina un cliente
  */
 router.delete("/:id", async (req, res) => {
   try {
-    const equipo = await Equipo.findByIdAndDelete(req.params.id);
-    if (!equipo) {
+    const cliente = await cliente.findByIdAndDelete(req.params.id);
+    if (!cliente) {
       return res.status(404).send();
     }
-    res.send(equipo);
+    res.send(cliente);
   } catch (error) {
     res.status(500).send();
   }

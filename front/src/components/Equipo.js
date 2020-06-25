@@ -48,20 +48,14 @@ function Equipo(props) {
   }, [filterText]);
 
   return (
-    <Router>
       <Container>
         <Row>
           <EquipoFilter filterText={filterText} setFilterText={setFilterText} />
         </Row>
         <Row>
-          <Switch>
-            <Route path="/" exact>
               <EquipoTable equipos={equipos} filterText={filterText} />
-            </Route>
-          </Switch>
         </Row>
       </Container>
-    </Router>
   );
 }
 

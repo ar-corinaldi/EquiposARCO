@@ -84,7 +84,8 @@ router.delete("/:id", async (req, res) => {
 });
 
 /**
- * Agrega un precio a un equipo
+ * Agrega un precio nuevo a un equipo
+ * FALTA que borre el precio si algo sale mal. Lo hace pero mandao un error extraño
  */
 router.post("/:id/precios", async (req, res) => {
   const precio = new Precio(req.body);
@@ -92,7 +93,38 @@ router.post("/:id/precios", async (req, res) => {
     await precio.save();
     const equipo = await Equipo.findById(req.params.id);
     if (!equipo) {
-      res.status(404).send("No hubo coincidencia");
+      await Precio.findByIdAndDelete(precio._id);
+      res.status(404).send("Ningun equipo coincidio con ese id");
+    }
+    const preciosN = equipo.precios;
+    preciosN.push(precio._id);
+    const prop = { precios: preciosN };
+    const equipoN = await Equipo.findByIdAndUpdate(req.params.id, prop, {
+      new: true,
+      runValidators: true,
+    });
+    if (!equipoN) {
+      await Precio.findByIdAndDelete(precio._id);
+      return res.status(404).send();
+    }
+    res.status(201).send(equipoN);
+  } catch (e) {
+    res.status(400).send("No se pudo agregar el precio al equipo " + e);
+  }
+});
+
+/**
+ * Agrega un precio creado a un equipo
+ */
+router.post("/:id/precios/:idP", async (req, res) => {
+  try {
+    const precio = await Precio.findById(req.params.idP);
+    if (!precio) {
+      res.status(404).send("Ningun precio coincidio con ese id");
+    }
+    const equipo = await Equipo.findById(req.params.id);
+    if (!equipo) {
+      res.status(404).send("Ningun equipo coincidio con ese id");
     }
     const preciosN = equipo.precios;
     preciosN.push(precio._id);
@@ -104,12 +136,11 @@ router.post("/:id/precios", async (req, res) => {
     if (!equipoN) {
       return res.status(404).send();
     }
-    res.stauts(201).send(equipoN);
+    res.status(201).send(equipoN);
   } catch (e) {
     res.status(400).send("No se pudo agregar el precio al equipo " + e);
   }
 });
-//link util: https://alexanderzeitler.com/articles/mongoose-referencing-schema-in-properties-and-arrays/
 
 /**
  * Obtiene los precios de un equipo

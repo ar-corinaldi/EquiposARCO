@@ -5,7 +5,7 @@ const router = new express.Router();
 /**
  *  Post de precios
  */
-router.post("", async (req, res) => {
+const POST = router.post("", async (req, res) => {
   const precio = new Precio(req.body);
   try {
     await precio.save();

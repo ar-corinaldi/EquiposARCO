@@ -1,0 +1,22 @@
+/* * {
+    font-family: 'Karla';
+    text-decoration: none;
+} */
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar {
+    /* width: 100%; */
+    /* position: sticky; */
+    left: 0;
+    height: 100vh;
+    /* z-index: 999; */
+    background: #ffffff;
+    color: #959ba1;
+    box-shadow: 3px 0 20px -10px rgba(134, 118, 118, 0.12);
+    transition: all 0.3s;
+}
+

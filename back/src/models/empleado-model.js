@@ -6,96 +6,95 @@ let Schema = mongoose.Schema;
  * Tipos de documentos de identificación permitidos para un empleado
  */
 const tiposDocumentos = [
-    'cc',
-    'ti',
-    'pasaporte',
-    'cédula de extrangería',
-    'nit'
-]
+  "cc",
+  "ti",
+  "pasaporte",
+  "cédula de extrangería",
+  "nit",
+];
 
 /**
  * Definición del documento que contendrá la información de un empleado
  */
 const empleadoSchema = new Schema({
-    nombres = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
+  nombres: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  apellidos: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  tipoDocumento: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+    validate(value) {
+      isValid = tiposDocumentos.includes(value);
+      if (!isValid) {
+        throw new Error("Tipo de documento invalido");
+      }
     },
-    apellidos = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-    tipoDocumento = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-        validate(value){
-            isValid = tiposDocumentos.includes(value);
-            if(!isValid){
-                throw new Error("Tipo de documento invalido");
-            }
-        }
-    },
-    numeroDocumento = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-    direccion = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-    municipio = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-    ciudad = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-    pais = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-    telefono = {
-        type: Number,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-    celular = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-    email = {
-        type: String,
-        trim: true,
-        required: true,
-        lowercase: true,
-    },
-
+  },
+  numeroDocumento: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  direccion: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  municipio: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  ciudad: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  pais: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  telefono: {
+    type: Number,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  celular: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
+  email: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+  },
 });
 
-const Empleado = mongoose.model('Empleado', empleadoSchema);
+const Empleado = mongoose.model("Empleado", empleadoSchema);
 
 // Arreglo de los campos que no queremos modificar
-const noUpdatable = [ "__v"];
+const noUpdatable = ["__v"];
 
 /**
  * @param body: Corresponde a los campos que se van a actualizar

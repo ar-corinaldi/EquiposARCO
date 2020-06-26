@@ -1,5 +1,5 @@
 const express = require("express");
-const mongoose = require("mongoose");
+//const mongoose = require("mongoose");
 const Equipo = require("../models/equipo-model");
 const router = new express.Router();
 const Precio = require("../models/precio-model");
@@ -80,14 +80,17 @@ router.patch("/:id", async (req, res) => {
 });
 
 /**
- * Elimina un equipo
+ * Elimina un equipo y sus precios correspondientes
  */
 router.delete("/:id", async (req, res) => {
   try {
     const equipo = await Equipo.findByIdAndDelete(req.params.id);
     if (!equipo) {
-      return res.status(404).send();
+      return res.status(404).send("No se encontró ningun equipo cone se id");
     }
+    await asyncForEach(equipo.precios, async (element) => {
+      const precio = await Precio.findByIdAndDelete(element._id);
+    });
     res.send(equipo);
   } catch (error) {
     res.status(500).send();
@@ -98,7 +101,7 @@ router.delete("/:id", async (req, res) => {
  * Agrega un precio nuevo a un equipo
  * FALTA que borre el precio si algo sale mal. Lo hace pero mandao un error extraño
  */
-router.post("/:id/precios", async (req, res) => {
+router.patch("/:id/precios", async (req, res) => {
   const precio = new Precio(req.body);
   try {
     await precio.save();
@@ -127,7 +130,7 @@ router.post("/:id/precios", async (req, res) => {
 /**
  * Agrega un precio creado a un equipo
  */
-router.post("/:id/precios/:idP", async (req, res) => {
+router.patch("/:id/precios/:idP", async (req, res) => {
   try {
     const precio = await Precio.findById(req.params.idP);
     if (!precio) {
@@ -167,9 +170,51 @@ router.get("/:id/precios", async (req, res) => {
 });
 
 /**
+ * Elimina la relacion entre un precio y un equipo y el precio de la tabla precios
+ * Retorna primero el precio eliminado y después el equipo modificado
+ */
+router.delete("/:id/precios/:idP", async (req, res) => {
+  try {
+    const equipo = await Equipo.findById(req.params.id);
+    if (!equipo) {
+      return res.status(404).send("No se encontró ningun equipo con ese id");
+    }
+    let precioBuscado = undefined;
+    const numPrecios = equipo.precios.length;
+    for (let index = 0; index < numPrecios; index++) {
+      if (equipo.precios[index].toString() === req.params.idP) {
+        precioBuscado = equipo.precios[index];
+        equipo.precios.splice(index);
+        break;
+      }
+    }
+    //console.log(precioBuscado);
+    if (!precioBuscado) {
+      return res
+        .status(404)
+        .send(
+          "No se encontró ese precio dentro de los precios del equipo deseado"
+        );
+    }
+    const prop = { precios: equipo.precios };
+    const equipoN = await Equipo.findByIdAndUpdate(req.params.id, prop, {
+      new: true,
+      runValidators: true,
+    });
+    const precioEliminado = await Precio.findByIdAndDelete(req.params.idP);
+    if (!precioEliminado) {
+      return res.status(404).send("No se encontró ningun precio con ese id");
+    }
+    res.send([precioEliminado, equipoN]);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+/**
  * Agrega un equipo creado a un equipo como componente
  */
-router.post("/:id/componentes/:idC/:cant", async (req, res) => {
+router.patch("/:id/componentes/:idC/:cant", async (req, res) => {
   try {
     const componente = await Equipo.findById(req.params.idC);
     if (!componente) {
@@ -201,17 +246,16 @@ router.post("/:id/componentes/:idC/:cant", async (req, res) => {
  */
 router.get("/:id/componentes", async (req, res) => {
   try {
-    const ans = await Equipo.findById(req.params.id); //.populate({
-    //   path: "componentes",
-    //   populate: {
-    //     path: "equipoID",
-    //     model: Equipo,
-    //   },
-    // });
-    for (let index = 0; index < ans.componentes.length; index++) {
-      const equipoInfo = await Equipo.findById(ans.componentes[index].equipoID);
-      ans.componentes[index].equipoID = equipoInfo;
-    }
+    const ans = await Equipo.findById(req.params.id).populate({
+      path: "componentes",
+      populate: {
+        path: "equipoID",
+      },
+    });
+    // for (let index = 0; index < ans.componentes.length; index++) {
+    //   const equipoInfo = await Equipo.findById(ans.componentes[index].equipoID);
+    //   ans.componentes[index].equipoID = equipoInfo;
+    // }
     res.send(ans);
   } catch (e) {
     res.status(400).send("No se pudo agregar el componente al equipo " + e);

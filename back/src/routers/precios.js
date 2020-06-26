@@ -34,7 +34,7 @@ router.get("/:id", async (req, res) => {
   try {
     const precio = await Precio.findById(req.params.id);
     if (!precio) {
-      res.status(404).send("No hubo coincidencia");
+      return res.status(404).send("No hubo coincidencia");
     }
     res.send(precio);
   } catch (e) {

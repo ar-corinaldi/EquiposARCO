@@ -47,7 +47,7 @@ router.get("/:id", async (req, res) => {
   try {
     const equipo = await Equipo.findById(req.params.id);
     if (!equipo) {
-      res.status(404).send("No hubo coincidencia");
+      return res.status(404).send("No hubo coincidencia");
     }
     res.send(equipo);
   } catch (error) {
@@ -131,11 +131,11 @@ router.post("/:id/precios/:idP", async (req, res) => {
   try {
     const precio = await Precio.findById(req.params.idP);
     if (!precio) {
-      res.status(404).send("Ningun precio coincidio con ese id");
+      return res.status(404).send("Ningun precio coincidio con ese id");
     }
     const equipo = await Equipo.findById(req.params.id);
     if (!equipo) {
-      res.status(404).send("Ningun equipo coincidio con ese id");
+      return res.status(404).send("Ningun equipo coincidio con ese id");
     }
     const preciosN = equipo.precios;
     preciosN.push(precio._id);
@@ -173,11 +173,11 @@ router.post("/:id/componentes/:idC/:cant", async (req, res) => {
   try {
     const componente = await Equipo.findById(req.params.idC);
     if (!componente) {
-      res.status(404).send("Ningun componente coincide con ese id");
+      return res.status(404).send("Ningun componente coincide con ese id");
     }
     const equipo = await Equipo.findById(req.params.id);
     if (!equipo) {
-      res.status(404).send("Ningun equipo coincidio con ese id");
+      return res.status(404).send("Ningun equipo coincidio con ese id");
     }
     const componentesN = equipo.componentes;
     componentesN.push({ cantidad: req.params.cant, equipoID: componente._id });
@@ -201,7 +201,13 @@ router.post("/:id/componentes/:idC/:cant", async (req, res) => {
  */
 router.get("/:id/componentes", async (req, res) => {
   try {
-    const ans = await Equipo.findById(req.params.id);
+    const ans = await Equipo.findById(req.params.id); //.populate({
+    //   path: "componentes",
+    //   populate: {
+    //     path: "equipoID",
+    //     model: Equipo,
+    //   },
+    // });
     for (let index = 0; index < ans.componentes.length; index++) {
       const equipoInfo = await Equipo.findById(ans.componentes[index].equipoID);
       ans.componentes[index].equipoID = equipoInfo;

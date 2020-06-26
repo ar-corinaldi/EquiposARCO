@@ -19,7 +19,7 @@ function App() {
       <div id="contenido">
         <Navbar></Navbar>
         <Row id="rowWrapper">
-          <Col md={3} lg={2} id="sidebar-column" className="d-none d-md-block">
+          <Col md={3} xl={2} id="sidebar-column" className="d-none d-md-block">
             <Sidebar />
           </Col>
           <Col id="content-column">

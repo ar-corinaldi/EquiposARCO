@@ -21,12 +21,12 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "Listar todos los equipos",
+      name: "Listar equipos",
       ref: "/equipos",
     },
     {
       type: "Link",
-      name: "Listar todos los equipos x2",
+      name: "Listar equipos x2",
       ref: "/equipos",
     },
   ];

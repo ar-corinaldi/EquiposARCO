@@ -43,7 +43,7 @@ router.get("", async (req, res) => {
         if(!empleado){
             return res.status(404).send("No hubo coincidencia");
         }
-        res.status(200).send(equipo);
+        return res.status(200).send(equipo);
           
       } catch (error) {
         res.status(500).send();   
@@ -69,9 +69,9 @@ router.patch("/:id", async (req, res) => {
       if (!empleado) {
         return res.status(404).send();
       }
-      res.send(empleado);
+      return res.send(empleado);
     } catch (e) {
-      res.status(400).send(e);
+      return res.status(400).send(e);
     }
   });
 
@@ -87,7 +87,7 @@ router.delete("/:id", async (req, res) => {
       }
       res.send(empleado);
     } catch (error) {
-      res.status(500).send();
+      return res.status(500).send();
     }
   });
 

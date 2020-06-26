@@ -43,6 +43,18 @@ ul.components {
   position: absolute;
   right: 10px;
 }
+/* 
+.sidebar-link:hover::before, .sidebar-link:focus::before{
+  display: block;
+  content: url(../../static-files/inventory.svg);
+  width: 15px;
+  height: 15px; 
+  background-image: url(../../static-files/inventory.svg);
+  background-size: 15px 15px;
+  vertical-align: -50%;
+  position: absolute;
+  left: 2px;
+} */
 
 /* ul p {
   color: #959ba1;

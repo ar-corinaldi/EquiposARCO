@@ -10,7 +10,7 @@ router.post("", async (req, resp) => {
     try {
         const empleado = new Empleado(req,body);
         await empleado.save();
-        resp.status(201).send(empleado);
+        return resp.status(201).send(empleado);
         
     } catch (error) {
         resp.status(400).send(error);
@@ -26,7 +26,7 @@ router.post("", async (req, resp) => {
 router.get("", async (req, res) => {
     try {
       const empleados = await Empleado.find({});
-      res.send(empleados);
+      return res.send(empleados);
     } catch (e) {
       res.status(500).send();
     }
@@ -41,7 +41,7 @@ router.get("", async (req, res) => {
       try {
         const empleados = await Empleado.findById(req.params.id);
         if(!empleado){
-            res.status(404).send("No hubo coincidencia");
+            return res.status(404).send("No hubo coincidencia");
         }
         res.status(200).send(equipo);
           

@@ -19,6 +19,22 @@ const notaInventarioSchema = new Schema({
     type: Date,
     required: true,
   },
+  equipo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Equipo",
+  },
+  bodega: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Bodega",
+  },
+  tercero: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tercero",
+  },
+  proveedor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Proveedor",
+  },
 });
 
 const NotaInventario = mongoose.model("NotaInventario", notaInventarioSchema);

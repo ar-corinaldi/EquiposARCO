@@ -14,7 +14,7 @@ const equiposRouter = require("./src/routers/equipos");
 const tercerosRouter = require("./src/routers/terceros");
 const bodegasRouter = require("./src/routers/bodegas");
 var preciosRouter = require("./src/routers/precios");
-const empleadosRouter = require("./src/routers/empleados";)
+const empleadosRouter = require("./src/routers/empleados");
 
 //Servidor
 const app = express();

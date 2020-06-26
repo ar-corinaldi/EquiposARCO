@@ -15,7 +15,7 @@ const terceroSchema = new Schema({
     lowercase: true,
   },
   // Revisar
-  direcciones: {
+  direccionesCliente: {
     type: [String],
     required: true,
     trim: true,
@@ -25,6 +25,11 @@ const terceroSchema = new Schema({
     trim: true,
   },
   celular: {
+    type: String,
+    trim: true,
+    lowercase: true,
+  },
+  telefono: {
     type: String,
     required: true,
     trim: true,
@@ -44,10 +49,20 @@ const terceroSchema = new Schema({
     trim: true,
     lowercase: true,
   },
-  nombreTributario: {
+  numeroIdentificacionTributario: {
     type: String,
     trim: true,
   },
+  regimenSimplificado: {
+    type: Boolean,
+    default: false,
+  },
+  bodegas: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Bodega",
+    },
+  ],
 });
 
 const Tercero = mongoose.model("Tercero", terceroSchema);

@@ -81,4 +81,57 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+/**
+ * Agrega una bodega nueva a un tercero
+ */
+router.post("/:id/bodegas", async (req, res) => {
+  const newBodega = new Bodega(req.body);
+  try {
+    const tercero = await Tercero.findById(req.params.id);
+    if (!tercero) {
+      res.status(404).send("Ninguna tercero coincidio con ese id");
+    }
+    await newBodega.save();
+    tercero.bodegas.push(newBodega._id);
+    await tercero.save();
+    res.status(201).send(tercero);
+  } catch (e) {
+    res.status(400).send("No se pudo la bodega al tercero " + e);
+  }
+});
+
+/**
+ * Agrega una bodega creada a un tercero
+ */
+router.post("/:id/bodegas/:idB", async (req, res) => {
+  try {
+    const bodega = await Bodega.findById(req.params.idB);
+    if (!bodega) {
+      res.status(404).send("Ninguna bodega coincidio con ese id");
+    }
+    const tercero = await Tercero.findById(req.params.id);
+    if (!tercero) {
+      res.status(404).send("Ningun tercero coincidio con ese id");
+    }
+    tercero.bodegas.push(bodega._id);
+    await tercero.save();
+    res.status(201).send(equipoN);
+  } catch (e) {
+    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
+  }
+});
+
+/**
+ * Obtiene las bodegas de un tercero
+ * Envia el tercero completo con sus bodegas.
+ */
+router.get("/:id/bodegas", async (req, res) => {
+  try {
+    const tercero = await Tercero.findById(req.params.id).populate("bodegas");
+    res.send(tercero);
+  } catch (e) {
+    res.status(400).send("El tercero con sus bodegas" + e);
+  }
+});
+
 module.exports = router;

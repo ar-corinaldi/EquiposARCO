@@ -1,5 +1,5 @@
 var express = require("express");
-const Devoluciones = require("../models/devoluciones-model");
+const Devoluciones = require("../models/devolucion-model");
 var router = express.Router();
 
 /* GET users listing. */

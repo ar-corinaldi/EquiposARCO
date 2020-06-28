@@ -19,18 +19,17 @@ const vehiculoSchema = new Schema({
     min: 0,
   },
   remisiones: [String],
-  devoluciones: [String],
 });
 
 const Vehiculo = mongoose.model("Vehiculo", vehiculoSchema);
 
 const noUpdatable = ["__v", "placa"];
 
-Tercero.fieldsNotAllowedUpdates = (body) => {
+Vehiculo.fieldsNotAllowedUpdates = (body) => {
   const updates = Object.keys(body);
 
   // Sirve para obtener los campos del modelo
-  let allowedUpdates = Object.keys(Tercero.schema.paths);
+  let allowedUpdates = Object.keys(Vehiculo.schema.paths);
 
   // Deja los campos que no queremos moficiar
   allowedUpdates = allowedUpdates.filter(

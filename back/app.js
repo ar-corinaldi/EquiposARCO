@@ -17,6 +17,7 @@ const preciosRouter = require("./src/routers/precios");
 const empleadosRouter = require("./src/routers/empleados");
 const vehiculosRouter = require("./src/routers/vehiculos");
 const devolucionesRouter = require("./src/routers/devoluciones");
+const remisionesRouter = require("./src/routers/remisiones");
 
 //Servidor
 const app = express();
@@ -37,5 +38,6 @@ app.use("/precios", preciosRouter);
 app.use("/empleados", empleadosRouter);
 app.use("/vehiculos", vehiculosRouter);
 app.use("/devoluciones", devolucionesRouter);
+app.use("/remisiones", remisionesRouter);
 
 module.exports = app;

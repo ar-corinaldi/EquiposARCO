@@ -1,10 +1,24 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
+const categoria = ["compra", "venta", "fabricación", "reparación", "daño"];
+
 /*
  * Definición del modelo con sus propiedades
  */
 const notaInventarioSchema = new Schema({
+  categoria: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+    validate(value) {
+      isValid = categoria.includes(value);
+      if (!isValid) {
+        throw new Error("Categoria invalido");
+      }
+    },
+  },
   descripcion: {
     type: String,
     trim: true,

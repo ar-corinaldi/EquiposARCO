@@ -40,7 +40,13 @@ const bodegaSchema = new Schema({
   telefono: {
     type: String,
     trim: true,
+  },
+  fechaInicial: {
+    type: Date,
     required: true,
+  },
+  fechaFinal: {
+    type: Date,
   },
 });
 const Bodega = mongoose.model("Bodega", bodegaSchema);

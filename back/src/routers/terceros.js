@@ -210,6 +210,7 @@ router.patch("/:id/bodegas/:idB/finalizar", async (req, res) => {
     }
     console.log("La bodega existe");
     bodega.fechaFinal = new Date();
+    await bodega.save();
     if (!bodega.fechaFinal) {
       return res.status(404).send("La bodega no tiene fecha final");
     }
@@ -226,6 +227,11 @@ router.patch("/:id/bodegas/:idB/finalizar", async (req, res) => {
       (bod) => bod._id.toString() === bodega._id.toString()
     );
     if (lenObrasActuales === tercero.obrasActuales.length) {
+      console.log(
+        tercero.obrasActuales,
+        lenObrasActuales,
+        tercero.obrasActuales.length
+      );
       return res.status(404).send("No es una bodega actual");
     }
     console.log("La bodega existe actualmente");
@@ -271,7 +277,7 @@ router.delete("/:id/bodegas/:idB/finalizar", async (req, res) => {
       (bod) => bod._id.toString() === bodega._id.toString()
     );
 
-    if (lenObrasPasadas === tercero.obrasPasadas.length) {
+    if (lenObrasPasadas !== tercero.obrasPasadas.length) {
       return res.status(404).send("No es una bodega pasada");
     }
     console.log("Es una bodega pasada");

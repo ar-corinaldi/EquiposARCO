@@ -198,17 +198,23 @@ router.delete("/:id/bodegas/:idB", async (req, res) => {
   }
 });
 
-// Obras
+// Obras Pasadas
 /**
- * Agrega finaliza una obra, pasa de actual a pasadas
+ * Finaliza una obra, pasa de obrasActuales a obrasPasadas
  */
-router.patch("/:id/bodegas/:idB", async (req, res) => {
+router.patch("/:id/bodegas/:idB/finalizar", async (req, res) => {
   try {
     const bodega = await Bodega.findById(req.params.idB);
     if (!bodega) {
       return res.status(404).send("Ninguna bodega coincidio con ese id");
     }
     console.log("La bodega existe");
+    bodega.fechaFinal = new Date();
+    if (!bodega.fechaFinal) {
+      return res.status(404).send("La bodega no tiene fecha final");
+    }
+    console.log("La bodega tiene fecha final");
+
     const tercero = await Tercero.findById(req.params.id);
     if (!tercero) {
       return res.status(404).send("Ningun tercero coincidio con ese id");
@@ -227,9 +233,54 @@ router.patch("/:id/bodegas/:idB", async (req, res) => {
     if (tercero.obrasPasadas.includes(req.params.idB)) {
       return res.status(404).send("La bodega ya se cerró");
     }
-    console.log("No se ha cerrado");
+    console.log("No se ha cerrado anteriormente");
 
     tercero.obrasPasadas.push(bodega._id);
+    await tercero.save();
+    console.log("La bodega se ha cerrado con éxito");
+    res.status(201).send(tercero);
+  } catch (e) {
+    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
+    console.error("error", e);
+  }
+});
+
+/**
+ * Elimina una obra pasada
+ */
+router.delete("/:id/bodegas/:idB/finalizar", async (req, res) => {
+  try {
+    const bodega = await Bodega.findById(req.params.idB);
+    if (!bodega) {
+      return res.status(404).send("Ninguna bodega coincidio con ese id");
+    }
+    console.log("La bodega existe");
+    if (!bodega.fechaFinal) {
+      return res.status(404).send("La bodega no tiene fecha final");
+    }
+    console.log("La bodega tiene fecha final");
+
+    const tercero = await Tercero.findById(req.params.id);
+    if (!tercero) {
+      return res.status(404).send("Ningun tercero coincidio con ese id");
+    }
+    console.log("El tercero existe");
+
+    let lenObrasPasadas = tercero.obrasPasadas.length;
+    tercero.obrasPasadas = tercero.obrasPasadas.filter(
+      (bod) => bod._id.toString() === bodega._id.toString()
+    );
+
+    if (lenObrasPasadas === tercero.obrasPasadas.length) {
+      return res.status(404).send("No es una bodega pasada");
+    }
+    console.log("Es una bodega pasada");
+
+    if (tercero.obrasActuales.includes(req.params.idB)) {
+      return res.status(404).send("Es una bodega actual");
+    }
+    console.log("No es una bodega actual");
+
     await tercero.save();
     console.log("La bodega se ha cerrado con éxito");
     res.status(201).send(tercero);

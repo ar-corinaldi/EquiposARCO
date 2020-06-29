@@ -5,6 +5,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
 import Equipo from "./components/Equipo";
+import Terceros from "./components/TercerosComponents/Terceros"
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -25,6 +26,7 @@ function App() {
           <Col id="content-column">
             <Route path="/" exact />
             <Route path="/inventario/equipos" component={() => <Equipo />} />
+            <Route path="/inventario/terceros" component= {Terceros}/>
           </Col>
         </Row>
       </div>

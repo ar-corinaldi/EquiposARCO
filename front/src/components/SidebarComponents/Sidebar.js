@@ -1,7 +1,7 @@
 import React from "react";
 import "./Sidebar.css";
 import SidebarDetail from "./SidebarDetail";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 function Sidebar(props) {
   const completePath = useLocation();
@@ -37,6 +37,11 @@ function Sidebar(props) {
       name: "Listar equipos x2",
       ref: "/equipos",
     },
+    {
+      type: "Link",
+      name: "Terceros",
+      ref: "/terceros"
+    }
   ];
   //Definicion del menú home: Cuando la ruta es '/'.
   const home_menu = [

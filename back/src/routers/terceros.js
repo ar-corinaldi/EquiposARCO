@@ -23,7 +23,7 @@ router.post("", async (req, res) => {
 router.get("", async (req, res) => {
   try {
     const terceros = await Tercero.find({});
-    res.send(terceros);
+    res.json(terceros);
   } catch (e) {
     res.status(500).send();
     console.error("error", e);

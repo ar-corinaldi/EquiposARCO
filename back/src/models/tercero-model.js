@@ -53,11 +53,13 @@ const terceroSchema = new Schema({
     type: String,
     trim: true,
   },
-  regimenSimplificado: {
-    type: Boolean,
-    default: false,
-  },
-  bodegas: [
+  obrasActuales: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Bodega",
+    },
+  ],
+  obrasPasadas: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Bodega",

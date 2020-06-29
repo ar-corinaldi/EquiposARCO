@@ -1,30 +1,30 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-const ordenSchema = new Schema({
-  remisiones: [
+const facturaSchema = new Schema({
+  fechaEmision: {
+    type: Date,
+  },
+  orden: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Remision",
+      ref: "Orden",
     },
   ],
-  devoluciones: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Devolucion",
-    },
-  ],
+  aceptada: {
+    type: Boolean,
+  },
 });
 
-const Orden = mongoose.model("Orden", ordenSchema);
+const Factura = mongoose.model("Factura", facturaSchema);
 
 const noUpdatable = ["__v"];
 
-Orden.fieldsNotAllowedUpdates = (body) => {
+Factura.fieldsNotAllowedUpdates = (body) => {
   const updates = Object.keys(body);
 
   // Sirve para obtener los campos del modelo
-  let allowedUpdates = Object.keys(Orden.schema.paths);
+  let allowedUpdates = Object.keys(Factura.schema.paths);
 
   // Deja los campos que no queremos moficiar
   allowedUpdates = allowedUpdates.filter(
@@ -35,4 +35,4 @@ Orden.fieldsNotAllowedUpdates = (body) => {
   return isValidOp;
 };
 
-module.exports = Orden;
+module.exports = Factura;

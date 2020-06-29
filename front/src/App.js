@@ -5,6 +5,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
 import Equipo from "./components/Equipo";
+import Prueba from "./components/Prueba";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -23,8 +24,10 @@ function App() {
             <Sidebar />
           </Col>
           <Col id="content-column">
-            <Route path="/" exact />
-            <Route path="/inventario/equipos" component={() => <Equipo />} />
+            <Switch>
+              <Route path="/" exact />
+              <Route path="/inventario/equipos" component={() => <Equipo />} />
+            </Switch>
           </Col>
         </Row>
       </div>

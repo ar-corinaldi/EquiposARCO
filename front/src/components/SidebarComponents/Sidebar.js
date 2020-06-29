@@ -8,7 +8,7 @@ function Sidebar(props) {
   const location = "/" + completePath.pathname.split("/")[1];
   console.log(completePath.pathname.split("/")[1]);
   console.log(location);
-  
+
   //Header, Title, link, menu
   const menu_inventario = [
     {
@@ -26,14 +26,12 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "Listar equipos x2",
-      ref: "/equipos",
+      name: "Prueba",
+      ref: "/prueba",
     },
   ];
 
-  const home_menu = [
-
-  ]
+  const home_menu = [];
 
   const menus_disponibles = {
     "/inventario": menu_inventario,
@@ -43,7 +41,7 @@ function Sidebar(props) {
   return (
     <div className="wraper">
       <nav id="sidebar" className="visible">
-          <SidebarDetail menu={menus_disponibles[location]} baseUrl={location} />
+        <SidebarDetail menu={menus_disponibles[location]} baseUrl={location} />
       </nav>
     </div>
   );

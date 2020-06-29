@@ -31,7 +31,6 @@ const terceroSchema = new Schema({
   },
   telefono: {
     type: String,
-    required: true,
     trim: true,
     lowercase: true,
   },

@@ -18,6 +18,8 @@ const empleadosRouter = require("./src/routers/empleados");
 const vehiculosRouter = require("./src/routers/vehiculos");
 const devolucionesRouter = require("./src/routers/devoluciones");
 const remisionesRouter = require("./src/routers/remisiones");
+const facturasRouter = require("./src/routers/facturas");
+const ordenesRouter = require("./src/routers/ordenes");
 
 //Servidor
 const app = express();
@@ -39,5 +41,7 @@ app.use("/empleados", empleadosRouter);
 app.use("/vehiculos", vehiculosRouter);
 app.use("/devoluciones", devolucionesRouter);
 app.use("/remisiones", remisionesRouter);
+app.use("/facturas", facturasRouter);
+app.use("/ordenes", ordenesRouter);
 
 module.exports = app;

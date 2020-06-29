@@ -53,13 +53,7 @@ const terceroSchema = new Schema({
     type: String,
     trim: true,
   },
-  obrasActuales: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Bodega",
-    },
-  ],
-  obrasPasadas: [
+  bodegas: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Bodega",

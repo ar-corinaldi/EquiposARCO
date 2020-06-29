@@ -26,10 +26,8 @@ const remisionSchema = new Schema({
   },
   // es una referencia a orden
   orden: {
-    type: String,
-    require: true,
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: "Orden"
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Orden",
   },
   equipoEnRemision: [
     {

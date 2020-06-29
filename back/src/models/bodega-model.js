@@ -41,13 +41,26 @@ const bodegaSchema = new Schema({
     type: String,
     trim: true,
   },
-  fechaInicial: {
+  fechaRegistro: {
     type: Date,
     required: true,
   },
-  fechaFinal: {
-    type: Date,
+  tercero: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tercero",
   },
+  ordenesActuales: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Orden",
+    },
+  ],
+  ordenesPasadas: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Orden",
+    },
+  ],
 });
 const Bodega = mongoose.model("Bodega", bodegaSchema);
 

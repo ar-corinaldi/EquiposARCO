@@ -18,7 +18,6 @@ const vehiculoSchema = new Schema({
     type: Number,
     min: 0,
   },
-  remisiones: [String],
 });
 
 const Vehiculo = mongoose.model("Vehiculo", vehiculoSchema);

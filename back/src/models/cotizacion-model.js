@@ -7,7 +7,13 @@ const cotizacionSchema = new Schema({
         trim: true,
         required: true,
         lowercase: true,
-    }
+    },
+    tarifasCotizadas: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Tarifa",
+        }
+    ]
 });
 
 const Cotizacion = mongoose.model("Cotizacion", cotizacionSchema);

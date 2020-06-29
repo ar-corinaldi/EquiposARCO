@@ -36,18 +36,22 @@ const notaInventarioSchema = new Schema({
   equipo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Equipo",
+    required: true,
   },
-  bodega: {
+  orden: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Bodega",
+    ref: "Orden",
+    required: false,
   },
-  tercero: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Tercero",
-  },
+  // tercero: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Tercero",
+  //   required: false,
+  // },
   proveedor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Proveedor",
+    required: false,
   },
 });
 

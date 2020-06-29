@@ -62,11 +62,11 @@ const Proveedor = mongoose.model("Proveedor", proveedorSchema);
 
 const noUpdatable = ["__v"];
 
-Tercero.fieldsNotAllowedUpdates = (body) => {
+Proveedor.fieldsNotAllowedUpdates = (body) => {
   const updates = Object.keys(body);
 
   // Sirve para obtener los campos del modelo
-  let allowedUpdates = Object.keys(Tercero.schema.paths);
+  let allowedUpdates = Object.keys(Proveedor.schema.paths);
 
   // Deja los campos que no queremos moficiar
   allowedUpdates = allowedUpdates.filter(

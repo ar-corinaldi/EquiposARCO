@@ -62,11 +62,11 @@ const noUpdatable = [fecha, cantidad, descripcion];
 //  * @returns retorna true si todos los campos que se actualizan se pueden,
 //  *  retorna false en caso contrario.
 //  */
-Precio.fieldsNotAllowedUpdates = (body) => {
+NotaInventario.fieldsNotAllowedUpdates = (body) => {
   const updates = Object.keys(body);
 
   // Sirve para obtener los campos del modelo
-  let allowedUpdates = Object.keys(Precio.schema.paths);
+  let allowedUpdates = Object.keys(NotaInventario.schema.paths);
 
   // Deja los campos que no queremos moficiar
   allowedUpdates = allowedUpdates.filter(

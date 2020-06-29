@@ -4,7 +4,7 @@ const Equipo = require("./equipo-model");
 
 var Schema = mongoose.Schema;
 
-const tarifaSchema = {
+const tarifaSchema = new Schema({
   fechaInicio: {
     type: Date,
     trim: true,
@@ -36,7 +36,7 @@ const tarifaSchema = {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Equipo",
   },
-};
+});
 
 const Tarifa = mongoose.model("Tarifa", tarifaSchema);
 

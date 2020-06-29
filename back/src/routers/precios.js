@@ -11,7 +11,7 @@ router.post("", async (req, res) => {
     await precio.save();
     res.status(201).send(precio);
   } catch (e) {
-    res.status(400).send("No se pudo crear el precio" + e);
+    res.status(400).send("No se pudo crear el precio " + e);
   }
 });
 
@@ -23,7 +23,7 @@ router.get("", async (req, res) => {
     const precios = await Precio.find({});
     res.send(precios);
   } catch (e) {
-    res.status(500).send("No se pudieron obtener los precios" + e);
+    res.status(500).send("No se pudieron obtener los precios " + e);
   }
 });
 
@@ -40,7 +40,7 @@ router.get("/:id", async (req, res) => {
   } catch (e) {
     res
       .status(500)
-      .send("No se pudo obtener el precio de id: " + req.params.id + e);
+      .send("No se pudo obtener el precio de id: " + req.params.id + " " + e);
   }
 });
 
@@ -66,10 +66,7 @@ router.patch("/:id", async (req, res) => {
     console.log(e);
     res
       .status(400)
-      .send(
-        "No se pudo modificar el precio el precio de id: " + req.params.id,
-        e
-      );
+      .send("No se pudo modificar el precio de id: " + req.params.id, e);
   }
 });
 
@@ -86,7 +83,7 @@ router.delete("/:id", async (req, res) => {
   } catch (e) {
     res
       .status(500)
-      .send("No se pudo eliminar el precio de id: " + req.params.id + e);
+      .send("No se pudo eliminar el precio de id: " + req.params.id + " " + e);
   }
 });
 

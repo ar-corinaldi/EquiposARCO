@@ -6,8 +6,8 @@ function EquipoTable(props) {
   const [equiposCategorias, setEquiposCategorias] = useState([]);
   useEffect(() => {
     console.log("entra", props.filterText);
-    setEquiposCategorias([]);
-    cargarCategorias();
+    // setEquiposCategorias([]);
+    // cargarCategorias();
   }, [props.filterText]);
 
   const cargarCategorias = () => {
@@ -41,18 +41,29 @@ function EquipoTable(props) {
 
   return (
     <div className="table-equipo">
-      <table>
-        {equiposCategorias.map((equipoCategoria, index) => (
+      <table className="table">
+        {/* {equiposCategorias.map((equipoCategoria, index) => (
           <React.Fragment
             key={equipoCategoria._id + "-categoria-" + (index + 1)}
           >
-            <EquipoCategoryRow
+            { <EquipoCategoryRow
               equipos={props.equipos}
               equipoCategoria={equipoCategoria}
-            />
-            <tbody>{renderRow(equipoCategoria.categoria)}</tbody>
+            /> }
           </React.Fragment>
-        ))}
+        ))} */}
+        <thead>
+          <tr>
+            <td>Nombre</td>
+            <td>Tipo Equipo</td>
+            <td>Codigo</td>
+          </tr>
+        </thead>
+        <tbody>
+          {props.equipos.map((equipo) => (
+            <EquipoRow key={equipo._id} equipo={equipo} />
+          ))}
+        </tbody>
       </table>
     </div>
   );

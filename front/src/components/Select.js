@@ -17,11 +17,9 @@ function Select(props) {
           getOptionLabel={(option) => option}
           style={{ width: 300 }}
           value={props.filter}
-          onChange={(event, newText) => props.setFilter(newText)}
-          inputValue={props.valor}
-          onInputChange={(event, newInput) => {
-            props.setFilter(newInput);
-          }}
+          onChange={(event, newText) => props.setInput(newText || "")}
+          inputValue={props.input}
+          onInputChange={(event, newInput) => props.setInput(newInput || "")}
           renderInput={(params) => (
             <TextField {...params} label="..." variant="outlined" />
           )}

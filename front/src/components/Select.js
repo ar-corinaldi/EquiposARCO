@@ -15,6 +15,7 @@ function Select(props) {
           id="combo-box-demo"
           options={props.opciones}
           getOptionLabel={(option) => option}
+          defaultValue={props.filter}
           style={{ width: 300 }}
           value={props.filter}
           onChange={(event, newText) => props.setInput(newText || "")}

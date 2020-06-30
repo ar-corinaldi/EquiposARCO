@@ -3,7 +3,6 @@ import EquipoFilter from "./EquipoFilter";
 import EquipoTable from "./EquipoTable";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function Equipo(props) {
   const [equipos, setEquipos] = useState([]);
@@ -28,8 +27,8 @@ function Equipo(props) {
         {equipos.length > 0 ? (
           <EquipoTable equipos={equipos} filterText={filterText} />
         ) : (
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
         )}
       </Row>

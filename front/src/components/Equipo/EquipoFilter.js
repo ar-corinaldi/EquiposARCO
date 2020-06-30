@@ -5,14 +5,14 @@ import Container from "react-bootstrap/Container";
 import Select from "../Select";
 
 function EquipoFilter(props) {
-  const [opciones, setOpciones] = useState([
+  const opciones = [
     "andamios",
     "elementos formaleta entrepiso",
     "encofrado",
     "formaleta",
     "maquinaria",
     "servicio",
-  ]);
+  ];
 
   const [input, setInput] = useState("");
 
@@ -29,8 +29,6 @@ function EquipoFilter(props) {
           <label className="mr-2">Categoría</label>
           <Select
             opciones={opciones}
-            filter={props.filterText}
-            setFilter={props.setFilterText}
             submit={handleSubmit}
             input={input}
             setInput={setInput}

@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 
 function EquipoRow(props) {
-  const { path, url } = useRouteMatch();
+  const { url } = useRouteMatch();
   return (
     <React.Fragment>
       <tr>

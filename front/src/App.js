@@ -28,20 +28,29 @@ function App() {
             <Sidebar />
           </Col>
           <Col id="content-column">
-            <Switch>
-              <Route path="/" exact />
-              <Route path="/inventario/equipos" component={() => <Equipo />} />
-              <Route path="/inventario/terceros" component={Terceros} />
-              <Route
-                path="/terceros/listar_terceros"
-                exact
-                component={Tercero}
-              />
-              <Route
-                path="/terceros/listar_terceros/:id"
-                component={TerceroDetail}
-              />
-            </Switch>
+            <Row>
+              <Breadcrumb />
+            </Row>
+            <Row>
+              <Switch>
+                <Route path="/" exact />
+                <Route
+                  path="/inventario/equipos"
+                  component={() => <Equipo />}
+                />
+                <Route path="/inventario/terceros" component={Terceros} />
+                <Route
+                  path="/terceros/listar_terceros"
+                  exact
+                  component={Tercero}
+                />
+                <Route path="/terceros/:id" exact component={TerceroDetail} />
+                <Route
+                  path="/terceros/:id/bodegas/:idB/ordenes/:idOr"
+                  component={OrdenDetail}
+                />
+              </Switch>
+            </Row>
           </Col>
         </Row>
       </div>

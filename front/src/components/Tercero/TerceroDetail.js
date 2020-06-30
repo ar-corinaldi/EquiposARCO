@@ -105,7 +105,16 @@ function TerceroDetail({ match }) {
                           <Row key={orden}>
                             <Col>
                               <p>
-                                <Link to={"/terceros/ordenes/" + orden}>
+                                <Link
+                                  to={
+                                    "/terceros/" +
+                                    tercero._id +
+                                    "/bodegas/" +
+                                    bodega._id +
+                                    "/ordenes/" +
+                                    orden
+                                  }
+                                >
                                   {orden}
                                 </Link>
                               </p>
@@ -120,7 +129,16 @@ function TerceroDetail({ match }) {
                         {bodega.ordenesPasadas.map((orden) => (
                           <Row key={orden._id}>
                             <Col>
-                              <Link to={"/terceros/ordenes/" + orden}>
+                              <Link
+                                to={
+                                  "/terceros/" +
+                                  tercero._id +
+                                  "/bodegas/" +
+                                  bodega._id +
+                                  "/ordenes/" +
+                                  orden
+                                }
+                              >
                                 {orden}
                               </Link>
                             </Col>

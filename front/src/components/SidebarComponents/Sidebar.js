@@ -39,7 +39,7 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "Terceros",
+      name: "pruebas",
       ref: "/terceros",
     },
   ];

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function SidebarDetail(props) {
   const menu = props.menu;
   const url = props.baseUrl;
-  console.log(props.menu);
+  // console.log(props.menu);
 
   return (
     <ul className="components" >

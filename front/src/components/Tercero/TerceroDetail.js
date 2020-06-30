@@ -57,34 +57,32 @@ function TerceroDetail({ match }) {
           <Card>
             <Card.Body>
               <Card.Title>Información</Card.Title>
-              <Card.Text>
-                <p>
-                  <strong>Nombre : </strong>
-                  {capitalize(tercero.nombre || "")}
-                </p>
-                <p>
-                  <strong>
-                    {(tercero.tipoDocumento || "").toString().toUpperCase()} :{" "}
-                  </strong>
-                  {tercero.numeroDocumento}
-                </p>
-                <p>
-                  <strong>Email : </strong>
-                  {tercero.email}
-                </p>
-                <p>
-                  <strong>Telefono : </strong>
-                  {tercero.telefono}
-                </p>
-                <p>
-                  <strong>Celular : </strong>
-                  {tercero.celular}
-                </p>
-                <p>
-                  <strong>Pagina Web : </strong>
-                  {tercero.paginaWeb}
-                </p>
-              </Card.Text>
+              <p>
+                <strong>Nombre : </strong>
+                {capitalize(tercero.nombre || "")}
+              </p>
+              <p>
+                <strong>
+                  {(tercero.tipoDocumento || "").toString().toUpperCase()} :{" "}
+                </strong>
+                {tercero.numeroDocumento}
+              </p>
+              <p>
+                <strong>Email : </strong>
+                {tercero.email}
+              </p>
+              <p>
+                <strong>Telefono : </strong>
+                {tercero.telefono}
+              </p>
+              <p>
+                <strong>Celular : </strong>
+                {tercero.celular}
+              </p>
+              <p>
+                <strong>Pagina Web : </strong>
+                {tercero.paginaWeb}
+              </p>
             </Card.Body>
           </Card>
         </Col>
@@ -93,21 +91,19 @@ function TerceroDetail({ match }) {
             <Card.Body>
               <Card.Title>Bodegas</Card.Title>
               {bodegas.map((bodega) => (
-                <Card.Text key={bodega._id}>
-                  <Row>
-                    <Col>
-                      <p>
-                        <strong> Nombre : </strong>
-                        {bodega.nombreBodega}
-                      </p>
+                <Row key={bodega._id}>
+                  <Col>
+                    <p>
+                      <strong> Nombre : </strong>
+                      {bodega.nombreBodega}
+                    </p>
 
-                      <p>
-                        <strong> Direccion : </strong>
-                        {bodega.direccionBodega}
-                      </p>
-                    </Col>
-                  </Row>
-                </Card.Text>
+                    <p>
+                      <strong> Direccion : </strong>
+                      {bodega.direccionBodega}
+                    </p>
+                  </Col>
+                </Row>
               ))}
             </Card.Body>
           </Card>

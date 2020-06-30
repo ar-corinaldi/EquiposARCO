@@ -44,6 +44,36 @@ router.post("", async (req, res) => {
 });
 
 /**
+ * Agrega una bodega existente a un tercero
+ */
+router.post("/:idB", async (req, res) => {
+  try {
+    const newBodega = await Bodega.findById(req.params.idB);
+    if (!newBodega) {
+      return res.status(404).send("Ninguna bodega coincidio con ese id");
+    }
+    const tercero = await Tercero.findById(req.params.id);
+    if (!tercero) {
+      return res.status(404).send("Ningun tercero coincidio con ese id");
+    }
+    console.log("Existe el tercero");
+    tercero.bodegas.push(newBodega._id);
+    await tercero.save();
+    console.log("Guarda tercero con bodega");
+    res.status(201).send(tercero);
+  } catch (e) {
+    console.log("Hubo un error");
+    if (newBodega !== undefined) {
+      console.log("Elimina la bodega");
+      // Manejo en caso de que no se agregue la bodega
+      Bodega.findByIdAndDelete(newBodega._id);
+    }
+    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
+    console.error("error", e);
+  }
+});
+
+/**
  * Obtiene las bodegas de un tercero
  * Las bodegas del tercero.
  */
@@ -112,6 +142,37 @@ router.post("/:idB/ordenes", async (req, res) => {
     await orden.save();
     console.log("orden guardada");
     bodega.ordenesActuales.push(orden._id);
+    await bodega.save();
+    console.log("Bodega aniadida al tercero con exito");
+    res.status(201).send(bodega);
+  } catch (e) {
+    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
+    console.error("error", e);
+  }
+});
+
+/**
+ * Terminar una orden.
+ * Pasarla de ordenesActuales a ordenesGuardadas
+ */
+router.patch("/:idB/ordenes/:idOr/terminar", async (req, res) => {
+  try {
+    const bodega = await Bodega.findById(req.params.idB);
+    if (!bodega) {
+      return res.status(404).send("Ninguna bodega coincidio con ese id");
+    }
+    console.log("La bodega existe");
+    const orden = await Orden.findById(req.params.idOr);
+    if (!orden) {
+      return res.status(404).send("Ninguna orden coincidio con ese id");
+    }
+    console.log("La orden existe");
+    const indice = bodega.ordenesActuales.indexOf(orden._id);
+    if (indice === -1) {
+      return res.status(404).send("La orden no pertenece a la bodega");
+    }
+    bodega.ordenesActuales.splice(indice, 1);
+    bodega.ordenesPasadas.push(orden._id);
     await bodega.save();
     console.log("Bodega aniadida al tercero con exito");
     res.status(201).send(bodega);

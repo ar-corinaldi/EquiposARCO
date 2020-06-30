@@ -5,21 +5,21 @@ import { Link } from "react-router-dom";
 function SidebarDetail(props) {
   const menu = props.menu;
   const url = props.baseUrl;
-  // console.log(props.menu);
 
   return (
-    <ul className="components" >
-      {menu.map((item, index) => {
-        if (item.type === "Header") {
-          return Header(item, index);
-        } else if (item.type === "Title") {
-          return Title(item, index);
-        } else if (item.type === "Link") {
-          return Url(item, index, url);
-        } else if (item.type === "Menu") {
-          return Menu(item, index);
-        }
-      })}
+    <ul className="components">
+      {menu &&
+        menu.map((item, index) => {
+          if (item.type === "Header") {
+            return Header(item, index);
+          } else if (item.type === "Title") {
+            return Title(item, index);
+          } else if (item.type === "Link") {
+            return Url(item, index, url);
+          } else if (item.type === "Menu") {
+            return Menu(item, index);
+          }
+        })}
     </ul>
   );
 }

@@ -18,15 +18,15 @@ function NavBar(params) {
     },
     {
       nombre: "Facturación",
-      ref: "/inventario",
+      ref: "/facturacion",
     },
     {
       nombre: "Cartera",
-      ref: "/inventario",
+      ref: "/cartera",
     },
     {
       nombre: "Contabilidad",
-      ref: "/inventario",
+      ref: "/contabilidad",
     },
   ];
 

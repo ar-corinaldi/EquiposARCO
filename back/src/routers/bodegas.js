@@ -167,9 +167,6 @@ router.patch("/:idB/ordenes/:idOr/terminar", async (req, res) => {
     }
     console.log("La orden existe");
     const indice = bodega.ordenesActuales.indexOf(orden._id);
-    console.log(bodega._id.toString());
-
-    console.log(bodega.ordenesActuales);
     if (indice === -1) {
       return res.status(404).send("La orden no pertenece a la bodega");
     }

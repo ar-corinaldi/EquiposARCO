@@ -31,7 +31,6 @@ const terceroSchema = new Schema({
   },
   telefono: {
     type: String,
-    required: true,
     trim: true,
     lowercase: true,
   },
@@ -53,13 +52,7 @@ const terceroSchema = new Schema({
     type: String,
     trim: true,
   },
-  obrasActuales: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Bodega",
-    },
-  ],
-  obrasPasadas: [
+  bodegas: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Bodega",

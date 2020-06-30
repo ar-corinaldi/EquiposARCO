@@ -34,8 +34,8 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "Listar equipos x2",
-      ref: "/equipos",
+      name: "Prueba",
+      ref: "/prueba",
     },
     {
       type: "Link",
@@ -57,7 +57,7 @@ function Sidebar(props) {
   return (
     <div className="wraper">
       <nav id="sidebar" className="visible">
-          <SidebarDetail menu={menus_disponibles[location]} baseUrl={location} />
+        <SidebarDetail menu={menus_disponibles[location]} baseUrl={location} />
       </nav>
     </div>
   );

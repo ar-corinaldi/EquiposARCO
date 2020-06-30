@@ -20,14 +20,18 @@ const bodegaSchema = new Schema({
     lowercase: true,
     trim: true,
   },
-  ciudad: {
+  pais: {
     type: String,
     lowercase: true,
     trim: true,
   },
-  pais: {
+  departamento: {
     type: String,
     lowercase: true,
+    trim: true,
+  },
+  codigoPostal: {
+    type: String,
     trim: true,
   },
   email: {
@@ -41,14 +45,29 @@ const bodegaSchema = new Schema({
     type: String,
     trim: true,
   },
-  fechaInicial: {
+  fechaRegistro: {
     type: Date,
-    required: true,
+    defualt: Date.now(),
   },
-  fechaFinal: {
-    type: Date,
-  },
+  ordenesActuales: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Orden",
+    },
+  ],
+  ordenesPasadas: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Orden",
+    },
+  ],
 });
+
+bodegaSchema.index(
+  { direccionBodega: 1, municipio: 1, pais: 1, departamento: 1 },
+  { unique: true }
+);
+
 const Bodega = mongoose.model("Bodega", bodegaSchema);
 
 const noUpdatable = ["__v"];
@@ -71,6 +90,27 @@ Bodega.fieldsNotAllowedUpdates = (body) => {
   const isValidOp = updates.every((update) => allowedUpdates.includes(update));
   console.log(updates);
   return isValidOp;
+};
+
+Bodega.findByLocalizacion = async (body) => {
+  let newBodega = null;
+  if (body.codigoPostal) {
+    let codigoPostal = body.codigoPostal;
+    newBodega = await Bodega.findOne({ codigoPostal });
+  }
+  let query = [
+    { municipio: body.municipio },
+    { departamento: body.departamento },
+    { pais: body.pais },
+    { direccion: body.direccion },
+  ];
+  if (!newBodega) {
+    newBodega = await Bodega.findOne({
+      $and: query,
+    });
+  }
+  console.log(newBodega);
+  return newBodega;
 };
 
 module.exports = Bodega;

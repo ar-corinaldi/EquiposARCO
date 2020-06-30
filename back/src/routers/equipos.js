@@ -34,7 +34,7 @@ router.post("", async (req, res) => {
 router.get("", async (req, res) => {
   try {
     const equipos = await Equipo.find({});
-    res.send(equipos);
+    res.json(equipos);
   } catch (e) {
     res.status(500).send();
   }

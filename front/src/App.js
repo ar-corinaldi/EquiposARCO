@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
 import Equipo from "./components/Equipo/Equipo";
 import Terceros from "./components/TercerosComponents/Terceros";
+import Tercero from "./components/Tercero/Tercero";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -28,6 +29,7 @@ function App() {
               <Route path="/" exact />
               <Route path="/inventario/equipos" component={() => <Equipo />} />
               <Route path="/inventario/terceros" component={Terceros} />
+              <Route path="/terceros/listar_terceros" component={Tercero} />
             </Switch>
           </Col>
         </Row>

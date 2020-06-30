@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Card from "react-bootstrap/Card";
-import Table from "react-bootstrap/Table";
+import TerceroTable from "./TerceroTable";
 
 function Tercero(props) {
   const [terceros, setTerceros] = useState([]);
@@ -40,24 +40,13 @@ function Tercero(props) {
       <Row>
         <Col>
           <Card body>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Tipo Documento</th>
-                  <th>Numero Documento</th>
-                </tr>
-              </thead>
-              <tbody>
-                {terceros.map((tercero) => (
-                  <tr key={tercero._id}>
-                    <td>{tercero.nombre}</td>
-                    <td>{tercero.tipoDocumento}</td>
-                    <td>{tercero.numeroDocumento}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            {terceros.length > 0 ? (
+              <TerceroTable terceros={terceros} />
+            ) : (
+              <div className="spinner-border" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            )}
           </Card>
         </Col>
       </Row>

@@ -13,8 +13,8 @@ function NavBar(params) {
       ref: "/inventario",
     },
     {
-      nombre: "Clientes",
-      ref: "/inventario",
+      nombre: "Terceros",
+      ref: "/terceros",
     },
     {
       nombre: "Facturación",

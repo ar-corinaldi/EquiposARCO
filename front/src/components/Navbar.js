@@ -47,8 +47,8 @@ function NavBar(params) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="nav-menu" activeKey="/home">
-            {opciones_menu.map((menu_item) => (
-              <Nav.Item>
+            {opciones_menu.map((menu_item, index) => (
+              <Nav.Item key={index}>
                 <Link to={menu_item.ref} className="nav-link">
                   {menu_item.nombre}
                 </Link>

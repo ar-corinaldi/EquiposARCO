@@ -5,6 +5,17 @@ const bodegasRouter = require("./bodegas");
 const router = new express.Router();
 router.use("/:id/bodegas", bodegasRouter);
 
+router.get("/cantidad", async (req, res) => {
+  try {
+    const count = await Tercero.estimatedDocumentCount();
+    console.log("count", count);
+    res.send(count + "");
+  } catch (e) {
+    res.status(500).send(e);
+    console.err(e);
+  }
+});
+
 /**
  *  Post de tercero
  */
@@ -22,12 +33,18 @@ router.post("", async (req, res) => {
 /**
  *  Get de terceros
  */
-router.get("", async (req, res) => {
+router.get("/:page/:elementsPerPage", async (req, res) => {
+  let terceros = null;
   try {
-    const terceros = await Tercero.find({});
-    res.json(terceros);
+    const page = parseInt(req.params.page);
+    const elementsPerPage = parseInt(req.params.elementsPerPage);
+    terceros = await Tercero.find({})
+      .limit(elementsPerPage)
+      .skip((page - 1) * elementsPerPage);
+    res.send(terceros);
   } catch (e) {
     res.status(500).send();
+    console.log(terceros);
     console.error("error", e);
   }
 });

@@ -3,51 +3,58 @@ import "./Tercero.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Card from "react-bootstrap/Card";
 import TerceroTable from "./TerceroTable";
+import Pagination from "../Pagination";
 
-function Tercero(props) {
+function Tercero() {
   const [terceros, setTerceros] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [elementsPerPage] = useState(3);
+  const [countTerceros, setCountTerceros] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchTerceros();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, elementsPerPage]);
+
+  useEffect(() => {
+    fetchCountTerceros();
   }, []);
 
+  const fetchCountTerceros = async () => {
+    const res = await fetch("/terceros/cantidad");
+    const newCount = await res.json();
+    setCountTerceros(parseInt(newCount));
+  };
+
   const fetchTerceros = async () => {
-    const res = await fetch("/terceros");
+    setLoading(true);
+    const url = `/terceros/${currentPage}/${elementsPerPage}`;
+    const res = await fetch(url);
     const newTerceros = await res.json();
-    console.log(newTerceros);
     setTerceros(newTerceros);
+    setLoading(false);
   };
 
   return (
     <Container fluid>
       <Row>
         <Col>
-          <h4 className="page-title">Terceros</h4>
-        </Col>
-        <Col>
-          <Breadcrumb>
-            <Breadcrumb.Item href="/">EquiposARCO</Breadcrumb.Item>
-            <Breadcrumb.Item href="/terceros">Terceros</Breadcrumb.Item>
-            <Breadcrumb.Item href="/terceros/listar_terceros">
-              Listar terceros
-            </Breadcrumb.Item>
-          </Breadcrumb>
+          <Card body>
+            <TerceroTable terceros={terceros} loading={loading} />
+          </Card>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Card body>
-            {terceros.length > 0 ? (
-              <TerceroTable terceros={terceros} />
-            ) : (
-              <div className="spinner-border" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            )}
-          </Card>
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            elementsPerPage={elementsPerPage}
+            numberPages={Math.ceil(countTerceros / elementsPerPage)}
+          />
         </Col>
       </Row>
     </Container>

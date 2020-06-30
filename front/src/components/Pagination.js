@@ -8,7 +8,8 @@ function Pagination(props) {
 
   useEffect(() => {
     setPages(renderPages());
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.numberPages]);
 
   useEffect(() => {
     setPages((prevState) => {
@@ -21,6 +22,7 @@ function Pagination(props) {
       newPages[prevPage - 1] = prevCurrent;
       setPages(newPages);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.currentPage]);
 
   const renderPages = () => {
@@ -34,24 +36,50 @@ function Pagination(props) {
     }
     return loadPages;
   };
+
+  if (props.numberPages === 0) {
+    return null;
+  }
+
   return (
     <PaginationB>
-      <PaginationB.First />
-      <PaginationB.Prev />
+      <PaginationB.First
+        onClick={() => {
+          setPrevPage(props.currentPage);
+          props.setCurrentPage(1);
+        }}
+      />
+      <PaginationB.Prev
+        onClick={() => {
+          setPrevPage(props.currentPage);
+          props.setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
+        }}
+      />
       {pages &&
-        pages.map((currentPage) => (
+        pages.map((currentPage, index) => (
           <PageItem
             onClick={() => {
               setPrevPage(props.currentPage);
               props.setCurrentPage(currentPage.number);
             }}
             active={currentPage.active}
+            key={index + 1}
           >
             {currentPage.number}
           </PageItem>
         ))}
-      <PaginationB.Next />
-      <PaginationB.Last />
+      <PaginationB.Next
+        onClick={() => {
+          setPrevPage(props.currentPage);
+          props.setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+        }}
+      />
+      <PaginationB.Last
+        onClick={() => {
+          setPrevPage(props.currentPage);
+          props.setCurrentPage(props.numberPages);
+        }}
+      />
     </PaginationB>
   );
 }

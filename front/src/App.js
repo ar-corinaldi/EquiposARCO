@@ -8,11 +8,11 @@ import Equipo from "./components/Equipo/Equipo";
 import Terceros from "./components/TercerosComponents/Terceros";
 import Tercero from "./components/Tercero/Tercero";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
+import Breadcrumb from "./components/Breadcrumb";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 //Routing
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -32,13 +32,7 @@ function App() {
                 <h4 className="page-title">Terceros</h4>
               </Col>
               <Col>
-                <Breadcrumb>
-                  <Breadcrumb.Item href="/">EquiposARCO</Breadcrumb.Item>
-                  <Breadcrumb.Item href="/terceros">Terceros</Breadcrumb.Item>
-                  <Breadcrumb.Item href="/terceros/listar_terceros">
-                    Listar terceros
-                  </Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb />
               </Col>
             </Row>
             <Row>

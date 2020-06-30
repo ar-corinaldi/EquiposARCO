@@ -28,12 +28,7 @@ function App() {
           </Col>
           <Col id="content-column">
             <Row>
-              <Col>
-                <h4 className="page-title">Terceros</h4>
-              </Col>
-              <Col>
-                <Breadcrumb />
-              </Col>
+              <Breadcrumb />
             </Row>
             <Row>
               <Switch>

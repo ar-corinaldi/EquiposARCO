@@ -10,14 +10,14 @@ import Pagination from "../Pagination";
 function Tercero() {
   const [terceros, setTerceros] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [elementsPerPage] = useState(3);
+  const [tercerosPerPage] = useState(3);
   const [countTerceros, setCountTerceros] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchTerceros();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, elementsPerPage]);
+  }, [currentPage, tercerosPerPage]);
 
   useEffect(() => {
     fetchCountTerceros();
@@ -31,7 +31,7 @@ function Tercero() {
 
   const fetchTerceros = async () => {
     setLoading(true);
-    const url = `/terceros/${currentPage}/${elementsPerPage}`;
+    const url = `/terceros/${currentPage}/${tercerosPerPage}`;
     const res = await fetch(url);
     const newTerceros = await res.json();
     setTerceros(newTerceros);
@@ -52,8 +52,8 @@ function Tercero() {
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            elementsPerPage={elementsPerPage}
-            numberPages={Math.ceil(countTerceros / elementsPerPage)}
+            elementsPerPage={tercerosPerPage}
+            numberPages={Math.ceil(countTerceros / tercerosPerPage)}
           />
         </Col>
       </Row>

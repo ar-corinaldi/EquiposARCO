@@ -12,6 +12,7 @@ import TerceroDetail from "./components/Tercero/TerceroDetail";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 //Routing
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -26,20 +27,39 @@ function App() {
             <Sidebar />
           </Col>
           <Col id="content-column">
-            <Switch>
-              <Route path="/" exact />
-              <Route path="/inventario/equipos" component={() => <Equipo />} />
-              <Route path="/inventario/terceros" component={Terceros} />
-              <Route
-                path="/terceros/listar_terceros"
-                exact
-                component={Tercero}
-              />
-              <Route
-                path="/terceros/listar_terceros/:id"
-                component={TerceroDetail}
-              />
-            </Switch>
+            <Row>
+              <Col>
+                <h4 className="page-title">Terceros</h4>
+              </Col>
+              <Col>
+                <Breadcrumb>
+                  <Breadcrumb.Item href="/">EquiposARCO</Breadcrumb.Item>
+                  <Breadcrumb.Item href="/terceros">Terceros</Breadcrumb.Item>
+                  <Breadcrumb.Item href="/terceros/listar_terceros">
+                    Listar terceros
+                  </Breadcrumb.Item>
+                </Breadcrumb>
+              </Col>
+            </Row>
+            <Row>
+              <Switch>
+                <Route path="/" exact />
+                <Route
+                  path="/inventario/equipos"
+                  component={() => <Equipo />}
+                />
+                <Route path="/inventario/terceros" component={Terceros} />
+                <Route
+                  path="/terceros/listar_terceros"
+                  exact
+                  component={Tercero}
+                />
+                <Route
+                  path="/terceros/listar_terceros/:id"
+                  component={TerceroDetail}
+                />
+              </Switch>
+            </Row>
           </Col>
         </Row>
       </div>

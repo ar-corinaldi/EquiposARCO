@@ -92,11 +92,23 @@ function TerceroDetail({ match }) {
           <Card>
             <Card.Body>
               <Card.Title>Bodegas</Card.Title>
-              <Card.Text>
-                {bodegas.map((bodega) => (
-                  <Row key={bodega._id} />
-                ))}
-              </Card.Text>
+              {bodegas.map((bodega) => (
+                <Card.Text key={bodega._id}>
+                  <Row>
+                    <Col>
+                      <p>
+                        <strong> Nombre : </strong>
+                        {bodega.nombreBodega}
+                      </p>
+
+                      <p>
+                        <strong> Direccion : </strong>
+                        {bodega.direccionBodega}
+                      </p>
+                    </Col>
+                  </Row>
+                </Card.Text>
+              ))}
             </Card.Body>
           </Card>
         </Col>

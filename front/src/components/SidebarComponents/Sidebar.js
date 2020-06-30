@@ -6,8 +6,8 @@ import { useLocation, Link } from "react-router-dom";
 function Sidebar(props) {
   const completePath = useLocation();
   const location = "/" + completePath.pathname.split("/")[1];
-  console.log(completePath.pathname.split("/")[1]);
-  console.log(location);
+  // console.log(completePath.pathname.split("/")[1]);
+  // console.log(location);
 
   /**Header, Title, link, menu son los tipos de componentes en el sibar, el menu aún no está implementado en Sidebar Details
   Todos necesitan name ya que este es el nombre que se va a renderizar. El Type especifica el tipo de componente a renderizar en Details. Si es un link necesita un ref
@@ -39,7 +39,7 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "Terceros",
+      name: "pruebas",
       ref: "/terceros",
     },
   ];

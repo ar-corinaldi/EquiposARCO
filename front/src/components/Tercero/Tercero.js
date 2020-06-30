@@ -51,53 +51,6 @@ function Tercero(props) {
         </Col>
       </Row>
     </Container>
-
-    // <div className="container-fluid">
-    //   <div className="row">
-    //     <div className="col-12">
-    //       <div className="page-title-box">
-    //         <div className="page-title-right">
-    //           <ol className="breadcrumb m-0">
-    //             <li className="breadcrumb-item">
-    //               <a href="/">EquiposARCO</a>
-    //             </li>
-    //             <li className="breadcrumb-item">
-    //               <a href="/terceros">Terceros</a>
-    //             </li>
-    //             <li className="breadcrumb-item">
-    //               <a href="/terceros/listar_t erceros">Listar terceros</a>
-    //             </li>
-    //           </ol>
-    //         </div>
-    //         <h4 className="page-title">Terceros</h4>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="row">
-    //     <div className="col-12">
-    //       <div className="card">
-    //         <div className="card-body">
-    //           <div className="table-respoponsive">
-    //             <div className="row">
-    //               <div className="col-sm-12">
-    //                 <table>
-    //                   <thead>
-    //                     <tr role="row">
-    //                       <th>Nombre</th>
-    //                       <th>Nombre</th>
-    //                       <th>Nombre</th>
-    //                     </tr>
-    //                   </thead>
-    //                   <tbody></tbody>
-    //                 </table>
-    //               </div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
 

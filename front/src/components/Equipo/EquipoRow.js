@@ -8,11 +8,11 @@ function EquipoRow(props) {
       <tr>
         <td>
           <Link to={`${url}/${props.equipo.nombreEquipo}`}>
-            {props.equipo && props.equipo.nombreEquipo}
+            {props.equipo.nombreEquipo}
           </Link>
         </td>
-        <td>{props.equipo && props.equipo.tipoEquipo}</td>
-        <td>{props.equipo && props.equipo.codigo}</td>
+        <td>{props.equipo.tipoEquipo}</td>
+        <td>{props.equipo.codigo}</td>
       </tr>
     </React.Fragment>
   );

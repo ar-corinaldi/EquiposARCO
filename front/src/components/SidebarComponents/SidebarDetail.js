@@ -8,16 +8,16 @@ function SidebarDetail(props) {
   console.log(props.menu);
 
   return (
-    <ul className="components">
-      {menu.map((item) => {
-        if (item.type == "Header") {
-          return Header(item);
-        } else if (item.type == "Title") {
-          return Title(item);
-        } else if (item.type == "Link") {
-          return Url(item, url);
-        } else if (item.type == "Menu") {
-          return Menu(item);
+    <ul className="components" >
+      {menu.map((item, index) => {
+        if (item.type === "Header") {
+          return Header(item, index);
+        } else if (item.type === "Title") {
+          return Title(item, index);
+        } else if (item.type === "Link") {
+          return Url(item, index, url);
+        } else if (item.type === "Menu") {
+          return Menu(item, index);
         }
       })}
     </ul>
@@ -25,27 +25,27 @@ function SidebarDetail(props) {
 }
 
 //TODO: Estilizarlo más
-function Header(params) {
+function Header(params, index) {
   const header = params.name;
   return (
-    <div className="sidebar-header">
+    <div className="sidebar-header" key={index}>
       <h3>{header}</h3>
     </div>
   );
 }
 
-function Title(params) {
+function Title(params, index) {
   const title = params.name;
   return (
-    <li className="sidebar-title">
+    <li className="sidebar-title" key={index}>
       <h5>{title}</h5>
     </li>
   );
 }
 
-function Url(item, url) {
+function Url(item, index, url) {
   return (
-    <li className="sidebar-link-container">
+    <li className="sidebar-link-container" key={index}>
       <Link to={url + item.ref} className="sidebar-link">
         {item.name}
       </Link>

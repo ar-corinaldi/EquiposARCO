@@ -20,6 +20,8 @@ const devolucionesRouter = require("./src/routers/devoluciones");
 const remisionesRouter = require("./src/routers/remisiones");
 const facturasRouter = require("./src/routers/facturas");
 const ordenesRouter = require("./src/routers/ordenes");
+const tarifasRouter =  require("./src/routers/tarifas")
+const cotizacionesRouter = require("./src/routers/cotizaciones")
 
 //Servidor
 const app = express();
@@ -43,5 +45,7 @@ app.use("/devoluciones", devolucionesRouter);
 app.use("/remisiones", remisionesRouter);
 app.use("/facturas", facturasRouter);
 app.use("/ordenes", ordenesRouter);
+app.use("/tarifas", tarifasRouter);
+app.use("/cotizaciones", cotizacionesRouter);
 
 module.exports = app;

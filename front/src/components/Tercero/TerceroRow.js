@@ -7,7 +7,7 @@ function TerceroRow(props) {
     <React.Fragment>
       <tr key={props.tercero._id}>
         <td>
-          <Link to={`${url}/${props.tercero._id}`}>
+          <Link to={"/terceros/" + props.tercero._id}>
             {props.tercero && props.tercero.nombre}
           </Link>
         </td>

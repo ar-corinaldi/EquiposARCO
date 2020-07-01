@@ -5,6 +5,20 @@ const router = new express.Router();
 const Precio = require("../models/precio-model");
 
 /**
+ * Cantidad de documentos que hay en tercero
+ */
+router.get("/cantidad", async (req, res) => {
+  try {
+    const count = await Equipo.estimatedDocumentCount();
+    console.log("count", count);
+    res.send(count + "");
+  } catch (e) {
+    res.status(500).send(e);
+    console.err(e);
+  }
+});
+
+/**
  *  Post de equipo. Crea primero los precios en su tabla correspondiente y después pasa los ids
  */
 router.post("", async (req, res) => {
@@ -29,12 +43,29 @@ router.post("", async (req, res) => {
 });
 
 /**
+ *  Get de equipos paginacion
+ */
+router.get("/:page/:elementsPerPage", async (req, res) => {
+  try {
+    const page = parseInt(req.params.page);
+    const elementsPerPage = parseInt(req.params.elementsPerPage);
+    const equipos = await Equipo.find({})
+      .limit(elementsPerPage)
+      .skip((page - 1) * elementsPerPage);
+    res.send(equipos);
+  } catch (e) {
+    res.status(500).send();
+    console.error("error", e);
+  }
+});
+
+/**
  *  Get de equipos
  */
 router.get("", async (req, res) => {
   try {
     const equipos = await Equipo.find({});
-    res.json(equipos);
+    res.send(equipos);
   } catch (e) {
     res.status(500).send();
   }

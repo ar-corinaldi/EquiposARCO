@@ -2,6 +2,13 @@ import React from "react";
 import EquipoRow from "./EquipoRow";
 
 function EquipoTable(props) {
+  if (props.loading) {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
   return (
     <div className="table-equipo">
       <table className="table">

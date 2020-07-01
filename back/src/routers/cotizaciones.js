@@ -83,13 +83,13 @@ router.post("/:id/tarifasCotizadas", async (req, res) => {
 router.patch("/:id/tarifasCotizadas/:idTarifa", async (req, res) => {
   try {
     const cotizacion = await Cotizacion.findById(req.params.id);
-    console.log(req.params);
+    // console.log(req.params);
     
     const tarifa = await Tarifa.findById(req.params.idTarifa);
-    console.log("aquí");
+    // console.log("aquí");
     
     cotizacion.tarifasCotizadas.push(tarifa._id);
-    console.log("acá");
+    // console.log("acá");
     
     await cotizacion.save();
     // console.log(cotizacion);

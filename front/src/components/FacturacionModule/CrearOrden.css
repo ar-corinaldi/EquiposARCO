@@ -1,0 +1,58 @@
+#create-order-wrapper {
+  background-color: white;
+  box-shadow: 0px 0px 15px 3px rgba(134, 118, 118, 0.12);
+  font-family: "Nunito", "sans-serif";
+  color: #6c757d;
+  width: 100%;
+  margin: 2px 35px 0px 25px;
+  border-radius: 2px;
+  padding: 35px;
+}
+
+.row {
+  align-items: stretch;
+  /* height: 60px; */
+}
+
+.col.col-step {
+  padding: 0px;
+}
+
+.step-active {
+  background-color: #727cf5;
+  color: white;
+  transition: all 0.1s;
+}
+
+.step-pending {
+  background-color: #eef2f7;
+  color: #6c757d;
+  transition: all 0.1s;
+}
+
+.step-complete {
+  background-color: #24c17f;
+  color: white;
+  border: 0px;
+  transition: all 0.1s;
+}
+
+.step-button {
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  border: 0px;
+}
+
+.step-logo {
+  width: 27px;
+  height: auto;
+  color: white;
+  vertical-align: top;
+}
+
+.step-button-name {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  margin-top: 2px !important;
+}

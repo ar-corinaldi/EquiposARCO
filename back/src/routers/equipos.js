@@ -76,7 +76,7 @@ router.get("", async (req, res) => {
  */
 router.get("/:id", async (req, res) => {
   try {
-    const equipo = await Equipo.findById(req.params.id);
+    const equipo = await Equipo.findById(req.params.id).populate("precios");
     if (!equipo) {
       return res.status(404).send("No hubo coincidencia");
     }

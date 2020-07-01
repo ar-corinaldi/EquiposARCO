@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Precio from "./Precio";
-
+import PrecioTable from "./PrecioTable";
+import EquipoDetailBadges from "./EquipoDetailBadges";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 
-function EquipoDetail(props) {
+function EquipoDetail() {
   const [equipo, setEquipo] = useState({});
   const [loading, setLoading] = useState(false);
   let { idEquipo } = useParams();
@@ -38,7 +38,10 @@ function EquipoDetail(props) {
       <Row>
         <Col>
           <h3>
-            {equipo.nombreEquipo} ({equipo.codigo})
+            {equipo.nombreEquipo &&
+              equipo.nombreEquipo[0].toUpperCase() +
+                equipo.nombreEquipo.slice(1)}
+            ({equipo.codigo && equipo.codigo.toUpperCase()})
           </h3>
         </Col>
       </Row>
@@ -54,28 +57,15 @@ function EquipoDetail(props) {
         </Col>
       </Row>
       <Row className="d-flex justify-content-around">
-        <h5>
-          <span className="badge badge-success">
-            Total de Equipo: {equipo.cantidadTotal}
-          </span>
-        </h5>
-        <h5>
-          <span className="badge badge-info">
-            En Bodega: {equipo.cantidadBodega}
-          </span>
-        </h5>
-        <h5>
-          <span className="badge badge-warning">
-            Alquilado/Vendido: {equipo.cantidadTotal - equipo.cantidadBodega}
-          </span>
-        </h5>
+        <EquipoDetailBadges
+          cantidadTotal={equipo.cantidadTotal}
+          cantidadBodega={equipo.cantidadBodega}
+          cantidadUsado={equipo.cantidadTotal - equipo.cantidadBodega}
+        />
       </Row>
       <Row>
         <Col>
-          {equipo.precios &&
-            equipo.precios.map((precio) => (
-              <Precio key={precio._id} precio={precio} />
-            ))}
+          <PrecioTable precios={equipo.precios || []} />
         </Col>
       </Row>
       <Row>

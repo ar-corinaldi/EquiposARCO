@@ -10,6 +10,7 @@ import Tercero from "./components/Tercero/Tercero";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
 import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
+import CrearOrden from "./components/FacturacionModule/CrearOrden"
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -49,6 +50,7 @@ function App() {
                   path="/terceros/:id/bodegas/:idB/ordenes/:idOr"
                   component={OrdenDetail}
                 />
+                <Route path="/facturacion/crear_orden" component={CrearOrden}></Route>
               </Switch>
             </Row>
           </Col>

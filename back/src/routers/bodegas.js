@@ -2,6 +2,7 @@ const express = require("express");
 const Bodega = require("../models/bodega-model");
 const Orden = require("../models/orden-model");
 const Tercero = require("../models/tercero-model");
+const Cotizacion = require('../models/cotizacion-model');
 const ordenesRouter = require("../routers/ordenes");
 const router = new express.Router({ mergeParams: true });
 router.use("/:idB/ordenes", ordenesRouter);
@@ -242,6 +243,27 @@ router.delete("/actual/:idB", async (req, res) => {
       return res.status(404).send("La bodega no existe");
     }
     res.send(bodega);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
+/**
+ * Agrega una cotización existente a una bodega
+ */
+router.patch("/:idB/cotizaciones/:idC", async (req, res)=>{
+  try {
+    const bodega = await Bodega.findById(req.params.idB);
+    if (!bodega) {
+      return res.status(404).send("La bodega no existe");
+    }
+    const cotizacion = await Cotizacion.findById(req.params.idC);
+    if (!cotizacion) {
+      return res.status(404).send("La cotizacion con el id especificado no existe");
+    }
+    bodega.cotizaciones.push(req.params.idC);
+    await bodega.save();
+    res.json(bodega);
   } catch (error) {
     res.status(500).send();
   }

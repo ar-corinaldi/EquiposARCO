@@ -53,14 +53,13 @@ function Equipo() {
       </Row>
       <Row>
         <Col>
-          {!loading ? (
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              elementsPerPage={equiposPerPage}
-              numberPages={Math.ceil(countEquipos / equiposPerPage)}
-            />
-          ) : null}
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            elementsPerPage={equiposPerPage}
+            numberPages={Math.ceil(countEquipos / equiposPerPage)}
+            hide={equipos.length <= 0}
+          />
         </Col>
       </Row>
     </Container>

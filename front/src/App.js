@@ -36,7 +36,7 @@ function App() {
               <Switch>
                 <Route path="/" exact />
                 <Route
-                  path="/inventario/equipos/:nombreEquipo"
+                  path="/inventario/equipos/:idEquipo"
                   component={EquipoDetail}
                 />
                 <Route

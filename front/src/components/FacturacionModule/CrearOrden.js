@@ -24,13 +24,7 @@ function CrearOrden(props) {
   function stepTwoHandler(params) {}
 
   function stepOneLogo(params) {
-    const respuesta = [];
-    if (firstStepState === "active" || firstStepState === "complete") {
-      respuesta[0] = priceLogo;
-    } else {
-      respuesta[0] = priceLogoDark;
-    }
-    return respuesta;
+    return (firstStepState === "active" || firstStepState === "complete")? priceLogo: priceLogoDark;
   }
 
   return (
@@ -42,7 +36,7 @@ function CrearOrden(props) {
             className={"step-" + firstStepState + " step-button"}
             onClick={stepOneHandler}
           >
-            <img src={stepOneLogo()[0]} className="step-logo" />
+            <img src={stepOneLogo()} className="step-logo" />
             <p className="step-button-name">First Step</p>
           </button>
         </Col>
@@ -56,7 +50,7 @@ function CrearOrden(props) {
         </Col>
       </Row>
       <Row>
-          <EscogerCotizacion estado = {firstStepState} setEstado={setFirstStep}/>
+          <EscogerCotizacion estadoStepOne = {firstStepState} setEstadoStepOne={setFirstStep}/>
       </Row>
     </div>
   );

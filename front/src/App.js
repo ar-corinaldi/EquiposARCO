@@ -9,6 +9,7 @@ import Terceros from "./components/TercerosComponents/Terceros";
 import Tercero from "./components/Tercero/Tercero";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
 import Breadcrumb from "./components/Breadcrumb";
+import OrdenDetail from "./components/Orden/OrdenDetail";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -43,9 +44,10 @@ function App() {
                   exact
                   component={Tercero}
                 />
+                <Route path="/terceros/:id" exact component={TerceroDetail} />
                 <Route
-                  path="/terceros/listar_terceros/:id"
-                  component={TerceroDetail}
+                  path="/terceros/:id/bodegas/:idB/ordenes/:idOr"
+                  component={OrdenDetail}
                 />
               </Switch>
             </Row>

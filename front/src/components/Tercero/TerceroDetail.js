@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-// import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Card from "react-bootstrap/Card";
-// import TerceroTable from "./TerceroTable";
+import { Link, useRouteMatch } from "react-router-dom";
+import "./Tercero.css";
 
 function TerceroDetail({ match }) {
   const params = match.params;
+
+  //const { url } = useRouteMatch();
 
   const [tercero, setTercero] = useState({});
   const [bodegas, setBodegas] = useState([]);
@@ -31,10 +33,26 @@ function TerceroDetail({ match }) {
     setBodegas(bodegasActuales);
   };
 
+  const fetchOrdenes = async () => {
+    //const res = await fetch("/terceros/" + params.id + "/bodegas");
+    //const bodegasActuales = await res.json();
+    //console.log(bodegasActuales);
+    //setBodegas(bodegasActuales);
+  };
+
   const capitalize = (str, lower = false) =>
     (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
       match.toUpperCase()
     );
+
+  const formatDate = (fecha) => {
+    if (fecha) {
+      const date = new Date(fecha);
+      return `${date.getDate()}/${(
+        date.getMonth() + 1
+      ).toString()}/${date.getFullYear()}`;
+    }
+  };
 
   return (
     <Container fluid>
@@ -53,6 +71,87 @@ function TerceroDetail({ match }) {
         </Col>
       </Row>
       <Row>
+        <Col xs={7}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Bodegas</Card.Title>
+              {bodegas.map((bodega) => (
+                <Row key={bodega._id}>
+                  <Col className="bodega-cliente">
+                    <p>
+                      <strong> Nombre : </strong>
+                      {bodega.nombreBodega}
+                    </p>
+                    <p>
+                      <strong> Dirección : </strong>
+                      {capitalize(
+                        (bodega.direccionBodega || "") +
+                          " " +
+                          (bodega.municipio || "") +
+                          ", " +
+                          (bodega.departamento || "") +
+                          ", " +
+                          (bodega.pais || "")
+                      )}
+                    </p>
+                    <p>
+                      <strong> Teléfono : </strong>
+                      {bodega.telefono}
+                    </p>
+                    <Row>
+                      <Col>
+                        <strong> Órdenes en curso : </strong>
+                        {bodega.ordenesActuales.map((orden) => (
+                          <Row key={orden}>
+                            <Col>
+                              <p>
+                                <Link
+                                  to={
+                                    "/terceros/" +
+                                    tercero._id +
+                                    "/bodegas/" +
+                                    bodega._id +
+                                    "/ordenes/" +
+                                    orden
+                                  }
+                                >
+                                  {orden}
+                                </Link>
+                              </p>
+                            </Col>
+                          </Row>
+                        ))}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <strong> Órdenes finalizadas : </strong>
+                        {bodega.ordenesPasadas.map((orden) => (
+                          <Row key={orden._id}>
+                            <Col>
+                              <Link
+                                to={
+                                  "/terceros/" +
+                                  tercero._id +
+                                  "/bodegas/" +
+                                  bodega._id +
+                                  "/ordenes/" +
+                                  orden
+                                }
+                              >
+                                {orden}
+                              </Link>
+                            </Col>
+                          </Row>
+                        ))}
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
         <Col>
           <Card>
             <Card.Body>
@@ -83,28 +182,10 @@ function TerceroDetail({ match }) {
                 <strong>Pagina Web : </strong>
                 {tercero.paginaWeb}
               </p>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xs={8}>
-          <Card>
-            <Card.Body>
-              <Card.Title>Bodegas</Card.Title>
-              {bodegas.map((bodega) => (
-                <Row key={bodega._id}>
-                  <Col>
-                    <p>
-                      <strong> Nombre : </strong>
-                      {bodega.nombreBodega}
-                    </p>
-
-                    <p>
-                      <strong> Direccion : </strong>
-                      {bodega.direccionBodega}
-                    </p>
-                  </Col>
-                </Row>
-              ))}
+              <p>
+                <strong>Fecha de registro : </strong>
+                {formatDate(tercero.fechaCreacion)}
+              </p>
             </Card.Body>
           </Card>
         </Col>

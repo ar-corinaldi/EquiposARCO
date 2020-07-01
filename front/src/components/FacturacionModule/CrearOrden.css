@@ -14,23 +14,27 @@
   /* height: 60px; */
 }
 
-.col.row-step {
+.col.col-step {
   padding: 0px;
 }
 
 .step-active {
   background-color: #727cf5;
   color: white;
+  transition: all 0.1s;
 }
 
 .step-pending {
   background-color: #eef2f7;
   color: #6c757d;
+  transition: all 0.1s;
 }
 
 .step-complete {
   background-color: #24c17f;
   color: white;
+  border: 0px;
+  transition: all 0.1s;
 }
 
 .step-button {

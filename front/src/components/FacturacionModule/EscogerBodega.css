@@ -1,0 +1,25 @@
+.root {
+    width: 221;
+    font-size: 18px
+}
+.button{
+    font-size: 18px;
+    width: 100%;
+    text-align: left;
+    padding-bottom: 8px;
+    color: #586069;
+    font-weight: 600;
+  }
+
+  .button:hover , .button:focus{
+    color: #0366d6;
+  }
+
+  .button span{
+      width: 100%;
+  }
+
+  .button svg{
+    width: 16px;
+    height: 16px;
+  }

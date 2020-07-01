@@ -44,7 +44,7 @@ function EscogerCotizacion(params) {
       }
     >
 
-      {miEstado}
+      {/* {miEstado} */}
       <EscogerBodega bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]} bodegas={[bodegas, setBodegas]}/>
       
       <ul>

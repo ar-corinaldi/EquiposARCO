@@ -11,7 +11,7 @@ import sheetLogoDark from "../../static-files/sheetDark.svg";
 
 function CrearOrden(props) {
   const [firstStepState, setFirstStep] = useState("active");
-  const [secondStepState, setSecondStep] = useState("complete");
+  const [secondStepState, setSecondStep] = useState("pending");
 
   function stepOneHandler(params) {
     if (firstStepState === "active") {
@@ -23,14 +23,26 @@ function CrearOrden(props) {
     }
   }
 
-  function stepTwoHandler(params) {}
+  function stepTwoHandler() {
+    if (secondStepState === "active") {
+      setSecondStep("complete");
+    } else if (secondStepState === "complete") {
+      setSecondStep("pending");
+    } else {
+      setSecondStep("active");
+    }
+  }
 
   function stepOneLogo(params) {
-    return (firstStepState === "active" || firstStepState === "complete")? sheetLogo: sheetLogoDark;
+    return firstStepState === "active" || firstStepState === "complete"
+      ? sheetLogo
+      : sheetLogoDark;
   }
 
   function stepTwoLogo(params) {
-    return (secondStepState === "active" || secondStepState === "complete")? priceLogo: priceLogoDark;
+    return secondStepState === "active" || secondStepState === "complete"
+      ? priceLogo
+      : priceLogoDark;
   }
 
   return (
@@ -50,6 +62,7 @@ function CrearOrden(props) {
           <button
             type="button"
             className={"step-" + secondStepState + " step-button"}
+            onClick={stepTwoHandler}
           >
             <img src={stepTwoLogo()} className="step-logo" />
             <p className="step-button-name"> Confirmar tarifas</p>
@@ -57,7 +70,10 @@ function CrearOrden(props) {
         </Col>
       </Row>
       <Row>
-          <EscogerCotizacion estadoStepOne = {firstStepState} setEstadoStepOne={setFirstStep}/>
+        <EscogerCotizacion
+          estadoStepOne={firstStepState}
+          setEstadoStepOne={setFirstStep}
+        />
       </Row>
     </div>
   );

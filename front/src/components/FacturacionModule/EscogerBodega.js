@@ -130,6 +130,7 @@ export default function EscogerBodega(props) {
   const handleClick = (event) => {
     setPendingValue(value);
     setAnchorEl(event.currentTarget);
+    setBodegaSeleccionada(value[0]);
   };
 
   const handleClose = (event, reason) => {
@@ -148,25 +149,22 @@ export default function EscogerBodega(props) {
 
   return (
     <>
-      <div className={classes.root}>
+      <div className="root">
         <ButtonBase
           disableRipple
-          className={classes.button}
+          className="button"
           aria-describedby={id}
           onClick={handleClick}
         >
           <span>Escoja bodega destino</span>
           <SettingsIcon />
         </ButtonBase>
-        {value.map((label) => (
+        {value.map((label, index) => (
           <div
-            key={label.name}
+            key={index}
             className={classes.tag}
-            style={{
-              backgroundColor: label.color,
-            }}
           >
-            {label.name}
+            {label.nombreBodega}
           </div>
         ))}
         <Popper
@@ -200,7 +198,7 @@ export default function EscogerBodega(props) {
                   style={{ visibility: selected ? "visible" : "hidden" }}
                 />
                 <div className={classes.text}>
-                  {option.nombreBodega}
+                  <span>{option.nombreBodega}</span>
                   <br />
                   {option.direccionBodega}
                 </div>

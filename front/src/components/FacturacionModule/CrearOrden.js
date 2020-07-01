@@ -6,10 +6,12 @@ import Cl from "react-bootstrap/Col";
 import Col from "react-bootstrap/Col";
 import priceLogo from "../../static-files/price.svg";
 import priceLogoDark from "../../static-files/price-dark.svg";
+import sheetLogo from "../../static-files/sheet.svg";
+import sheetLogoDark from "../../static-files/sheetDark.svg";
 
 function CrearOrden(props) {
   const [firstStepState, setFirstStep] = useState("active");
-  const [secondStepState, setSecondStep] = useState("pending");
+  const [secondStepState, setSecondStep] = useState("complete");
 
   function stepOneHandler(params) {
     if (firstStepState === "active") {
@@ -24,7 +26,11 @@ function CrearOrden(props) {
   function stepTwoHandler(params) {}
 
   function stepOneLogo(params) {
-    return (firstStepState === "active" || firstStepState === "complete")? priceLogo: priceLogoDark;
+    return (firstStepState === "active" || firstStepState === "complete")? sheetLogo: sheetLogoDark;
+  }
+
+  function stepTwoLogo(params) {
+    return (secondStepState === "active" || secondStepState === "complete")? priceLogo: priceLogoDark;
   }
 
   return (
@@ -37,7 +43,7 @@ function CrearOrden(props) {
             onClick={stepOneHandler}
           >
             <img src={stepOneLogo()} className="step-logo" />
-            <p className="step-button-name">First Step</p>
+            <p className="step-button-name">Seleccionar Cotización</p>
           </button>
         </Col>
         <Col align="center" className="col-step">
@@ -45,7 +51,8 @@ function CrearOrden(props) {
             type="button"
             className={"step-" + secondStepState + " step-button"}
           >
-            <p className="step-button-name"> Second Step</p>
+            <img src={stepTwoLogo()} className="step-logo" />
+            <p className="step-button-name"> Confirmar tarifas</p>
           </button>
         </Col>
       </Row>

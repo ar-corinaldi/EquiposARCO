@@ -8,21 +8,33 @@ import Pagination from "../Pagination";
 function Equipo() {
   const [equipos, setEquipos] = useState([]);
   const [filterText, setFilterText] = useState("");
-  const [currentPage, setCurrentPage] = new useState(1);
-  const [equiposPerPage] = new useState(2);
-
-  useEffect(() => {
-    console.log("Aqui un fetch a la base de datos");
-  }, [currentPage]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [equiposPerPage] = useState(3);
+  const [countEquipos, setCountEquipos] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchEquipos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, equiposPerPage]);
+
+  useEffect(() => {
+    fetchCountEquipos();
   }, []);
 
+  const fetchCountEquipos = async () => {
+    const res = await fetch("/equipos/cantidad");
+    const newCount = await res.json();
+    setCountEquipos(parseInt(newCount));
+  };
+
   const fetchEquipos = async () => {
-    const res = await fetch("/equipos");
+    setLoading(true);
+    const url = `/equipos/${currentPage}/${equiposPerPage}`;
+    const res = await fetch(url);
     const newEquipos = await res.json();
     setEquipos(newEquipos);
+    setLoading(false);
   };
 
   return (
@@ -32,13 +44,11 @@ function Equipo() {
       </Row>
       <Row>
         <Col>
-          {equipos.length > 0 ? (
-            <EquipoTable equipos={equipos} filterText={filterText} />
-          ) : (
-            <div className="spinner-border" role="status">
-              <span className="sr-only">Loading...</span>
-            </div>
-          )}
+          <EquipoTable
+            equipos={equipos}
+            filterText={filterText}
+            loading={loading}
+          />
         </Col>
       </Row>
       <Row>
@@ -47,7 +57,8 @@ function Equipo() {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             elementsPerPage={equiposPerPage}
-            numberPages={10}
+            numberPages={Math.ceil(countEquipos / equiposPerPage)}
+            hide={equipos.length <= 0}
           />
         </Col>
       </Row>

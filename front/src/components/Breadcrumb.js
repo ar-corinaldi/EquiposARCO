@@ -7,10 +7,14 @@ function BreadcrumbComponent(props) {
   const location = useLocation();
   let partes = location.pathname.split(new RegExp("/"));
   let prevParte = "";
-  partes = partes.map((parte, index) => ({
-    ruta: parte === "" && index === 0 ? "Equipos Arco" : parte,
-    url: `${prevParte}/${parte}`,
-  }));
+  partes = partes.map((parte, index) => {
+    const obj = {
+      ruta: parte === "" && index === 0 ? "Equipos Arco" : parte,
+      pathname: parte === "" ? "" : `${prevParte}/${parte}`,
+    };
+    prevParte = obj.pathname;
+    return obj;
+  });
   return (
     <React.Fragment>
       <Col>
@@ -20,8 +24,8 @@ function BreadcrumbComponent(props) {
         <Breadcrumb>
           {partes.length > 0 &&
             partes.map((parte) => (
-              <li key={parte.url} className="breadcrumb-item">
-                <Link to={parte.url}>{parte.ruta}</Link>
+              <li key={parte.pathname} className="breadcrumb-item">
+                <Link to={`${parte.pathname}`}>{parte.ruta}</Link>
               </li>
             ))}
         </Breadcrumb>

@@ -10,7 +10,8 @@ import Tercero from "./components/Tercero/Tercero";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
 import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
-
+import CrearOrden from "./components/FacturacionModule/CrearOrden";
+import EquipoDetail from "./components/Equipo/EquipoDetail";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -35,6 +36,10 @@ function App() {
               <Switch>
                 <Route path="/" exact />
                 <Route
+                  path="/inventario/equipos/:idEquipo"
+                  component={EquipoDetail}
+                />
+                <Route
                   path="/inventario/equipos"
                   component={() => <Equipo />}
                 />
@@ -49,6 +54,11 @@ function App() {
                   path="/terceros/:id/bodegas/:idB/ordenes/:idOr"
                   component={OrdenDetail}
                 />
+                <Route
+                  path="/facturacion/crear_orden"
+                  component={CrearOrden}
+                ></Route>
+                <Route path="*">Goooooool de Diegol</Route>
               </Switch>
             </Row>
           </Col>

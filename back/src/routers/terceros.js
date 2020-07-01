@@ -5,6 +5,9 @@ const bodegasRouter = require("./bodegas");
 const router = new express.Router();
 router.use("/:id/bodegas", bodegasRouter);
 
+/**
+ * Cantidad de documentos que hay en tercero
+ */
 router.get("/cantidad", async (req, res) => {
   try {
     const count = await Tercero.estimatedDocumentCount();
@@ -31,16 +34,29 @@ router.post("", async (req, res) => {
 });
 
 /**
- *  Get de terceros
+ *  Get de terceros paginacion
  */
 router.get("/:page/:elementsPerPage", async (req, res) => {
-  let terceros = null;
   try {
     const page = parseInt(req.params.page);
     const elementsPerPage = parseInt(req.params.elementsPerPage);
-    terceros = await Tercero.find({})
+    const terceros = await Tercero.find({})
       .limit(elementsPerPage)
       .skip((page - 1) * elementsPerPage);
+    res.send(terceros);
+  } catch (e) {
+    res.status(500).send();
+    console.error("error", e);
+  }
+});
+
+/**
+ *  Get de terceros
+ */
+router.get("", async (req, res) => {
+  let terceros = null;
+  try {
+    terceros = await Tercero.find({});
     res.send(terceros);
   } catch (e) {
     res.status(500).send();

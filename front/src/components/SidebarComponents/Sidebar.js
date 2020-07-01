@@ -60,6 +60,23 @@ function Sidebar(props) {
       ref: "/listar_terceros",
     },
   ];
+
+  const menu_facturación = [
+    {
+      type: "Header",
+      name: "Facturación"
+    },
+    {
+      type: "Title",
+      name: "Opciones",
+    },
+    {
+      type: "Link",
+      name: "Ordenes",
+      ref: "/crear_orden",
+    }
+  ];
+
   //Definicion del menú home: Cuando la ruta es '/'.
   const home_menu = [];
 
@@ -68,6 +85,7 @@ function Sidebar(props) {
     "/inventario": menu_inventario,
     "/": home_menu,
     "/terceros": menu_terceros,
+    "/facturacion": menu_facturación,
   };
 
   return (

@@ -58,7 +58,7 @@ function App() {
                   path="/facturacion/crear_orden"
                   component={CrearOrden}
                 ></Route>
-                <Route path="*">La ruta actual no existe</Route>
+                <Route path="*">Goooooool de Diegol</Route>
               </Switch>
             </Row>
           </Col>

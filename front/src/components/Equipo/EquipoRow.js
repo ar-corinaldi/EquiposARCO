@@ -7,7 +7,7 @@ function EquipoRow(props) {
     <React.Fragment>
       <tr>
         <td>
-          <Link to={`${url}/${props.equipo.nombreEquipo}`}>
+          <Link to={`${url}/${props.equipo._id}`}>
             {props.equipo.nombreEquipo}
           </Link>
         </td>

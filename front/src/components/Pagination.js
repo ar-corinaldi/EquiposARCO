@@ -38,7 +38,6 @@ function Pagination(props) {
   };
 
   if (props.numberPages <= 1) {
-    console.log(props.numberPages);
     return null;
   }
 

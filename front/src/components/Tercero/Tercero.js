@@ -38,6 +38,14 @@ function Tercero() {
     setLoading(false);
   };
 
+  if (loading) {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+
   return (
     <Container fluid>
       <Row>
@@ -54,6 +62,7 @@ function Tercero() {
             setCurrentPage={setCurrentPage}
             elementsPerPage={tercerosPerPage}
             numberPages={Math.ceil(countTerceros / tercerosPerPage)}
+            loading={loading}
           />
         </Col>
       </Row>

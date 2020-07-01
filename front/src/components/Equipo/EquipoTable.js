@@ -9,6 +9,11 @@ function EquipoTable(props) {
       </div>
     );
   }
+
+  if (!props.loading && props.equipos.length === 0) {
+    return <h2>No hay equipos disponibles</h2>;
+  }
+
   return (
     <div className="table-equipo">
       <table className="table">

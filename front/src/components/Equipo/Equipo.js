@@ -58,6 +58,7 @@ function Equipo() {
             setCurrentPage={setCurrentPage}
             elementsPerPage={equiposPerPage}
             numberPages={Math.ceil(countEquipos / equiposPerPage)}
+            hide={equipos.length <= 0}
           />
         </Col>
       </Row>

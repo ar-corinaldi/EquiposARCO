@@ -13,6 +13,7 @@ import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
 import CrearOrden from "./components/FacturacionModule/CrearOrden";
 import EquipoDetail from "./components/Equipo/EquipoDetail";
+import EquipoCreate from "./components/Equipo/EquipoCreate";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -36,6 +37,10 @@ function App() {
             <Row>
               <Switch>
                 <Route path="/" exact />
+                <Route
+                  path="/inventario/crearEquipo"
+                  component={EquipoCreate}
+                />
                 <Route
                   path="/inventario/equipos/:idEquipo"
                   component={EquipoDetail}

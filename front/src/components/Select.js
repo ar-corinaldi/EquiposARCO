@@ -14,7 +14,10 @@ function Select(props) {
         <Autocomplete
           id="combo-box-demo"
           options={props.opciones}
-          getOptionLabel={(option) => option}
+          getOptionLabel={(option, value) => {
+            console.log("Prueba", option, value);
+            return option;
+          }}
           defaultValue={props.filter}
           style={{ width: 300 }}
           value={props.filter}

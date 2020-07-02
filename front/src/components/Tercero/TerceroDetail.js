@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import { Link, useRouteMatch } from "react-router-dom";
 import "./Tercero.css";
+import BodegaDetail from "./BodegaDetail";
 
 function TerceroDetail({ match }) {
   const params = match.params;
@@ -45,136 +44,62 @@ function TerceroDetail({ match }) {
     <Container fluid>
       <Row>
         <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>{capitalize(tercero.nombre || "")}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">
-                {(tercero.tipoDocumento || "").toString().toUpperCase()}:{" "}
-                {tercero.numeroDocumento}
-              </Card.Subtitle>
-              <Card.Text></Card.Text>
-            </Card.Body>
-          </Card>
+          <div id="tercero-wrapper">
+            <h3 id="titulos">{capitalize(tercero.nombre || "")}</h3>
+            <p className="mb-2 text-muted">
+              {(tercero.tipoDocumento || "").toString().toUpperCase()}:{" "}
+              {tercero.numeroDocumento}
+            </p>
+          </div>
         </Col>
       </Row>
       <Row>
         <Col xs={7}>
-          <Card>
-            <Card.Body>
-              <Card.Title>Bodegas</Card.Title>
-              {bodegas.map((bodega) => (
-                <Row key={bodega._id}>
-                  <Col className="bodega-cliente">
-                    <p>
-                      <strong> Nombre : </strong>
-                      {bodega.nombreBodega}
-                    </p>
-                    <p>
-                      <strong> Dirección : </strong>
-                      {capitalize(
-                        (bodega.direccionBodega || "") +
-                          " " +
-                          (bodega.municipio || "") +
-                          ", " +
-                          (bodega.departamento || "") +
-                          ", " +
-                          (bodega.pais || "")
-                      )}
-                    </p>
-                    <p>
-                      <strong> Teléfono : </strong>
-                      {bodega.telefono}
-                    </p>
-                    <Row>
-                      <Col>
-                        <strong> Órdenes en curso : </strong>
-                        {bodega.ordenesActuales.map((orden) => (
-                          <Row key={orden._id}>
-                            <Col>
-                              <p>
-                                <Link
-                                  to={
-                                    "/terceros/" +
-                                    tercero._id +
-                                    "/bodegas/" +
-                                    bodega._id +
-                                    "/ordenes/" +
-                                    orden._id
-                                  }
-                                >
-                                  {orden._id}
-                                </Link>
-                              </p>
-                            </Col>
-                          </Row>
-                        ))}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <strong> Órdenes finalizadas : </strong>
-                        {bodega.ordenesPasadas.map((orden) => (
-                          <Row key={orden._id}>
-                            <Col>
-                              <Link
-                                to={
-                                  "/terceros/" +
-                                  tercero._id +
-                                  "/bodegas/" +
-                                  bodega._id +
-                                  "/ordenes/" +
-                                  orden._id
-                                }
-                              >
-                                {orden._id}
-                              </Link>
-                            </Col>
-                          </Row>
-                        ))}
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              ))}
-            </Card.Body>
-          </Card>
+          <div id="bodega-wrapper">
+            <h4 id="titulos">Bodegas</h4>
+            {bodegas.map((bodega) => (
+              <BodegaDetail
+                key={bodega._id}
+                bodega={bodega}
+                tercero={tercero}
+              ></BodegaDetail>
+            ))}
+          </div>
         </Col>
         <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>Información</Card.Title>
-              <p>
-                <strong>Nombre : </strong>
-                {capitalize(tercero.nombre || "")}
-              </p>
-              <p>
-                <strong>
-                  {(tercero.tipoDocumento || "").toString().toUpperCase()} :{" "}
-                </strong>
-                {tercero.numeroDocumento}
-              </p>
-              <p>
-                <strong>Email : </strong>
-                {tercero.email}
-              </p>
-              <p>
-                <strong>Telefono : </strong>
-                {tercero.telefono}
-              </p>
-              <p>
-                <strong>Celular : </strong>
-                {tercero.celular}
-              </p>
-              <p>
-                <strong>Pagina Web : </strong>
-                {tercero.paginaWeb}
-              </p>
-              <p>
-                <strong>Fecha de registro : </strong>
-                {formatDate(tercero.fechaCreacion)}
-              </p>
-            </Card.Body>
-          </Card>
+          <div id="info-wrapper">
+            <h4 id="titulos">Información</h4>
+            <p>
+              <strong>Nombre : </strong>
+              {capitalize(tercero.nombre || "")}
+            </p>
+            <p>
+              <strong>
+                {(tercero.tipoDocumento || "").toString().toUpperCase()} :{" "}
+              </strong>
+              {tercero.numeroDocumento}
+            </p>
+            <p>
+              <strong>Email : </strong>
+              {tercero.email}
+            </p>
+            <p>
+              <strong>Telefono : </strong>
+              {tercero.telefono}
+            </p>
+            <p>
+              <strong>Celular : </strong>
+              {tercero.celular}
+            </p>
+            <p>
+              <strong>Pagina Web : </strong>
+              {tercero.paginaWeb}
+            </p>
+            <p>
+              <strong>Fecha de registro : </strong>
+              {formatDate(tercero.fechaCreacion)}
+            </p>
+          </div>
         </Col>
       </Row>
     </Container>

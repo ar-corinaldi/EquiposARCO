@@ -11,61 +11,12 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import InputBase from "@material-ui/core/InputBase";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 221,
-    fontSize: 13,
-  },
-  button: {
-    fontSize: 13,
-    width: "100%",
-    textAlign: "left",
-    paddingBottom: 8,
-    color: "#586069",
-    fontWeight: 600,
-    "&:hover,&:focus": {
-      color: "#0366d6",
-    },
-    "& span": {
-      width: "100%",
-    },
-    "& svg": {
-      width: 16,
-      height: 16,
-    },
-  },
-  tag: {
-    marginTop: 3,
-    height: 20,
-    padding: ".15em 4px",
-    fontWeight: 600,
-    lineHeight: "15px",
-    borderRadius: 2,
-  },
-  popper: {
-    border: "1px solid rgba(27,31,35,.15)",
-    boxShadow: "0 3px 12px rgba(27,31,35,.15)",
-    borderRadius: 3,
-    width: 300,
-    zIndex: 1,
-    fontSize: 13,
-    color: "#586069",
-    backgroundColor: "#f6f8fa",
-  },
-  header: {
-    borderBottom: "1px solid #e1e4e8",
-    padding: "8px 10px",
-    fontWeight: 600,
-  },
   inputBase: {
-    padding: 10,
-    width: "100%",
-    borderBottom: "1px solid #dfe2e5",
     "& input": {
       borderRadius: 4,
       backgroundColor: theme.palette.common.white,
       padding: 8,
       transition: theme.transitions.create(["border-color", "box-shadow"]),
-      border: "1px solid #ced4da",
       fontSize: 14,
       "&:focus": {
         boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
@@ -128,16 +79,25 @@ export default function EscogerBodega(props) {
   const classes = useStyles();
 
   const handleClick = (event) => {
-    setPendingValue(value);
+    setPendingValue(bodegaSeleccionada);
     setAnchorEl(event.currentTarget);
-    setBodegaSeleccionada(value[0]);
+    console.log(event.currentTarget);
+    
+    
   };
+
+  const handleChange = (event, value) =>{
+    console.log('====================================');
+    console.log(value);
+    console.log('====================================');
+    setBodegaSeleccionada(value);
+  }
 
   const handleClose = (event, reason) => {
     if (reason === "toggleInput") {
       return;
     }
-    setValue(pendingValue);
+    setBodegaSeleccionada(pendingValue);
     if (anchorEl) {
       anchorEl.focus();
     }
@@ -149,35 +109,28 @@ export default function EscogerBodega(props) {
 
   return (
     <>
-      <div className="root">
-        <ButtonBase
+      <div className="rootBodega">
+        {/* <ButtonBase
           disableRipple
-          className="button"
+          className="buttonBodega"
           aria-describedby={id}
           onClick={handleClick}
         >
           <span>Escoja bodega destino</span>
-          <SettingsIcon />
-        </ButtonBase>
-        {value.map((label, index) => (
-          <div
-            key={index}
-            className={classes.tag}
-          >
-            {label.nombreBodega}
-          </div>
-        ))}
-        <Popper
+        </ButtonBase> */}
+        <h4>Escoja la bodega destino</h4>
+        {/* <Popper
           id={id}
           open={open}
           anchorEl={anchorEl}
           placement="bottom-start"
-          className={classes.popper}
-        >
+          className="popperBodega"
+        > */}
+        <div className="completeWrapper" >
           <Autocomplete
-            open
             onClose={handleClose}
-            multiple
+            id="combo-box-demo"
+            className = "paper"
             classes={{
               paper: classes.paper,
               option: classes.option,
@@ -189,7 +142,7 @@ export default function EscogerBodega(props) {
             }}
             disableCloseOnSelect
             disablePortal
-            renderTags={() => null}
+            // renderTags={() => null}
             noOptionsText="No hay bodegas"
             renderOption={(option, { selected }) => (
               <React.Fragment>
@@ -203,23 +156,34 @@ export default function EscogerBodega(props) {
                   {option.direccionBodega}
                 </div>
                 <CloseIcon
+                  onClick={()=>{setPendingValue(null)}}
                   className={classes.close}
                   style={{ visibility: selected ? "visible" : "hidden" }}
                 />
               </React.Fragment>
             )}
-            options={bodegas}
-            getOptionLabel={(option) => option.nombreBodega}
+            options={[...bodegas].sort((a, b) => {
+              // Muestra la bodega seleccionada primero y solo las 8 primeras 
+              let ai = a==bodegaSeleccionada;
+              let bi = b==bodegaSeleccionada;
+              return (ai? -1: (bi? 1: 0));
+            }).slice(0,8)}
+            getOptionLabel={(option) => 
+              option.nombreBodega + option.direccionBodega + option.municipio + 
+              option.pais + option.telefono + option.departamento
+            }
             renderInput={(params) => (
               <InputBase
                 ref={params.InputProps.ref}
                 inputProps={params.inputProps}
                 autoFocus
-                className={classes.inputBase}
+                className={classes.inputBase + " inputBodega"}
+                placeholder="Buscar bodega"
               />
             )}
           ></Autocomplete>
-        </Popper>
+          </div>
+        {/* </Popper> */}
       </div>
     </>
   );

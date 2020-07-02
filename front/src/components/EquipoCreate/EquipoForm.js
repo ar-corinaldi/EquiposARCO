@@ -1,7 +1,6 @@
 import React from "react";
 import withFormHandling from "../withFormHandling";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
+
 const tiposEquipo = [
   "andamios",
   "elementos formaleta entrepiso",
@@ -76,8 +75,15 @@ const nombresGrupo = [
   "taladro",
   "vibrador",
 ];
+
 function EquipoForm(props) {
-  const { fields, handleChange, handleSubmitPOST } = props;
+  const {
+    fields,
+    handleChange,
+    handleSubmitPOST,
+    componentes,
+    setComponentes,
+  } = props;
 
   return (
     <form onSubmit={handleSubmitPOST}>
@@ -141,7 +147,6 @@ function EquipoForm(props) {
           onChange={handleChange}
         />
       </div>
-      <div></div>
       <button type="submit">Crear</button>
     </form>
   );

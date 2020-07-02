@@ -4,7 +4,7 @@ import "./App.css";
 // Components
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
-import Equipo from "./components/Equipo/Equipo";
+import Equipo from "./components/EquipoList/Equipo";
 import Terceros from "./components/TercerosComponents/Terceros";
 import Tercero from "./components/Tercero/Tercero";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
@@ -12,8 +12,8 @@ import TerceroCreate from "./components/Tercero/TerceroCreate";
 import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
 import CrearOrden from "./components/FacturacionModule/CrearOrden";
-import EquipoDetail from "./components/Equipo/EquipoDetail";
-import EquipoCreate from "./components/Equipo/EquipoCreate";
+import EquipoDetail from "./components/EquipoDetail/EquipoDetail";
+import EquipoCreate from "./components/EquipoCreate/EquipoCreate";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";

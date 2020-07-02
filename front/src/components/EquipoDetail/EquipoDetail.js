@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
+import EquipoComponentes from "./EquipoComponentes";
 
 function EquipoDetail() {
   const [equipo, setEquipo] = useState({});
@@ -32,7 +33,6 @@ function EquipoDetail() {
       </div>
     );
   }
-
   return (
     <Container>
       <Row>
@@ -69,7 +69,10 @@ function EquipoDetail() {
         </Col>
       </Row>
       <Row>
-        <Col>
+        {equipo.componentes && equipo.componentes.length > 0 ? (
+          <EquipoComponentes componentes={equipo.componentes} />
+        ) : null}
+        <Col md="auto">
           <Table>
             <thead>
               <tr>

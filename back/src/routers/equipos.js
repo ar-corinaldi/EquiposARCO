@@ -82,6 +82,29 @@ router.get("/equipos/:id", async (req, res) => {
   try {
     const equipo = await Equipo.findById(req.params.id)
       .populate("precios")
+      .populate("propiedades")
+      .populate({
+        path: "componentes",
+        populate: {
+          path: "equipoID",
+        },
+      });
+    if (!equipo) {
+      return res.status(404).send("No hubo coincidencia");
+    }
+    res.send(equipo);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
+/**
+ *  Get de equipo por su id
+ */
+router.get("/equipos/codigo/:idCod/", async (req, res) => {
+  try {
+    const equipo = await Equipo.findOne({ codigo: req.params.idCod })
+      .populate("precios")
       .populate("propiedades");
     if (!equipo) {
       return res.status(404).send("No hubo coincidencia");

@@ -40,12 +40,10 @@ app.use(cotizacionesRouter);
 app.use(tarifasRouter);
 app.use(remisionesRouter);
 app.use(devolucionesRouter);
-
-app.use("/equipos", equiposRouter);
-app.use("/precios", preciosRouter);
-
+app.use(facturasRouter);
+app.use(equiposRouter);
+app.use(preciosRouter);
 app.use(empleadosRouter);
 app.use(vehiculosRouter);
-app.use(facturasRouter);
 
 module.exports = app;

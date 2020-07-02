@@ -156,22 +156,6 @@ router.get("/bodegas", async (req, res) => {
   }
 });
 
-router.get("bodegas/all", async (req,res)=>{
-  try {
-    console.log("dafak");
-    
-    const bodegas = await Bodega.aggregate([
-      { $match: 
-              {pais: 'colombia',}        
-        } 
-    ]).exec();
-    res.send(bodegas);
-  } catch (error) {
-    console.log(error);
-    
-    res.status(500).send();
-  }
-});
 
 /**
  * Get de Bodega por su id

@@ -15,8 +15,13 @@ const terceroSchema = new Schema({
     lowercase: true,
   },
   // Revisar
-  direccionesCliente: {
-    type: [String],
+  direccion: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  ciudad: {
+    type: String,
     required: true,
     trim: true,
   },
@@ -37,10 +42,6 @@ const terceroSchema = new Schema({
   fechaCreacion: {
     type: Date,
     default: Date.now(),
-  },
-  paginaWeb: {
-    type: String,
-    trim: true,
   },
   nombre: {
     type: String,

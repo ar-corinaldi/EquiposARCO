@@ -5,7 +5,6 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
 import Equipo from "./components/Equipo/Equipo";
-import Terceros from "./components/TercerosComponents/Terceros";
 import Tercero from "./components/Tercero/Tercero";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
 import TerceroCreate from "./components/Tercero/TerceroCreate";
@@ -49,7 +48,6 @@ function App() {
                   path="/inventario/equipos"
                   component={() => <Equipo />}
                 />
-                <Route path="/inventario/terceros" component={Terceros} />
                 <Route
                   path="/terceros/listar_terceros"
                   exact

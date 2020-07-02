@@ -10,7 +10,6 @@ function EscogerCotizacion(params) {
   const [cotizaciones, setCotizaciones] = useState([]);
   const [bodegaSeleccionada, setBodegaSeleccionada] = useState({});
   const [bodegas, setBodegas] = useState([]);
-  const [bodegasOptions, setBodegasOptions] = useState([]);
 
   useEffect(() => {
     async function fetchCotizaciones() {
@@ -25,8 +24,6 @@ function EscogerCotizacion(params) {
     async function fetchBodegas() {
       const bodegasBack = await (await fetch("/bodegas")).json();
       setBodegas(bodegasBack);
-      setBodegasOptions(bodegasBack);
-      //   console.log(bodegasBack);
       console.log(bodegas);
     }
     fetchBodegas();

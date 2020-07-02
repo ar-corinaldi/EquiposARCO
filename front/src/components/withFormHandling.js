@@ -17,7 +17,8 @@ const withFormHandling = (FormComponent) => (props) => {
     setFields(newFields);
   };
 
-  const handleSubmitPOST = (e) => {
+  const handleSubmitPOST = async (e) => {
+    console.log("llega");
     e.preventDefault();
     const options = {
       method: "POST",
@@ -26,7 +27,9 @@ const withFormHandling = (FormComponent) => (props) => {
         "Content-Type": "application/json",
       },
     };
-    fetch(formAction, options);
+    const res = await fetch(formAction, options);
+    const newTerceros = await res.json();
+    console.log(newTerceros);
   };
 
   const handleSubmitGET = (e) => {

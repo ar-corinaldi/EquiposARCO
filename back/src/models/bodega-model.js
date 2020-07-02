@@ -47,6 +47,7 @@ const bodegaSchema = new Schema({
   telefono: {
     type: String,
     trim: true,
+    required: true,
   },
   fechaRegistro: {
     type: Date,

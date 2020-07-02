@@ -1,24 +1,24 @@
 /* eslint-disable no-use-before-define */
-import React from "react";
+import React, { useState } from "react";
 import "./EscogerBodega.css";
-import { useTheme, fade, makeStyles } from "@material-ui/core/styles";
-import Popper from "@material-ui/core/Popper";
-import SettingsIcon from "@material-ui/icons/Settings";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import InputBase from "@material-ui/core/InputBase";
-import Chip from "@material-ui/core/Chip"
 
 const useStyles = makeStyles((theme) => ({
   inputBase: {
     "& input": {
+      color: "#6c757d",
+      fontFamily: "Karla",
+      fontWeight: 700,
+      textTransform: "capitalize",
       borderRadius: 0,
       backgroundColor: theme.palette.common.white,
       padding: 8,
       transition: theme.transitions.create(["border-color", "box-shadow"]),
-      fontSize: 14,
+      fontSize: 15,
       "&:focus": {
         boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
         borderColor: theme.palette.primary.main,
@@ -46,10 +46,13 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   iconSelected: {
-    width: 17,
-    height: 17,
-    marginRight: 5,
+    width: 24,
+    height: 24,
+    marginRight: 17,
     marginLeft: -2,
+    '&:hover':{
+      backgroundColor: theme.palette.action.hover,
+    }
   },
 }));
 
@@ -58,25 +61,22 @@ export default function EscogerBodega(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;
   const [bodegas, setBodegas] = props.bodegas;
-  const [value, setValue] = React.useState([]);
   const [pendingValue, setPendingValue] = React.useState([]);
+  // const [open, setOpen] = useState(false);
 
   const classes = useStyles();
 
-  const handleClick = (event) => {
-    setPendingValue(bodegaSeleccionada);
-    setAnchorEl(event.currentTarget);
-    console.log(event.currentTarget);
+  // const handleClick = (event) => {
+  //   setPendingValue(bodegaSeleccionada);
+  //   setAnchorEl(event.currentTarget);
+  //   console.log(event.currentTarget);
     
     
-  };
+  // };
 
-  const handleChange = (event, value) =>{
-    console.log('====================================');
-    console.log(value);
-    console.log('====================================');
-    setBodegaSeleccionada(value);
-  }
+  // const handleChange = (event, value) =>{
+  //   setBodegaSeleccionada(value);
+  // }
 
   const handleClose = (event, reason) => {
     if (reason === "toggleInput") {
@@ -95,8 +95,8 @@ export default function EscogerBodega(props) {
     option.pais + option.telefono + option.departamento
   });
 
-  const open = Boolean(anchorEl);
-  const id = open ? "github-label" : undefined;
+  // let open = false;
+  // const id = open ? "github-label" : undefined;
 
   return (
     <>
@@ -109,7 +109,7 @@ export default function EscogerBodega(props) {
         >
           <span>Escoja bodega destino</span>
         </ButtonBase> */}
-        <h5>Escoja la bodega destino</h5>
+        <h4>Escoja la bodega destino</h4>
         {/* <Popper
           id={id}
           open={open}
@@ -136,15 +136,19 @@ export default function EscogerBodega(props) {
             noOptionsText="No hay bodegas"
             renderOption={(option, { selected }) => (
               <React.Fragment>
-                <DoneIcon
+                {/* <DoneIcon
                   className={classes.iconSelected}
                   style={{ visibility: selected ? "visible" : "hidden" }}
-                />
+                /> */}
                 <div className="nombreBodega">
                   <span>{option.nombreBodega}</span>
                   <br />
                   <span className="bodegaDescripcion">{option.municipio + ", " + option.pais + ". " + option.direccionBodega}</span>
                 </div>
+                {/* <DoneIcon
+                  className={classes.iconSelected}
+                  style={{ visibility: selected ? "visible" : "hidden" }}
+                /> */}
                 <CloseIcon
                   onClick={()=>{setPendingValue(null)}}
                   className= "close"

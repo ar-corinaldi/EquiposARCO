@@ -16,28 +16,15 @@ function TerceroDetail({ match }) {
 
   useEffect(() => {
     fetchTercero();
-    fetchBodegas();
   }, []);
 
   const fetchTercero = async () => {
     const res = await fetch("/terceros/" + params.id);
     const terceroActual = await res.json();
-    //console.log(terceroActual);
+    console.log(terceroActual);
     setTercero(terceroActual);
-  };
-
-  const fetchBodegas = async () => {
-    const res = await fetch("/terceros/" + params.id + "/bodegas");
-    const bodegasActuales = await res.json();
-    //console.log(bodegasActuales);
-    setBodegas(bodegasActuales);
-  };
-
-  const fetchOrdenes = async () => {
-    //const res = await fetch("/terceros/" + params.id + "/bodegas");
-    //const bodegasActuales = await res.json();
-    //console.log(bodegasActuales);
-    //setBodegas(bodegasActuales);
+    const bodegasAct = terceroActual.bodegas;
+    setBodegas(bodegasAct);
   };
 
   const capitalize = (str, lower = false) =>
@@ -102,7 +89,7 @@ function TerceroDetail({ match }) {
                       <Col>
                         <strong> Órdenes en curso : </strong>
                         {bodega.ordenesActuales.map((orden) => (
-                          <Row key={orden}>
+                          <Row key={orden._id}>
                             <Col>
                               <p>
                                 <Link
@@ -112,10 +99,10 @@ function TerceroDetail({ match }) {
                                     "/bodegas/" +
                                     bodega._id +
                                     "/ordenes/" +
-                                    orden
+                                    orden._id
                                   }
                                 >
-                                  {orden}
+                                  {orden._id}
                                 </Link>
                               </p>
                             </Col>
@@ -136,10 +123,10 @@ function TerceroDetail({ match }) {
                                   "/bodegas/" +
                                   bodega._id +
                                   "/ordenes/" +
-                                  orden
+                                  orden._id
                                 }
                               >
-                                {orden}
+                                {orden._id}
                               </Link>
                             </Col>
                           </Row>

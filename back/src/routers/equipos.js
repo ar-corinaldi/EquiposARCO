@@ -166,7 +166,7 @@ router.patch("/equipos/:id/componentes/:idC/:cant", async (req, res) => {
 });
 
 /**
- * Obtiene los componentes de un equipo. Puede ser un poco demorado. No hice index join
+ * Obtiene los componentes de un equipo.
  * Envia el equipo completo con sus componentes.
  */
 router.get("/equipos/:id/componentes", async (req, res) => {
@@ -177,10 +177,6 @@ router.get("/equipos/:id/componentes", async (req, res) => {
         path: "equipoID",
       },
     });
-    // for (let index = 0; index < ans.componentes.length; index++) {
-    //   const equipoInfo = await Equipo.findById(ans.componentes[index].equipoID);
-    //   ans.componentes[index].equipoID = equipoInfo;
-    // }
     res.send(ans);
   } catch (e) {
     res.status(400).send("No se pudo agregar el componente al equipo " + e);

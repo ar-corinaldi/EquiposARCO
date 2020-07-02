@@ -156,6 +156,7 @@ router.get("/bodegas", async (req, res) => {
   }
 });
 
+
 /**
  * Get de Bodega por su id
  */

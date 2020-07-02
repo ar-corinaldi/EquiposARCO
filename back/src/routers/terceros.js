@@ -69,6 +69,21 @@ router.get("/terceros", async (req, res) => {
 });
 
 /**
+ *  Get de TODOS los terceros con sus bodegas
+ */
+router.get("/terceros/bodegas", async (req, res) => {
+  let terceros = null;
+  try {
+    terceros = await Tercero.find({}).populate("bodegas");
+    res.send(terceros);
+  } catch (e) {
+    res.status(500).send();
+    console.log(terceros);
+    console.error("error", e);
+  }
+});
+
+/**
  *  Get de tercero por su id. Puebla las bodegas, y en cada bodega las ordenes pasadas y las actuales
  */
 router.get("/terceros/:id", async (req, res) => {

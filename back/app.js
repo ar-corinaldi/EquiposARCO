@@ -33,18 +33,19 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //Routers
 app.use("/", indexRouter);
-app.use("/equipos", equiposRouter);
 app.use(tercerosRouter);
 app.use(bodegasRouter);
 app.use(ordenesRouter);
 app.use(cotizacionesRouter);
+app.use(tarifasRouter);
+app.use(remisionesRouter);
+app.use(devolucionesRouter);
 
+app.use("/equipos", equiposRouter);
 app.use("/precios", preciosRouter);
-app.use("/empleados", empleadosRouter);
-app.use("/vehiculos", vehiculosRouter);
-app.use("/devoluciones", devolucionesRouter);
-app.use("/remisiones", remisionesRouter);
-app.use("/facturas", facturasRouter);
-app.use("/tarifas", tarifasRouter);
+
+app.use(empleadosRouter);
+app.use(vehiculosRouter);
+app.use(facturasRouter);
 
 module.exports = app;

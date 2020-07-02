@@ -23,7 +23,7 @@ function EscogerCotizacion(params) {
 
   useEffect(() => {
     async function fetchBodegas() {
-      const bodegasBack = await (await fetch("/bodegas/all")).json();
+      const bodegasBack = await (await fetch("/bodegas")).json();
       setBodegas(bodegasBack);
       setBodegasOptions(bodegasBack);
       //   console.log(bodegasBack);

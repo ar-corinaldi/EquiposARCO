@@ -13,7 +13,6 @@ const Precio = require("../models/precio-model");
  */
 router.get("/equipos/cantidad", async (req, res) => {
   try {
-    console.log("llega 5");
     const count = await Equipo.estimatedDocumentCount();
     console.log("count", count);
     res.send(count + "");
@@ -52,7 +51,6 @@ router.post("/equipos", async (req, res) => {
  */
 router.get("/equipos/:page/:elementsPerPage", async (req, res) => {
   try {
-    console.log("llega 4");
     const page = parseInt(req.params.page);
     const elementsPerPage = parseInt(req.params.elementsPerPage);
     const equipos = await Equipo.find({})
@@ -70,7 +68,6 @@ router.get("/equipos/:page/:elementsPerPage", async (req, res) => {
  */
 router.get("/equipos", async (req, res) => {
   try {
-    console.log("llega 1");
     const equipos = await Equipo.find({});
     res.send(equipos);
   } catch (e) {
@@ -83,7 +80,6 @@ router.get("/equipos", async (req, res) => {
  */
 router.get("/equipos/:id", async (req, res) => {
   try {
-    console.log("llega 2");
     const equipo = await Equipo.findById(req.params.id)
       .populate("precios")
       .populate("propiedades");
@@ -175,9 +171,8 @@ router.patch("/equipos/:id/componentes/:idC/:cant", async (req, res) => {
  * Obtiene los componentes de un equipo.
  * Envia el equipo completo con sus componentes.
  */
-router.get("/componentes/:id", async (req, res) => {
+router.get("/equipos/:id/componentes", async (req, res) => {
   try {
-    console.log("llega 3");
     const ans = await Equipo.findById(req.params.id).populate({
       path: "componentes",
       populate: {

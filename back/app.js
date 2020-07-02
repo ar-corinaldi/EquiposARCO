@@ -33,7 +33,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //Routers
 app.use("/", indexRouter);
-app.use(equiposRouter);
 app.use(tercerosRouter);
 app.use(bodegasRouter);
 app.use(ordenesRouter);
@@ -42,6 +41,7 @@ app.use(tarifasRouter);
 app.use(remisionesRouter);
 app.use(devolucionesRouter);
 app.use(facturasRouter);
+app.use(equiposRouter);
 app.use(preciosRouter);
 app.use(empleadosRouter);
 app.use(vehiculosRouter);

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import withFormHandling from "../withFormHandling";
-import { useState } from "react";
 
 const tiposDocumento = ["NIT", "cedula", "pasaporte", "cedula extranjeria"];
 
@@ -11,7 +10,7 @@ function TerceroForm(props) {
   return (
     <div id="tercero-registrar-card">
       <form onSubmit={handleSubmitPOST}>
-        <h4>Registrar un Tercero</h4>
+        <h4 id="tercero-registrar-titulo">Registrar un Tercero</h4>
         <div className="form-group">
           <label htmlFor="nombre"> Nombre : </label>
           <input
@@ -101,7 +100,9 @@ function TerceroForm(props) {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Crear</button>
+        <div id="button-wrapper">
+          <button type="submit">Crear</button>
+        </div>
       </form>
     </div>
   );

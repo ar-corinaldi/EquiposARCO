@@ -108,3 +108,9 @@
 .floatRight{
     float: right;
 }
+
+.close{
+    opacity: 0.6;
+    width: 18px;
+    height: 18px;
+}

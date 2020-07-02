@@ -29,13 +29,13 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "Listar equipos",
-      ref: "/equipos",
+      name: "Añadir Equipo",
+      ref: "/crearEquipo",
     },
     {
       type: "Link",
-      name: "Prueba",
-      ref: "/prueba",
+      name: "Listar Equipos",
+      ref: "/equipos",
     },
     {
       type: "Link",

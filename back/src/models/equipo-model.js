@@ -141,7 +141,7 @@ const equipoSchema = new Schema({
   cantidadTotal: {
     type: Number,
     required: false,
-    default: 1,
+    default: 0,
   },
   /**
    * Cantidad del equipo que se encuentra en las bodegas de Equipos ARCOS y que pueden ser alquilados
@@ -149,7 +149,7 @@ const equipoSchema = new Schema({
   cantidadBodega: {
     type: Number,
     required: false,
-    default: 1,
+    default: 0,
   },
   fechaAdquision: {
     type: Date,
@@ -174,42 +174,27 @@ const equipoSchema = new Schema({
       },
     },
   ],
-  peso: {
-    type: Number,
-    required: true,
-    validate(value) {
-      if (value < 0) {
-        throw new Error("El peso debe ser positivo");
-      }
+  propiedades: [
+    {
+      nombre: {
+        type: String,
+        required: true,
+        lowercase: true,
+        trim: true,
+      },
+      valor: {
+        type: String,
+        required: true,
+        lowercase: true,
+        trim: true,
+      },
+      tipoPropiedad: {
+        type: String,
+        lowercase: true,
+        trim: true,
+      },
     },
-  },
-  ancho: {
-    type: Number,
-    required: true,
-    validate(value) {
-      if (value < 0) {
-        throw new Error("El ancho debe ser positivo");
-      }
-    },
-  },
-  alto: {
-    type: Number,
-    required: true,
-    validate(value) {
-      if (value < 0) {
-        throw new Error("El alto debe ser positivo");
-      }
-    },
-  },
-  largo: {
-    type: Number,
-    required: true,
-    validate(value) {
-      if (value < 0) {
-        throw new Error("El largo debe ser positivo");
-      }
-    },
-  },
+  ],
 });
 
 const Equipo = mongoose.model("Equipo", equipoSchema);

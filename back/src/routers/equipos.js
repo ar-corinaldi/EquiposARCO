@@ -80,7 +80,9 @@ router.get("/equipos", async (req, res) => {
  */
 router.get("/equipos/:id", async (req, res) => {
   try {
-    const equipo = await Equipo.findById(req.params.id).populate("precios");
+    const equipo = await Equipo.findById(req.params.id)
+      .populate("precios")
+      .populate("propiedades");
     if (!equipo) {
       return res.status(404).send("No hubo coincidencia");
     }

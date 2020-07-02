@@ -6,14 +6,15 @@ import Popper from "@material-ui/core/Popper";
 import SettingsIcon from "@material-ui/icons/Settings";
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import InputBase from "@material-ui/core/InputBase";
+import Chip from "@material-ui/core/Chip"
 
 const useStyles = makeStyles((theme) => ({
   inputBase: {
     "& input": {
-      borderRadius: 4,
+      borderRadius: 0,
       backgroundColor: theme.palette.common.white,
       padding: 8,
       transition: theme.transitions.create(["border-color", "box-shadow"]),
@@ -104,6 +105,12 @@ export default function EscogerBodega(props) {
     setAnchorEl(null);
   };
 
+  const filterOptions = createFilterOptions({
+    matchFrom: 'any',
+    stringify: (option) => option.nombreBodega + option.direccionBodega + option.municipio + 
+    option.pais + option.telefono + option.departamento
+  });
+
   const open = Boolean(anchorEl);
   const id = open ? "github-label" : undefined;
 
@@ -118,7 +125,7 @@ export default function EscogerBodega(props) {
         >
           <span>Escoja bodega destino</span>
         </ButtonBase> */}
-        <h4>Escoja la bodega destino</h4>
+        <h5>Escoja la bodega destino</h5>
         {/* <Popper
           id={id}
           open={open}
@@ -129,7 +136,6 @@ export default function EscogerBodega(props) {
         <div className="completeWrapper" >
           <Autocomplete
             onClose={handleClose}
-            id="combo-box-demo"
             className = "paper"
             classes={{
               paper: classes.paper,
@@ -142,7 +148,7 @@ export default function EscogerBodega(props) {
             }}
             disableCloseOnSelect
             disablePortal
-            // renderTags={() => null}
+            filterOptions={filterOptions} 
             noOptionsText="No hay bodegas"
             renderOption={(option, { selected }) => (
               <React.Fragment>
@@ -150,10 +156,10 @@ export default function EscogerBodega(props) {
                   className={classes.iconSelected}
                   style={{ visibility: selected ? "visible" : "hidden" }}
                 />
-                <div className={classes.text}>
+                <div className="nombreBodega">
                   <span>{option.nombreBodega}</span>
                   <br />
-                  {option.direccionBodega}
+                  <span className="bodegaDescripcion">{option.municipio + ", " + option.pais + ". " + option.direccionBodega}</span>
                 </div>
                 <CloseIcon
                   onClick={()=>{setPendingValue(null)}}
@@ -163,14 +169,13 @@ export default function EscogerBodega(props) {
               </React.Fragment>
             )}
             options={[...bodegas].sort((a, b) => {
-              // Muestra la bodega seleccionada primero y solo las 8 primeras 
+              // Muestra la bodega seleccionada primero y solo las 5 primeras 
               let ai = a==bodegaSeleccionada;
               let bi = b==bodegaSeleccionada;
               return (ai? -1: (bi? 1: 0));
-            }).slice(0,8)}
+            }).slice(0,5)}
             getOptionLabel={(option) => 
-              option.nombreBodega + option.direccionBodega + option.municipio + 
-              option.pais + option.telefono + option.departamento
+              option.nombreBodega 
             }
             renderInput={(params) => (
               <InputBase

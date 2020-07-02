@@ -47,7 +47,6 @@ function EscogerCotizacion(params) {
       {/* {miEstado} */}
       <EscogerBodega bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]} bodegas={[bodegas, setBodegas]}/>
       <div>{bodegaSeleccionada!=undefined? bodegaSeleccionada.nombreBodega: ""}</div>
-      <div>.</div><div>.</div>
       <ul>
         {cotizaciones.map((item, index) => {
           return (

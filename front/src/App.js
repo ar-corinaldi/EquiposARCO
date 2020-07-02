@@ -8,6 +8,7 @@ import Equipo from "./components/Equipo/Equipo";
 import Terceros from "./components/TercerosComponents/Terceros";
 import Tercero from "./components/Tercero/Tercero";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
+import TerceroCreate from "./components/Tercero/TerceroCreate";
 import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
 import CrearOrden from "./components/FacturacionModule/CrearOrden";
@@ -48,6 +49,11 @@ function App() {
                   path="/terceros/listar_terceros"
                   exact
                   component={Tercero}
+                />
+                <Route
+                  path="/terceros/crear_tercero"
+                  exact
+                  component={TerceroCreate}
                 />
                 <Route path="/terceros/:id" exact component={TerceroDetail} />
                 <Route

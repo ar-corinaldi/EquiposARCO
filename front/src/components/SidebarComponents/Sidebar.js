@@ -59,12 +59,17 @@ function Sidebar(props) {
       name: "Listar terceros",
       ref: "/listar_terceros",
     },
+    {
+      type: "Link",
+      name: "Crear tercero",
+      ref: "/crear_tercero",
+    },
   ];
 
   const menu_facturación = [
     {
       type: "Header",
-      name: "Facturación"
+      name: "Facturación",
     },
     {
       type: "Title",
@@ -74,7 +79,7 @@ function Sidebar(props) {
       type: "Link",
       name: "Ordenes",
       ref: "/crear_orden",
-    }
+    },
   ];
 
   //Definicion del menú home: Cuando la ruta es '/'.

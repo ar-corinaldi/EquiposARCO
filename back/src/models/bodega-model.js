@@ -19,16 +19,19 @@ const bodegaSchema = new Schema({
     type: String,
     lowercase: true,
     trim: true,
+    required: true,
   },
   pais: {
     type: String,
     lowercase: true,
     trim: true,
+    required: true,
   },
   departamento: {
     type: String,
     lowercase: true,
     trim: true,
+    required: true,
   },
   codigoPostal: {
     type: String,
@@ -61,13 +64,12 @@ const bodegaSchema = new Schema({
       ref: "Orden",
     },
   ],
-  cotizaciones:[
+  cotizaciones: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Cotizacion"
-
-    }
-  ]
+      ref: "Cotizacion",
+    },
+  ],
 });
 
 bodegaSchema.index(

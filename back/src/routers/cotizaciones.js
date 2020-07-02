@@ -1,10 +1,63 @@
 const express = require("express");
 const Cotizacion = require("../models/cotizacion-model");
 const Tarifa = require("../models/tarifa-model");
-
+const Bodega = require("../models/bodega-model");
 const router = new express.Router();
 
-router.post("", async (req, res) => {
+/**
+ *  Relacion Bodega -> Cotizacion
+ */
+
+/**
+ * Crea una Cotización y la agrega a una bodega
+ */
+router.post("/bodegas/:idB/cotizaciones", async (req, res) => {
+  try {
+    const bodega = await Bodega.findById(req.params.idB);
+    if (!bodega) {
+      return res.status(404).send("La bodega no existe");
+    }
+    const cotizacion = new Cotizacion(req.body);
+    await cotizacion.save();
+    bodega.cotizaciones.push(cotizacion._id);
+    await bodega.save();
+    res.json(bodega);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+/**
+ * Agrega una Cotización existente a una bodega
+ */
+router.patch("/bodegas/:idB/cotizaciones/:idC", async (req, res) => {
+  try {
+    const bodega = await Bodega.findById(req.params.idB);
+    if (!bodega) {
+      return res.status(404).send("La bodega no existe");
+    }
+    const cotizacion = await Cotizacion.findById(req.params.idC);
+    if (!cotizacion) {
+      return res
+        .status(404)
+        .send("La cotizacion con el id especificado no existe");
+    }
+    bodega.cotizaciones.push(req.params.idC);
+    await bodega.save();
+    res.json(bodega);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+/**
+ * Cotizacion
+ */
+
+/**
+ *  Crea una cotizacion
+ */
+router.post("/cotizaciones", async (req, res) => {
   const cotizacion = new Cotizacion(req.body);
   try {
     await cotizacion.save();
@@ -15,7 +68,10 @@ router.post("", async (req, res) => {
   }
 });
 
-router.get("", async (req, res) => {
+/**
+ *  Obtiene todas las cotizaciones
+ */
+router.get("/cotizaciones", async (req, res) => {
   try {
     const cotizacion = await Cotizacion.find({});
     res.json(cotizacion);
@@ -25,7 +81,10 @@ router.get("", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+/**
+ * Cotizacion especifica
+ */
+router.get("/cotizaciones/:id", async (req, res) => {
   try {
     const cotizacion = await Cotizacion.findById(req.params.id).populate(
       "tarifasCotizadas"
@@ -41,7 +100,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+/**
+ * Modificar una cotizacion
+ */
+router.patch("/cotizaciones/:id", async (req, res) => {
   try {
     if (!Cotizacion.fieldsNotAllowedUpdates(req.body)) {
       return res.status(400).send({ error: "Invalid updates" });
@@ -59,42 +121,6 @@ router.patch("/:id", async (req, res) => {
       return res.status(404).send();
     }
     res.send(cotizacion);
-  } catch (e) {
-    res.status(400).send(e);
-    console.error("error", e);
-  }
-});
-
-router.post("/:id/tarifasCotizadas", async (req, res) => {
-  try {
-    const cotizacion = await Cotizacion.findById(req.params.id);
-    const tarifa = new Tarifa(req.body);
-    await tarifa.save();
-
-    cotizacion.tarifasCotizadas.push(tarifa._id);
-    await cotizacion.save();
-  } catch (error) {
-    if (tarifa !== undefined) {
-      Tarifa.findByIdAndDelete(tarifa._id);
-    }
-  }
-});
-
-router.patch("/:id/tarifasCotizadas/:idTarifa", async (req, res) => {
-  try {
-    const cotizacion = await Cotizacion.findById(req.params.id);
-    // console.log(req.params);
-    
-    const tarifa = await Tarifa.findById(req.params.idTarifa);
-    // console.log("aquí");
-    
-    cotizacion.tarifasCotizadas.push(tarifa._id);
-    // console.log("acá");
-    
-    await cotizacion.save();
-    // console.log(cotizacion);
-    res.json(cotizacion);
-    
   } catch (e) {
     res.status(400).send(e);
     console.error("error", e);

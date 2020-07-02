@@ -3,9 +3,13 @@ const Vehiculo = require("../models/vehiculo-model");
 var router = express.Router();
 
 /**
- *  POST de vehiculo
+ * VEHICULO
  */
-router.post("", async (req, res) => {
+
+/**
+ *  Crea un vehiculo
+ */
+router.post("/vehiculos", async (req, res) => {
   const vehiculo = new Vehiculo(req.body);
   try {
     await vehiculo.save();
@@ -17,9 +21,9 @@ router.post("", async (req, res) => {
 });
 
 /**
- *  Get de Vehiculos
+ *  Obtiene  Vehiculos
  */
-router.get("", async (req, res) => {
+router.get("/vehiculos", async (req, res) => {
   try {
     const vehiculos = await Vehiculo.find({});
     res.send(vehiculos);
@@ -30,9 +34,9 @@ router.get("", async (req, res) => {
 });
 
 /**
- *  Get de Vehiculo por su id
+ *  Obtiene Vehiculo por su id
  */
-router.get("/:id", async (req, res) => {
+router.get("/vehiculos/:id", async (req, res) => {
   try {
     const vehiculo = await Vehiculo.findById(req.params.id);
     if (!vehiculo) {
@@ -48,12 +52,12 @@ router.get("/:id", async (req, res) => {
 /**
  *  Modifica un Vehiculo
  */
-router.patch("/:id", async (req, res) => {
+router.patch("/vehiculos/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
 
   try {
     if (!Vehiculo.fieldsNotAllowedUpdates(req.body)) {
-      return res.status(400).send({ error: "Invalid updates" });
+      return res.status(400).send("Modificaciones invalidas al vehiculo");
     }
 
     const vehiculo = await Vehiculo.findByIdAndUpdate(req.params.id, req.body, {
@@ -73,16 +77,16 @@ router.patch("/:id", async (req, res) => {
 /**
  * Elimina un Vehiculo
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/vehiculos/:id", async (req, res) => {
   try {
     const vehiculo = await Vehiculo.findByIdAndDelete(req.params.id);
     if (!vehiculo) {
-      return res.status(404).send("La bodega no existe");
+      return res.status(404).send("El vehiculo no existe");
     }
     res.send(vehiculo);
   } catch (error) {
     console.error("Error", e);
-    res.status(500).send();
+    res.status(500).send(error);
   }
 });
 

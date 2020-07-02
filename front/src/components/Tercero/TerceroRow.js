@@ -1,8 +1,7 @@
 import React from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function TerceroRow(props) {
-  const { url } = useRouteMatch();
   return (
     <React.Fragment>
       <tr key={props.tercero._id}>

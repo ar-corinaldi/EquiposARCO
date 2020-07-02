@@ -5,9 +5,13 @@ const router = new express.Router();
 const Precio = require("../models/precio-model");
 
 /**
- * Cantidad de documentos que hay en tercero
+ * EQUIPO
  */
-router.get("/cantidad", async (req, res) => {
+
+/**
+ * Cantidad de documentos que hay en equipo
+ */
+router.get("/equipos/cantidad", async (req, res) => {
   try {
     const count = await Equipo.estimatedDocumentCount();
     console.log("count", count);
@@ -21,7 +25,7 @@ router.get("/cantidad", async (req, res) => {
 /**
  *  Post de equipo. Crea primero los precios en su tabla correspondiente y después pasa los ids
  */
-router.post("", async (req, res) => {
+router.post("/equipos", async (req, res) => {
   try {
     let preciosN = [];
     if (req.body.precios != undefined) {
@@ -45,7 +49,7 @@ router.post("", async (req, res) => {
 /**
  *  Get de equipos paginacion
  */
-router.get("/:page/:elementsPerPage", async (req, res) => {
+router.get("/equipos/:page/:elementsPerPage", async (req, res) => {
   try {
     const page = parseInt(req.params.page);
     const elementsPerPage = parseInt(req.params.elementsPerPage);
@@ -62,7 +66,7 @@ router.get("/:page/:elementsPerPage", async (req, res) => {
 /**
  *  Get de equipos
  */
-router.get("", async (req, res) => {
+router.get("/equipos", async (req, res) => {
   try {
     const equipos = await Equipo.find({});
     res.send(equipos);
@@ -74,7 +78,7 @@ router.get("", async (req, res) => {
 /**
  *  Get de equipo por su id
  */
-router.get("/:id", async (req, res) => {
+router.get("/equipos/:id", async (req, res) => {
   try {
     const equipo = await Equipo.findById(req.params.id).populate("precios");
     if (!equipo) {
@@ -89,7 +93,7 @@ router.get("/:id", async (req, res) => {
 /**
  *  Modifica un equipo
  */
-router.patch("/:id", async (req, res) => {
+router.patch("/equipos/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
 
   try {
@@ -113,7 +117,7 @@ router.patch("/:id", async (req, res) => {
 /**
  * Elimina un equipo y sus precios correspondientes
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/equipos/:id", async (req, res) => {
   try {
     const equipo = await Equipo.findByIdAndDelete(req.params.id);
     if (!equipo) {
@@ -129,123 +133,13 @@ router.delete("/:id", async (req, res) => {
 });
 
 /**
- * Agrega un precio nuevo a un equipo
- * FALTA que borre el precio si algo sale mal. Lo hace pero mandao un error extraño
+ *  Relacion Equipo -> (Componente) Equipo
  */
-router.patch("/:id/precios", async (req, res) => {
-  const precio = new Precio(req.body);
-  try {
-    await precio.save();
-    const equipo = await Equipo.findById(req.params.id);
-    if (!equipo) {
-      await Precio.findByIdAndDelete(precio._id);
-      res.status(404).send("Ningun equipo coincidio con ese id");
-    }
-    const preciosN = equipo.precios;
-    preciosN.push(precio._id);
-    const prop = { precios: preciosN };
-    const equipoN = await Equipo.findByIdAndUpdate(req.params.id, prop, {
-      new: true,
-      runValidators: true,
-    });
-    if (!equipoN) {
-      await Precio.findByIdAndDelete(precio._id);
-      return res.status(404).send();
-    }
-    res.status(201).send(equipoN);
-  } catch (e) {
-    res.status(400).send("No se pudo agregar el precio al equipo " + e);
-  }
-});
-
-/**
- * Agrega un precio creado a un equipo
- */
-router.patch("/:id/precios/:idP", async (req, res) => {
-  try {
-    const precio = await Precio.findById(req.params.idP);
-    if (!precio) {
-      return res.status(404).send("Ningun precio coincidio con ese id");
-    }
-    const equipo = await Equipo.findById(req.params.id);
-    if (!equipo) {
-      return res.status(404).send("Ningun equipo coincidio con ese id");
-    }
-    const preciosN = equipo.precios;
-    preciosN.push(precio._id);
-    const prop = { precios: preciosN };
-    const equipoN = await Equipo.findByIdAndUpdate(req.params.id, prop, {
-      new: true,
-      runValidators: true,
-    });
-    if (!equipoN) {
-      return res.status(404).send();
-    }
-    res.status(201).send(equipoN);
-  } catch (e) {
-    res.status(400).send("No se pudo agregar el precio al equipo " + e);
-  }
-});
-
-/**
- * Obtiene los precios de un equipo
- * Envia el equipo completo con sus precios.
- */
-router.get("/:id/precios", async (req, res) => {
-  try {
-    const ans = await Equipo.findById(req.params.id).populate("precios");
-    res.send(ans);
-  } catch (e) {
-    res.status(400).send("No se pudo agregar el precio al equipo " + e);
-  }
-});
-
-/**
- * Elimina la relacion entre un precio y un equipo y el precio de la tabla precios
- * Retorna primero el precio eliminado y después el equipo modificado
- */
-router.delete("/:id/precios/:idP", async (req, res) => {
-  try {
-    const equipo = await Equipo.findById(req.params.id);
-    if (!equipo) {
-      return res.status(404).send("No se encontró ningun equipo con ese id");
-    }
-    let precioBuscado = undefined;
-    const numPrecios = equipo.precios.length;
-    for (let index = 0; index < numPrecios; index++) {
-      if (equipo.precios[index].toString() === req.params.idP) {
-        precioBuscado = equipo.precios[index];
-        equipo.precios.splice(index);
-        break;
-      }
-    }
-    //console.log(precioBuscado);
-    if (!precioBuscado) {
-      return res
-        .status(404)
-        .send(
-          "No se encontró ese precio dentro de los precios del equipo deseado"
-        );
-    }
-    const prop = { precios: equipo.precios };
-    const equipoN = await Equipo.findByIdAndUpdate(req.params.id, prop, {
-      new: true,
-      runValidators: true,
-    });
-    const precioEliminado = await Precio.findByIdAndDelete(req.params.idP);
-    if (!precioEliminado) {
-      return res.status(404).send("No se encontró ningun precio con ese id");
-    }
-    res.send([precioEliminado, equipoN]);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
 
 /**
  * Agrega un equipo creado a un equipo como componente
  */
-router.patch("/:id/componentes/:idC/:cant", async (req, res) => {
+router.patch("/equipos/:id/componentes/:idC/:cant", async (req, res) => {
   try {
     const componente = await Equipo.findById(req.params.idC);
     if (!componente) {
@@ -272,10 +166,10 @@ router.patch("/:id/componentes/:idC/:cant", async (req, res) => {
 });
 
 /**
- * Obtiene los componentes de un equipo. Puede ser un poco demorado. No hice index join
+ * Obtiene los componentes de un equipo.
  * Envia el equipo completo con sus componentes.
  */
-router.get("/:id/componentes", async (req, res) => {
+router.get("/equipos/:id/componentes", async (req, res) => {
   try {
     const ans = await Equipo.findById(req.params.id).populate({
       path: "componentes",
@@ -283,10 +177,6 @@ router.get("/:id/componentes", async (req, res) => {
         path: "equipoID",
       },
     });
-    // for (let index = 0; index < ans.componentes.length; index++) {
-    //   const equipoInfo = await Equipo.findById(ans.componentes[index].equipoID);
-    //   ans.componentes[index].equipoID = equipoInfo;
-    // }
     res.send(ans);
   } catch (e) {
     res.status(400).send("No se pudo agregar el componente al equipo " + e);

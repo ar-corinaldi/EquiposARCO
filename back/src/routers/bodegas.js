@@ -2,15 +2,18 @@ const express = require("express");
 const Bodega = require("../models/bodega-model");
 const Orden = require("../models/orden-model");
 const Tercero = require("../models/tercero-model");
-const Cotizacion = require('../models/cotizacion-model');
+const Cotizacion = require("../models/cotizacion-model");
 const ordenesRouter = require("../routers/ordenes");
-const router = new express.Router({ mergeParams: true });
-router.use("/:idB/ordenes", ordenesRouter);
+const router = new express.Router();
+
+/**
+ *  Relacion Tercero -> Bodega
+ */
 
 /**
  * Agrega una bodega nueva a un tercero
  */
-router.post("", async (req, res) => {
+router.post("/terceros/:id/bodegas", async (req, res) => {
   let newBodega = undefined;
   try {
     newBodega = await Bodega.findByLocalizacion(req.body);
@@ -46,7 +49,7 @@ router.post("", async (req, res) => {
 /**
  * Agrega una bodega existente a un tercero
  */
-router.post("/:idB", async (req, res) => {
+router.patch("/terceros/:id/bodegas/:idB", async (req, res) => {
   try {
     const newBodega = await Bodega.findById(req.params.idB);
     if (!newBodega) {
@@ -75,14 +78,23 @@ router.post("/:idB", async (req, res) => {
 
 /**
  * Obtiene las bodegas de un tercero
- * Las bodegas del tercero.
+ * Return: SOLO las bodegas del tercero con sus ordenes actuales y pasadas pobladas
  */
-router.get("", async (req, res) => {
+router.get("/terceros/:id/bodegas", async (req, res) => {
   try {
     const tercero = await Tercero.findById(req.params.id)
-      .populate("bodegas")
-      .populate("ordenesActuales")
-      .populate("ordenesPasadas");
+      .populate({
+        path: "bodegas",
+        populate: {
+          path: "ordenesActuales",
+        },
+      })
+      .populate({
+        path: "bodegas",
+        populate: {
+          path: "ordenesPasadas",
+        },
+      });
     if (!tercero) {
       return res.status(404).send("No se encontro el tercero");
     }
@@ -97,8 +109,9 @@ router.get("", async (req, res) => {
 /**
  * Elimina una bodega de un tercero
  * Envia el tercero completo con sus bodegas
+ * NO elimina las ordenes de la bodega. FALTA
  */
-router.delete("/:idB", async (req, res) => {
+router.delete("/terceros/:id/bodegas/:idB", async (req, res) => {
   try {
     const bodega = await Bodega.findById(req.params.idB);
     if (!bodega) {
@@ -128,64 +141,13 @@ router.delete("/:idB", async (req, res) => {
 });
 
 /**
- * Agrega una orden creada a una bodega
+ *  Bodega
  */
-router.post("/:idB/ordenes", async (req, res) => {
-  let orden = null;
-  try {
-    orden = new Orden(req.body);
-    const bodega = await Bodega.findById(req.params.idB);
-    if (!bodega) {
-      return res.status(404).send("Ninguna bodega coincidio con ese id");
-    }
-    console.log("La bodega existe");
-    await orden.save();
-    console.log("orden guardada");
-    bodega.ordenesActuales.push(orden._id);
-    await bodega.save();
-    console.log("Bodega aniadida al tercero con exito");
-    res.status(201).send(bodega);
-  } catch (e) {
-    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
-    console.error("error", e);
-  }
-});
 
 /**
- * Terminar una orden.
- * Pasarla de ordenesActuales a ordenesGuardadas
+ * Get de todas las bodegas que existen. No necesita un id de un tercero
  */
-router.patch("/:idB/ordenes/:idOr/terminar", async (req, res) => {
-  try {
-    const bodega = await Bodega.findById(req.params.idB);
-    if (!bodega) {
-      return res.status(404).send("Ninguna bodega coincidio con ese id");
-    }
-    console.log("La bodega existe");
-    const orden = await Orden.findById(req.params.idOr);
-    if (!orden) {
-      return res.status(404).send("Ninguna orden coincidio con ese id");
-    }
-    console.log("La orden existe");
-    const indice = bodega.ordenesActuales.indexOf(orden._id);
-    if (indice === -1) {
-      return res.status(404).send("La orden no pertenece a la bodega");
-    }
-    bodega.ordenesActuales.splice(indice, 1);
-    bodega.ordenesPasadas.push(orden._id);
-    await bodega.save();
-    console.log("Bodega aniadida al tercero con exito");
-    res.status(201).send(bodega);
-  } catch (e) {
-    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
-    console.error("error", e);
-  }
-});
-
-/**
- *  Get de todas las bodegas que existen
- */
-router.get("/all", async (req, res) => {
+router.get("/bodegas", async (req, res) => {
   try {
     const bodegas = await Bodega.find({});
     res.send(bodegas);
@@ -195,9 +157,9 @@ router.get("/all", async (req, res) => {
 });
 
 /**
- *  Get de Bodega por su id
+ * Get de Bodega por su id
  */
-router.get("/actual/:idB", async (req, res) => {
+router.get("/bodegas/:idB", async (req, res) => {
   try {
     const bodega = await Bodega.findById(req.params.idB);
     if (!bodega) {
@@ -210,9 +172,10 @@ router.get("/actual/:idB", async (req, res) => {
 });
 
 /**
- *  Modifica un Bodega
+ * Modifica un Bodega
+ * Ruta: bodegas/actual/:idB
  */
-router.patch("/actual/:idB", async (req, res) => {
+router.patch("/bodegas/:idB", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
 
   try {
@@ -235,35 +198,15 @@ router.patch("/actual/:idB", async (req, res) => {
 
 /**
  * Elimina un Bodega
+ * Ruta: bodegas/actual/:idB
  */
-router.delete("/actual/:idB", async (req, res) => {
+router.delete("/bodegas/:idB", async (req, res) => {
   try {
     const bodega = await Bodega.findByIdAndDelete(req.params.idB);
     if (!bodega) {
       return res.status(404).send("La bodega no existe");
     }
     res.send(bodega);
-  } catch (error) {
-    res.status(500).send();
-  }
-});
-
-/**
- * Agrega una cotización existente a una bodega
- */
-router.patch("/:idB/cotizaciones/:idC", async (req, res)=>{
-  try {
-    const bodega = await Bodega.findById(req.params.idB);
-    if (!bodega) {
-      return res.status(404).send("La bodega no existe");
-    }
-    const cotizacion = await Cotizacion.findById(req.params.idC);
-    if (!cotizacion) {
-      return res.status(404).send("La cotizacion con el id especificado no existe");
-    }
-    bodega.cotizaciones.push(req.params.idC);
-    await bodega.save();
-    res.json(bodega);
   } catch (error) {
     res.status(500).send();
   }

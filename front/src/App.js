@@ -13,6 +13,8 @@ import OrdenDetail from "./components/Orden/OrdenDetail";
 import CrearOrden from "./components/FacturacionModule/CrearOrden";
 import EquipoDetail from "./components/Equipo/EquipoDetail/EquipoDetail";
 import EquipoCreate from "./components/Equipo/EquipoCreate/EquipoCreate";
+import BodegaCreate from "./components/Bodega/BodegaCreate";
+
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -64,6 +66,11 @@ function App() {
                   path="/terceros/crear_tercero"
                   exact
                   component={TerceroCreate}
+                />
+                <Route
+                  path="/terceros/:id/bodegas/create"
+                  exact
+                  component={BodegaCreate}
                 />
                 <Route path="/terceros/:id" exact component={TerceroDetail} />
                 <Route

@@ -4,12 +4,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./Tercero.css";
 import BodegaDetail from "./BodegaDetail";
+import { useHistory } from "react-router-dom";
 
 function TerceroDetail({ match }) {
   const params = match.params;
-
-  //const { url } = useRouteMatch();
-
+  const history = useHistory();
   const [tercero, setTercero] = useState({});
   const [bodegas, setBodegas] = useState([]);
 
@@ -40,6 +39,10 @@ function TerceroDetail({ match }) {
     }
   };
 
+  const crearBodega = () => {
+    history.push(`${tercero._id}/bodegas/create`);
+  };
+
   return (
     <Container fluid>
       <Row>
@@ -56,7 +59,14 @@ function TerceroDetail({ match }) {
       <Row>
         <Col xs={7}>
           <div id="bodega-wrapper">
-            <h4 id="titulos">Bodegas</h4>
+            <Row>
+              <Col>
+                <h4 id="titulos">Bodegas</h4>
+              </Col>
+              <Col id="agregarBodega">
+                <button onClick={crearBodega}>Agregar una bodega</button>
+              </Col>
+            </Row>
             {bodegas.map((bodega) => (
               <BodegaDetail
                 key={bodega._id}

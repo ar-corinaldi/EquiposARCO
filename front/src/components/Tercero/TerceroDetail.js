@@ -92,10 +92,6 @@ function TerceroDetail({ match }) {
               {tercero.celular}
             </p>
             <p>
-              <strong>Pagina Web : </strong>
-              {tercero.paginaWeb}
-            </p>
-            <p>
               <strong>Fecha de registro : </strong>
               {formatDate(tercero.fechaCreacion)}
             </p>

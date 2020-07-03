@@ -2,21 +2,15 @@ import React, { useState } from "react";
 import EquipoForm from "./EquipoForm";
 import withFormHandling from "../withFormHandling";
 import Row from "react-bootstrap/Row";
-
+import { useHistory } from "react-router-dom";
 function EquipoCreate(props) {
   const [componentes, setComponentes] = useState([]);
   const [error, setError] = useState(null);
   const { handleChange, fields } = props;
+  const history = useHistory();
   const handleSubmitPOSTEquipo = async (e) => {
     e.preventDefault();
-    const options = {
-      method: "POST",
-      body: JSON.stringify(fields),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    // console.log(componentes);
+
     try {
       fields.componentes = componentes.map((componente) => {
         const newComponente = {};
@@ -28,10 +22,17 @@ function EquipoCreate(props) {
         }
         return newComponente;
       });
-      console.log(fields);
+
+      const options = {
+        method: "POST",
+        body: JSON.stringify(fields),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
       const res = await fetch(props.formAction, options);
       const data = await res.json();
-      console.log(data);
+      history.push(`equipos/${data._id}`);
     } catch (e) {}
   };
   return (

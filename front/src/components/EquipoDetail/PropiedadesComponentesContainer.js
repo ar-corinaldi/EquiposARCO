@@ -9,8 +9,9 @@ function PropiedadesComponentesContainer(props) {
   const { equipo } = props;
   const [click, setClick] = useState(true);
   const renderData = () => {
+    console.log(click);
     if (click) {
-      return equipo.componentes && equipo.componentes > 0 ? (
+      return equipo.componentes && equipo.componentes.length > 0 ? (
         <EquipoComponentes componentes={equipo.componentes} />
       ) : (
         <h5 className="m-4">No se compone de ningun equipo</h5>

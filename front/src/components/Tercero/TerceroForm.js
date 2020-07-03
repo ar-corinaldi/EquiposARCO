@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import withFormHandling from "../withFormHandling";
 
 const tiposDocumento = ["NIT", "cedula", "pasaporte", "cedula extranjeria"];
@@ -6,10 +6,21 @@ const tiposDocumento = ["NIT", "cedula", "pasaporte", "cedula extranjeria"];
 function TerceroForm(props) {
   const [tercero, setTercero] = useState({});
 
+  useEffect(() => {
+    prueba();
+  }, [tercero]);
+
   const { fields, handleChange, handleSubmitPOST } = props;
+
+  const prueba = () => {
+    console.log("tercero", tercero);
+  };
+
   return (
     <div id="tercero-registrar-card">
-      <form onSubmit={handleSubmitPOST}>
+      <form
+        onSubmit={(e) => handleSubmitPOST(e).then((value) => setTercero(value))}
+      >
         <h4 id="tercero-registrar-titulo">Registrar un Tercero</h4>
         <div className="form-group">
           <label htmlFor="nombre"> Nombre : </label>

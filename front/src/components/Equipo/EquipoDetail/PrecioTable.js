@@ -15,7 +15,11 @@ function PrecioTable(props) {
       </thead>
       <tbody>
         {props.precios.map((precio) => (
-          <PrecioDetail precio={precio} hideFields={hideFields} />
+          <PrecioDetail
+            key={precio._id}
+            precio={precio}
+            hideFields={hideFields}
+          />
         ))}
       </tbody>
     </Table>

@@ -1,9 +1,5 @@
 import React from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
-import Accordion from "react-bootstrap/Accordion";
-import Card from "react-bootstrap/Card";
 
 function BodegaDetail(props) {
   const bodega = props.bodega;

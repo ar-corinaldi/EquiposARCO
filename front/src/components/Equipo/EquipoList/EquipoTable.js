@@ -1,5 +1,7 @@
 import React from "react";
 import EquipoRow from "./EquipoRow";
+import Table from "react-bootstrap/Table";
+import Card from "react-bootstrap/Card";
 
 function EquipoTable(props) {
   if (props.loading) {
@@ -15,8 +17,8 @@ function EquipoTable(props) {
   }
 
   return (
-    <div className="table-equipo">
-      <table className="table">
+    <Card>
+      <Table striped bordered hover>
         <thead>
           <tr>
             <td>Nombre</td>
@@ -26,11 +28,15 @@ function EquipoTable(props) {
         </thead>
         <tbody>
           {props.equipos.map((equipo) => (
-            <EquipoRow key={equipo._id} equipo={equipo} />
+            <EquipoRow
+              key={equipo._id}
+              equipo={equipo}
+              setComponentes={props.setComponentes}
+            />
           ))}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Card>
   );
 }
 

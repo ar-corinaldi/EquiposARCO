@@ -37,7 +37,7 @@ function Pagination(props) {
     return loadPages;
   };
 
-  if (props.numberPages <= 1 || props.hide) {
+  if (props.numberPages <= 0 || props.hide) {
     return null;
   }
 

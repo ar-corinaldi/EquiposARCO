@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import "./Navbar.css";
-import logo from "../static-files/logo-letras.png";
+import logo from "../assets/logo-letras.png";
 import { Link } from "react-router-dom";
 
 function NavBar(params) {

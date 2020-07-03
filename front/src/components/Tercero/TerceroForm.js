@@ -33,6 +33,7 @@ function TerceroForm(props) {
           <input
             name="nombre"
             type="text"
+            required
             value={fields.nombre}
             onChange={handleChange}
           />
@@ -43,6 +44,7 @@ function TerceroForm(props) {
             name="tipoDocumento"
             value={fields.tipoDocumento}
             onChange={handleChange}
+            required
           >
             {tiposDocumento.map((tipoDocumento) => (
               <option key={tipoDocumento} value={tipoDocumento}>
@@ -60,6 +62,7 @@ function TerceroForm(props) {
             type="text"
             value={fields.numeroDocumento}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -69,6 +72,7 @@ function TerceroForm(props) {
             type="text"
             value={fields.direccion}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -78,6 +82,7 @@ function TerceroForm(props) {
             type="text"
             value={fields.ciudad}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -93,7 +98,7 @@ function TerceroForm(props) {
           <label htmlFor="celular"> Celular : </label>
           <input
             name="celular"
-            type="text"
+            type="tel"
             value={fields.celular}
             onChange={handleChange}
           />
@@ -102,7 +107,7 @@ function TerceroForm(props) {
           <label htmlFor="telefono"> Telefono : </label>
           <input
             name="telefono"
-            type="text"
+            type="tel"
             value={fields.telefono}
             onChange={handleChange}
           />

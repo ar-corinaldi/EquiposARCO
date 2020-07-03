@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import withFormHandling from "../withFormHandling";
+import { useHistory } from "react-router-dom";
 
-const tiposDocumento = ["NIT", "cedula", "pasaporte", "cedula extranjeria"];
+const tiposDocumento = ["", "NIT", "cedula", "pasaporte", "cedula extranjeria"];
 
 function TerceroForm(props) {
-  const [tercero, setTercero] = useState({});
+  const [tercero, setTercero] = useState(undefined);
 
   useEffect(() => {
-    prueba();
+    cambiarLink();
   }, [tercero]);
+
+  const history = useHistory();
 
   const { fields, handleChange, handleSubmitPOST } = props;
 
-  const prueba = () => {
+  const cambiarLink = () => {
     console.log("tercero", tercero);
+    if (tercero) {
+      history.push(`${tercero._id}`);
+    }
   };
 
   return (
@@ -40,7 +46,9 @@ function TerceroForm(props) {
           >
             {tiposDocumento.map((tipoDocumento) => (
               <option key={tipoDocumento} value={tipoDocumento}>
-                {tipoDocumento[0].toUpperCase() + tipoDocumento.slice(1)}
+                {tipoDocumento.length > 0
+                  ? tipoDocumento[0].toUpperCase() + tipoDocumento.slice(1)
+                  : ""}
               </option>
             ))}
           </select>

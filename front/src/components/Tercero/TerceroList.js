@@ -66,7 +66,7 @@ function Tercero() {
         <Col>
           <div id="tercero-wrapper">
             <Row id="espacio">
-              <button id="link" onClick={crearTercero}>
+              <button className="buttonTercero" id="link" onClick={crearTercero}>
                 Agregar un tercero
               </button>
             </Row>

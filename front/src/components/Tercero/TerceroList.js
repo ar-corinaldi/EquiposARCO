@@ -3,9 +3,9 @@ import "./Tercero.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import TerceroTable from "./TerceroTable";
 import Pagination from "../Pagination";
+import { useHistory } from "react-router-dom";
 
 function Tercero() {
   const [terceros, setTerceros] = useState([]);
@@ -13,6 +13,7 @@ function Tercero() {
   const [tercerosPerPage, setTercerosPerPage] = useState(10);
   const [countTerceros, setCountTerceros] = useState(0);
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     fetchTerceros();
@@ -47,9 +48,8 @@ function Tercero() {
     setTercerosPerPage(value);
   };
 
-  const change = () => {
-    var linkElement = document.getElementById("link");
-    linkElement.href = "/terceros/crear_tercero";
+  const crearTercero = () => {
+    history.push("/terceros/crear_tercero");
   };
 
   if (loading) {
@@ -66,7 +66,7 @@ function Tercero() {
         <Col>
           <div id="tercero-wrapper">
             <Row id="espacio">
-              <button id="link" onClick={change}>
+              <button id="link" onClick={crearTercero}>
                 Agregar un tercero
               </button>
             </Row>

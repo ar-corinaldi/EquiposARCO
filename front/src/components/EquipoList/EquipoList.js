@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Pagination from "../Pagination";
-function Equipo() {
+function Equipo(props) {
   const [equipos, setEquipos] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +36,6 @@ function Equipo() {
     setEquipos(newEquipos);
     setLoading(false);
   };
-
   return (
     <Container>
       <Row>
@@ -48,6 +47,7 @@ function Equipo() {
             equipos={equipos}
             filterText={filterText}
             loading={loading}
+            setComponentes={props.setComponentes}
           />
         </Col>
       </Row>

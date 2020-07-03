@@ -18,7 +18,6 @@ router.get("/equipos/cantidad", async (req, res) => {
     res.send(count + "");
   } catch (e) {
     res.status(500).send(e);
-    console.err(e);
   }
 });
 
@@ -28,20 +27,22 @@ router.get("/equipos/cantidad", async (req, res) => {
 router.post("/equipos", async (req, res) => {
   try {
     let preciosN = [];
-    if (req.body.precios != undefined) {
+    if (req.body.precios) {
       await asyncForEach(req.body.precios, async (element) => {
         const precio = new Precio(element);
         await precio.save();
         //console.log(precio._id);
         preciosN.push(precio._id);
       });
-      //console.log(preciosN, "ans");
       req.body.precios = preciosN;
     }
     const equipo = new Equipo(req.body);
+    console.log(req.body);
+    console.log(equipo);
     await equipo.save();
     res.status(201).send(equipo);
   } catch (e) {
+    console.log("responde");
     res.status(400).send(e);
   }
 });
@@ -81,6 +82,29 @@ router.get("/equipos", async (req, res) => {
 router.get("/equipos/:id", async (req, res) => {
   try {
     const equipo = await Equipo.findById(req.params.id)
+      .populate("precios")
+      .populate("propiedades")
+      .populate({
+        path: "componentes",
+        populate: {
+          path: "equipoID",
+        },
+      });
+    if (!equipo) {
+      return res.status(404).send("No hubo coincidencia");
+    }
+    res.send(equipo);
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
+/**
+ *  Get de equipo por su id
+ */
+router.get("/equipos/codigo/:idCod/", async (req, res) => {
+  try {
+    const equipo = await Equipo.findOne({ codigo: req.params.idCod })
       .populate("precios")
       .populate("propiedades");
     if (!equipo) {

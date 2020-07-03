@@ -1,48 +1,56 @@
 import React, { useState } from "react";
 import EquipoForm from "./EquipoForm";
-import EquipoComponenteForm from "./EquipoComponenteForm";
-import Col from "react-bootstrap/Col";
+import withFormHandling from "../withFormHandling";
+import Row from "react-bootstrap/Row";
 
 function EquipoCreate(props) {
   const [componentes, setComponentes] = useState([]);
+  const [error, setError] = useState(null);
+  const { handleChange, fields } = props;
+  const handleSubmitPOSTEquipo = async (e) => {
+    e.preventDefault();
+    const options = {
+      method: "POST",
+      body: JSON.stringify(fields),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    // console.log(componentes);
+    try {
+      fields.componentes = componentes.map((componente) => {
+        const newComponente = {};
+        newComponente.cantidad = componente.cantidad;
+        newComponente.equipoID = componente.equipo._id;
+        if (componente.cantidad === 0) {
+          setError("La cantidad del componente debe ser mayor a 0");
+          throw new Error("La cantidad del componente debe ser mayor a 0");
+        }
+        return newComponente;
+      });
+      console.log(fields);
+      const res = await fetch(props.formAction, options);
+      const data = await res.json();
+      console.log(data);
+    } catch (e) {}
+  };
   return (
-    <React.Fragment>
-      <Col>
+    <form onSubmit={handleSubmitPOSTEquipo}>
+      <Row>
         <EquipoForm
-          formAction={"/equipos"}
-          fields={{
-            nombreEquipo: "",
-            nombreFamilia: "",
-            nombreGrupo: "",
-            codigo: "",
-          }}
+          formAction={props.formAction}
+          fields={fields}
           componentes={componentes}
           setComponentes={setComponentes}
+          handleChange={handleChange}
         />
-      </Col>
-      <Col md="auto" className="m-4">
-        Componentes del Equipo
-        <EquipoComponenteForm componentes={componentes} />
-        <button
-          className="m-2"
-          onClick={() =>
-            setComponentes((prev) => [...prev, { codigo: "", cantidad: 0 }])
-          }
-        >
-          Agregar
-        </button>
-        <button
-          onClick={() =>
-            setComponentes((prev) =>
-              prev.filter((val, index) => index !== prev.length - 1)
-            )
-          }
-        >
-          Quitar
-        </button>
-      </Col>
-    </React.Fragment>
+      </Row>
+      <button type="submit" onClick={() => setError(null)}>
+        Crear
+      </button>
+      {error}
+    </form>
   );
 }
 
-export default EquipoCreate;
+export default withFormHandling(EquipoCreate);

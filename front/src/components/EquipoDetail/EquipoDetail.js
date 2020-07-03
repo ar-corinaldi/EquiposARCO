@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PrecioTable from "./PrecioTable";
 import EquipoDetailBadges from "./EquipoDetailBadges";
+import PropiedadesComponentesContainer from "./PropiedadesComponentesContainer";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
-import EquipoComponentes from "./EquipoComponentes";
 
 function EquipoDetail() {
   const [equipo, setEquipo] = useState({});
@@ -69,36 +68,8 @@ function EquipoDetail() {
         </Col>
       </Row>
       <Row>
-        {equipo.componentes && equipo.componentes.length > 0 ? (
-          <EquipoComponentes componentes={equipo.componentes} />
-        ) : null}
-        <Col md="auto">
-          <Table>
-            <thead>
-              <tr>
-                <th>Propiedad</th>
-                <th>Valor</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Peso</td>
-                <td>{equipo.peso}</td>
-              </tr>
-              <tr>
-                <td>Ancho</td>
-                <td>{equipo.ancho}</td>
-              </tr>
-              <tr>
-                <td>Alto</td>
-                <td>{equipo.alto}</td>
-              </tr>
-              <tr>
-                <td>Largo</td>
-                <td>{equipo.largo}</td>
-              </tr>
-            </tbody>
-          </Table>
+        <Col>
+          <PropiedadesComponentesContainer equipo={equipo} />
         </Col>
       </Row>
     </Container>

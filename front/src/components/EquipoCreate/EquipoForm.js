@@ -1,7 +1,10 @@
-import React from "react";
-import withFormHandling from "../withFormHandling";
+import React, { useState } from "react";
+import EquipoComponenteForm from "./EquipoComponenteForm";
+import EquipoModalBuscar from "./EquipoModalBuscar";
+import Col from "react-bootstrap/Col";
 
 const tiposEquipo = [
+  "",
   "andamios",
   "elementos formaleta entrepiso",
   "encofrado",
@@ -11,6 +14,7 @@ const tiposEquipo = [
 ];
 
 const nombresFamilia = [
+  "",
   "division andamiaje",
   "division de equipos menores",
   "division de formaleteria",
@@ -26,6 +30,7 @@ const nombresFamilia = [
 ];
 
 const nombresGrupo = [
+  "",
   "accesorio",
   "allanadora",
   "andamio colgante",
@@ -77,79 +82,108 @@ const nombresGrupo = [
 ];
 
 function EquipoForm(props) {
-  const {
-    fields,
-    handleChange,
-    handleSubmitPOST,
-    componentes,
-    setComponentes,
-  } = props;
+  const { fields, handleChange, componentes, setComponentes } = props;
+  const [show, setShow] = useState(false);
+  const handleShow = (e) => {
+    e.preventDefault();
+    setShow(true);
+  };
 
+  const handleRemove = (e) => {
+    e.preventDefault();
+    setComponentes((prev) =>
+      prev.filter((val, index) => index !== prev.length - 1)
+    );
+  };
   return (
-    <form onSubmit={handleSubmitPOST}>
-      <div className="form-group">
-        <label htmlFor="nombreEquipo">Nombre Equipo:</label>
-        <input
-          name="nombreEquipo"
-          type="text"
-          value={fields.nombreEquipo}
-          onChange={handleChange}
+    <React.Fragment>
+      <Col md="auto">
+        <div className="form-group">
+          <label htmlFor="nombreEquipo">Nombre Equipo:</label>
+          <input
+            name="nombreEquipo"
+            type="text"
+            value={fields.nombreEquipo}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="nombreGrupo">Nombre Grupo:</label>
+          <select
+            name="nombreGrupo"
+            value={fields.nombreGrupo}
+            onChange={handleChange}
+          >
+            {nombresGrupo.map((nombreGrupo) => (
+              <option key={nombreGrupo} value={nombreGrupo}>
+                {nombreGrupo.length > 0
+                  ? nombreGrupo[0].toUpperCase() + nombreGrupo.slice(1)
+                  : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="nombreFamilia">Familia Grupo:</label>
+          <select
+            name="nombreFamilia"
+            value={fields.nombreFamilia}
+            onChange={handleChange}
+          >
+            {nombresFamilia.map((nombreFamilia) => (
+              <option key={nombreFamilia} value={nombreFamilia}>
+                {nombreFamilia.length > 0
+                  ? nombreFamilia[0].toUpperCase() + nombreFamilia.slice(1)
+                  : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="tipoEquipo">Tipo Equipo:</label>
+          <select
+            name="tipoEquipo"
+            value={fields.tipoEquipo}
+            onChange={handleChange}
+          >
+            {tiposEquipo.map((tipoEquipo) => (
+              <option key={tipoEquipo} value={tipoEquipo}>
+                {tipoEquipo.length > 0
+                  ? tipoEquipo[0].toUpperCase() + tipoEquipo.slice(1)
+                  : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="codigo">Código:</label>
+          <input
+            name="codigo"
+            type="text"
+            value={fields.codigo}
+            onChange={handleChange}
+          />
+        </div>
+      </Col>
+      <Col md="auto">
+        Componentes del Equipo
+        <EquipoModalBuscar
+          show={show}
+          setShow={setShow}
+          setComponentes={setComponentes}
+          componentes={componentes}
         />
-      </div>
-      <div className="form-group">
-        <label htmlFor="nombreGrupo">Nombre Grupo:</label>
-        <select
-          name="nombreGrupo"
-          value={fields.nombreGrupo}
-          onChange={handleChange}
-        >
-          {nombresGrupo.map((nombreGrupo) => (
-            <option key={nombreGrupo} value={nombreGrupo}>
-              {nombreGrupo[0].toUpperCase() + nombreGrupo.slice(1)}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="nombreFamilia">Familia Grupo:</label>
-        <select
-          name="nombreFamilia"
-          value={fields.nombreFamilia}
-          onChange={handleChange}
-        >
-          {nombresFamilia.map((nombreFamilia) => (
-            <option key={nombreFamilia} value={nombreFamilia}>
-              {nombreFamilia[0].toUpperCase() + nombreFamilia.slice(1)}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="tipoEquipo">Tipo Equipo:</label>
-        <select
-          name="tipoEquipo"
-          value={fields.tipoEquipo}
-          onChange={handleChange}
-        >
-          {tiposEquipo.map((tipoEquipo) => (
-            <option key={tipoEquipo} value={tipoEquipo}>
-              {tipoEquipo[0].toUpperCase() + tipoEquipo.slice(1)}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="codigo">Código:</label>
-        <input
-          name="codigo"
-          type="text"
-          value={fields.codigo}
-          onChange={handleChange}
+        <EquipoComponenteForm
+          setComponentes={setComponentes}
+          componentes={componentes}
         />
-      </div>
-      <button type="submit">Crear</button>
-    </form>
+        <button className="m-2" onClick={handleShow}>
+          Agregar
+        </button>
+        <button onClick={handleRemove}>Quitar</button>
+      </Col>
+    </React.Fragment>
   );
 }
 
-export default withFormHandling(EquipoForm);
+export default EquipoForm;

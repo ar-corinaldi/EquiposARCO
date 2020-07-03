@@ -4,7 +4,7 @@ import "./App.css";
 // Components
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
-import Equipo from "./components/EquipoList/Equipo";
+import EquipoList from "./components/EquipoList/EquipoList";
 import Terceros from "./components/TercerosComponents/Terceros";
 import Tercero from "./components/Tercero/Tercero";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
@@ -39,16 +39,23 @@ function App() {
                 <Route path="/" exact />
                 <Route
                   path="/inventario/crearEquipo"
-                  component={EquipoCreate}
+                  component={() => (
+                    <EquipoCreate
+                      fields={{
+                        nombreEquipo: "",
+                        nombreFamilia: "",
+                        nombreGrupo: "",
+                        codigo: "",
+                      }}
+                      formAction="/equipos"
+                    />
+                  )}
                 />
                 <Route
                   path="/inventario/equipos/:idEquipo"
                   component={EquipoDetail}
                 />
-                <Route
-                  path="/inventario/equipos"
-                  component={() => <Equipo />}
-                />
+                <Route path="/inventario/equipos" component={EquipoList} />
                 <Route path="/inventario/terceros" component={Terceros} />
                 <Route
                   path="/terceros/listar_terceros"

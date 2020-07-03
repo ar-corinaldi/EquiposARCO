@@ -1,16 +1,14 @@
-import React from "react";
-
+import React, { useState } from "react";
+import ComponenteForm from "./ComponenteForm";
+import EquipoList from "../EquipoList/EquipoList";
+import Modal from "../../Modal";
 function EquipoComponenteForm(props) {
-  const handleChange = (e, id) => {
-    const val = e.target.value;
-    props.setComponentes((prev) => {
-      return prev.map((comp) => {
-        if (comp.equipo._id === id) {
-          comp.cantidad = val;
-        }
-        return comp;
-      });
-    });
+  const { setComponentes, componentes } = props;
+  const [show, setShow] = useState(false);
+
+  const handleShow = (e) => {
+    e.preventDefault();
+    setShow(true);
   };
 
   const handleRemove = (currentIndex) => {
@@ -20,28 +18,25 @@ function EquipoComponenteForm(props) {
   };
   return (
     <React.Fragment>
-      {props.componentes.map((comp, index) => (
-        <div key={index} className="form-group">
-          <label htmlFor={"componente" + index}>Nombre: </label>
-          <input
-            name={"componente" + index}
-            disabled
-            value={comp.equipo.nombreEquipo}
-          />
-          <label className="ml-2" htmlFor={"cantidad"} disabled>
-            Cantidad:
-          </label>
-          <input
-            name={"cantidad"}
-            required
-            value={comp.cantidad}
-            onChange={(e) => handleChange(e, comp.equipo._id)}
-          />
+      <Modal
+        title={"Precios del Equipo"}
+        body={() => <EquipoList setComponentes={setComponentes} />}
+        show={show}
+        setShow={setShow}
+        estado={props.componentes}
+        header
+      />
+      {props.componentes.map((componente, index) => (
+        <React.Fragment>
+          <ComponenteForm componente={componente} />
           <button className="m-2" onClick={() => handleRemove(index)}>
             -
           </button>
-        </div>
+        </React.Fragment>
       ))}
+      <button className="m-2" onClick={handleShow}>
+        Agregar
+      </button>
     </React.Fragment>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import EquipoList from "../EquipoList/EquipoList";
+import PrecioForm from "./PrecioForm";
 import Modal from "react-bootstrap/Modal";
 
-function ModalBuscarEquipo(props) {
+function EquipoModalPrecio(props) {
   const { show, setShow, setComponentes } = props;
 
   useEffect(() => {
@@ -14,14 +14,14 @@ function ModalBuscarEquipo(props) {
     <React.Fragment>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Equipo Componente</Modal.Title>
+          <Modal.Title>Precio del Equipo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EquipoList setComponentes={setComponentes} />
+          <PrecioForm setComponentes={setComponentes} />
         </Modal.Body>
       </Modal>
     </React.Fragment>
   );
 }
 
-export default ModalBuscarEquipo;
+export default EquipoModalPrecio;

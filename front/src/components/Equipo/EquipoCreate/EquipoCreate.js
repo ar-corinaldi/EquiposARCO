@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import { useHistory } from "react-router-dom";
 function EquipoCreate(props) {
   const [componentes, setComponentes] = useState([]);
+  const [precios, setPrecios] = useState([]);
   const [error, setError] = useState(null);
   const { handleChange, fields } = props;
   const history = useHistory();
@@ -44,6 +45,8 @@ function EquipoCreate(props) {
           componentes={componentes}
           setComponentes={setComponentes}
           handleChange={handleChange}
+          precios={precios}
+          setPrecios={setPrecios}
         />
       </Row>
       <button type="submit" onClick={() => setError(null)}>

@@ -10,7 +10,7 @@ import Pagination from "../Pagination";
 function Tercero() {
   const [terceros, setTerceros] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [tercerosPerPage] = useState(3);
+  const [tercerosPerPage, setTercerosPerPage] = useState(5);
   const [countTerceros, setCountTerceros] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -38,6 +38,12 @@ function Tercero() {
     setLoading(false);
   };
 
+  const cambiarDisplay = (e) => {
+    const target = e.target;
+    let value = target.type === "checkbox" ? target.checked : target.value;
+    setTercerosPerPage(value);
+  };
+
   if (loading) {
     return (
       <div className="spinner-border" role="status">
@@ -50,9 +56,26 @@ function Tercero() {
     <Container fluid>
       <Row>
         <Col>
-          <Card body>
-            <TerceroTable terceros={terceros} loading={loading} />
-          </Card>
+          <div id="tercero-wrapper">
+            <Row id="espacio">
+              <button type="submit">Agregar un tercero</button>
+            </Row>
+            <Row id="espacio">
+              <label>
+                Mostrar{" "}
+                <select value={tercerosPerPage} onChange={cambiarDisplay}>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="-1">Todos</option>
+                </select>{" "}
+                terceros
+              </label>
+            </Row>
+            <Row id="espacio">
+              <TerceroTable terceros={terceros} loading={loading} />
+            </Row>
+          </div>
         </Col>
       </Row>
       <Row>

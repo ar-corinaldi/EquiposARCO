@@ -5,7 +5,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
 import EquipoList from "./components/Equipo/EquipoList/EquipoList";
-import Tercero from "./components/Tercero/Tercero";
+import TerceroList from "./components/Tercero/TerceroList";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
 import TerceroCreate from "./components/Tercero/TerceroCreate";
 import Breadcrumb from "./components/Breadcrumb";
@@ -58,7 +58,7 @@ function App() {
                 <Route
                   path="/terceros/listar_terceros"
                   exact
-                  component={Tercero}
+                  component={TerceroList}
                 />
                 <Route
                   path="/terceros/crear_tercero"

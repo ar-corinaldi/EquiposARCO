@@ -10,7 +10,7 @@ import Pagination from "../Pagination";
 function Tercero() {
   const [terceros, setTerceros] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [tercerosPerPage, setTercerosPerPage] = useState(5);
+  const [tercerosPerPage, setTercerosPerPage] = useState(10);
   const [countTerceros, setCountTerceros] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +31,10 @@ function Tercero() {
 
   const fetchTerceros = async () => {
     setLoading(true);
-    const url = `/terceros/${currentPage}/${tercerosPerPage}`;
+    let url = `/terceros/${currentPage}/${tercerosPerPage}`;
+    if (tercerosPerPage == -1) {
+      url = `/terceros`;
+    }
     const res = await fetch(url);
     const newTerceros = await res.json();
     setTerceros(newTerceros);
@@ -42,6 +45,11 @@ function Tercero() {
     const target = e.target;
     let value = target.type === "checkbox" ? target.checked : target.value;
     setTercerosPerPage(value);
+  };
+
+  const change = () => {
+    var linkElement = document.getElementById("link");
+    linkElement.href = "/terceros/crear_tercero";
   };
 
   if (loading) {
@@ -58,7 +66,9 @@ function Tercero() {
         <Col>
           <div id="tercero-wrapper">
             <Row id="espacio">
-              <button type="submit">Agregar un tercero</button>
+              <button id="link" onClick={change}>
+                Agregar un tercero
+              </button>
             </Row>
             <Row id="espacio">
               <label>
@@ -75,18 +85,18 @@ function Tercero() {
             <Row id="espacio">
               <TerceroTable terceros={terceros} loading={loading} />
             </Row>
+            <Row>
+              <Col>
+                <Pagination
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  elementsPerPage={tercerosPerPage}
+                  numberPages={Math.ceil(countTerceros / tercerosPerPage)}
+                  loading={loading}
+                />
+              </Col>
+            </Row>
           </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Pagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            elementsPerPage={tercerosPerPage}
-            numberPages={Math.ceil(countTerceros / tercerosPerPage)}
-            loading={loading}
-          />
         </Col>
       </Row>
     </Container>

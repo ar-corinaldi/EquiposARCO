@@ -12,6 +12,12 @@ function EquipoComponenteForm(props) {
       });
     });
   };
+
+  const handleRemove = (currentIndex) => {
+    props.setComponentes((prev) =>
+      prev.filter((prev, index) => currentIndex !== index)
+    );
+  };
   return (
     <React.Fragment>
       {props.componentes.map((comp, index) => (
@@ -31,6 +37,9 @@ function EquipoComponenteForm(props) {
             value={comp.cantidad}
             onChange={(e) => handleChange(e, comp.equipo._id)}
           />
+          <button className="m-2" onClick={() => handleRemove(index)}>
+            -
+          </button>
         </div>
       ))}
     </React.Fragment>

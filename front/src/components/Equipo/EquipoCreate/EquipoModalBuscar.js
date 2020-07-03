@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import EquipoList from "../EquipoList/EquipoList";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-export const ModalContext = React.createContext();
 
 function ModalBuscarEquipo(props) {
   const { show, setShow, setComponentes } = props;
@@ -19,9 +17,7 @@ function ModalBuscarEquipo(props) {
           <Modal.Title>Equipo Componente</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ModalContext.Provider>
-            <EquipoList setComponentes={setComponentes} />
-          </ModalContext.Provider>
+          <EquipoList setComponentes={setComponentes} />
         </Modal.Body>
       </Modal>
     </React.Fragment>

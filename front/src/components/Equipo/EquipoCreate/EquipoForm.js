@@ -108,16 +108,16 @@ function EquipoForm(props) {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="nombreGrupo">Nombre Grupo:</label>
+          <label htmlFor="tipoEquipo">Tipo Equipo:</label>
           <select
-            name="nombreGrupo"
-            value={fields.nombreGrupo}
+            name="tipoEquipo"
+            value={fields.tipoEquipo}
             onChange={handleChange}
           >
-            {nombresGrupo.map((nombreGrupo) => (
-              <option key={nombreGrupo} value={nombreGrupo}>
-                {nombreGrupo.length > 0
-                  ? nombreGrupo[0].toUpperCase() + nombreGrupo.slice(1)
+            {tiposEquipo.map((tipoEquipo) => (
+              <option key={tipoEquipo} value={tipoEquipo}>
+                {tipoEquipo.length > 0
+                  ? tipoEquipo[0].toUpperCase() + tipoEquipo.slice(1)
                   : ""}
               </option>
             ))}
@@ -140,16 +140,16 @@ function EquipoForm(props) {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="tipoEquipo">Tipo Equipo:</label>
+          <label htmlFor="nombreGrupo">Nombre Grupo:</label>
           <select
-            name="tipoEquipo"
-            value={fields.tipoEquipo}
+            name="nombreGrupo"
+            value={fields.nombreGrupo}
             onChange={handleChange}
           >
-            {tiposEquipo.map((tipoEquipo) => (
-              <option key={tipoEquipo} value={tipoEquipo}>
-                {tipoEquipo.length > 0
-                  ? tipoEquipo[0].toUpperCase() + tipoEquipo.slice(1)
+            {nombresGrupo.map((nombreGrupo) => (
+              <option key={nombreGrupo} value={nombreGrupo}>
+                {nombreGrupo.length > 0
+                  ? nombreGrupo[0].toUpperCase() + nombreGrupo.slice(1)
                   : ""}
               </option>
             ))}
@@ -180,7 +180,6 @@ function EquipoForm(props) {
         <button className="m-2" onClick={handleShow}>
           Agregar
         </button>
-        <button onClick={handleRemove}>Quitar</button>
       </Col>
     </React.Fragment>
   );

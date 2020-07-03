@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
-import { ModalContext } from "../EquipoCreate/EquipoModalBuscar";
 function EquipoRow(props) {
   const { url } = useRouteMatch();
 

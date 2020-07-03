@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import EquipoForm from "./EquipoForm";
-import withFormHandling from "../withFormHandling";
+import withFormHandling from "../../withFormHandling";
 import Row from "react-bootstrap/Row";
 import { useHistory } from "react-router-dom";
 function EquipoCreate(props) {

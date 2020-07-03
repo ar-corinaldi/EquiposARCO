@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import Select from "../Select";
+import Select from "../../Select";
 
 function EquipoFilter(props) {
   const opciones = [

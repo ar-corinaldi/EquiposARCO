@@ -2,6 +2,7 @@ import React from "react";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import Col from "react-bootstrap/Col";
 import { useLocation, Link } from "react-router-dom";
+import "./Breadcrumb.css";
 
 function BreadcrumbComponent(props) {
   const location = useLocation();
@@ -18,14 +19,18 @@ function BreadcrumbComponent(props) {
   return (
     <React.Fragment>
       <Col>
-        <h4 className="page-title">{partes && partes[1].ruta}</h4>
+        <div className="breadcrumbTitle">
+          <h4 className="page-title">{partes && partes[1].ruta}</h4>
+        </div>
       </Col>
       <Col>
-        <Breadcrumb>
+        <Breadcrumb className="breadcrumb">
           {partes.length > 0 &&
             partes.map((parte) => (
               <li key={parte.pathname} className="breadcrumb-item">
-                <Link to={`${parte.pathname}`}>{parte.ruta}</Link>
+                <Link className="breadcrumbLink" to={`${parte.pathname}`}>
+                  {parte.ruta}
+                </Link>
               </li>
             ))}
         </Breadcrumb>

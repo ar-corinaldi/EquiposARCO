@@ -115,3 +115,24 @@
     width: 18px;
     height: 18px;
 }
+
+@media(max-width: 570px){
+  .completeWrapper{
+    width: 100%;
+  }
+
+}
+
+@media(min-width: 571px) and (max-width: 800px){
+  .completeWrapper{
+    width: 70%;
+  }
+
+}
+
+@media(min-width: 801px){
+  .completeWrapper{
+    width: 50%;
+  }
+
+}

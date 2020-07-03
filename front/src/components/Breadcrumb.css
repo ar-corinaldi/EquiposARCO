@@ -1,0 +1,17 @@
+.breadcrumb{
+    float: right;
+    background-color: transparent;
+    margin-bottom: 0px;
+
+}
+
+.breadcrumbLink{
+    color: gray;
+}
+
+.breadcrumbLink:hover, .breadcrumb:active{
+    color: rgb(85, 84, 84);
+    text-decoration: none;
+    font-weight: 700;
+
+}

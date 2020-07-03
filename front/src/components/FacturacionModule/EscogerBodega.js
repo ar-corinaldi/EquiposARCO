@@ -61,8 +61,29 @@ export default function EscogerBodega(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;
   const [bodegas, setBodegas] = props.bodegas;
+  const [terceros, setTerceros] = props.terceros;
   const [pendingValue, setPendingValue] = React.useState([]);
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  console.log('====================================');
+  console.log(terceros  );
+  console.log('====================================');
+  let bodegasPrueba = [];
+   
+  terceros.map((tercero) => {
+    tercero.bodegas.map((bodega) => {
+      
+      bodega.duenio = {bodegas, ...tercero};
+      bodegasPrueba.push(bodega);
+    })
+  })
+  console.log("Bodegas");
+  
+  console.log(bodegasPrueba);
+  
+
+
+  
 
   const classes = useStyles();
 
@@ -83,6 +104,7 @@ export default function EscogerBodega(props) {
       return;
     }
     setBodegaSeleccionada(pendingValue);
+    setOpen(false)
     if (anchorEl) {
       anchorEl.focus();
     }
@@ -120,6 +142,18 @@ export default function EscogerBodega(props) {
         <div className="completeWrapper" >
           <Autocomplete
             onClose={handleClose}
+            open = { open}
+            onFocus = {()=>{setOpen(true)}}
+            onBlur = { ()=>{setOpen(false)}}
+            onInputChange = {()=>{setOpen(true)}}
+            onKeyPress = {(e)=>
+              { 
+                if(e.key === 'Enter'){
+                  open? handleClose(): (()=>{})(); 
+                  setOpen(!open); 
+                  }
+              }
+            }
             className = "paper"
             classes={{
               paper: classes.paper,
@@ -130,12 +164,13 @@ export default function EscogerBodega(props) {
             onChange={(event, newValue) => {
               setPendingValue(newValue);
             }}
+            openOnFocus
             disableCloseOnSelect
             disablePortal
             filterOptions={filterOptions} 
             noOptionsText="No hay bodegas"
             renderOption={(option, { selected }) => (
-              <React.Fragment>
+              <React.Fragment >
                 {/* <DoneIcon
                   className={classes.iconSelected}
                   style={{ visibility: selected ? "visible" : "hidden" }}
@@ -145,10 +180,11 @@ export default function EscogerBodega(props) {
                   <br />
                   <span className="bodegaDescripcion">{option.municipio + ", " + option.pais + ". " + option.direccionBodega}</span>
                 </div>
-                {/* <DoneIcon
+                <DoneIcon
                   className={classes.iconSelected}
                   style={{ visibility: selected ? "visible" : "hidden" }}
-                /> */}
+                  onClick = {()=>{handleClose(); setOpen(false)}}
+                />
                 <CloseIcon
                   onClick={()=>{setPendingValue(null)}}
                   className= "close"

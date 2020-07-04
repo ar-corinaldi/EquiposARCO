@@ -5,7 +5,6 @@ import CloseIcon from "@material-ui/icons/Close";
 
 function BodegaOrdenDetail(props) {
   const [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;
-  const setPendingValue = props.setPendingValue;
 
   holiday();
 
@@ -17,7 +16,6 @@ function BodegaOrdenDetail(props) {
         <CloseIcon
           className="closeIcon"
           onClick={() => {
-            setPendingValue({});
             setBodegaSeleccionada({});
           }}
         />

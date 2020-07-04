@@ -2,84 +2,51 @@
   width: 221;
   font-size: 18px;
 }
-.buttonBodega {
-  font-size: 18px;
-  width: 100%;
-  text-align: left;
-  color: #586069;
-  font-weight: 600;
-  border: 2px solid rgb(173, 173, 173) !important;
-  border-radius: 4px !important;
-  padding: 8px !important;
+
+.paper{
+  box-shadow: none !important;
+  margin: 0px !important;
 }
 
-.buttonBodega:hover,
-.buttonBodega:focus {
-  color: #0366d6;
+.popper{
+  position: relative ;
+  box-shadow: 0px 3px 12px rgba(27, 31, 35, 0.15) !important;
 }
 
-.buttonBodega span {
-  width: 100%;
-}
-
-.buttonBodega svg {
-  width: 16px;
-  height: 16px;
-}
-
-.tagBodega {
-  margin-top: 3px;
-  margin-bottom: 5px;
-  height: 20px;
-  padding: 0.15em 4px;
-  font-weight: 600;
-}
-
-.popperBodega {
-  border: 1px solid rgba(27, 31, 35, 0.15);
-  box-shadow: 0px 3px 12px rgba(27, 31, 35, 0.15);
-  border-radius: 3px;
-  width: 550px;
-  z-index: 1;
-  font-size: 15px;
-  color: #586069;
-  background-color: #f6f8fa;
-}
-
-.inputBodega {
+.inputBodega{
   padding: 10px;
   width: 100%;
-  /* border-bottom: 1px solid #dfe2e5; */
 }
-/* 
-.inputBodega.input {
-  border-radius: 4px;
+
+.inputBodega input{
+  color: #6c757d;
+  font-family: 'Karla';
+  font-weight: 700;
+  text-transform: capitalize;
+  /* border-radius: 0px; */
   background-color: white;
-  padding: 8px;
-  border: 1px solid #ced4da;
-  font-size: 14px;
-} */
-
-/* .inputBodega.input:focus {
-  box-shadow: 0 3px 12px #727cf5;
-  border-color: #727cf5;
-} */
-
-.paper {
-  box-shadow: none;
-  margin: 0px;
-  color: #586069;
-  font-size: 13px;
+  font-size: 15px;
 }
 
-.option {
+.inputBodega input:focus{
+  box-shadow: 0 0 0 0.2rem #d6d8f1;
+  padding-left: 3px;
+  border-radius: 2px;
+}
+
+
+.optionBodega {
   min-height: auto;
   align-items: flex-start;
   padding: 8px;
 }
 
-.option[aria-selected="true"] {
-  background-color: transparent;
+.optionBodega[aria-selected="true"] {
+  background-color: transparent !important;
+}
+
+.optionBodega[data-focus="true"] {
+  background-color: rgba(0, 0, 0, 0.04) !important;
 }
 
 .completeWrapper{
@@ -106,14 +73,16 @@
     flex-grow: 1;
 }
 
-.floatRight{
-    float: right;
+.iconSelected{
+  width: 24px;
+  height: 24px;
+  margin-right: 17px;
+  margin-left: -2px;
 }
 
-.close{
-    opacity: 0.6;
-    width: 18px;
-    height: 18px;
+.iconSelected:hover{
+  background-color: #e1e5eb;
+  border-radius: 2px;
 }
 
 @media(max-width: 570px){

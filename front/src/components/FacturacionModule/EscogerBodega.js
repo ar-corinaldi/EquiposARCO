@@ -13,7 +13,7 @@ export default function EscogerBodega(props) {
   const [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;
   const [bodegas, setBodegas] = props.bodegas;
   const [terceros, setTerceros] = props.terceros;
-  const [pendingValue, setPendingValue] = React.useState([]);
+  const [pendingValue, setPendingValue] = React.useState({});
   const [open, setOpen] = useState(false);
 
   // console.log('====================================');
@@ -36,6 +36,7 @@ export default function EscogerBodega(props) {
       return;
     }
     setBodegaSeleccionada(pendingValue);
+    setPendingValue({});
     setOpen(false);
   };
 
@@ -56,16 +57,29 @@ export default function EscogerBodega(props) {
         <h4>Escoja la bodega destino</h4>
         <div className="completeWrapper">
           <Autocomplete
-            onClose={handleClose}
+            openOnFocus
+            disableCloseOnSelect
             open={open}
+            value={pendingValue}
+            filterOptions={filterOptions}
+            noOptionsText="No hay bodegas"
+            classes={{
+              paper: "paper",
+              option: "optionBodega",
+              popper: "popper",
+            }}
+            onClose={handleClose}
+            onOpen={() => { setPendingValue(bodegaSeleccionada); }}
             onFocus={() => {
               setOpen(true);
             }}
             onBlur={() => {
               setOpen(false);
             }}
-            onInputChange={() => {
-              setOpen(true);
+            onInputChange={(e, value) => {
+              if (!open && value) {
+                setOpen(true);
+              }
             }}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
@@ -73,22 +87,36 @@ export default function EscogerBodega(props) {
                 setOpen(!open);
               }
             }}
-            classes={{
-              paper: "paper",
-              option: "optionBodega",
-              popper: "popper",
-            }}
-            value={pendingValue}
             onChange={(event, newValue) => {
               setPendingValue(newValue);
             }}
-            openOnFocus
-            disableCloseOnSelect
-            // disablePortal
-            filterOptions={filterOptions}
-            noOptionsText="No hay bodegas"
+            getOptionLabel={(option) => {
+              if (option && option.nombreBodega) {
+                return option.nombreBodega;
+              }
+              else {
+                return "";
+              }
+            }
+            }
+            options={[...bodegas]
+              .sort((a, b) => {
+                // Muestra la bodega seleccionada primero y solo las 5 primeras
+                let ai = a == bodegaSeleccionada;
+                let bi = b == bodegaSeleccionada;
+                return ai ? -1 : bi ? 1 : 0;
+              })
+              .slice(0, 5)}
             renderOption={(option, { selected }) => (
               <React.Fragment>
+                <DoneIcon
+                  className="iconSelected"
+                  style={{ visibility: selected ? "visible" : "hidden" }}
+                  onClick={() => {
+                    handleClose();
+                    setOpen(false);
+                  }}
+                />
                 <div className="nombreBodega">
                   <span>{option.nombreBodega}</span>
                   <br />
@@ -100,14 +128,14 @@ export default function EscogerBodega(props) {
                       option.direccionBodega}
                   </span>
                 </div>
-                <DoneIcon
+                {/* <DoneIcon
                   className="iconSelected"
                   style={{ visibility: selected ? "visible" : "hidden" }}
                   onClick={() => {
                     handleClose();
                     setOpen(false);
                   }}
-                />
+                /> */}
                 <CloseIcon
                   onClick={() => {
                     setPendingValue(null);
@@ -117,15 +145,6 @@ export default function EscogerBodega(props) {
                 />
               </React.Fragment>
             )}
-            options={[...bodegas]
-              .sort((a, b) => {
-                // Muestra la bodega seleccionada primero y solo las 5 primeras
-                let ai = a == bodegaSeleccionada;
-                let bi = b == bodegaSeleccionada;
-                return ai ? -1 : bi ? 1 : 0;
-              })
-              .slice(0, 5)}
-            getOptionLabel={(option) => option.nombreBodega}
             renderInput={(params) => (
               <InputBase
                 ref={params.InputProps.ref}

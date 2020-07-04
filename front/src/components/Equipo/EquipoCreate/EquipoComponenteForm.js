@@ -28,7 +28,10 @@ function EquipoComponenteForm(props) {
       />
       {props.componentes.map((componente, index) => (
         <React.Fragment>
-          <ComponenteForm componente={componente} />
+          <ComponenteForm
+            setComponentes={setComponentes}
+            componente={componente}
+          />
           <button className="m-2" onClick={() => handleRemove(index)}>
             -
           </button>

@@ -15,3 +15,24 @@
     font-weight: 700;
 
 }
+
+.page-title{
+    font-family: 'Karla', 'Nunito', 'sans-serif';
+    text-transform: capitalize;
+    color: #6c757d;
+    margin: 0px;
+}
+
+.breadcrumbTitle{
+    margin-left: 7%;
+}
+
+.page-title-col{
+    align-self: center !important;
+}
+
+@media(max-width: 768px){
+    .breadcrumb{
+        display: none;
+    }
+}

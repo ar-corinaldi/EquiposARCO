@@ -18,12 +18,12 @@ function BreadcrumbComponent(props) {
   });
   return (
     <React.Fragment>
-      <Col>
+      <Col className="page-title-col " >
         <div className="breadcrumbTitle">
-          <h4 className="page-title">{partes && partes[1].ruta}</h4>
+          <h3 className="page-title">{partes && partes[1].ruta}</h3>
         </div>
       </Col>
-      <Col>
+      <Col md={6} xs={8}>
         <Breadcrumb className="breadcrumb">
           {partes.length > 0 &&
             partes.map((parte) => (

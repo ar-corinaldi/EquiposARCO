@@ -64,7 +64,13 @@ function TerceroDetail({ match }) {
                 <h4 id="titulos">Bodegas</h4>
               </Col>
               <Col id="agregarBodega">
-                <button classname= "buttonTercero" onClick={crearBodega}>Agregar una bodega</button>
+                <button
+                  classname="buttonTercero"
+                  onClick={crearBodega}
+                  className="buttonTercero"
+                >
+                  Agregar una bodega
+                </button>
               </Col>
             </Row>
             {bodegas.map((bodega) => (

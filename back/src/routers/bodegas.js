@@ -18,7 +18,10 @@ router.post("/terceros/:id/bodegas", async (req, res) => {
   try {
     newBodega = await Bodega.findByLocalizacion(req.body);
     if (newBodega) {
-      return res.status(404).send("El usuario ya tiene la bodega agregada");
+      console.log("El usuario ya tiene la bodega agregada");
+      return res
+        .status(404)
+        .send("Ya se registro una bodega con la misma ubicacion");
     }
     console.log("La bodega no es existente");
     newBodega = new Bodega(req.body);
@@ -27,7 +30,6 @@ router.post("/terceros/:id/bodegas", async (req, res) => {
     if (!tercero) {
       return res.status(404).send("Ninguna tercero coincidio con ese id");
     }
-    console.log("Existe el tercero");
     await newBodega.save();
     console.log("Agrega bodega");
     tercero.bodegas.push(newBodega._id);
@@ -155,7 +157,6 @@ router.get("/bodegas", async (req, res) => {
     res.status(500).send();
   }
 });
-
 
 /**
  * Get de Bodega por su id

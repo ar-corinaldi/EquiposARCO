@@ -22,7 +22,6 @@ const withFormHandling = (FormComponent) => (props) => {
    * @param e
    */
   const handleSubmitPOST = async (e) => {
-    console.log("llega");
     e.preventDefault();
     const options = {
       method: "POST",

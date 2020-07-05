@@ -107,19 +107,23 @@ Bodega.findByLocalizacion = async (body) => {
   if (body.codigoPostal) {
     let codigoPostal = body.codigoPostal;
     newBodega = await Bodega.findOne({ codigoPostal });
+    console.log("Ya se registro una bodega con el mismo codigo postal");
+    console.log(newBodega);
   }
-  let query = [
-    { municipio: body.municipio },
-    { departamento: body.departamento },
-    { pais: body.pais },
-    { direccion: body.direccion },
-  ];
   if (!newBodega) {
-    newBodega = await Bodega.findOne({
-      $and: query,
-    });
+    let query = {
+      municipio: body.municipio,
+      departamento: body.departamento,
+      pais: body.pais,
+      direccionBodega: body.direccionBodega,
+    };
+    newBodega = await Bodega.findOne(query);
+    if (newBodega) {
+      console.log(query);
+      console.log("Ya se registro una bodega con la misma ubicacion");
+      console.log(newBodega);
+    }
   }
-  console.log(newBodega);
   return newBodega;
 };
 

@@ -9,7 +9,6 @@ function PropiedadesComponentesContainer(props) {
   const { equipo } = props;
   const [click, setClick] = useState(true);
   const renderData = () => {
-    console.log(click);
     if (click) {
       return equipo.componentes && equipo.componentes.length > 0 ? (
         <EquipoComponentes componentes={equipo.componentes} />

@@ -1,10 +1,10 @@
 import React from "react";
 
 function ComponenteForm(props) {
-  const { componente } = props;
+  const { componente, setComponentes } = props;
   const handleChange = (e, id) => {
     const val = e.target.value;
-    props.setComponentes((prev) => {
+    setComponentes((prev) => {
       return prev.map((comp) => {
         if (comp.equipo._id === id) {
           comp.cantidad = val;

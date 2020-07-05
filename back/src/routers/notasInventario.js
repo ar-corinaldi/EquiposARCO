@@ -5,7 +5,7 @@ const router = new express.Router();
 /**
  *  Post de notas
  */
-router.post("", async (req, res) => {
+router.post("notasInventario", async (req, res) => {
   const nota = new NotaInventario(req.body);
   try {
     await nota.save();
@@ -18,7 +18,7 @@ router.post("", async (req, res) => {
 /**
  *  Get de notas
  */
-router.get("", async (req, res) => {
+router.get("/notasInventario", async (req, res) => {
   try {
     const notas = await NotaInventario.find({});
     res.send(notas);
@@ -32,7 +32,7 @@ router.get("", async (req, res) => {
 /**
  *  Get de notas por su id
  */
-router.get("/:id", async (req, res) => {
+router.get("/notasInventario/:id", async (req, res) => {
   try {
     const nota = await NotaInventario.findById(req.params.id);
     if (!nota) {
@@ -49,7 +49,7 @@ router.get("/:id", async (req, res) => {
 /**
  *  Modifica una nota
  */
-router.patch("/:id", async (req, res) => {
+router.patch("/notasInventario/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
   try {
     if (!NotaInventario.fieldsNotAllowedUpdates(req.body)) {
@@ -81,7 +81,7 @@ router.patch("/:id", async (req, res) => {
 /**
  * Elimina una nota
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/notasInventario/:id", async (req, res) => {
   try {
     const nota = await NotaInventario.findByIdAndDelete(req.params.id);
     if (!nota) {

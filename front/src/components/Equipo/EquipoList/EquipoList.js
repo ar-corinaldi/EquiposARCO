@@ -29,12 +29,17 @@ function Equipo(props) {
   };
 
   const fetchEquipos = async () => {
-    setLoading(true);
-    const url = `/equipos/${currentPage}/${equiposPerPage}`;
-    const res = await fetch(url);
-    const newEquipos = await res.json();
-    setEquipos(newEquipos);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const url = `/equipos/${currentPage}/${equiposPerPage}`;
+      const res = await fetch(url);
+      const newEquipos = await res.json();
+      setEquipos(newEquipos);
+      setLoading(false);
+    } catch (e) {
+      setEquipos([]);
+      setLoading(false);
+    }
   };
   return (
     <Container>

@@ -72,7 +72,7 @@ router.get("/equipos", async (req, res) => {
     const equipos = await Equipo.find({});
     res.send(equipos);
   } catch (e) {
-    res.status(500).send();
+    res.status(500).send([]);
   }
 });
 

@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import EquipoComponenteForm from "./EquipoComponenteForm";
-import EquipoPrecioForm from "./EquipoPrecioForm";
+import React from "react";
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 
 const tiposEquipo = [
   "",
@@ -83,7 +80,7 @@ const nombresGrupo = [
 ];
 
 function EquipoForm(props) {
-  const { fields, handleChange, componentes, setComponentes } = props;
+  const { fields, handleChange } = props;
   return (
     <React.Fragment>
       <Col md="auto">
@@ -153,22 +150,6 @@ function EquipoForm(props) {
             onChange={handleChange}
           />
         </div>
-      </Col>
-      <Col md="auto">
-        <Row>
-          Componentes del Equipo
-          <EquipoComponenteForm
-            setComponentes={setComponentes}
-            componentes={componentes}
-          />
-        </Row>
-        <Row>
-          Precios del Equipo
-          <EquipoPrecioForm
-            precios={props.precios}
-            setPrecios={props.setPrecios}
-          />
-        </Row>
       </Col>
     </React.Fragment>
   );

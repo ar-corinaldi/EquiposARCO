@@ -14,7 +14,7 @@ function ModalBuscarEquipo(props) {
       <Modal show={show} onHide={handleClose}>
         {header ? (
           <Modal.Header closeButton>
-            <Modal.Title>{props.title ? title : "No title added"}</Modal.Title>
+            <Modal.Title>{title ? title : "No title added"}</Modal.Title>
           </Modal.Header>
         ) : null}
         <Modal.Body>

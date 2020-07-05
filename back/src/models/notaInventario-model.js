@@ -22,16 +22,15 @@ const notaInventarioSchema = new Schema({
   descripcion: {
     type: String,
     trim: true,
-    required: true,
     lowercase: true,
   },
   cantidad: {
     type: Number,
-    default: 1,
+    default: 0,
   },
   fecha: {
     type: Date,
-    required: true,
+    default: Date.now(),
   },
   equipo: {
     type: mongoose.Schema.Types.ObjectId,
@@ -60,12 +59,12 @@ const NotaInventario = mongoose.model("NotaInventario", notaInventarioSchema);
 // // Arreglo de los campos que no se pueden modificar
 const noUpdatable = [fecha, cantidad, descripcion];
 
-// /**
-//  * Funcion para revisar que las modificiaciones son validas
-//  * @param body: Corresponde a los campos que se van a actualizar
-//  * @returns retorna true si todos los campos que se actualizan se pueden,
-//  *  retorna false en caso contrario.
-//  */
+/**
+ * Funcion para revisar que las modificiaciones son validas
+ * @param body: Corresponde a los campos que se van a actualizar
+ * @returns retorna true si todos los campos que se actualizan se pueden,
+ *  retorna false en caso contrario.
+ */
 NotaInventario.fieldsNotAllowedUpdates = (body) => {
   const updates = Object.keys(body);
 

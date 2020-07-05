@@ -1,9 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function BodegaDetail(props) {
   const bodega = props.bodega;
   const tercero = props.tercero;
+  const history = useHistory();
+
+  const eliminarBodega = async () => {
+    console.log("tercero", tercero);
+    console.log("bodega", bodega);
+    console.log("url", `/terceros/${tercero._id}/bodegas/${bodega._id}`);
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const res = await fetch(
+      `/terceros/${tercero._id}/bodegas/${bodega._id}`,
+      options
+    );
+    history.replace(`/terceros/${tercero._id}`);
+  };
 
   const capitalize = (str, lower = false) =>
     (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
@@ -70,6 +89,9 @@ function BodegaDetail(props) {
           </Link>
         </p>
       ))}
+      <button onClick={eliminarBodega} className="eliminarBodega">
+        Eliminar Bodega
+      </button>
     </div>
   );
 }

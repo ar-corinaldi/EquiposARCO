@@ -109,13 +109,13 @@ router.get("/terceros/:id/bodegas", async (req, res) => {
 });
 
 /**
- * Elimina una bodega de un tercero
+ * Elimina una bodega de un tercero y elimina la Bodega de la lista de bodegas
  * Envia el tercero completo con sus bodegas
  * NO elimina las ordenes de la bodega. FALTA
  */
 router.delete("/terceros/:id/bodegas/:idB", async (req, res) => {
   try {
-    const bodega = await Bodega.findById(req.params.idB);
+    let bodega = await Bodega.findById(req.params.idB);
     if (!bodega) {
       return res.status(404).send("La bodega no existe");
     }
@@ -132,10 +132,12 @@ router.delete("/terceros/:id/bodegas/:idB", async (req, res) => {
     if (tercero.bodegas.length === lenBodegas) {
       return res.status(404).send("La bodega no corresponde al tercero");
     }
-    console.log("La bodega no corresponde al tercero");
+    console.log("La bodega corresponde al tercero");
     await tercero.save();
     console.log("Bodega eliminada del tercero");
-    res.send(tercero);
+    bodega = await Bodega.findByIdAndDelete(req.params.idB);
+    const elim = { bodega, tercero };
+    res.send(elim);
   } catch (e) {
     console.error(e);
     res.status(400).send("No se pudo agregar la bodega al tercero " + e);

@@ -21,7 +21,7 @@ function BodegaDetail(props) {
       `/terceros/${tercero._id}/bodegas/${bodega._id}`,
       options
     );
-    history.replace(`/terceros/${tercero._id}`);
+    history.go();
   };
 
   const capitalize = (str, lower = false) =>

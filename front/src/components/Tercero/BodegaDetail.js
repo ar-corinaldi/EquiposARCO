@@ -1,16 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 function BodegaDetail(props) {
   const bodega = props.bodega;
   const tercero = props.tercero;
-  const history = useHistory();
 
   const eliminarBodega = async () => {
-    console.log("tercero", tercero);
-    console.log("bodega", bodega);
-    console.log("url", `/terceros/${tercero._id}/bodegas/${bodega._id}`);
+    //console.log("tercero", tercero);
+    //console.log("bodega", bodega);
+    //console.log("url", `/terceros/${tercero._id}/bodegas/${bodega._id}`);
     const options = {
       method: "DELETE",
       headers: {
@@ -21,7 +19,9 @@ function BodegaDetail(props) {
       `/terceros/${tercero._id}/bodegas/${bodega._id}`,
       options
     );
-    history.go();
+    const elim = await res.json();
+    const bodegasN = elim.tercero.bodegas;
+    props.setBodegas(bodegasN);
   };
 
   const capitalize = (str, lower = false) =>

@@ -25,7 +25,8 @@ function EquipoNotaInventario(props) {
         <textarea
           name="descripcion"
           cols="30"
-          rows="10" // value={fields.nombreEquipo}
+          rows="10"
+          value={"" /**fields.nombreEquipo*/}
           // onChange={handleChange}
         >
           Descripción:

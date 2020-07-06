@@ -42,21 +42,22 @@ function EquipoCreate(props) {
           "Content-Type": "application/json",
         },
       };
-      const res = await fetch(props.formAction, optionsEquipo);
-      const equipoPost = await res.json();
-      console.log("El equipo posteado", equipoPost);
+      console.log(fields);
+      // const res = await fetch(props.formAction, optionsEquipo);
+      // const equipoPost = await res.json();
+      // console.log("El equipo posteado", equipoPost);
       // Agrego la nota de inventario a la base de datos con el _id de l equipo
-      const newNotaInventario = notaInventario;
-      newNotaInventario.equipo = equipoPost._id;
-      setNotaInventario(newNotaInventario);
-      console.log(notaInventario);
-      const optionsNotaInventario = {
-        method: "POST",
-        body: JSON.stringify(notaInventario),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
+      // const newNotaInventario = notaInventario;
+      // newNotaInventario.equipo = equipoPost._id;
+      // setNotaInventario(newNotaInventario);
+      // console.log(notaInventario);
+      // const optionsNotaInventario = {
+      // method: "POST",
+      // body: JSON.stringify(notaInventario),
+      // headers: {
+      // "Content-Type": "application/json",
+      // },
+      // };
 
       // const res = await fetch("notasInventario", optionsNotaInventario);
       // const notaInventario = await
@@ -69,7 +70,6 @@ function EquipoCreate(props) {
         <EquipoForm
           formAction={props.formAction}
           fields={fields}
-          componentes={componentes}
           handleChange={handleChange}
         />
         <Col md="auto">

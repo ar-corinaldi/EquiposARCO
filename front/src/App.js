@@ -43,6 +43,7 @@ function App() {
                     <EquipoCreate
                       fields={{
                         nombreEquipo: "",
+                        tipoEquipo: "",
                         nombreFamilia: "",
                         nombreGrupo: "",
                         codigo: "",

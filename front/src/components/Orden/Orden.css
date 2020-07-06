@@ -41,10 +41,10 @@
   color: #6c757d;
 }
 
-.mt-4 {
-  margin-top: 2.25rem !important;
-}
-
 .text-right {
   text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
 }

@@ -18,11 +18,24 @@ function OrdenDetail(props) {
     fetchInfo();
   }, []);
 
+  /*
+   * Obtener el tercero, la bodega y la orden
+   */
   const fetchInfo = async () => {
     let res = await fetch("/terceros/" + id);
     const terceroA = await res.json();
     console.log("tercero", terceroA);
     setTercero(terceroA);
+
+    // res = await fetch("/bodegas/" + idB);
+    // const bodegaA = await res.json();
+    // console.log("bodega", bodegaA);
+    // setBodega(bodegaA);
+    // res = await fetch("/ordenes/" + idOr);
+    // const ordenA = await res.json();
+    // console.log("orden", ordenA);
+    // setOrden(ordenA);
+
     let bodegaA;
     terceroA.bodegas.forEach((bod) => {
       if (bod._id.toString() === idB) {
@@ -34,7 +47,7 @@ function OrdenDetail(props) {
     let ordenA;
     bodegaA.ordenesActuales.forEach((or) => {
       if (or._id.toString() === idOr) {
-        ordenA = or;
+        fetchInfoOrden();
         setStatus("En curso");
         return;
       }
@@ -42,14 +55,26 @@ function OrdenDetail(props) {
     if (!ordenA) {
       bodegaA.ordenesPasadas.forEach((or) => {
         if (or._id.toString() === idOr) {
-          ordenA = or;
+          fetchInfoOrden();
           setStatus("Terminada");
           return;
         }
       });
     }
+    // console.log("orden", ordenA);
+    // console.log("status", statusOr);
+    // setOrden(ordenA);
+  };
+
+  /*
+   * Obtener la orden con las tarifas pobladas
+   */
+
+  const fetchInfoOrden = async () => {
+    console.log("llegaOrdenes");
+    let res = await fetch(`/ordenes/${idOr}/tarifasPobladas`);
+    const ordenA = await res.json();
     console.log("orden", ordenA);
-    console.log("status", statusOr);
     setOrden(ordenA);
   };
 
@@ -58,7 +83,7 @@ function OrdenDetail(props) {
       <Row>
         <Col>
           <div className="orden-wrapper">
-            <h3 className="page-title-orden">Orden No. {idOr}</h3>
+            <h3 className="page-title-orden">Orden No. {orden._id}</h3>
             <p className="capitalize">
               <b>Tercero :</b> {tercero.nombre}{" "}
             </p>
@@ -75,7 +100,7 @@ function OrdenDetail(props) {
         <Col xs={8}>
           <div className="orden-wrapper" id="orden-equipos-wrapper">
             <h4 className="page-title-orden">Equipos</h4>
-            <EquiposTable></EquiposTable>
+            <EquiposTable tarifas={orden.tarifasDefinitivas}></EquiposTable>
           </div>
         </Col>
         <Col>

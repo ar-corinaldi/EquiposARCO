@@ -1,6 +1,6 @@
 const express = require("express");
 const Precio = require("../models/precio-model");
-const Equipo = require("../models/equipo-model");
+const Orden = require("../models/orden-model");
 const Tarifa = require("../models/tarifa-model");
 const Cotizacion = require("../models/cotizacion-model");
 
@@ -62,6 +62,34 @@ router.patch("/cotizaciones/:id/tarifasCotizadas/:idT", async (req, res) => {
     console.log("Hubo un error");
     res.status(400).send("No se pudo agregar la tarifa a la cotizacion " + e);
     console.error("error", e);
+  }
+});
+
+/**
+ *  Poblar los equipos y los precios de todas las tarifas de una orden
+ */
+router.get("/ordenes/:idOr/tarifasPobladas", async (req, res, next) => {
+  try {
+    const orden = await Orden.findById(req.params.idOr)
+      .populate({
+        path: "tarifasDefinitivas",
+        populate: {
+          path: "equipo",
+        },
+      })
+      .populate({
+        path: "tarifasDefinitivas",
+        populate: {
+          path: "precioReferencia",
+        },
+      });
+    if (!orden) {
+      return res.send("La orden no existe");
+    }
+    res.send(orden);
+    console.log("La orden existe");
+  } catch (e) {
+    res.status(404).send("No se pudo hacer la solicitud " + e);
   }
 });
 

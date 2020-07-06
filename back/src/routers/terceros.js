@@ -88,6 +88,7 @@ router.get("/terceros/bodegas", async (req, res) => {
  */
 router.get("/terceros/:id", async (req, res) => {
   try {
+    console.log("llega");
     const tercero = await Tercero.findById(req.params.id)
       .populate({
         path: "bodegas",

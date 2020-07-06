@@ -24,7 +24,7 @@ function OrdenDetail(props) {
   const fetchInfo = async () => {
     let res = await fetch("/terceros/" + id);
     const terceroA = await res.json();
-    console.log("tercero", terceroA);
+    //console.log("tercero", terceroA);
     setTercero(terceroA);
 
     // res = await fetch("/bodegas/" + idB);
@@ -42,7 +42,7 @@ function OrdenDetail(props) {
         bodegaA = bod;
       }
     });
-    console.log("bodega", bodegaA);
+    //console.log("bodega", bodegaA);
     setBodega(bodegaA);
     let ordenA;
     bodegaA.ordenesActuales.forEach((or) => {
@@ -74,7 +74,7 @@ function OrdenDetail(props) {
     console.log("llegaOrdenes");
     let res = await fetch(`/ordenes/${idOr}/tarifasPobladas`);
     const ordenA = await res.json();
-    console.log("orden", ordenA);
+    //console.log("orden", ordenA);
     setOrden(ordenA);
   };
 

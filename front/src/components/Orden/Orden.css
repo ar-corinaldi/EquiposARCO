@@ -23,3 +23,28 @@
 #orden-actividad-wrapper {
   width: 87%;
 }
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  color: #6c757d;
+}
+
+.mt-4 {
+  margin-top: 2.25rem !important;
+}
+
+.text-right {
+  text-align: right !important;
+}

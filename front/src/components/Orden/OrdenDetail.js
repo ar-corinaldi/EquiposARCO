@@ -3,8 +3,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./Orden.css";
-
 import { useParams } from "react-router-dom";
+import EquiposTable from "./EquiposTable";
 
 function OrdenDetail(props) {
   const { id, idB, idOr } = useParams();
@@ -59,9 +59,15 @@ function OrdenDetail(props) {
         <Col>
           <div className="orden-wrapper">
             <h3 className="page-title-orden">Orden No. {idOr}</h3>
-            <p>Tercero : {tercero.nombre} </p>
-            <p>Bodega : {bodega.nombreBodega}</p>
-            <p>Status : {statusOr} </p>
+            <p className="capitalize">
+              <b>Tercero :</b> {tercero.nombre}{" "}
+            </p>
+            <p className="capitalize">
+              <b>Bodega :</b> {bodega.nombreBodega}
+            </p>
+            <p>
+              <b>Status :</b> {statusOr}{" "}
+            </p>
           </div>
         </Col>
       </Row>
@@ -69,6 +75,7 @@ function OrdenDetail(props) {
         <Col xs={8}>
           <div className="orden-wrapper" id="orden-equipos-wrapper">
             <h4 className="page-title-orden">Equipos</h4>
+            <EquiposTable></EquiposTable>
           </div>
         </Col>
         <Col>

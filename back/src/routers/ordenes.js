@@ -1,12 +1,45 @@
 const express = require("express");
 const Orden = require("../models/orden-model");
 const Bodega = require("../models/bodega-model");
+const Cotizacion = require("../models/cotizacion-model");
+
 //const Tercero = require("../models/tercero-model");
 const router = express.Router();
 
 /**
- *  Relacion Bodega -> Orden
+ *  Relacion Bodega -> Orden / Cotizacion
  */
+
+/**
+ * Crea una orden a partir de una cotizacion y la agrega a una bodega
+ */
+router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
+  let orden = null;
+  try {
+    const bodega = await Bodega.findById(req.params.idB);
+    if (!bodega) {
+      return res.status(404).send("Ninguna bodega coincidio con ese id");
+    }
+    const cotizacion = await Cotizacion.findById(req.params.idC);
+    if (!cotizacion) {
+      return res.status(404).send("Ninguna cotizacion coincidio con ese id");
+    }
+    console.log("La bodega y la cotizacion existen");
+    orden = new Orden(req.body);
+    orden.tarifasDefinitivas = Array.from(cotizacion.tarifasCotizadas);
+    orden.cotizacion = cotizacion._id;
+    await orden.save();
+    console.log("orden guardada");
+    bodega.ordenesActuales.push(orden._id);
+    await bodega.save();
+    console.log("Orden aniadida a la bodega con exito");
+    const ans = { bodega: bodega, orden: orden };
+    res.status(201).send(ans);
+  } catch (e) {
+    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
+    console.error("error", e);
+  }
+});
 
 /**
  * Crea una orden y la agrega a una bodega

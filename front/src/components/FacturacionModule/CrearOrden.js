@@ -4,10 +4,10 @@ import EscogerCotizacion from "./EscogerCotizacion";
 import Row from "react-bootstrap/Row";
 import Cl from "react-bootstrap/Col";
 import Col from "react-bootstrap/Col";
-import priceLogo from "../../static-files/price.svg";
-import priceLogoDark from "../../static-files/price-dark.svg";
-import sheetLogo from "../../static-files/sheet.svg";
-import sheetLogoDark from "../../static-files/sheetDark.svg";
+import priceLogo from "../../assets/price.svg";
+import priceLogoDark from "../../assets/price-dark.svg";
+import sheetLogo from "../../assets/sheet.svg";
+import sheetLogoDark from "../../assets/sheetDark.svg";
 
 function CrearOrden(props) {
   const [firstStepState, setFirstStep] = useState("active");

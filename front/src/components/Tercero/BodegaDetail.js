@@ -89,6 +89,25 @@ function BodegaDetail(props) {
           </Link>
         </p>
       ))}
+      <p>
+        <strong> Cotizaciones : </strong>
+      </p>
+      {bodega.cotizaciones.map((coti) => (
+        <p key={coti._id}>
+          <Link
+            to={
+              "/terceros/" +
+              tercero._id +
+              "/bodegas/" +
+              bodega._id +
+              "/cotizaciones/" +
+              coti._id
+            }
+          >
+            {coti._id}
+          </Link>
+        </p>
+      ))}
       <button onClick={eliminarBodega} className="eliminarBodega">
         Eliminar Bodega
       </button>

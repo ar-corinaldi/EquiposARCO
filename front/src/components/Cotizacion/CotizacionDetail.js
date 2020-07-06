@@ -33,9 +33,8 @@ function CotizacionDetail(props) {
     });
     //console.log("bodega", bodegaA);
     setBodega(bodegaA);
-    let ordenA;
     bodegaA.cotizaciones.forEach((co) => {
-      if (co.toString() === idC) {
+      if (co._id.toString() === idC) {
         fetchInfoCotizacion();
         return;
       }
@@ -50,7 +49,7 @@ function CotizacionDetail(props) {
     //console.log("llegaCotizaciones");
     let res = await fetch(`/cotizaciones/${idC}/tarifasPobladas`);
     const coti = await res.json();
-    console.log("cotizacion", coti);
+    //console.log("cotizacion", coti);
     setCotizacion(coti);
   };
 

@@ -61,7 +61,16 @@ function App() {
                 <Route path="/inventario/equipos" component={EquipoList} />
                 <Route
                   path="/inventario/crearNotaInventario"
-                  component={NotaInventarioCreate}
+                  component={() => (
+                    <NotaInventarioCreate
+                      fields={{
+                        categoria: "",
+                        descripcion: "",
+                        cantidad: "",
+                      }}
+                      formAction="/notasInventario"
+                    />
+                  )}
                 />
                 <Route
                   path="/terceros/listar_terceros"

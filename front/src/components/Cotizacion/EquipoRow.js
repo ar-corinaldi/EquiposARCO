@@ -29,9 +29,8 @@ function EquipoRow(props) {
         {tarifa.precioReferencia.categoria} / {tarifa.precioReferencia.tiempo}
       </td>
       <td>
-        {formatDate(tarifa.fechaInicio)}-{formatDate(tarifa.fechaFin)}
+        {formatDate(tarifa.fechaInicio)}-{formatDate(tarifa.fechaFin)}{" "}
       </td>
-      <td>Falta </td>
     </tr>
   );
 }

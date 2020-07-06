@@ -66,6 +66,34 @@ router.patch("/cotizaciones/:id/tarifasCotizadas/:idT", async (req, res) => {
 });
 
 /**
+ *  Poblar los equipos y los precios de todas las tarifas de una cotizacion
+ */
+router.get("/cotizaciones/:idC/tarifasPobladas", async (req, res, next) => {
+  try {
+    const cotizacion = await Cotizacion.findById(req.params.idC)
+      .populate({
+        path: "tarifasCotizadas",
+        populate: {
+          path: "equipo",
+        },
+      })
+      .populate({
+        path: "tarifasCotizadas",
+        populate: {
+          path: "precioReferencia",
+        },
+      });
+    if (!cotizacion) {
+      return res.send("La cotizacion no existe");
+    }
+    res.send(cotizacion);
+    console.log("La cotizacion existe");
+  } catch (e) {
+    res.status(404).send("No se pudo hacer la solicitud " + e);
+  }
+});
+
+/**
  *  Relacion Orden -> Tarifa
  */
 

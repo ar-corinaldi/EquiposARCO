@@ -33,7 +33,7 @@ function Tercero() {
   const fetchTerceros = async () => {
     setLoading(true);
     let url = `/terceros/${currentPage}/${tercerosPerPage}`;
-    if (tercerosPerPage == -1) {
+    if (tercerosPerPage === -1) {
       url = `/terceros`;
     }
     const res = await fetch(url);
@@ -66,7 +66,11 @@ function Tercero() {
         <Col>
           <div id="tercero-wrapper">
             <Row id="espacio">
-              <button className="buttonTercero" id="link" onClick={crearTercero}>
+              <button
+                className="buttonTercero"
+                id="link"
+                onClick={crearTercero}
+              >
                 Agregar un tercero
               </button>
             </Row>

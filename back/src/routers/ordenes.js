@@ -30,6 +30,8 @@ router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
     orden.cotizacion = cotizacion._id;
     await orden.save();
     console.log("orden guardada");
+    cotizacion.orden = orden._id;
+    await cotizacion.save();
     bodega.ordenesActuales.push(orden._id);
     await bodega.save();
     console.log("Orden aniadida a la bodega con exito");

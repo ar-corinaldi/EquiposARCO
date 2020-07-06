@@ -1,6 +1,6 @@
 const express = require("express");
 const Precio = require("../models/precio-model");
-const Equipo = require("../models/equipo-model");
+const Orden = require("../models/orden-model");
 const Tarifa = require("../models/tarifa-model");
 const Cotizacion = require("../models/cotizacion-model");
 
@@ -62,6 +62,63 @@ router.patch("/cotizaciones/:id/tarifasCotizadas/:idT", async (req, res) => {
     console.log("Hubo un error");
     res.status(400).send("No se pudo agregar la tarifa a la cotizacion " + e);
     console.error("error", e);
+  }
+});
+
+/**
+ *  Relacion Orden -> Tarifa
+ */
+
+/**
+ * Agrega una tarifa existente a una orden
+ */
+router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
+  try {
+    const newTarifa = await Tarifa.findById(req.params.idT);
+    if (!newTarifa) {
+      return res.status(404).send("Ninguna tarifa coincidio con ese id");
+    }
+    const orden = await Orden.findById(req.params.id);
+    if (!orden) {
+      return res.status(404).send("Ninguna orden coincidio con ese id");
+    }
+    console.log("Existe la orden y la tarifa");
+    orden.tarifasDefinitivas.push(newTarifa._id);
+    await orden.save();
+    console.log("Guarda orden con tarifa");
+    res.status(201).send(orden);
+  } catch (e) {
+    console.log("Hubo un error");
+    res.status(400).send("No se pudo agregar la tarifa a la orden " + e);
+    console.error("error", e);
+  }
+});
+
+/**
+ *  Poblar los equipos y los precios de todas las tarifas de una orden
+ */
+router.get("/ordenes/:idOr/tarifasPobladas", async (req, res, next) => {
+  try {
+    const orden = await Orden.findById(req.params.idOr)
+      .populate({
+        path: "tarifasDefinitivas",
+        populate: {
+          path: "equipo",
+        },
+      })
+      .populate({
+        path: "tarifasDefinitivas",
+        populate: {
+          path: "precioReferencia",
+        },
+      });
+    if (!orden) {
+      return res.send("La orden no existe");
+    }
+    res.send(orden);
+    console.log("La orden existe");
+  } catch (e) {
+    res.status(404).send("No se pudo hacer la solicitud " + e);
   }
 });
 

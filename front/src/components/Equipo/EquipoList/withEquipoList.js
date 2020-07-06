@@ -1,16 +1,13 @@
 import React from "react";
 
-export const ContextEquipoList = React.createContext(true);
+export const ContextEquipoList = React.createContext(false);
 
 const withEquipoList = (EquipoList, setState, stateNombre) => (props) => {
   const handleClickEquipo = (equipo) => {
     if (stateNombre === "componentes") {
       setState((prev) => [...prev, { cantidad: 0, equipo }]);
     } else if (stateNombre === "inventario") {
-      setState((prevState) => ({
-        ...prevState, // keep all other key-value pairs
-        equipo, // update the value of specific key
-      }));
+      setState(equipo);
     }
   };
 

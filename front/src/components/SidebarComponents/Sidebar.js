@@ -29,7 +29,7 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "Añadir Equipo",
+      name: "Crear Equipo",
       ref: "/crearEquipo",
     },
     {

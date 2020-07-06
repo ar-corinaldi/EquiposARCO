@@ -45,14 +45,18 @@ function Pagination(props) {
     <PaginationB>
       <PaginationB.First
         onClick={() => {
-          setPrevPage(props.currentPage);
-          props.setCurrentPage(1);
+          if (props.currentPage > 1) {
+            setPrevPage(props.currentPage);
+            props.setCurrentPage(1);
+          }
         }}
       />
       <PaginationB.Prev
         onClick={() => {
-          setPrevPage(props.currentPage);
-          props.setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
+          if (props.currentPage > 1) {
+            setPrevPage(props.currentPage);
+            props.setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
+          }
         }}
       />
       {pages &&
@@ -70,14 +74,18 @@ function Pagination(props) {
         ))}
       <PaginationB.Next
         onClick={() => {
-          setPrevPage(props.currentPage);
-          props.setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+          if (props.currentPage < props.numberPages) {
+            setPrevPage(props.currentPage);
+            props.setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+          }
         }}
       />
       <PaginationB.Last
         onClick={() => {
-          setPrevPage(props.currentPage);
-          props.setCurrentPage(props.numberPages);
+          if (props.currentPage < props.numberPages) {
+            setPrevPage(props.currentPage);
+            props.setCurrentPage(props.numberPages);
+          }
         }}
       />
     </PaginationB>

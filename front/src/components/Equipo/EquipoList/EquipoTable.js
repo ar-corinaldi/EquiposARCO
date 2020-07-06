@@ -26,11 +26,7 @@ function EquipoTable(props) {
       </thead>
       <tbody>
         {props.equipos.map((equipo) => (
-          <EquipoRow
-            key={equipo._id}
-            equipo={equipo}
-            setComponentes={props.setComponentes}
-          />
+          <EquipoRow key={equipo._id} equipo={equipo} />
         ))}
       </tbody>
     </Table>

@@ -3,6 +3,38 @@ const NotaInventario = require("../models/notaInventario-model");
 const router = new express.Router();
 
 /**
+ * Cantidad de documentos que hay en notasInventario
+ */
+router.get("/notasInventario/cantidad", async (req, res) => {
+  try {
+    const count = await NotaInventario.estimatedDocumentCount();
+    console.log("count", count);
+    res.send(count + "");
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+/**
+ *  Get de notas de inventario paginacion
+ */
+router.get("/notasInventario/:page/:elementsPerPage", async (req, res) => {
+  try {
+    const page = parseInt(req.params.page);
+    const elementsPerPage = parseInt(req.params.elementsPerPage);
+    const notaInventario = await NotaInventario.find({})
+      .populate(equipo)
+      .populate(orden)
+      .limit(elementsPerPage)
+      .skip((page - 1) * elementsPerPage);
+    res.send(notaInventario);
+  } catch (e) {
+    res.status(400).send("");
+    console.error("error", e);
+  }
+});
+
+/**
  *  Post de notas
  */
 router.post("/notasInventario", async (req, res) => {

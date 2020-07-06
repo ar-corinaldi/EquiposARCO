@@ -14,6 +14,7 @@ import CrearOrden from "./components/FacturacionModule/CrearOrden";
 import EquipoDetail from "./components/Equipo/EquipoDetail/EquipoDetail";
 import EquipoCreate from "./components/Equipo/EquipoCreate/EquipoCreate";
 import NotaInventarioCreate from "./components/NotaInventario/NotaInventarioCreate";
+import NotaInventarioList from "./components/NotaInventario/NotaInventarioList";
 import BodegaCreate from "./components/Bodega/BodegaCreate";
 import CotizacionDetail from "./components/Cotizacion/CotizacionDetail";
 
@@ -41,6 +42,10 @@ function App() {
               <Switch>
                 <Route path="/" exact />
                 <Route
+                  path="/inventario/equipos/:idEquipo"
+                  component={EquipoDetail}
+                />
+                <Route
                   path="/inventario/crearEquipo"
                   component={() => (
                     <EquipoCreate
@@ -55,11 +60,11 @@ function App() {
                     />
                   )}
                 />
-                <Route
-                  path="/inventario/equipos/:idEquipo"
-                  component={EquipoDetail}
-                />
                 <Route path="/inventario/equipos" component={EquipoList} />
+                <Route
+                  path="/inventario/listar_notas_de_inventario"
+                  component={NotaInventarioList}
+                />
                 <Route
                   path="/inventario/crearNotaInventario"
                   component={() => (

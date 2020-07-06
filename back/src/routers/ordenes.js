@@ -46,9 +46,13 @@ router.patch("/bodegas/:idB/ordenes/:idOr", async (req, res) => {
       return res.status(404).send("Ninguna bodega coincidio con ese id");
     }
     console.log("La bodega existe");
-    const indice = bodega.ordenesActuales.indexOf(orden._id);
-    if (indice === -1) {
-      return res.status(404).send("La orden no pertenece a la bodega");
+    let indice = bodega.ordenesActuales.indexOf(orden._id);
+    if (indice !== -1) {
+      return res.status(404).send("La orden es una orden actual de la bodega");
+    }
+    indice = bodega.ordenesPasadas.indexOf(orden._id);
+    if (indice !== -1) {
+      return res.status(404).send("La orden es una orden pasada de la bodega");
     }
     bodega.ordenesActuales.push(orden._id);
     await bodega.save();

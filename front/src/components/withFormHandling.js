@@ -17,7 +17,11 @@ const withFormHandling = (FormComponent) => (props) => {
     setFields(newFields);
   };
 
-  const handleSubmitPOST = (e) => {
+  /**
+   * Retorna el objeto creado
+   * @param e
+   */
+  const handleSubmitPOST = async (e) => {
     e.preventDefault();
     const options = {
       method: "POST",
@@ -26,10 +30,13 @@ const withFormHandling = (FormComponent) => (props) => {
         "Content-Type": "application/json",
       },
     };
-    fetch(formAction, options);
+    const res = await fetch(formAction, options);
+    const objeto = await res.json();
+    return objeto;
   };
 
   const handleSubmitGET = (e) => {
+    console.log("llegaGET");
     e.preventDefault();
 
     fetch(formAction);

@@ -37,11 +37,6 @@ function Sidebar(props) {
       name: "Listar Equipos",
       ref: "/equipos",
     },
-    {
-      type: "Link",
-      name: "pruebas",
-      ref: "/terceros",
-    },
   ];
 
   //Descripción del menú de inventario

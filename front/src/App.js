@@ -5,8 +5,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/SidebarComponents/Sidebar";
 import EquipoList from "./components/Equipo/EquipoList/EquipoList";
-import Terceros from "./components/TercerosComponents/Terceros";
-import Tercero from "./components/Tercero/Tercero";
+import TerceroList from "./components/Tercero/TerceroList";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
 import TerceroCreate from "./components/Tercero/TerceroCreate";
 import Breadcrumb from "./components/Breadcrumb";
@@ -14,6 +13,8 @@ import OrdenDetail from "./components/Orden/OrdenDetail";
 import CrearOrden from "./components/FacturacionModule/CrearOrden";
 import EquipoDetail from "./components/Equipo/EquipoDetail/EquipoDetail";
 import EquipoCreate from "./components/Equipo/EquipoCreate/EquipoCreate";
+import BodegaCreate from "./components/Bodega/BodegaCreate";
+
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -56,16 +57,20 @@ function App() {
                   component={EquipoDetail}
                 />
                 <Route path="/inventario/equipos" component={EquipoList} />
-                <Route path="/inventario/terceros" component={Terceros} />
                 <Route
                   path="/terceros/listar_terceros"
                   exact
-                  component={Tercero}
+                  component={TerceroList}
                 />
                 <Route
                   path="/terceros/crear_tercero"
                   exact
                   component={TerceroCreate}
+                />
+                <Route
+                  path="/terceros/:id/bodegas/create"
+                  exact
+                  component={BodegaCreate}
                 />
                 <Route path="/terceros/:id" exact component={TerceroDetail} />
                 <Route
@@ -76,7 +81,7 @@ function App() {
                   path="/facturacion/crear_orden"
                   component={CrearOrden}
                 ></Route>
-                <Route path="*">Goooooool de Diegol</Route>
+                <Route path="*"> Pagina no encontrada </Route>
               </Switch>
             </Row>
           </Col>

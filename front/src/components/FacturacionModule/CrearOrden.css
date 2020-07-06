@@ -18,19 +18,19 @@
   padding: 0px;
 }
 
-.step-active {
+.step-active, .step-active:hover, .step-active:active {
   background-color: #727cf5;
   color: white;
   transition: all 0.1s;
 }
 
-.step-pending {
+.step-pending, .step-pending:hover, .step-pending:active, .step-pending:focus {
   background-color: #eef2f7;
   color: #6c757d;
   transition: all 0.1s;
 }
 
-.step-complete {
+.step-complete, .step-complete:hover, .step-complete:active, .step-complete:focus {
   background-color: #24c17f;
   color: white;
   border: 0px;

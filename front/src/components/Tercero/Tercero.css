@@ -121,3 +121,27 @@ input {
 .eliminarBodega:hover {
   opacity: 1;
 }
+
+.contenedor {
+  margin: 10px;
+}
+
+.eliminarTer {
+  background-color: #959ba1;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 25px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px 0 #adb5bd6e;
+}
+
+.eliminarTer:hover {
+  opacity: 1;
+}

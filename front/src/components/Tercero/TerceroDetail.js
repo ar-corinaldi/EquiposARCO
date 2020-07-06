@@ -110,6 +110,9 @@ function TerceroDetail({ match }) {
           </div>
         </Col>
       </Row>
+      <Row>
+        <button className="eliminarTer">Eliminar Tercero</button>
+      </Row>
     </Container>
   );
 }

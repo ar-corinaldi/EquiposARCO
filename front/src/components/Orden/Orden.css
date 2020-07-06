@@ -1,0 +1,50 @@
+.page-title-orden {
+  font-family: "Karla", "Nunito", "sans-serif";
+  text-transform: capitalize;
+  color: #3b3d40;
+  margin-bottom: 20px;
+}
+
+.orden-wrapper {
+  background-color: white;
+  box-shadow: 0px 0px 20px 1px rgba(134, 118, 118, 0.12);
+  font-family: "Nunito", "sans-serif";
+  color: #6c757d;
+  width: 97%;
+  margin: 10px 10px 10px 10px;
+  border-radius: 5px;
+  padding: 35px;
+}
+
+#orden-equipos-wrapper {
+  width: 100%;
+}
+
+#orden-actividad-wrapper {
+  width: 87%;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  color: #6c757d;
+}
+
+.mt-4 {
+  margin-top: 2.25rem !important;
+}
+
+.text-right {
+  text-align: right !important;
+}

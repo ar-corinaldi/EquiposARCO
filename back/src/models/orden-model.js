@@ -14,6 +14,16 @@ const ordenSchema = new Schema({
       ref: "Devolucion",
     },
   ],
+  tarifasDefinitivas: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tarifa",
+    },
+  ],
+  cotizacion: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cotizacion",
+  },
 });
 
 const Orden = mongoose.model("Orden", ordenSchema);

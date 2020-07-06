@@ -11,7 +11,7 @@ function EquipoRow(props) {
       <tr>
         <td>
           {handleClickEquipo ? (
-            <Link to={url} onClick={handleClickEquipo}>
+            <Link to={url} onClick={() => handleClickEquipo(props.equipo)}>
               {props.equipo.nombreEquipo}
             </Link>
           ) : (

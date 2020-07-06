@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import "./EquipoCreate.css";
-
+import withEquipoList from "../EquipoList/withEquipoList";
 function EquipoComponenteForm(props) {
   const { setComponentes, componentes } = props;
   const [show, setShow] = useState(false);
@@ -28,8 +28,8 @@ function EquipoComponenteForm(props) {
       </Row>
 
       <Modal
-        title={"Precios del Equipo"}
-        body={() => <EquipoList setComponentes={setComponentes} />}
+        title={"Componente del Equipo"}
+        body={withEquipoList(EquipoList, setComponentes, "componentes")}
         show={show}
         setShow={setShow}
         estado={componentes}

@@ -17,7 +17,7 @@ router.get("/equipos/cantidad", async (req, res) => {
     console.log("count", count);
     res.send(count + "");
   } catch (e) {
-    res.status(500).send(e);
+    res.status(400).send(e);
   }
 });
 
@@ -59,7 +59,7 @@ router.get("/equipos/:page/:elementsPerPage", async (req, res) => {
       .skip((page - 1) * elementsPerPage);
     res.send(equipos);
   } catch (e) {
-    res.status(500).send();
+    res.status(400).send("");
     console.error("error", e);
   }
 });

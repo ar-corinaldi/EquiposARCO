@@ -5,7 +5,7 @@ const router = new express.Router();
 /**
  *  Post de notas
  */
-router.post("notasInventario", async (req, res) => {
+router.post("/notasInventario", async (req, res) => {
   const nota = new NotaInventario(req.body);
   try {
     await nota.save();

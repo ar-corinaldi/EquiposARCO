@@ -14,6 +14,7 @@ import OrdenDetail from "./components/Orden/OrdenDetail";
 import CrearOrden from "./components/FacturacionModule/CrearOrden";
 import EquipoDetail from "./components/Equipo/EquipoDetail/EquipoDetail";
 import EquipoCreate from "./components/Equipo/EquipoCreate/EquipoCreate";
+import NotaInventarioCreate from "./components/NotaInventario/NotaInventarioCreate";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -57,7 +58,10 @@ function App() {
                   component={EquipoDetail}
                 />
                 <Route path="/inventario/equipos" component={EquipoList} />
-                <Route path="/inventario/terceros" component={Terceros} />
+                <Route
+                  path="/inventario/crearNotaInventario"
+                  component={NotaInventarioCreate}
+                />
                 <Route
                   path="/terceros/listar_terceros"
                   exact

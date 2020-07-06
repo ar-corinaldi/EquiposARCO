@@ -39,8 +39,8 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "pruebas",
-      ref: "/terceros",
+      name: "Crear Nota Inventario",
+      ref: "/crearNotaInventario",
     },
   ];
 

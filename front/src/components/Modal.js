@@ -21,7 +21,7 @@ function ModalBuscarEquipo(props) {
           {body ? (
             body()
           ) : (
-            <div>No body added, must be a callback () => {"<Component />"}</div>
+            <div>No body added, must be a callback () ={"><Component />"}</div>
           )}
         </Modal.Body>
         <Modal.Footer>

@@ -58,6 +58,7 @@ export default function EscogerBodega(props) {
         <div className="completeWrapper">
           <Autocomplete
             openOnFocus
+            autoHighlight 
             disableCloseOnSelect
             open={open}
             value={pendingValue}
@@ -109,14 +110,14 @@ export default function EscogerBodega(props) {
               .slice(0, 5)}
             renderOption={(option, { selected }) => (
               <React.Fragment>
-                <DoneIcon
+                {/* <DoneIcon
                   className="iconSelected"
                   style={{ visibility: selected ? "visible" : "hidden" }}
                   onClick={() => {
                     handleClose();
                     setOpen(false);
                   }}
-                />
+                /> */}
                 <div className="nombreBodega">
                   <span>{option.nombreBodega}</span>
                   <br />
@@ -128,14 +129,14 @@ export default function EscogerBodega(props) {
                       option.direccionBodega}
                   </span>
                 </div>
-                {/* <DoneIcon
+                <DoneIcon
                   className="iconSelected"
                   style={{ visibility: selected ? "visible" : "hidden" }}
                   onClick={() => {
                     handleClose();
                     setOpen(false);
                   }}
-                /> */}
+                />
                 <CloseIcon
                   onClick={() => {
                     setPendingValue(null);

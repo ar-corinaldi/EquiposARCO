@@ -23,8 +23,8 @@ router.get("/notasInventario/:page/:elementsPerPage", async (req, res) => {
     const page = parseInt(req.params.page);
     const elementsPerPage = parseInt(req.params.elementsPerPage);
     const notaInventario = await NotaInventario.find({})
-      .populate(equipo)
-      .populate(orden)
+      .populate("equipo")
+      .populate("orden")
       .limit(elementsPerPage)
       .skip((page - 1) * elementsPerPage);
     res.send(notaInventario);

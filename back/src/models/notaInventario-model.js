@@ -57,7 +57,7 @@ const notaInventarioSchema = new Schema({
 const NotaInventario = mongoose.model("NotaInventario", notaInventarioSchema);
 
 // // Arreglo de los campos que no se pueden modificar
-const noUpdatable = [fecha, cantidad, descripcion];
+const noUpdatable = ["fecha", "__v"];
 
 /**
  * Funcion para revisar que las modificiaciones son validas

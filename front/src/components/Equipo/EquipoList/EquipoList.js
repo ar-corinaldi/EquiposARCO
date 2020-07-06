@@ -5,11 +5,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Pagination from "../../Pagination";
+import { Link } from "react-router-dom";
+import "./EquipoList.css";
 function Equipo(props) {
   const [equipos, setEquipos] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [equiposPerPage] = useState(3);
+  const [equiposPerPage, setEquiposPerPage] = useState(10);
   const [countEquipos, setCountEquipos] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -41,30 +43,62 @@ function Equipo(props) {
       setLoading(false);
     }
   };
+
+  const cambiarDisplay = (e) => {
+    const target = e.target;
+    let value = target.type === "checkbox" ? target.checked : target.value;
+    setEquiposPerPage(value);
+  };
+
   return (
-    <Container>
-      <Row>
-        <EquipoFilter filterText={filterText} setFilterText={setFilterText} />
-      </Row>
+    <Container fluid>
       <Row>
         <Col>
-          <EquipoTable
-            equipos={equipos}
-            filterText={filterText}
-            loading={loading}
-            setComponentes={props.setComponentes}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Pagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            elementsPerPage={equiposPerPage}
-            numberPages={Math.ceil(countEquipos / equiposPerPage)}
-            hide={equipos.length <= 0}
-          />
+          <div id="equipo-wrapper">
+            <Row>
+              <EquipoFilter
+                filterText={filterText}
+                setFilterText={setFilterText}
+              />
+            </Row>
+            <Row className="mb-4">
+              <Link className="buttonEquipo" to={"/inventario/crearEquipo"}>
+                Agregar un equipo
+              </Link>
+            </Row>
+            <Row className="mb-4">
+              <label>
+                Mostrar{" "}
+                <select value={equiposPerPage} onChange={cambiarDisplay}>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="-1">Todos</option>
+                </select>{" "}
+                equipos
+              </label>
+            </Row>
+            <Row>
+              <Col>
+                <EquipoTable
+                  equipos={equipos}
+                  filterText={filterText}
+                  loading={loading}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Pagination
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  elementsPerPage={equiposPerPage}
+                  numberPages={Math.ceil(countEquipos / equiposPerPage)}
+                  hide={loading}
+                />
+              </Col>
+            </Row>
+          </div>
         </Col>
       </Row>
     </Container>

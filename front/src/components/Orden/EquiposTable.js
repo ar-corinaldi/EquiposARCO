@@ -13,6 +13,7 @@ function EquiposTable(props) {
             <th>Cantidad</th>
             <th>Valor</th>
             <th>Tipo de Cobro</th>
+            <th>Periodo Cobro</th>
             <th>Status</th>
           </tr>
         </thead>

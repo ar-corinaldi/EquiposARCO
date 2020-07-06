@@ -4,26 +4,23 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./Tercero.css";
 import BodegaDetail from "./BodegaDetail";
+import { useHistory } from "react-router-dom";
 
 function TerceroDetail({ match }) {
   const params = match.params;
-
-  //const { url } = useRouteMatch();
-
+  const history = useHistory();
   const [tercero, setTercero] = useState({});
   const [bodegas, setBodegas] = useState([]);
 
   useEffect(() => {
     fetchTercero();
-  }, []);
+  }, [bodegas]);
 
   const fetchTercero = async () => {
     const res = await fetch("/terceros/" + params.id);
     const terceroActual = await res.json();
-    console.log(terceroActual);
+    //console.log(terceroActual);
     setTercero(terceroActual);
-    const bodegasAct = terceroActual.bodegas;
-    setBodegas(bodegasAct);
   };
 
   const capitalize = (str, lower = false) =>
@@ -38,6 +35,10 @@ function TerceroDetail({ match }) {
         date.getMonth() + 1
       ).toString()}/${date.getFullYear()}`;
     }
+  };
+
+  const crearBodega = () => {
+    history.push(`${tercero._id}/bodegas/create`);
   };
 
   return (
@@ -56,14 +57,25 @@ function TerceroDetail({ match }) {
       <Row>
         <Col xs={7}>
           <div id="bodega-wrapper">
-            <h4 id="titulos">Bodegas</h4>
-            {bodegas.map((bodega) => (
-              <BodegaDetail
-                key={bodega._id}
-                bodega={bodega}
-                tercero={tercero}
-              ></BodegaDetail>
-            ))}
+            <Row>
+              <Col>
+                <h4 id="titulos">Bodegas</h4>
+              </Col>
+              <Col id="agregarBodega">
+                <button onClick={crearBodega} className="buttonTercero">
+                  Agregar una bodega
+                </button>
+              </Col>
+            </Row>
+            {tercero.bodegas &&
+              tercero.bodegas.map((bodega) => (
+                <BodegaDetail
+                  setBodegas={setBodegas}
+                  key={bodega._id}
+                  bodega={bodega}
+                  tercero={tercero}
+                ></BodegaDetail>
+              ))}
           </div>
         </Col>
         <Col>
@@ -92,15 +104,14 @@ function TerceroDetail({ match }) {
               {tercero.celular}
             </p>
             <p>
-              <strong>Pagina Web : </strong>
-              {tercero.paginaWeb}
-            </p>
-            <p>
               <strong>Fecha de registro : </strong>
               {formatDate(tercero.fechaCreacion)}
             </p>
           </div>
         </Col>
+      </Row>
+      <Row>
+        <button className="eliminarTer">Eliminar Tercero</button>
       </Row>
     </Container>
   );

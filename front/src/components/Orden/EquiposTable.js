@@ -25,7 +25,7 @@ function EquiposTable(props) {
             </td>
             <td>1</td>
             <td>$1799.00</td>
-            <td class="text-right">$1799.00</td>
+            <td className="text-right">$1799.00</td>
           </tr>
           <tr>
             <td>2</td>
@@ -36,7 +36,7 @@ function EquiposTable(props) {
             </td>
             <td>3</td>
             <td>$499.00</td>
-            <td class="text-right">$1497.00</td>
+            <td className="text-right">$1497.00</td>
           </tr>
           <tr>
             <td>3</td>
@@ -47,7 +47,7 @@ function EquiposTable(props) {
             </td>
             <td>2</td>
             <td>$412.00</td>
-            <td class="text-right">$824.00</td>
+            <td className="text-right">$824.00</td>
           </tr>
         </tbody>
       </table>

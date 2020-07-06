@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function EquipoRow(props) {
   const tarifa = props.tarifa;
@@ -6,9 +7,11 @@ function EquipoRow(props) {
     <tr className="capitalize">
       <td>1</td>
       <td>
-        <b>{tarifa && tarifa.equipo.nombreEquipo}</b>
-        <br />
-        {tarifa && tarifa.equipo.nombreGrupo}
+        <Link to={`/inventario/equipos/${tarifa.equipo._id}`}>
+          <b>{tarifa && tarifa.equipo.nombreEquipo}</b>
+          <br />
+          {tarifa && tarifa.equipo.nombreGrupo}
+        </Link>
       </td>
       <td>{tarifa.cantidad}</td>
       <td>${tarifa.valorTarifa}</td>

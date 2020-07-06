@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./Orden.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import EquiposTable from "./EquiposTable";
 
 function OrdenDetail(props) {
@@ -84,15 +84,29 @@ function OrdenDetail(props) {
         <Col>
           <div className="orden-wrapper">
             <h3 className="page-title-orden">Orden No. {orden._id}</h3>
-            <p className="capitalize">
-              <b>Tercero :</b> {tercero.nombre}{" "}
-            </p>
-            <p className="capitalize">
-              <b>Bodega :</b> {bodega.nombreBodega}
-            </p>
-            <p>
-              <b>Status :</b> {statusOr}{" "}
-            </p>
+            <Row>
+              <Col>
+                <p className="capitalize">
+                  <b>Tercero :</b> {tercero.nombre}{" "}
+                </p>
+                <p className="capitalize">
+                  <b>Bodega :</b> {bodega.nombreBodega}
+                </p>
+              </Col>
+              <Col>
+                <p>
+                  <b>Status :</b> {statusOr}{" "}
+                </p>
+                <p>
+                  <b>Cotizacion :</b>{" "}
+                  <Link
+                    to={`/terceros/${id}/bodegas/${idB}/cotizaciones/${orden.cotizacion}`}
+                  >
+                    {orden.cotizacion}{" "}
+                  </Link>
+                </p>
+              </Col>
+            </Row>
           </div>
         </Col>
       </Row>

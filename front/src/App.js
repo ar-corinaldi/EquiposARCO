@@ -15,6 +15,7 @@ import EquipoDetail from "./components/Equipo/EquipoDetail/EquipoDetail";
 import EquipoCreate from "./components/Equipo/EquipoCreate/EquipoCreate";
 import NotaInventarioCreate from "./components/NotaInventario/NotaInventarioCreate";
 import BodegaCreate from "./components/Bodega/BodegaCreate";
+import CotizacionDetail from "./components/Cotizacion/CotizacionDetail";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -82,6 +83,10 @@ function App() {
                 <Route
                   path="/terceros/:id/bodegas/:idB/ordenes/:idOr"
                   component={OrdenDetail}
+                />
+                <Route
+                  path="/terceros/:id/bodegas/:idB/cotizaciones/:idC"
+                  component={CotizacionDetail}
                 />
                 <Route
                   path="/facturacion/crear_orden"

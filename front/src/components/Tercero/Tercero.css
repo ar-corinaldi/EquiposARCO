@@ -145,3 +145,20 @@ input {
 .eliminarTer:hover {
   opacity: 1;
 }
+
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
+}
+
+.btn:hover {
+  background: #eee;
+}
+
+.nombreBodega {
+  width: 100%;
+  text-align: left;
+}

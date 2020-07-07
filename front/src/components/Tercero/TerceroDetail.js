@@ -61,12 +61,15 @@ function TerceroDetail({ match }) {
             </Row>
             {tercero.bodegas &&
               tercero.bodegas.map((bodega) => (
-                <BodegaDetail
-                  setBodegas={setBodegas}
-                  key={bodega._id}
-                  bodega={bodega}
-                  tercero={tercero}
-                ></BodegaDetail>
+                <React.Fragment key={bodega._id}>
+                  <div>
+                    <BodegaDetail
+                      setBodegas={setBodegas}
+                      bodega={bodega}
+                      tercero={tercero}
+                    ></BodegaDetail>
+                  </div>
+                </React.Fragment>
               ))}
           </div>
         </Col>

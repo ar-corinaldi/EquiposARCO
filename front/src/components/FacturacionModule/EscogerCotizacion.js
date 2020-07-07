@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import EscogerBodega from "./EscogerBodega";
 import BodegaOrdenDetail from "./BodegaOrdenDetail";
+import EscogerCotizacionDetail from "./EscogerCotizacionDetail";
 function EscogerCotizacion(params) {
   const miEstado = params.estadoStepOne;
   const setMiEstado = params.setEstadoStepOne;
@@ -58,50 +59,9 @@ function EscogerCotizacion(params) {
         bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
       ></BodegaOrdenDetail>
       <hr></hr>
-      <h4>Escoja la cotización base para la orden</h4>
-
-      <Accordion defaultActiveKey="0">
-        {cotizaciones.map((item, index) => {
-          return (
-
-            <Card key={index} >
-              <Card.Header>
-              <Accordion.Toggle as={Button} variant="link" eventKey={index}>
-                Down
-              </Accordion.Toggle>
-              <span>{"Cotización con número de contrato: " + item.numeroContrato}</span>
-              </Card.Header>
-              <Accordion.Collapse eventKey={index}>
-                <Card.Body>
-                <ul>
-                {item.tarifasCotizadas.map((item, index) => {
-                  return (
-                    <li key={index}>
-                      {"Tarifa detail colapsable de tarifa con id: " + item._id}
-                    </li>
-                  );
-                })}
-              </ul>
-                </Card.Body>
-              </Accordion.Collapse>
-            </Card>
-            
-            // <li key={index}>
-            //   {"Cotización con número de contrato: " + item.numeroContrato}
-            //   <ul>
-            //     {item.tarifasCotizadas.map((item, index) => {
-            //       return (
-            //         <li key={index}>
-            //           {"Tarifa detail colapsable de tarifa con id: " + item}
-            //         </li>
-            //       );
-            //     })}
-            //   </ul>
-            // </li>
-          );
-        })}
-      </Accordion>
-
+      <EscogerCotizacionDetail
+        bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
+      />
       <button type="button" onClick={changeEstado}>
         Botoncito
       </button>

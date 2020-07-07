@@ -47,7 +47,9 @@ function CrearOrden(props) {
 
   return (
     <div id="create-order-wrapper">
-      <Row>
+      <h2 className="margin-bottom" >Crear Orden</h2>
+      <hr/>
+      <Row >
         <Col align="center" className="col-step">
           <button
             type="button"

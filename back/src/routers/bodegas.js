@@ -53,7 +53,7 @@ router.post("/terceros/:id/bodegas", async (req, res) => {
  */
 router.patch("/terceros/:id/bodegas/:idB", async (req, res) => {
   try {
-    const newBodega = await Bodega.findById(req.params.idB);
+    let newBodega = await Bodega.findById(req.params.idB);
     if (!newBodega) {
       return res.status(404).send("Ninguna bodega coincidio con ese id");
     }
@@ -65,10 +65,14 @@ router.patch("/terceros/:id/bodegas/:idB", async (req, res) => {
     tercero.bodegas.push(newBodega._id);
     await tercero.save();
     console.log("Guarda tercero con bodega");
+    if(!newBodega.duenio){
+      newBodega.duenio = tercero._id;
+      await newBodega.save();
+    }
     res.status(201).send(tercero);
   } catch (e) {
     console.log("Hubo un error");
-    if (newBodega !== undefined) {
+    if (newBodega) {
       console.log("Elimina la bodega");
       // Manejo en caso de que no se agregue la bodega
       Bodega.findByIdAndDelete(newBodega._id);

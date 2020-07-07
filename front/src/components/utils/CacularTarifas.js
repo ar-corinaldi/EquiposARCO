@@ -49,11 +49,11 @@ export default function calcularTarifaCotizacion(tarifas) {
                 const tiempoMinimo = tarifa.precioReferencia.tiempoMinimo;
                 const medidaTiempo = tarifa.precioReferencia.tiempo;
                 if(medidaTiempo != "dia habil"){
-                    [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo);
+                    let [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo);
 
                 }
                 else{
-                    [precioTotal, diasTotales, festivosEnMedio] = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
+                    let [precioTotal, diasTotales, festivosEnMedio] = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
                 }
             }
         })

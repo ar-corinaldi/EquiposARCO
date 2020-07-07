@@ -29,7 +29,7 @@ router.post("/terceros", async (req, res) => {
   const tercero = new Tercero(req.body);
   try {
     await tercero.save();
-    tercero.bodegas.forEach( (element) => {
+    tercero.bodegas.forEach( async (element) => {
       let bodega = await Bodega.findById(element._id);
       bodega.duenio = tercero._id;
       await bodega.save();

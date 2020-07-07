@@ -1,14 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-const formatDate = (fecha) => {
-  if (fecha) {
-    const date = new Date(fecha);
-    return `${date.getDate()}/${(
-      date.getMonth() + 1
-    ).toString()}/${date.getFullYear()}`;
-  }
-};
+import formatoFechas from "../utils/FormatoFechas";
 
 function EquipoRow(props) {
   const tarifa = props.tarifa;
@@ -29,7 +21,7 @@ function EquipoRow(props) {
         {tarifa.precioReferencia.categoria} / {tarifa.precioReferencia.tiempo}
       </td>
       <td>
-        {formatDate(tarifa.fechaInicio)}-{formatDate(tarifa.fechaFin)}{" "}
+        {formatoFechas(tarifa.fechaInicio)}-{formatoFechas(tarifa.fechaFin)}{" "}
       </td>
     </tr>
   );

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
+import { FaChevronDown } from "react-icons/fa";
+import { FaChevronUp } from "react-icons/fa";
 
 function BodegaDetail(props) {
   const bodega = props.bodega;
@@ -59,9 +61,14 @@ function BodegaDetail(props) {
       <Row>
         <button className="btn nombreBodega" onClick={toggle}>
           {bodega.nombreBodega}
+          {open ? (
+            <FaChevronUp className="icono" />
+          ) : (
+            <FaChevronDown className="icono" />
+          )}
         </button>
       </Row>
-      <Row className={"collapse" + (open ? " in" : "")}>
+      <Row className={"pd12 collapse" + (open ? " in" : "")}>
         <p>
           <strong> Nombre : </strong>
           {capitalize(bodega.nombreBodega || "")}
@@ -83,11 +90,16 @@ function BodegaDetail(props) {
           {bodega.telefono}
         </p>
         <p>
-          <button class="btn" onClick={toggleOrAct}>
-            <strong> Órdenes en curso : </strong>{" "}
+          <button className="btn bodega-collapse" onClick={toggleOrAct}>
+            <strong> Órdenes en curso : </strong>
+            {openOrAct ? (
+              <FaChevronUp className="icono" />
+            ) : (
+              <FaChevronDown className="icono" />
+            )}
           </button>
         </p>
-        <Row className={"collapse" + (openOrAct ? " in" : "")}>
+        <Row className={"pdl-15 collapse" + (openOrAct ? " in" : "")}>
           {bodega.ordenesActuales.map((orden) => (
             <p key={orden._id}>
               <Link
@@ -106,11 +118,16 @@ function BodegaDetail(props) {
           ))}
         </Row>
         <p>
-          <button class="btn" onClick={toggleOrPas}>
+          <button className="btn bodega-collapse" onClick={toggleOrPas}>
             <strong> Órdenes finalizadas : </strong>{" "}
+            {openOrPas ? (
+              <FaChevronUp className="icono" />
+            ) : (
+              <FaChevronDown className="icono" />
+            )}
           </button>
         </p>
-        <Row className={"collapse" + (openOrPas ? " in" : "")}>
+        <Row className={"pdl-15 collapse" + (openOrPas ? " in" : "")}>
           {bodega.ordenesPasadas.map((orden) => (
             <p key={orden._id}>
               <Link
@@ -128,10 +145,17 @@ function BodegaDetail(props) {
             </p>
           ))}
         </Row>
-        <button class="btn" onClick={toggleCot}>
-          <strong> Cotizaciones : </strong>{" "}
-        </button>
-        <Row className={"collapse" + (openCot ? " in" : "")}>
+        <p>
+          <button className="btn bodega-collapse" onClick={toggleCot}>
+            <strong> Cotizaciones : </strong>{" "}
+            {openCot ? (
+              <FaChevronUp className="icono" />
+            ) : (
+              <FaChevronDown className="icono" />
+            )}
+          </button>
+        </p>
+        <Row className={"pdl-15 collapse" + (openCot ? " in" : "")}>
           {bodega.cotizaciones.map((coti) => (
             <p key={coti._id}>
               <Link

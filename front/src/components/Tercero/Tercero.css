@@ -154,11 +154,32 @@ input {
   display: block;
 }
 
-.btn:hover {
-  background: #eee;
-}
-
 .nombreBodega {
   width: 100%;
   text-align: left;
+}
+
+.pd12 {
+  padding: 12px;
+}
+
+.icono {
+  float: right;
+  margin-right: 10px;
+  margin-top: 6px;
+}
+
+/* .icono:hover {
+  background: #eee;
+} */
+
+.bodega-collapse {
+  padding: 0px;
+  color: #6c757d;
+  width: 100%;
+  text-align: left;
+}
+
+.pdl-15 {
+  padding-left: 15px;
 }

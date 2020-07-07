@@ -5,7 +5,7 @@ const router = new express.Router();
 /**
  *  Post de proovedor
  */
-router.post("", async (req, res) => {
+router.post("/proveedores", async (req, res) => {
   const proveedor = new Proveedor(req.body);
   try {
     await proveedor.save();
@@ -18,7 +18,7 @@ router.post("", async (req, res) => {
 /**
  *  Get de proveedores
  */
-router.get("", async (req, res) => {
+router.get("/proveedores", async (req, res) => {
   try {
     const proveedores = await Proveedor.find({});
     res.send(proveedores);
@@ -30,7 +30,7 @@ router.get("", async (req, res) => {
 /**
  *  Get de proveedor por su id
  */
-router.get("/:id", async (req, res) => {
+router.get("/proveedores/:id", async (req, res) => {
   try {
     const proveedor = await Proveedor.findById(req.params.id);
     if (!proveedor) {
@@ -45,7 +45,7 @@ router.get("/:id", async (req, res) => {
 /**
  *  Modifica un proveedor
  */
-router.patch("/:id", async (req, res) => {
+router.patch("/proveedores/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
   try {
     if (!Proveedor.fieldsNotAllowedUpdates(req.body)) {
@@ -73,7 +73,7 @@ router.patch("/:id", async (req, res) => {
 /**
  * Elimina un proveedor
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/proveedores/:id", async (req, res) => {
   try {
     const proveedor = await Proveedor.findByIdAndDelete(req.params.id);
     if (!proveedor) {

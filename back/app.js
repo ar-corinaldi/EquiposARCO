@@ -22,6 +22,7 @@ const ordenesRouter = require("./src/routers/ordenes");
 const tarifasRouter = require("./src/routers/tarifas");
 const cotizacionesRouter = require("./src/routers/cotizaciones");
 const notasInventarioRouter = require("./src/routers/notasInventario");
+const proveedoresRouter = require("./src/routers/proveedores");
 
 //Servidor
 const app = express();
@@ -47,4 +48,6 @@ app.use(preciosRouter);
 app.use(empleadosRouter);
 app.use(vehiculosRouter);
 app.use(notasInventarioRouter);
+app.use(proveedoresRouter);
+
 module.exports = app;

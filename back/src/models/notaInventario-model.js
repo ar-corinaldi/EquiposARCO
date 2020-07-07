@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
+const Equipo = require("./equipo-model");
 
 const categoria = ["compra", "venta", "fabricación", "reparación", "daño"];
 
@@ -54,10 +55,39 @@ const notaInventarioSchema = new Schema({
   },
 });
 
+notaInventarioSchema.post("save", async (notaInventario) => {
+  console.log("notaInventario post hook");
+  const { categoria, equipo, cantidad } = notaInventario;
+  const equipoToUpdate = await Equipo.findById(equipo);
+  if (
+    categoria === "compra" ||
+    categoria === "fabricacion" ||
+    categoria === "reparacion"
+  ) {
+    equipoToUpdate.cantidadBodega += cantidad;
+    equipoToUpdate.cantidadTotal += cantidad;
+  } else if (categoria === "venta" || categoria === "daño") {
+    if (
+      !(
+        equipoToUpdate.cantidadBodega - cantidad < 0 &&
+        equipoToUpdate.cantidadTotal < 0
+      )
+    ) {
+      equipoToUpdate.cantidadBodega -= cantidad;
+      equipoToUpdate.cantidadTotal -= cantidad;
+    }
+  }
+  await Equipo.findByIdAndUpdate(equipo, equipoToUpdate, {
+    new: true,
+    runValidators: true,
+  });
+  console.log("Actualiza equipo");
+});
+
 const NotaInventario = mongoose.model("NotaInventario", notaInventarioSchema);
 
-// // Arreglo de los campos que no se pueden modificar
-const noUpdatable = ["fecha", "__v"];
+// Arreglo de los campos que no se pueden modificar
+const noUpdatable = ["fecha", "__v", "proveedor", "equipo"];
 
 /**
  * Funcion para revisar que las modificiaciones son validas

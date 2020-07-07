@@ -1,14 +1,13 @@
 import React from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function NotaInventarioRow(props) {
-  const { url } = useRouteMatch();
   const { notaInventario } = props;
   return (
     <React.Fragment>
       <tr>
         <td>
-          <Link to={`${url}/${notaInventario.equipo._id}`}>
+          <Link to={`/inventario/equipos/${notaInventario.equipo._id}`}>
             {notaInventario.equipo.nombreEquipo}
           </Link>
         </td>

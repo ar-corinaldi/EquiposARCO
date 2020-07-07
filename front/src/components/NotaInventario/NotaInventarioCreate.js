@@ -6,9 +6,7 @@ import Modal from "../Modal";
 import EquipoList from "../Equipo/EquipoList/EquipoList";
 import NotaInventarioForm from "./NotaInventarioForm";
 import withEquipoList from "../Equipo/EquipoList/withEquipoList";
-import withFormHandling from "../withFormHandling";
 import { useHistory } from "react-router-dom";
-const categorias = ["", "compra", "venta", "fabricación", "reparación", "daño"];
 
 function NotaInventarioCreate(props) {
   const [showEquipo, setShowEquipo] = useState(false);
@@ -17,6 +15,7 @@ function NotaInventarioCreate(props) {
     descripcion: "",
     cantidad: "",
     categoria: "",
+    proveedor: undefined,
   });
   const [equipo, setEquipo] = useState({});
   const [orden, setOrden] = useState({});
@@ -24,7 +23,6 @@ function NotaInventarioCreate(props) {
 
   const submit = async (e) => {
     e.preventDefault();
-    console.log(notaInventario);
     const newNotaInventario = notaInventario;
     newNotaInventario.equipo = equipo._id;
     newNotaInventario.order = orden._id;

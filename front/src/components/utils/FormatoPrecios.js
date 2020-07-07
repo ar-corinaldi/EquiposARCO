@@ -1,13 +1,8 @@
 /**
- * @param {} fecha a convertir.
+ * @param {amount,decimalCount,decimal,thousands} monto a convertir, la cantidad de decimales, simbolo separacion decimales y de miles
  * Recibe un string con el valor en pesos sin el signo de $
- * Entrega un string en formato: dd/mm/aa
+ * Entrega un string en formato: $ xxx,xxx.xx
  */
-var formatter = new Intl.NumberFormat(undefined, {
-  style: "currency",
-  currency: "COP",
-});
-
 function formatoPrecios(
   amount,
   decimalCount = 2,

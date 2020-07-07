@@ -8,6 +8,11 @@ const cotizacionSchema = new Schema({
     required: true,
     lowercase: true,
   },
+  precioTotal: {
+    type: Number,
+    trim: true,
+    required: true
+  },
   tarifasCotizadas: [
     {
       type: mongoose.Schema.Types.ObjectId,

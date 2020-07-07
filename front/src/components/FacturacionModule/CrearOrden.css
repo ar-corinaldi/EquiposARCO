@@ -14,6 +14,14 @@
   /* height: 60px; */
 }
 
+.margin-top{
+  margin-top: 4%;
+}
+
+.margin-bottom{
+  margin-bottom: 2.5% ;
+}
+
 .col.col-step {
   padding: 0px;
 }

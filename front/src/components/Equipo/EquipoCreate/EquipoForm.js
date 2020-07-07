@@ -56,6 +56,7 @@ const nombresGrupo = [
   "grua",
   "herramienta",
   "hidrolavadora",
+  "mezcladora",
   "minicargadora",
   "motobomba",
   "motor b&s",
@@ -83,74 +84,72 @@ function EquipoForm(props) {
   const { fields, handleChange } = props;
   return (
     <React.Fragment>
-      <Col md="auto">
-        <div className="form-group">
-          <label htmlFor="nombreEquipo">Nombre Equipo:</label>
-          <input
-            name="nombreEquipo"
-            type="text"
-            value={fields.nombreEquipo}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="tipoEquipo">Tipo Equipo:</label>
-          <select
-            name="tipoEquipo"
-            value={fields.tipoEquipo}
-            onChange={handleChange}
-          >
-            {tiposEquipo.map((tipoEquipo) => (
-              <option key={tipoEquipo} value={tipoEquipo}>
-                {tipoEquipo.length > 0
-                  ? tipoEquipo[0].toUpperCase() + tipoEquipo.slice(1)
-                  : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="nombreFamilia">Familia Grupo:</label>
-          <select
-            name="nombreFamilia"
-            value={fields.nombreFamilia}
-            onChange={handleChange}
-          >
-            {nombresFamilia.map((nombreFamilia) => (
-              <option key={nombreFamilia} value={nombreFamilia}>
-                {nombreFamilia.length > 0
-                  ? nombreFamilia[0].toUpperCase() + nombreFamilia.slice(1)
-                  : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="nombreGrupo">Nombre Grupo:</label>
-          <select
-            name="nombreGrupo"
-            value={fields.nombreGrupo}
-            onChange={handleChange}
-          >
-            {nombresGrupo.map((nombreGrupo) => (
-              <option key={nombreGrupo} value={nombreGrupo}>
-                {nombreGrupo.length > 0
-                  ? nombreGrupo[0].toUpperCase() + nombreGrupo.slice(1)
-                  : ""}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="codigo">Código:</label>
-          <input
-            name="codigo"
-            type="text"
-            value={fields.codigo}
-            onChange={handleChange}
-          />
-        </div>
-      </Col>
+      <div className="form-group">
+        <label htmlFor="tipoEquipo">Tipo Equipo:</label>
+        <select
+          name="tipoEquipo"
+          value={fields.tipoEquipo}
+          onChange={handleChange}
+        >
+          {tiposEquipo.map((tipoEquipo) => (
+            <option key={tipoEquipo} value={tipoEquipo}>
+              {tipoEquipo.length > 0
+                ? tipoEquipo[0].toUpperCase() + tipoEquipo.slice(1)
+                : ""}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="nombreFamilia">Familia Grupo:</label>
+        <select
+          name="nombreFamilia"
+          value={fields.nombreFamilia}
+          onChange={handleChange}
+        >
+          {nombresFamilia.map((nombreFamilia) => (
+            <option key={nombreFamilia} value={nombreFamilia}>
+              {nombreFamilia.length > 0
+                ? nombreFamilia[0].toUpperCase() + nombreFamilia.slice(1)
+                : ""}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="nombreGrupo">Nombre Grupo:</label>
+        <select
+          name="nombreGrupo"
+          value={fields.nombreGrupo}
+          onChange={handleChange}
+        >
+          {nombresGrupo.map((nombreGrupo) => (
+            <option key={nombreGrupo} value={nombreGrupo}>
+              {nombreGrupo.length > 0
+                ? nombreGrupo[0].toUpperCase() + nombreGrupo.slice(1)
+                : ""}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="nombreEquipo">Nombre Equipo:</label>
+        <input
+          name="nombreEquipo"
+          type="text"
+          value={fields.nombreEquipo}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="codigo">Código:</label>
+        <input
+          name="codigo"
+          type="text"
+          value={fields.codigo}
+          onChange={handleChange}
+        />
+      </div>
     </React.Fragment>
   );
 }

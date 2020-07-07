@@ -61,6 +61,7 @@ const nombresGrupo = [
   "grua",
   "herramienta",
   "hidrolavadora",
+  "mezcladora",
   "minicargadora",
   "motobomba",
   "motor b&s",

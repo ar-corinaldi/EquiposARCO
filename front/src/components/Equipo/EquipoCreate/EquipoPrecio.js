@@ -4,6 +4,7 @@ import Modal from "../../Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import Table from "react-bootstrap/Table";
 import "./EquipoCreate.css";
 
 function EquipoPrecioForm(props) {
@@ -47,10 +48,22 @@ function EquipoPrecioForm(props) {
       {precios.map((precio, index) => (
         <ul className="list-items-form">
           <li>
-            Aqui hay un precio
-            <button className="m-2" onClick={(e) => handleRemove(e, index)}>
-              -
-            </button>
+            <Col>
+              <Table>
+                <thead>
+                  <tr>
+                    <td>Valor Venta: {precio.valorVenta}</td>
+                    <td>Valor Alquiler: {precio.valorAlquiler}</td>
+                    <td>Categoria: {precio.categoria}</td>
+                    <td>Tiempo: {precio.tiempo}</td>
+                    <td>Tiempo Minimo: {precio.tiempoMinimo}</td>
+                  </tr>
+                </thead>
+              </Table>
+              <button className="m-2" onClick={(e) => handleRemove(e, index)}>
+                -
+              </button>
+            </Col>
           </li>
         </ul>
       ))}

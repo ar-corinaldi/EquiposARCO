@@ -5,17 +5,22 @@ import { useHistory } from "react-router-dom";
 import EquipoForm from "./EquipoForm";
 import EquipoComponente from "./EquipoComponente";
 import EquipoPrecio from "./EquipoPrecio";
-import EquipoNotaInventario from "./EquipoNotaInventario";
+import NotaInventarioForm from "../../NotaInventario/NotaInventarioForm";
 import withFormHandling from "../../withFormHandling";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 
 function EquipoCreate(props) {
   const [componentes, setComponentes] = useState([]);
   const [precios, setPrecios] = useState([]);
-  const [notaInventario, setNotaInventario] = useState({});
+  const [notaInventario, setNotaInventario] = useState({
+    descripcion: "",
+    cantidad: "",
+    categoria: "",
+  });
   const [error, setError] = useState(null);
   const { handleChange, fields } = props;
   const history = useHistory();
@@ -43,64 +48,72 @@ function EquipoCreate(props) {
         },
       };
       console.log(fields);
-      // const res = await fetch(props.formAction, optionsEquipo);
-      // const equipoPost = await res.json();
-      // console.log("El equipo posteado", equipoPost);
+      console.log(notaInventario);
+      const resEquipo = await fetch(props.formAction, optionsEquipo);
+      const equipoPost = await resEquipo.json();
       // Agrego la nota de inventario a la base de datos con el _id de l equipo
-      // const newNotaInventario = notaInventario;
-      // newNotaInventario.equipo = equipoPost._id;
-      // setNotaInventario(newNotaInventario);
-      // console.log(notaInventario);
-      // const optionsNotaInventario = {
-      // method: "POST",
-      // body: JSON.stringify(notaInventario),
-      // headers: {
-      // "Content-Type": "application/json",
-      // },
-      // };
+      const newNotaInventario = notaInventario;
+      newNotaInventario.equipo = equipoPost._id;
+      setNotaInventario(newNotaInventario);
+      console.log(newNotaInventario);
+      const optionsNotaInventario = {
+        method: "POST",
+        body: JSON.stringify(notaInventario),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-      // const res = await fetch("notasInventario", optionsNotaInventario);
-      // const notaInventario = await
-      // history.push(`equipos/${equipoPost._id}`);
+      const resInventario = await fetch(
+        "/notasInventario",
+        optionsNotaInventario
+      );
+      history.push(`equipos/${equipoPost._id}`);
     } catch (e) {}
   };
   return (
-    <form onSubmit={handleSubmitPOSTEquipo}>
+    <Container>
       <Row>
-        <EquipoForm
-          formAction={props.formAction}
-          fields={fields}
-          handleChange={handleChange}
-        />
-        <Col md="auto">
+        <form onSubmit={handleSubmitPOSTEquipo}>
           <Row>
-            <EquipoComponente
-              setComponentes={setComponentes}
-              componentes={componentes}
-            />
+            <Col>
+              <EquipoForm
+                formAction={props.formAction}
+                fields={fields}
+                handleChange={handleChange}
+              />
+            </Col>
+            <Col md="auto">
+              <Row>
+                <EquipoComponente
+                  setComponentes={setComponentes}
+                  componentes={componentes}
+                />
+              </Row>
+              <Row>
+                <EquipoPrecio precios={precios} setPrecios={setPrecios} />
+              </Row>
+            </Col>
           </Row>
           <Row>
-            <EquipoPrecio precios={precios} setPrecios={setPrecios} />
+            <Col>
+              <NotaInventarioForm
+                fields={notaInventario}
+                setFields={setNotaInventario}
+              />
+            </Col>
           </Row>
-        </Col>
+          <Row>
+            <Col>
+              <button type="submit" onClick={() => setError(null)}>
+                Crear
+              </button>
+              {error}
+            </Col>
+          </Row>
+        </form>
       </Row>
-      <Row>
-        <Col>
-          <EquipoNotaInventario
-            notaInventario={notaInventario}
-            setNotaInventario={setNotaInventario}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <button type="submit" onClick={() => setError(null)}>
-            Crear
-          </button>
-          {error}
-        </Col>
-      </Row>
-    </form>
+    </Container>
   );
 }
 

@@ -1,11 +1,11 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
-import withFormHandling from "../../withFormHandling";
+import withFormHandling from "../withFormHandling";
 
 const categorias = ["", "compra", "venta", "fabricación", "reparación", "daño"];
-function EquipoNotaInventario(props) {
-  const { fields, handleChange } = props;
 
+function NotaInventarioForm(props) {
+  const { fields, handleChange } = props;
   return (
     <React.Fragment>
       <Row>
@@ -56,4 +56,4 @@ function EquipoNotaInventario(props) {
   );
 }
 
-export default withFormHandling(EquipoNotaInventario);
+export default withFormHandling(NotaInventarioForm);

@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Modal from "../Modal";
 import EquipoList from "../Equipo/EquipoList/EquipoList";
+import NotaInventarioForm from "./NotaInventarioForm";
 import withEquipoList from "../Equipo/EquipoList/withEquipoList";
 import withFormHandling from "../withFormHandling";
 import { useHistory } from "react-router-dom";
@@ -12,28 +13,32 @@ const categorias = ["", "compra", "venta", "fabricación", "reparación", "daño
 function NotaInventarioCreate(props) {
   const [showEquipo, setShowEquipo] = useState(false);
   const [showOrden, setShowOrden] = useState(false);
+  const [notaInventario, setNotaInventario] = useState({
+    descripcion: "",
+    cantidad: "",
+    categoria: "",
+  });
   const [equipo, setEquipo] = useState({});
   const [orden, setOrden] = useState({});
   const history = useHistory();
 
-  const { fields, handleChange, formAction } = props;
-
   const submit = async (e) => {
     e.preventDefault();
-    console.log(fields);
-    fields.equipo = equipo._id;
-    fields.order = orden._id;
+    console.log(notaInventario);
+    const newNotaInventario = notaInventario;
+    newNotaInventario.equipo = equipo._id;
+    newNotaInventario.order = orden._id;
     const options = {
       method: "POST",
-      body: JSON.stringify(fields),
+      body: JSON.stringify(newNotaInventario),
       headers: {
         "Content-Type": "application/json",
       },
     };
-    const res = await fetch(formAction, options);
-    const newNotaInventario = await res.json();
+    const res = await fetch("/notasInventario", options);
+    const notaInventarioPost = await res.json();
     history.push(
-      `/inventario/listar_notas_de_inventario/${newNotaInventario._id}`
+      `/inventario/listar_notas_de_inventario/${notaInventarioPost._id}`
     );
   };
 
@@ -64,50 +69,10 @@ function NotaInventarioCreate(props) {
           <Card>
             <Card.Body>
               <form onSubmit={submit}>
-                <Row>
-                  <div className="group-form">
-                    Descripción:
-                    <textarea
-                      name="descripcion"
-                      value={fields.descripcion}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </Row>
-                <Row>
-                  <div className="group-form">
-                    <label htmlFor="cantidad">Cantidad:</label>
-                    <input
-                      name="cantidad"
-                      value={fields.cantidad}
-                      onChange={handleChange}
-                      type="text"
-                      required
-                    />
-                  </div>
-                </Row>
-                <Row>
-                  <div className="group-form">
-                    <label className="ml-2" htmlFor="categoria">
-                      Categoria:
-                    </label>
-                    <select
-                      name="categoria"
-                      value={fields.categoria}
-                      onChange={handleChange}
-                      required
-                    >
-                      {categorias.map((categoria) => (
-                        <option key={categoria} value={categoria}>
-                          {categoria.length > 0
-                            ? categoria[0].toUpperCase() + categoria.slice(1)
-                            : ""}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </Row>
+                <NotaInventarioForm
+                  fields={notaInventario}
+                  setFields={setNotaInventario}
+                />
                 <Row>
                   <div className="group-form">
                     <Modal
@@ -160,4 +125,4 @@ function NotaInventarioCreate(props) {
   );
 }
 
-export default withFormHandling(NotaInventarioCreate);
+export default NotaInventarioCreate;

@@ -15,6 +15,9 @@ const withFormHandling = (FormComponent) => (props) => {
     // setState({ fields, errors });
     newFields[name] = value;
     setFields(newFields);
+    if (props.setFields) {
+      props.setFields(newFields);
+    }
   };
 
   /**

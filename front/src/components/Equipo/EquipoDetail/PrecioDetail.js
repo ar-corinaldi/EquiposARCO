@@ -1,20 +1,17 @@
 import React from "react";
 
 function PrecioDetail(props) {
-  const bodies = [];
-  let counter = 0;
-  for (const header in props.precio) {
-    if (
-      !props.hideFields.includes(header) &&
-      props.precio.hasOwnProperty(header)
-    ) {
-      let element = props.precio[header];
-      if (element === -1) element = 0;
-      bodies.push(<td key={`element-${element}-${counter + 1}`}>{element}</td>);
-      counter++;
-    }
-  }
-  return <tr>{bodies}</tr>;
+  const { precio } = props;
+  return (
+    <tr>
+      <td>{precio.valorVenta === -1 ? 0 : precio.valorVenta}</td>
+      <td>{precio.valorAlquiler === -1 ? 0 : precio.valorAlquiler}</td>
+      <td>
+        {precio.categoria} / {precio.tiempo}
+      </td>
+      <td>{precio.tiempoMinimo <= 0 ? "No hay" : precio.tiempoMinimo}</td>
+    </tr>
+  );
 }
 
 export default PrecioDetail;

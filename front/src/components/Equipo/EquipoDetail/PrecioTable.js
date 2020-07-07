@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
 import PrecioDetail from "./PrecioDetail";
-import PrecioHeader from "./PrecioHeader";
 
 function PrecioTable(props) {
   const [hideFields] = useState(["__v", "_id"]);
@@ -11,7 +10,12 @@ function PrecioTable(props) {
   return (
     <Table>
       <thead>
-        <PrecioHeader precio={props.precios[0]} hideFields={hideFields} />
+        <tr>
+          <th>Valor Venta</th>
+          <th>Valor Alquiler</th>
+          <th>Tipo Cobro</th>
+          <th>Tiempo Minimo</th>
+        </tr>
       </thead>
       <tbody>
         {props.precios.map((precio) => (

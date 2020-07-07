@@ -6,10 +6,28 @@ function BodegaDetail(props) {
   const bodega = props.bodega;
   const tercero = props.tercero;
   const [open, setOpen] = useState(false);
+  const [openOrAct, setOpenOrAct] = useState(false);
+  const [openOrPas, setOpenOrPas] = useState(false);
+  const [openCot, setOpenCot] = useState(false);
 
   const toggle = () => {
-    console.log(open);
+    //console.log(open);
     setOpen(!open);
+  };
+
+  const toggleOrAct = () => {
+    //console.log(open);
+    setOpenOrAct(!openOrAct);
+  };
+
+  const toggleOrPas = () => {
+    //console.log(open);
+    setOpenOrPas(!openOrPas);
+  };
+
+  const toggleCot = () => {
+    //console.log(open);
+    setOpenCot(!openCot);
   };
 
   const eliminarBodega = async () => {
@@ -65,65 +83,77 @@ function BodegaDetail(props) {
           {bodega.telefono}
         </p>
         <p>
-          <strong> Órdenes en curso : </strong>
+          <button class="btn" onClick={toggleOrAct}>
+            <strong> Órdenes en curso : </strong>{" "}
+          </button>
         </p>
-        {bodega.ordenesActuales.map((orden) => (
-          <p key={orden._id}>
-            <Link
-              to={
-                "/terceros/" +
-                tercero._id +
-                "/bodegas/" +
-                bodega._id +
-                "/ordenes/" +
-                orden._id
-              }
-            >
-              {orden._id}
-            </Link>
-          </p>
-        ))}
+        <Row className={"collapse" + (openOrAct ? " in" : "")}>
+          {bodega.ordenesActuales.map((orden) => (
+            <p key={orden._id}>
+              <Link
+                to={
+                  "/terceros/" +
+                  tercero._id +
+                  "/bodegas/" +
+                  bodega._id +
+                  "/ordenes/" +
+                  orden._id
+                }
+              >
+                {orden._id}
+              </Link>
+            </p>
+          ))}
+        </Row>
         <p>
-          <strong> Órdenes finalizadas : </strong>
+          <button class="btn" onClick={toggleOrPas}>
+            <strong> Órdenes finalizadas : </strong>{" "}
+          </button>
         </p>
-        {bodega.ordenesPasadas.map((orden) => (
-          <p key={orden._id}>
-            <Link
-              to={
-                "/terceros/" +
-                tercero._id +
-                "/bodegas/" +
-                bodega._id +
-                "/ordenes/" +
-                orden._id
-              }
-            >
-              {orden._id}
-            </Link>
-          </p>
-        ))}
-        <p>
-          <strong> Cotizaciones : </strong>
-        </p>
-        {bodega.cotizaciones.map((coti) => (
-          <p key={coti._id}>
-            <Link
-              to={
-                "/terceros/" +
-                tercero._id +
-                "/bodegas/" +
-                bodega._id +
-                "/cotizaciones/" +
-                coti._id
-              }
-            >
-              {coti._id}
-            </Link>
-          </p>
-        ))}
-        <button onClick={eliminarBodega} className="eliminarBodega">
-          Eliminar Bodega
+        <Row className={"collapse" + (openOrPas ? " in" : "")}>
+          {bodega.ordenesPasadas.map((orden) => (
+            <p key={orden._id}>
+              <Link
+                to={
+                  "/terceros/" +
+                  tercero._id +
+                  "/bodegas/" +
+                  bodega._id +
+                  "/ordenes/" +
+                  orden._id
+                }
+              >
+                {orden._id}
+              </Link>
+            </p>
+          ))}
+        </Row>
+        <button class="btn" onClick={toggleCot}>
+          <strong> Cotizaciones : </strong>{" "}
         </button>
+        <Row className={"collapse" + (openCot ? " in" : "")}>
+          {bodega.cotizaciones.map((coti) => (
+            <p key={coti._id}>
+              <Link
+                to={
+                  "/terceros/" +
+                  tercero._id +
+                  "/bodegas/" +
+                  bodega._id +
+                  "/cotizaciones/" +
+                  coti._id
+                }
+              >
+                {coti._id}
+              </Link>
+            </p>
+          ))}
+        </Row>
+        <Row>
+          <button onClick={eliminarBodega} className="eliminarBodega">
+            Eliminar Bodega
+          </button>
+        </Row>
       </Row>
     </div>
   );

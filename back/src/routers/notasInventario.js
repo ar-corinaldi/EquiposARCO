@@ -3,9 +3,41 @@ const NotaInventario = require("../models/notaInventario-model");
 const router = new express.Router();
 
 /**
+ * Cantidad de documentos que hay en notasInventario
+ */
+router.get("/notasInventario/cantidad", async (req, res) => {
+  try {
+    const count = await NotaInventario.estimatedDocumentCount();
+    console.log("count", count);
+    res.send(count + "");
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+/**
+ *  Get de notas de inventario paginacion
+ */
+router.get("/notasInventario/:page/:elementsPerPage", async (req, res) => {
+  try {
+    const page = parseInt(req.params.page);
+    const elementsPerPage = parseInt(req.params.elementsPerPage);
+    const notaInventario = await NotaInventario.find({})
+      .populate("equipo")
+      .populate("orden")
+      .limit(elementsPerPage)
+      .skip((page - 1) * elementsPerPage);
+    res.send(notaInventario);
+  } catch (e) {
+    res.status(400).send("");
+    console.error("error", e);
+  }
+});
+
+/**
  *  Post de notas
  */
-router.post("", async (req, res) => {
+router.post("/notasInventario", async (req, res) => {
   const nota = new NotaInventario(req.body);
   try {
     await nota.save();
@@ -18,7 +50,7 @@ router.post("", async (req, res) => {
 /**
  *  Get de notas
  */
-router.get("", async (req, res) => {
+router.get("/notasInventario", async (req, res) => {
   try {
     const notas = await NotaInventario.find({});
     res.send(notas);
@@ -32,7 +64,7 @@ router.get("", async (req, res) => {
 /**
  *  Get de notas por su id
  */
-router.get("/:id", async (req, res) => {
+router.get("/notasInventario/:id", async (req, res) => {
   try {
     const nota = await NotaInventario.findById(req.params.id);
     if (!nota) {
@@ -49,7 +81,7 @@ router.get("/:id", async (req, res) => {
 /**
  *  Modifica una nota
  */
-router.patch("/:id", async (req, res) => {
+router.patch("/notasInventario/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
   try {
     if (!NotaInventario.fieldsNotAllowedUpdates(req.body)) {
@@ -81,7 +113,7 @@ router.patch("/:id", async (req, res) => {
 /**
  * Elimina una nota
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/notasInventario/:id", async (req, res) => {
   try {
     const nota = await NotaInventario.findByIdAndDelete(req.params.id);
     if (!nota) {

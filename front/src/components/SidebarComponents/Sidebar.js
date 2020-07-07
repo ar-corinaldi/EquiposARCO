@@ -29,13 +29,23 @@ function Sidebar(props) {
     },
     {
       type: "Link",
-      name: "Añadir Equipo",
+      name: "Listar Equipos",
+      ref: "/equipos",
+    },
+    {
+      type: "Link",
+      name: "Crear Equipo",
       ref: "/crearEquipo",
     },
     {
       type: "Link",
-      name: "Listar Equipos",
-      ref: "/equipos",
+      name: "Listar Notas de Inventario",
+      ref: "/listar_notas_de_inventario",
+    },
+    {
+      type: "Link",
+      name: "Crear Nota Inventario",
+      ref: "/crearNotaInventario",
     },
   ];
 

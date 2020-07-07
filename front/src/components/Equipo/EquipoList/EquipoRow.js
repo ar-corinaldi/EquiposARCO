@@ -1,22 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
+import { ContextEquipoList } from "./withEquipoList";
+
 function EquipoRow(props) {
   const { url } = useRouteMatch();
-
+  const handleClickEquipo = useContext(ContextEquipoList);
   return (
     <React.Fragment>
       <tr>
         <td>
-          {props.setComponentes ? (
-            <Link
-              to="/inventario/crearEquipo"
-              onClick={() =>
-                props.setComponentes((prev) => [
-                  ...prev,
-                  { cantidad: 0, equipo: props.equipo },
-                ])
-              }
-            >
+          {handleClickEquipo ? (
+            <Link to={url} onClick={() => handleClickEquipo(props.equipo)}>
               {props.equipo.nombreEquipo}
             </Link>
           ) : (

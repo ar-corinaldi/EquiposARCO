@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import EquipoComponenteForm from "./EquipoComponenteForm";
-import EquipoModalBuscar from "./EquipoModalBuscar";
+import React from "react";
 import Col from "react-bootstrap/Col";
 
 const tiposEquipo = [
@@ -82,19 +80,7 @@ const nombresGrupo = [
 ];
 
 function EquipoForm(props) {
-  const { fields, handleChange, componentes, setComponentes } = props;
-  const [show, setShow] = useState(false);
-  const handleShow = (e) => {
-    e.preventDefault();
-    setShow(true);
-  };
-
-  const handleRemove = (e) => {
-    e.preventDefault();
-    setComponentes((prev) =>
-      prev.filter((val, index) => index !== prev.length - 1)
-    );
-  };
+  const { fields, handleChange } = props;
   return (
     <React.Fragment>
       <Col md="auto">
@@ -164,22 +150,6 @@ function EquipoForm(props) {
             onChange={handleChange}
           />
         </div>
-      </Col>
-      <Col md="auto">
-        Componentes del Equipo
-        <EquipoModalBuscar
-          show={show}
-          setShow={setShow}
-          setComponentes={setComponentes}
-          componentes={componentes}
-        />
-        <EquipoComponenteForm
-          setComponentes={setComponentes}
-          componentes={componentes}
-        />
-        <button className="m-2" onClick={handleShow}>
-          Agregar
-        </button>
       </Col>
     </React.Fragment>
   );

@@ -1,7 +1,8 @@
 const express = require("express");
 const Precio = require("../models/precio-model");
-const Equipo = require("../models/equipo-model");
+const Orden = require("../models/orden-model");
 const Tarifa = require("../models/tarifa-model");
+const Cotizacion = require("../models/cotizacion-model");
 
 const router = new express.Router();
 
@@ -13,44 +14,141 @@ const router = new express.Router();
  * Crea una tarifa nueva a una cotizacion
  */
 router.post("/cotizaciones/:id/tarifasCotizadas", async (req, res) => {
+  let newTarifa = undefined;
   try {
+    newTarifa = new Tarifa(req.body);
     const cotizacion = await Cotizacion.findById(req.params.id);
-    const tarifa = new Tarifa(req.body);
-    await tarifa.save();
-
-    cotizacion.tarifasCotizadas.push(tarifa._id);
-    await cotizacion.save();
-  } catch (error) {
-    if (tarifa !== undefined) {
-      Tarifa.findByIdAndDelete(tarifa._id);
+    console.log("Encuentra cotizacion", cotizacion);
+    if (!cotizacion) {
+      return res.status(404).send("Ninguna cotizacion coincidio con ese id");
     }
+    await newTarifa.save();
+    console.log("Agrega tarifa");
+    cotizacion.tarifasCotizadas.push(newTarifa._id);
+    await cotizacion.save();
+    console.log("Guarda cotizacion con tarifa");
+    res.status(201).send(cotizacion);
+  } catch (e) {
+    console.log("Hubo un error");
+    if (newTarifa !== undefined) {
+      console.log("Elimina la tarifa");
+      // Manejo en caso de que no se agregue la bodega
+      Tarifa.findByIdAndDelete(newTarifa._id);
+    }
+    res.status(400).send("No se pudo agregar la tarifa a la cotizacion " + e);
+    console.error("error", e);
   }
 });
 
 /**
  * Agrega una tarifa existente a una cotizacion
  */
-router.patch(
-  "/cotizaciones/:id/tarifasCotizadas/:idTarifa",
-  async (req, res) => {
-    try {
-      const cotizacion = await Cotizacion.findById(req.params.id);
-      if (!cotizacion) {
-        return res.status(404).send("Ninguna cotizacion coincidio con ese id");
-      }
-      const tarifa = await Tarifa.findById(req.params.idTarifa);
-      if (!tarifa) {
-        return res.status(404).send("Ninguna tarifa coincidio con ese id");
-      }
-      cotizacion.tarifasCotizadas.push(tarifa._id);
-      await cotizacion.save();
-      res.json(cotizacion);
-    } catch (e) {
-      res.status(400).send(e);
-      console.error("error", e);
+router.patch("/cotizaciones/:id/tarifasCotizadas/:idT", async (req, res) => {
+  try {
+    const newTarifa = await Tarifa.findById(req.params.idT);
+    if (!newTarifa) {
+      return res.status(404).send("Ninguna tarifa coincidio con ese id");
     }
+    const cotizacion = await Cotizacion.findById(req.params.id);
+    if (!cotizacion) {
+      return res.status(404).send("Ninguna cotizacion coincidio con ese id");
+    }
+    console.log("Existe la cotizacion y la tarifa");
+    cotizacion.tarifasCotizadas.push(newTarifa._id);
+    await cotizacion.save();
+    console.log("Guarda cotizacion con tarifa");
+    res.status(201).send(cotizacion);
+  } catch (e) {
+    console.log("Hubo un error");
+    res.status(400).send("No se pudo agregar la tarifa a la cotizacion " + e);
+    console.error("error", e);
   }
-);
+});
+
+/**
+ *  Poblar los equipos y los precios de todas las tarifas de una cotizacion
+ */
+router.get("/cotizaciones/:idC/tarifasPobladas", async (req, res, next) => {
+  try {
+    const cotizacion = await Cotizacion.findById(req.params.idC)
+      .populate({
+        path: "tarifasCotizadas",
+        populate: {
+          path: "equipo",
+        },
+      })
+      .populate({
+        path: "tarifasCotizadas",
+        populate: {
+          path: "precioReferencia",
+        },
+      });
+    if (!cotizacion) {
+      return res.send("La cotizacion no existe");
+    }
+    res.send(cotizacion);
+    console.log("La cotizacion existe");
+  } catch (e) {
+    res.status(404).send("No se pudo hacer la solicitud " + e);
+  }
+});
+
+/**
+ *  Relacion Orden -> Tarifa
+ */
+
+/**
+ * Agrega una tarifa existente a una orden
+ */
+router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
+  try {
+    const newTarifa = await Tarifa.findById(req.params.idT);
+    if (!newTarifa) {
+      return res.status(404).send("Ninguna tarifa coincidio con ese id");
+    }
+    const orden = await Orden.findById(req.params.id);
+    if (!orden) {
+      return res.status(404).send("Ninguna orden coincidio con ese id");
+    }
+    console.log("Existe la orden y la tarifa");
+    orden.tarifasDefinitivas.push(newTarifa._id);
+    await orden.save();
+    console.log("Guarda orden con tarifa");
+    res.status(201).send(orden);
+  } catch (e) {
+    console.log("Hubo un error");
+    res.status(400).send("No se pudo agregar la tarifa a la orden " + e);
+    console.error("error", e);
+  }
+});
+
+/**
+ *  Poblar los equipos y los precios de todas las tarifas de una orden
+ */
+router.get("/ordenes/:idOr/tarifasPobladas", async (req, res, next) => {
+  try {
+    const orden = await Orden.findById(req.params.idOr)
+      .populate({
+        path: "tarifasDefinitivas",
+        populate: {
+          path: "equipo",
+        },
+      })
+      .populate({
+        path: "tarifasDefinitivas",
+        populate: {
+          path: "precioReferencia",
+        },
+      });
+    if (!orden) {
+      return res.send("La orden no existe");
+    }
+    res.send(orden);
+    console.log("La orden existe");
+  } catch (e) {
+    res.status(404).send("No se pudo hacer la solicitud " + e);
+  }
+});
 
 /**
  *  TARIFA

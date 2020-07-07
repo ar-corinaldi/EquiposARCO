@@ -14,15 +14,13 @@ function TerceroDetail({ match }) {
 
   useEffect(() => {
     fetchTercero();
-  }, []);
+  }, [bodegas]);
 
   const fetchTercero = async () => {
     const res = await fetch("/terceros/" + params.id);
     const terceroActual = await res.json();
-    console.log(terceroActual);
+    //console.log(terceroActual);
     setTercero(terceroActual);
-    const bodegasAct = terceroActual.bodegas;
-    setBodegas(bodegasAct);
   };
 
   const capitalize = (str, lower = false) =>
@@ -64,16 +62,20 @@ function TerceroDetail({ match }) {
                 <h4 id="titulos">Bodegas</h4>
               </Col>
               <Col id="agregarBodega">
-                <button classname= "buttonTercero" onClick={crearBodega}>Agregar una bodega</button>
+                <button onClick={crearBodega} className="buttonTercero">
+                  Agregar una bodega
+                </button>
               </Col>
             </Row>
-            {bodegas.map((bodega) => (
-              <BodegaDetail
-                key={bodega._id}
-                bodega={bodega}
-                tercero={tercero}
-              ></BodegaDetail>
-            ))}
+            {tercero.bodegas &&
+              tercero.bodegas.map((bodega) => (
+                <BodegaDetail
+                  setBodegas={setBodegas}
+                  key={bodega._id}
+                  bodega={bodega}
+                  tercero={tercero}
+                ></BodegaDetail>
+              ))}
           </div>
         </Col>
         <Col>
@@ -107,6 +109,9 @@ function TerceroDetail({ match }) {
             </p>
           </div>
         </Col>
+      </Row>
+      <Row>
+        <button className="eliminarTer">Eliminar Tercero</button>
       </Row>
     </Container>
   );

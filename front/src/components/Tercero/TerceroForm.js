@@ -125,7 +125,9 @@ function TerceroForm(props) {
           />
         </div>
         <div id="button-wrapper">
-          <button type="submit">Crear</button>
+          <button type="submit" className="buttonTercero">
+            Crear
+          </button>
         </div>
       </form>
     </div>

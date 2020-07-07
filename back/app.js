@@ -21,6 +21,7 @@ const facturasRouter = require("./src/routers/facturas");
 const ordenesRouter = require("./src/routers/ordenes");
 const tarifasRouter = require("./src/routers/tarifas");
 const cotizacionesRouter = require("./src/routers/cotizaciones");
+const notasInventarioRouter = require("./src/routers/notasInventario");
 
 //Servidor
 const app = express();
@@ -45,5 +46,5 @@ app.use(equiposRouter);
 app.use(preciosRouter);
 app.use(empleadosRouter);
 app.use(vehiculosRouter);
-
+app.use(notasInventarioRouter);
 module.exports = app;

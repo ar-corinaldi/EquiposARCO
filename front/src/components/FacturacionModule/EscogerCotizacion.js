@@ -2,8 +2,11 @@ import "./EscogerCotizacion.css";
 import React, { useState, useEffect } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
+import Accordion from "react-bootstrap/Accordion";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 import EscogerBodega from "./EscogerBodega";
-import BodegaOrdenDetail from './BodegaOrdenDetail';
+import BodegaOrdenDetail from "./BodegaOrdenDetail";
 function EscogerCotizacion(params) {
   const miEstado = params.estadoStepOne;
   const setMiEstado = params.setEstadoStepOne;
@@ -15,7 +18,7 @@ function EscogerCotizacion(params) {
 
   useEffect(() => {
     async function fetchCotizaciones() {
-      const cotizacionesBack = await (await fetch("/cotizaciones")).json();
+      const cotizacionesBack = await (await fetch("/cotizaciones/all")).json();
       console.log(cotizacionesBack);
       setCotizaciones(cotizacionesBack);
     }
@@ -33,7 +36,6 @@ function EscogerCotizacion(params) {
     fetchBodegas();
     // console.log(bodegas);
     // console.log(terceros);
-    
   }, []);
 
   function changeEstado(params) {
@@ -50,27 +52,55 @@ function EscogerCotizacion(params) {
       <EscogerBodega
         bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
         bodegas={[bodegas, setBodegas]}
-        terceros = {[terceros, setTerceros]}
+        terceros={[terceros, setTerceros]}
       />
-      <BodegaOrdenDetail bodegaSeleccionada = {[bodegaSeleccionada, setBodegaSeleccionada]}></BodegaOrdenDetail>
-      <ul>
+      <BodegaOrdenDetail
+        bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
+      ></BodegaOrdenDetail>
+      <hr></hr>
+      <h4>Escoja la cotización base para la orden</h4>
+
+      <Accordion defaultActiveKey="0">
         {cotizaciones.map((item, index) => {
           return (
-            <li key={index}>
-              {"Cotización con número de contrato: " + item.numeroContrato}
-              <ul>
+
+            <Card key={index} >
+              <Card.Header>
+              <Accordion.Toggle as={Button} variant="link" eventKey={index}>
+                Down
+              </Accordion.Toggle>
+              <span>{"Cotización con número de contrato: " + item.numeroContrato}</span>
+              </Card.Header>
+              <Accordion.Collapse eventKey={index}>
+                <Card.Body>
+                <ul>
                 {item.tarifasCotizadas.map((item, index) => {
                   return (
                     <li key={index}>
-                      {"Tarifa detail colapsable de tarifa con id: " + item}
+                      {"Tarifa detail colapsable de tarifa con id: " + item._id}
                     </li>
                   );
                 })}
               </ul>
-            </li>
+                </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+            
+            // <li key={index}>
+            //   {"Cotización con número de contrato: " + item.numeroContrato}
+            //   <ul>
+            //     {item.tarifasCotizadas.map((item, index) => {
+            //       return (
+            //         <li key={index}>
+            //           {"Tarifa detail colapsable de tarifa con id: " + item}
+            //         </li>
+            //       );
+            //     })}
+            //   </ul>
+            // </li>
           );
         })}
-      </ul>
+      </Accordion>
 
       <button type="button" onClick={changeEstado}>
         Botoncito

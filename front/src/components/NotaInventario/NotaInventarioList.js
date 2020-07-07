@@ -1,45 +1,43 @@
 import React, { useState, useEffect } from "react";
-import EquipoFilter from "./EquipoFilter";
-import EquipoTable from "./EquipoTable";
+import NotaInventarioTable from "./NotaInventarioTable";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import Pagination from "../../Pagination";
+import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
-import "./EquipoList.css";
-function Equipo(props) {
-  const [equipos, setEquipos] = useState([]);
-  const [filterText, setFilterText] = useState("");
+// import "./EquipoList.css";
+function NotaInventarioList(props) {
+  const [notasInventario, setNotasInventario] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [equiposPerPage, setEquiposPerPage] = useState(10);
-  const [countEquipos, setCountEquipos] = useState(0);
+  const [notasInventarioPerPage, setNotasInventarioPerPage] = useState(10);
+  const [countNotasInventario, setCountNotasInventario] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchEquipos();
+    fetchNotaInventario();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, equiposPerPage]);
+  }, [currentPage, notasInventarioPerPage]);
 
   useEffect(() => {
-    fetchCountEquipos();
+    fetchCantidad();
   }, []);
 
-  const fetchCountEquipos = async () => {
-    const res = await fetch("/equipos/cantidad");
+  const fetchCantidad = async () => {
+    const res = await fetch("/notasInventario/cantidad");
     const newCount = await res.json();
-    setCountEquipos(parseInt(newCount));
+    setCountNotasInventario(parseInt(newCount));
   };
 
-  const fetchEquipos = async () => {
+  const fetchNotaInventario = async () => {
     try {
       setLoading(true);
-      const url = `/equipos/${currentPage}/${equiposPerPage}`;
+      const url = `/notasInventario/${currentPage}/${notasInventarioPerPage}`;
       const res = await fetch(url);
-      const newEquipos = await res.json();
-      setEquipos(newEquipos);
+      const newNotasInventario = await res.json();
+      setNotasInventario(newNotasInventario);
       setLoading(false);
     } catch (e) {
-      setEquipos([]);
+      setNotasInventario([]);
       setLoading(false);
     }
   };
@@ -47,7 +45,7 @@ function Equipo(props) {
   const cambiarDisplay = (e) => {
     const target = e.target;
     let value = target.type === "checkbox" ? target.checked : target.value;
-    setEquiposPerPage(value);
+    setNotasInventarioPerPage(value);
   };
 
   return (
@@ -55,34 +53,33 @@ function Equipo(props) {
       <Row>
         <Col>
           <div id="equipo-wrapper">
-            <Row>
-              <EquipoFilter
-                filterText={filterText}
-                setFilterText={setFilterText}
-              />
-            </Row>
             <Row className="mb-4">
-              <Link className="buttonEquipo" to={"/inventario/crearEquipo"}>
-                Agregar un equipo
+              <Link
+                className="buttonEquipo"
+                to={"/inventario/crearNotaInventario"}
+              >
+                Agregar una nota de inventario
               </Link>
             </Row>
             <Row className="mb-4">
               <label>
                 Mostrar{" "}
-                <select value={equiposPerPage} onChange={cambiarDisplay}>
+                <select
+                  value={notasInventarioPerPage}
+                  onChange={cambiarDisplay}
+                >
                   <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="20">20</option>
                   <option value="-1">Todos</option>
                 </select>{" "}
-                equipos
+                notas de inventario
               </label>
             </Row>
             <Row>
               <Col>
-                <EquipoTable
-                  equipos={equipos}
-                  filterText={filterText}
+                <NotaInventarioTable
+                  notasInventario={notasInventario}
                   loading={loading}
                 />
               </Col>
@@ -92,8 +89,10 @@ function Equipo(props) {
                 <Pagination
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                  elementsPerPage={equiposPerPage}
-                  numberPages={Math.ceil(countEquipos / equiposPerPage)}
+                  elementsPerPage={notasInventarioPerPage}
+                  numberPages={Math.ceil(
+                    countNotasInventario / notasInventarioPerPage
+                  )}
                   hide={loading}
                 />
               </Col>
@@ -105,4 +104,4 @@ function Equipo(props) {
   );
 }
 
-export default Equipo;
+export default NotaInventarioList;

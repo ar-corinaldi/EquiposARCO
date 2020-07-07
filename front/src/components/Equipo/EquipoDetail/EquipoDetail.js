@@ -18,12 +18,16 @@ function EquipoDetail() {
   }, []);
 
   const fetchEquipoDetail = async () => {
-    setLoading(true);
-    const url = `/equipos/${idEquipo}`;
-    const res = await fetch(url);
-    const newEquipo = await res.json();
-    setEquipo(newEquipo);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const url = `/equipos/${idEquipo}`;
+      const res = await fetch(url);
+      const newEquipo = await res.json();
+      setEquipo(newEquipo);
+      setLoading(false);
+    } catch (e) {
+      setLoading(null);
+    }
   };
   if (loading) {
     return (
@@ -31,6 +35,9 @@ function EquipoDetail() {
         <span className="sr-only">Loading...</span>
       </div>
     );
+  }
+  if (loading === null) {
+    return <div>No se encontro equipo con este id</div>;
   }
   return (
     <Container>

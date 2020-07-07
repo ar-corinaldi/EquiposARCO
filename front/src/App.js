@@ -13,7 +13,10 @@ import OrdenDetail from "./components/Orden/OrdenDetail";
 import CrearOrden from "./components/FacturacionModule/CrearOrden";
 import EquipoDetail from "./components/Equipo/EquipoDetail/EquipoDetail";
 import EquipoCreate from "./components/Equipo/EquipoCreate/EquipoCreate";
+import NotaInventarioCreate from "./components/NotaInventario/NotaInventarioCreate";
+import NotaInventarioList from "./components/NotaInventario/NotaInventarioList";
 import BodegaCreate from "./components/Bodega/BodegaCreate";
+import CotizacionDetail from "./components/Cotizacion/CotizacionDetail";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -39,11 +42,16 @@ function App() {
               <Switch>
                 <Route path="/" exact />
                 <Route
+                  path="/inventario/equipos/:idEquipo"
+                  component={EquipoDetail}
+                />
+                <Route
                   path="/inventario/crearEquipo"
                   component={() => (
                     <EquipoCreate
                       fields={{
                         nombreEquipo: "",
+                        tipoEquipo: "",
                         nombreFamilia: "",
                         nombreGrupo: "",
                         codigo: "",
@@ -52,11 +60,24 @@ function App() {
                     />
                   )}
                 />
-                <Route
-                  path="/inventario/equipos/:idEquipo"
-                  component={EquipoDetail}
-                />
                 <Route path="/inventario/equipos" component={EquipoList} />
+                <Route
+                  path="/inventario/listar_notas_de_inventario"
+                  component={NotaInventarioList}
+                />
+                <Route
+                  path="/inventario/crearNotaInventario"
+                  component={() => (
+                    <NotaInventarioCreate
+                      fields={{
+                        categoria: "",
+                        descripcion: "",
+                        cantidad: "",
+                      }}
+                      formAction="/notasInventario"
+                    />
+                  )}
+                />
                 <Route
                   path="/terceros/listar_terceros"
                   exact
@@ -78,10 +99,14 @@ function App() {
                   component={OrdenDetail}
                 />
                 <Route
+                  path="/terceros/:id/bodegas/:idB/cotizaciones/:idC"
+                  component={CotizacionDetail}
+                />
+                <Route
                   path="/facturacion/crear_orden"
                   component={CrearOrden}
                 ></Route>
-                <Route path="*">Goooooool de Diegol</Route>
+                <Route path="*"> Pagina no encontrada </Route>
               </Switch>
             </Row>
           </Col>

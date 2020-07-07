@@ -5,6 +5,25 @@ function BodegaDetail(props) {
   const bodega = props.bodega;
   const tercero = props.tercero;
 
+  const eliminarBodega = async () => {
+    //console.log("tercero", tercero);
+    //console.log("bodega", bodega);
+    //console.log("url", `/terceros/${tercero._id}/bodegas/${bodega._id}`);
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const res = await fetch(
+      `/terceros/${tercero._id}/bodegas/${bodega._id}`,
+      options
+    );
+    const elim = await res.json();
+    const bodegasN = elim.tercero.bodegas;
+    props.setBodegas(bodegasN);
+  };
+
   const capitalize = (str, lower = false) =>
     (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
       match.toUpperCase()
@@ -70,6 +89,28 @@ function BodegaDetail(props) {
           </Link>
         </p>
       ))}
+      <p>
+        <strong> Cotizaciones : </strong>
+      </p>
+      {bodega.cotizaciones.map((coti) => (
+        <p key={coti._id}>
+          <Link
+            to={
+              "/terceros/" +
+              tercero._id +
+              "/bodegas/" +
+              bodega._id +
+              "/cotizaciones/" +
+              coti._id
+            }
+          >
+            {coti._id}
+          </Link>
+        </p>
+      ))}
+      <button onClick={eliminarBodega} className="eliminarBodega">
+        Eliminar Bodega
+      </button>
     </div>
   );
 }

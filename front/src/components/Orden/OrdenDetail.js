@@ -87,7 +87,8 @@ function OrdenDetail(props) {
             <Row>
               <Col>
                 <p className="capitalize">
-                  <b>Tercero :</b> {tercero.nombre}{" "}
+                  <b>Tercero : </b>
+                  <Link to={`terceros/${tercero._id}`}>{tercero.nombre}</Link>
                 </p>
                 <p className="capitalize">
                   <b>Bodega :</b> {bodega.nombreBodega}

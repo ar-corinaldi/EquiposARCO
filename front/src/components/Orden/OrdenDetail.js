@@ -91,7 +91,7 @@ function OrdenDetail(props) {
                   <Link to={`terceros/${tercero._id}`}>{tercero.nombre}</Link>
                 </p>
                 <p className="capitalize">
-                  <b>Bodega :</b> {bodega.nombreBodega}
+                  <b>Bodega : </b> {bodega.nombreBodega}
                 </p>
               </Col>
               <Col>

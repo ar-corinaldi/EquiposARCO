@@ -82,6 +82,29 @@ router.get("/cotizaciones", async (req, res) => {
 });
 
 /**
+ * Obtiene todas las cotizaciones con sus tarifas, precios de referencia y equipos asociados
+ */
+
+ router.get("/cotizaciones/all", async (req, res) =>{
+   try {
+     const cotizaciones = await Cotizacion.find({}).populate("tarifasCotizadas").populate({
+      path: "tarifasCotizadas",
+      populate: {
+        path: "precioReferencia",
+      },
+      populate: {
+        path: "equipo"
+      }
+    });
+     res.json(cotizaciones);
+     
+   } catch (e) {
+    console.error("error", e);
+   }
+
+ });
+
+/**
  * Cotizacion especifica
  */
 router.get("/cotizaciones/:id", async (req, res) => {

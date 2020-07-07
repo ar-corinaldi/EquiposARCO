@@ -16,13 +16,25 @@ function NotaInventarioCreate(props) {
   const [orden, setOrden] = useState({});
   const history = useHistory();
 
-  const { fields, handleChange } = props;
+  const { fields, handleChange, formAction } = props;
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     console.log(fields);
     fields.equipo = equipo._id;
-    history.push(`/inventario/equipos/${fields.equipo}`);
+    fields.order = orden._id;
+    const options = {
+      method: "POST",
+      body: JSON.stringify(fields),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const res = await fetch(formAction, options);
+    const newNotaInventario = await res.json();
+    history.push(
+      `/inventario/listar_notas_de_inventario/${newNotaInventario._id}`
+    );
   };
 
   const handleClickEquipo = (e) => {

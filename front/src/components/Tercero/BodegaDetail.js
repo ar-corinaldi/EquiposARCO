@@ -100,22 +100,26 @@ function BodegaDetail(props) {
           </button>
         </p>
         <Row className={"pdl-15 collapse" + (openOrAct ? " in" : "")}>
-          {bodega.ordenesActuales.map((orden) => (
-            <p key={orden._id}>
-              <Link
-                to={
-                  "/terceros/" +
-                  tercero._id +
-                  "/bodegas/" +
-                  bodega._id +
-                  "/ordenes/" +
-                  orden._id
-                }
-              >
-                {orden._id}
-              </Link>
-            </p>
-          ))}
+          {bodega.ordenesActuales.length > 0 ? (
+            bodega.ordenesActuales.map((orden) => (
+              <p key={orden._id}>
+                <Link
+                  to={
+                    "/terceros/" +
+                    tercero._id +
+                    "/bodegas/" +
+                    bodega._id +
+                    "/ordenes/" +
+                    orden._id
+                  }
+                >
+                  {orden._id}
+                </Link>
+              </p>
+            ))
+          ) : (
+            <p>No hay ordenes en curso</p>
+          )}
         </Row>
         <p>
           <button className="btn bodega-collapse" onClick={toggleOrPas}>
@@ -128,22 +132,26 @@ function BodegaDetail(props) {
           </button>
         </p>
         <Row className={"pdl-15 collapse" + (openOrPas ? " in" : "")}>
-          {bodega.ordenesPasadas.map((orden) => (
-            <p key={orden._id}>
-              <Link
-                to={
-                  "/terceros/" +
-                  tercero._id +
-                  "/bodegas/" +
-                  bodega._id +
-                  "/ordenes/" +
-                  orden._id
-                }
-              >
-                {orden._id}
-              </Link>
-            </p>
-          ))}
+          {bodega.ordenesPasadas.length > 0 ? (
+            bodega.ordenesPasadas.map((orden) => (
+              <p key={orden._id}>
+                <Link
+                  to={
+                    "/terceros/" +
+                    tercero._id +
+                    "/bodegas/" +
+                    bodega._id +
+                    "/ordenes/" +
+                    orden._id
+                  }
+                >
+                  {orden._id}
+                </Link>
+              </p>
+            ))
+          ) : (
+            <p>No hay ordenes finalizadas</p>
+          )}
         </Row>
         <p>
           <button className="btn bodega-collapse" onClick={toggleCot}>
@@ -156,24 +164,28 @@ function BodegaDetail(props) {
           </button>
         </p>
         <Row className={"pdl-15 collapse" + (openCot ? " in" : "")}>
-          {bodega.cotizaciones.map((coti) => (
-            <p key={coti._id}>
-              <Link
-                to={
-                  "/terceros/" +
-                  tercero._id +
-                  "/bodegas/" +
-                  bodega._id +
-                  "/cotizaciones/" +
-                  coti._id
-                }
-              >
-                {coti._id}
-              </Link>
-            </p>
-          ))}
+          {bodega.cotizaciones.length > 0 ? (
+            bodega.cotizaciones.map((coti) => (
+              <p key={coti._id}>
+                <Link
+                  to={
+                    "/terceros/" +
+                    tercero._id +
+                    "/bodegas/" +
+                    bodega._id +
+                    "/cotizaciones/" +
+                    coti._id
+                  }
+                >
+                  {coti._id}
+                </Link>
+              </p>
+            ))
+          ) : (
+            <p> No hay cotizaciones</p>
+          )}
         </Row>
-        <Row>
+        <Row className="pdl-15">
           <button onClick={eliminarBodega} className="eliminarBodega">
             Eliminar Bodega
           </button>

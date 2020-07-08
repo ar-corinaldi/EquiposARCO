@@ -1,5 +1,7 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
+import formatoPrecio from '../utils/FormatoPrecios'
+import CalcularTarifa from '../utils/CacularTarifas';
 
 function CotizacionDetailTable(props) {
     const [cotizacionSeleccionada, setCotizacionSeleccionada] = props.cotizacionSeleccionada;
@@ -13,8 +15,11 @@ function CotizacionDetailTable(props) {
                 <thead>
                     <tr>
                         <th>Nombre Equipo</th>
-                        <th>Precio</th>
+                        <th>Unidad de Cobro</th>
+                        <th>Precio x Unidad</th>
                         <th>Cantidad</th>
+                        <th>Tipo de Cobro</th>
+                        
                     </tr>
                 </thead>
             )
@@ -30,9 +35,12 @@ function CotizacionDetailTable(props) {
                 <tbody>
                     {cotizacionSeleccionada.tarifasCotizadas.map((tarifa, index) =>
                         <tr key={index}>
-                            <th>{tarifa.equipo.nombreEquipo}</th>
-                            <th>{tarifa.valorTarifa}</th>
+                            {console.log(tarifa)}
+                            <th >{tarifa.equipo.nombreEquipo}</th>
+                            <th >{tarifa.precioReferencia.categoria}</th>
+                            <th>{formatoPrecio(tarifa.valorTarifa)}</th>
                             <th>{tarifa.cantidad}</th>
+                            <th>{tarifa.precioReferencia.tiempo}</th>
                         </tr>
                     )}
                 </tbody>
@@ -46,7 +54,7 @@ function CotizacionDetailTable(props) {
 
     return (
         <div>
-            <Table responsive>
+            <Table responsive className="mt-4" >
                 {tableHead()}
                 {tableBody()}
             </Table>

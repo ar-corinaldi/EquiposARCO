@@ -1,6 +1,5 @@
 import "./EscogerCotizacion.css";
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
 import EscogerBodega from "./EscogerBodega";
 import BodegaOrdenDetail from "./BodegaOrdenDetail";
 import EscogerCotizacionDetail from "./EscogerCotizacionDetail";
@@ -54,12 +53,12 @@ function EscogerCotizacion(params) {
         bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
         cotizacionSeleccionada={[cotizacionSeleccionada, setCotizacionSeleccionada]}
       />
-      <h5>{"Id cotización seleccionada: " + cotizacionSeleccionada._id}</h5>
+      <h6 className="mt-4" >{"Id cotización seleccionada: " + cotizacionSeleccionada._id}</h6>
       <CotizacionDetailTable cotizacionSeleccionada={[cotizacionSeleccionada, setCotizacionSeleccionada]}>
       </CotizacionDetailTable>
-      <Button type="button" onClick={verificarSeleccion}>
+      <button type="button" onClick={verificarSeleccion} className="buttonTercero ">
         Confirmar seleccion
-      </Button>
+      </button>
     </div>
   );
 }

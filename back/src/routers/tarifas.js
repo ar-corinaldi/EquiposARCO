@@ -23,7 +23,7 @@ router.post("/cotizaciones/:id/tarifasCotizadas", async (req, res) => {
       return res.status(404).send("Ninguna cotizacion coincidio con ese id");
     }
     await newTarifa.save();
-    console.log("Agrega tarifa");
+    console.log("Agrega tarifa a la base de datos");
     cotizacion.tarifasCotizadas.push(newTarifa._id);
     await cotizacion.save();
     console.log("Guarda cotizacion con tarifa");
@@ -34,6 +34,10 @@ router.post("/cotizaciones/:id/tarifasCotizadas", async (req, res) => {
       console.log("Elimina la tarifa");
       // Manejo en caso de que no se agregue la bodega
       Tarifa.findByIdAndDelete(newTarifa._id);
+      const index = cotizacion.tarifasCotizadas.indexOf(newTarifa._id);
+      if (index > -1) {
+        cotizacion.tarifasCotizadas.splice(index, 1);
+      }
     }
     res.status(400).send("No se pudo agregar la tarifa a la cotizacion " + e);
     console.error("error", e);
@@ -96,6 +100,38 @@ router.get("/cotizaciones/:idC/tarifasPobladas", async (req, res, next) => {
 /**
  *  Relacion Orden -> Tarifa
  */
+
+/**
+ * Agrega una tarifa nueva a una orden
+ */
+router.post("/ordenes/:id/tarifasDefinitivas", async (req, res) => {
+  try {
+    const newTarifa = new Tarifa(req.body);
+    const orden = await Orden.findById(req.params.id);
+    if (!orden) {
+      return res.status(404).send("Ninguna orden coincidio con ese id");
+    }
+    console.log("Existe la orden");
+    await newTarifa.save();
+    orden.tarifasDefinitivas.push(newTarifa._id);
+    await orden.save();
+    console.log("Guarda orden con tarifa");
+    res.status(201).send(orden);
+  } catch (e) {
+    console.log("Hubo un error");
+    if (newTarifa !== undefined) {
+      console.log("Elimina la tarifa");
+      // Manejo en caso de que no se agregue la bodega
+      Tarifa.findByIdAndDelete(newTarifa._id);
+      const index = orden.tarifasDefinitivas.indexOf(newTarifa._id);
+      if (index > -1) {
+        orden.tarifasDefinitivas.splice(index, 1);
+      }
+    }
+    res.status(400).send("No se pudo agregar la tarifa a la orden " + e);
+    console.error("error", e);
+  }
+});
 
 /**
  * Agrega una tarifa existente a una orden

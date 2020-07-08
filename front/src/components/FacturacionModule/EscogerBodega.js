@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { useState } from "react";
 import "./EscogerBodega.css";
-import { fade, makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
 import Autocomplete, {
@@ -48,7 +47,8 @@ export default function EscogerBodega(props) {
       option.municipio +
       option.pais +
       option.telefono +
-      option.departamento,
+      option.departamento+
+      option.duenio
   });
 
   return (

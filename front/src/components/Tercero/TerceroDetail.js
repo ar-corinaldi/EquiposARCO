@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import "./Tercero.css";
 import BodegaDetail from "./BodegaDetail";
 import { useHistory } from "react-router-dom";
+import formatoFechas from "../utils/FormatoFechas";
 
 function TerceroDetail({ match }) {
   const params = match.params;
@@ -27,15 +28,6 @@ function TerceroDetail({ match }) {
     (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
       match.toUpperCase()
     );
-
-  const formatDate = (fecha) => {
-    if (fecha) {
-      const date = new Date(fecha);
-      return `${date.getDate()}/${(
-        date.getMonth() + 1
-      ).toString()}/${date.getFullYear()}`;
-    }
-  };
 
   const crearBodega = () => {
     history.push(`${tercero._id}/bodegas/create`);
@@ -69,12 +61,15 @@ function TerceroDetail({ match }) {
             </Row>
             {tercero.bodegas &&
               tercero.bodegas.map((bodega) => (
-                <BodegaDetail
-                  setBodegas={setBodegas}
-                  key={bodega._id}
-                  bodega={bodega}
-                  tercero={tercero}
-                ></BodegaDetail>
+                <React.Fragment key={bodega._id}>
+                  <div>
+                    <BodegaDetail
+                      setBodegas={setBodegas}
+                      bodega={bodega}
+                      tercero={tercero}
+                    ></BodegaDetail>
+                  </div>
+                </React.Fragment>
               ))}
           </div>
         </Col>
@@ -105,7 +100,7 @@ function TerceroDetail({ match }) {
             </p>
             <p>
               <strong>Fecha de registro : </strong>
-              {formatDate(tercero.fechaCreacion)}
+              {formatoFechas(tercero.fechaCreacion)}
             </p>
           </div>
         </Col>

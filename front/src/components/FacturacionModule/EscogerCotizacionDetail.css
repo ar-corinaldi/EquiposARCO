@@ -1,0 +1,60 @@
+.popperCotizacion{
+    width: 500px;
+    position: relative;
+    box-shadow: 0px 3px 12px rgba(27, 31, 35, 0.15) !important;
+}
+
+.rootCotizacion {
+    width: 221; 
+    font-size: 18px;
+  }
+
+.completeCotizacionWrapper{
+    display: flexbox;
+    box-shadow: 0px 0px 18px 0px rgba(134, 118, 118, 0.12);
+    border-radius: 3px;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    width: 70%;
+}
+
+.option-cotizacion-header{
+    width: 100%;
+    padding: 0px;
+    background-color: transparent;
+    font-family: 'Nunito';
+    font-size: 17px;
+    color: #6c757d;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.no-padding{
+    padding: 0px;
+}
+
+.float-right{
+    float: right;
+}
+
+.float-left{
+    float: left;
+}
+
+.rotate{
+    rotate: 180deg;
+}
+
+.icon-margin-left{
+    margin-left: 1%;
+}
+
+.icon-margin-right{
+    margin-right: 1%;
+}
+
+.no-border{
+    border-width: 0px;
+}

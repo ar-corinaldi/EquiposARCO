@@ -2,8 +2,8 @@ import "./CrearOrden.css";
 import React, { useState } from "react";
 import EscogerCotizacion from "./EscogerCotizacion";
 import Row from "react-bootstrap/Row";
-import Cl from "react-bootstrap/Col";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button"
 import priceLogo from "../../assets/price.svg";
 import priceLogoDark from "../../assets/price-dark.svg";
 import sheetLogo from "../../assets/sheet.svg";
@@ -47,7 +47,9 @@ function CrearOrden(props) {
 
   return (
     <div id="create-order-wrapper">
-      <Row>
+      <h2 className="margin-bottom" >Crear Orden</h2>
+      <hr/>
+      <Row >
         <Col align="center" className="col-step">
           <button
             type="button"

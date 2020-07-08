@@ -23,6 +23,7 @@ const conversion = {
  * Devuelve un objeto con el valor total por cada tarifa de cada equipo y el valor total de toda la cotización.
  * Este último es la suma de los primeros.
  * @param {[]} tarifas . Es un arreglo con tarifas asociadas a Cotizaciones. Es decir, TODAS deben tener fecha final y precio referencia
+ * Además el campo de precio de Referencia TIENE que estar populado, ya que este se usa para ver el tiempo mínimo y la unidad de medida
  */
 export default function calcularTarifaCotizacion(tarifas) {
     let respuesta = {};
@@ -41,7 +42,20 @@ export default function calcularTarifaCotizacion(tarifas) {
     }
     else {
         tarifas.map((tarifa) => {
+            if(!tarifa.precioReferencia || !tarifa.precioReferencia.tiempo ){
+                return null;
+            }
+            else{
+                const tiempoMinimo = tarifa.precioReferencia.tiempoMinimo;
+                const medidaTiempo = tarifa.precioReferencia.tiempo;
+                if(medidaTiempo != "dia habil"){
+                    let [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo);
 
+                }
+                else{
+                    let [precioTotal, diasTotales, festivosEnMedio] = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
+                }
+            }
         })
 
     }
@@ -51,7 +65,7 @@ export default function calcularTarifaCotizacion(tarifas) {
 
 
 
-function calcularTarifaDiaHabil(tarifa) {
+function calcularTarifaDiaHabil(tarifa, tiempoMinimo) {
     const fechaInicial = new Date( tarifa.fechaInicio);
     const fechaFinal = new Date( tarifa.fechaFin);
     if (!fechaFinal) {
@@ -94,15 +108,15 @@ function calcularTarifaDiaHabil(tarifa) {
                 }
             }
         })
-        
-        const precioTotal = dias * tarifa.valorTarifa * tarifa.cantidad;
-        return [precioTotal, dias, festivosEnMedio];
+        const diasTotales = Math.max(dias, tiempoMinimo);
+        const precioTotal = diasTotales * tarifa.valorTarifa * tarifa.cantidad;
+        return [precioTotal, diasTotales, festivosEnMedio];
     }
 
 
 }
 
-function calcularTarifa(tarifa, medidaTiempo) {
+function calcularTarifa(tarifa, medidaTiempo, tiempoMinimo) {
     const fechaInicial = new Date( tarifa.fechaInicio);
     const fechaFinal = new Date( tarifa.fechaFin);
     if (!fechaFinal || !conversion[medidaTiempo]) {
@@ -110,7 +124,8 @@ function calcularTarifa(tarifa, medidaTiempo) {
     }
     else {
         const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
-        const tiempoTotal = Math.ceil(timeDifference / conversion[medidaTiempo]);
+        const tiempoConvertido = Math.ceil(timeDifference / conversion[medidaTiempo]);
+        const tiempoTotal = Math.max(tiempoConvertido, tiempoMinimo);
         const precioTotal = tiempoTotal * tarifa.valorTarifa * tarifa.cantidad;
         return [precioTotal, tiempoTotal];
     }

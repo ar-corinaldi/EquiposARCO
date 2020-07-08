@@ -41,6 +41,7 @@ export default function EscogerBodega(props) {
 
   const filterOptions = createFilterOptions({
     matchFrom: "any",
+    limit: 5,
     stringify: (option) =>
       option.nombreBodega +
       option.direccionBodega +
@@ -102,12 +103,11 @@ export default function EscogerBodega(props) {
             }
             options={[...bodegas]
               .sort((a, b) => {
-                // Muestra la bodega seleccionada primero y solo las 5 primeras
-                let ai = a == bodegaSeleccionada;
-                let bi = b == bodegaSeleccionada;
+                // Muestra la bodega seleccionada primero
+                let ai = (a == bodegaSeleccionada) || (a == pendingValue);
+                let bi = (b == bodegaSeleccionada) || (b == pendingValue);
                 return ai ? -1 : bi ? 1 : 0;
-              })
-              .slice(0, 5)}
+              })}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 {/* <DoneIcon

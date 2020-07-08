@@ -8,11 +8,11 @@ const tiempo = ["hora", "dia cal", "dia habil", "semana", "mes", "anio"];
 const holidays = hd.getHolidays(new Date().getFullYear()); //Arreglo con fecha y descripción de los festivos de Colombia en el año actual
 
 const conversion = {
-    hora: (1000 * 3600),
-    "dia cal": (1000 * 3600 * 24),
-    semana: (1000 * 3600 * 24 * 7),
-    mes: (1000 * 3600 * 24 * 30),
-    anio: (1000 * 3600 * 24 * 365)
+    hora: 1000 * 3600,
+    "dia cal": 1000 * 3600 * 24,
+    semana: 1000 * 3600 * 24 * 7,
+    mes: 1000 * 3600 * 24 * 30,
+    anio: 1000 * 3600 * 24 * 365
 } //Tasa de conversión de milisengundos a cada unidad de medida
 
 
@@ -20,14 +20,16 @@ const conversion = {
 
 /**
  * Función que calcula el total a cobrar por las tarifas asociadas a una cotizacion. 
- * Devuelve un objeto con el valor total por cada tarifa de cada equipo y el valor total de toda la cotización.
+ * Devuelve un objeto con el valor total por cada tarifa de cada equipo y el valor total de toda la cotización. Cada ID de cada tarifa
+ * es un campo en la respuesta, donde los valores de ese campo son el total a cobrar por esa tarifa, el tiempo total y los festivos encontrados
+ * en caso de que la tarifa sea por día hábil.
  * Este último es la suma de los primeros.
  * @param {[]} tarifas . Es un arreglo con tarifas asociadas a Cotizaciones. Es decir, TODAS deben tener fecha final y precio referencia
  * Además el campo de precio de Referencia TIENE que estar populado, ya que este se usa para ver el tiempo mínimo y la unidad de medida
  */
 export default function calcularTarifaCotizacion(tarifas) {
     let respuesta = {};
-
+    let cobroCompleto = 0;
     if (!tarifas) {
         console.log("dates");
         console.log(hd.getHolidays('2020'));
@@ -42,6 +44,7 @@ export default function calcularTarifaCotizacion(tarifas) {
     }
     else {
         tarifas.map((tarifa) => {
+            let informaciónCobroTarifa = {}
             if(!tarifa.precioReferencia || !tarifa.precioReferencia.tiempo ){
                 return null;
             }
@@ -49,15 +52,24 @@ export default function calcularTarifaCotizacion(tarifas) {
                 const tiempoMinimo = tarifa.precioReferencia.tiempoMinimo;
                 const medidaTiempo = tarifa.precioReferencia.tiempo;
                 if(medidaTiempo != "dia habil"){
-                    let [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo);
+                    let [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo, tiempoMinimo);
+                    informaciónCobroTarifa.cobroTotal = precioTotal;
+                    informaciónCobroTarifa.tiempoTotal = tiempoTotal;
+                    cobroCompleto += precioTotal;
 
                 }
                 else{
-                    let [precioTotal, diasTotales, festivosEnMedio] = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
+                    let [precioTotal, tiempoTotal, festivosEnMedio] = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
+                    informaciónCobroTarifa.cobroTotal = precioTotal;
+                    informaciónCobroTarifa.tiempoTotal = tiempoTotal;
+                    informaciónCobroTarifa.festivos = festivosEnMedio;
+                    cobroCompleto += precioTotal;
                 }
             }
+            respuesta[tarifa._id] = informaciónCobroTarifa;
         })
-
+        respuesta.cobroCompleto = cobroCompleto;
+        return respuesta;
     }
 
 
@@ -127,6 +139,14 @@ function calcularTarifa(tarifa, medidaTiempo, tiempoMinimo) {
         const tiempoConvertido = Math.ceil(timeDifference / conversion[medidaTiempo]);
         const tiempoTotal = Math.max(tiempoConvertido, tiempoMinimo);
         const precioTotal = tiempoTotal * tarifa.valorTarifa * tarifa.cantidad;
+        // console.log("Valores");
+        // console.log(precioTotal);
+        // console.log(tiempoTotal);
+        // console.log("time: "+ tiempoConvertido);
+        // console.log("timeTotal: "+ tiempoTotal);
+        
+        
+        
         return [precioTotal, tiempoTotal];
     }
 }

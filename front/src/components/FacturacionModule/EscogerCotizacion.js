@@ -5,8 +5,8 @@ import BodegaOrdenDetail from "./BodegaOrdenDetail";
 import EscogerCotizacionDetail from "./EscogerCotizacionDetail";
 import CotizacionDetailTable from "./CotizacionDetailTable";
 function EscogerCotizacion(params) {
-  const miEstado = params.estadoStepOne;
-  const setMiEstado = params.setEstadoStepOne;
+  const [miEstado, setMiEstado] = params.miEstado;
+  const [segundoEstado, setSegundoEstado] = params.segundoEstado;
 
   const [bodegaSeleccionada, setBodegaSeleccionada] = useState({});
   const [cotizacionSeleccionada, setCotizacionSeleccionada] = useState({});
@@ -14,8 +14,19 @@ function EscogerCotizacion(params) {
   const [terceros, setTerceros] = useState([]);
 
   function verificarSeleccion() {
-    if(bodegaSeleccionada._id && cotizacionSeleccionada._id){
-      setMiEstado("complete");  
+    if (bodegaSeleccionada && cotizacionSeleccionada && bodegaSeleccionada._id && cotizacionSeleccionada._id) {
+      setMiEstado("complete");
+      setSegundoEstado("active");
+
+    }
+  }
+
+  function estadoBotonConfirmacion() {
+    if (bodegaSeleccionada && cotizacionSeleccionada && bodegaSeleccionada._id && cotizacionSeleccionada._id) {
+      return false;
+    }
+    else {
+      return true;
     }
   }
 
@@ -53,10 +64,9 @@ function EscogerCotizacion(params) {
         bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
         cotizacionSeleccionada={[cotizacionSeleccionada, setCotizacionSeleccionada]}
       />
-      <h6 className="mt-4" >{"Id cotización seleccionada: " + cotizacionSeleccionada._id}</h6>
       <CotizacionDetailTable cotizacionSeleccionada={[cotizacionSeleccionada, setCotizacionSeleccionada]}>
       </CotizacionDetailTable>
-      <button type="button" onClick={verificarSeleccion} className="buttonTercero ">
+      <button type="button" onClick={verificarSeleccion} className="buttonEnabled" disabled={estadoBotonConfirmacion()} >
         Confirmar seleccion
       </button>
     </div>

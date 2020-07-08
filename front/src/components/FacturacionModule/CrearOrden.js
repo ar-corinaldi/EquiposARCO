@@ -69,6 +69,8 @@ function CrearOrden(props) {
       </Row>
       <Row>
         <EscogerCotizacion
+          miEstado={[firstStepState, setFirstStep]}
+          segundoEstado={[secondStepState, setSecondStep]}
           estadoStepOne={firstStepState}
           setEstadoStepOne={setFirstStep}
         />

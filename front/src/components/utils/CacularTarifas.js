@@ -8,11 +8,11 @@ const tiempo = ["hora", "dia cal", "dia habil", "semana", "mes", "anio"];
 const holidays = hd.getHolidays(new Date().getFullYear()); //Arreglo con fecha y descripción de los festivos de Colombia en el año actual
 
 const conversion = {
-    hora: (1000 * 3600),
-    "dia cal": (1000 * 3600 * 24),
-    semana: (1000 * 3600 * 24 * 7),
-    mes: (1000 * 3600 * 24 * 30),
-    anio: (1000 * 3600 * 24 * 365)
+    hora: 1000 * 3600,
+    "dia cal": 1000 * 3600 * 24,
+    semana: 1000 * 3600 * 24 * 7,
+    mes: 1000 * 3600 * 24 * 30,
+    anio: 1000 * 3600 * 24 * 365
 } //Tasa de conversión de milisengundos a cada unidad de medida
 
 
@@ -29,6 +29,7 @@ const conversion = {
  */
 export default function calcularTarifaCotizacion(tarifas) {
     let respuesta = {};
+    let cobroCompleto = 0;
     if (!tarifas) {
         console.log("dates");
         console.log(hd.getHolidays('2020'));
@@ -51,9 +52,10 @@ export default function calcularTarifaCotizacion(tarifas) {
                 const tiempoMinimo = tarifa.precioReferencia.tiempoMinimo;
                 const medidaTiempo = tarifa.precioReferencia.tiempo;
                 if(medidaTiempo != "dia habil"){
-                    let [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo);
+                    let [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo, tiempoMinimo);
                     informaciónCobroTarifa.cobroTotal = precioTotal;
                     informaciónCobroTarifa.tiempoTotal = tiempoTotal;
+                    cobroCompleto += precioTotal;
 
                 }
                 else{
@@ -61,10 +63,12 @@ export default function calcularTarifaCotizacion(tarifas) {
                     informaciónCobroTarifa.cobroTotal = precioTotal;
                     informaciónCobroTarifa.tiempoTotal = tiempoTotal;
                     informaciónCobroTarifa.festivos = festivosEnMedio;
+                    cobroCompleto += precioTotal;
                 }
             }
             respuesta[tarifa._id] = informaciónCobroTarifa;
         })
+        respuesta.cobroCompleto = cobroCompleto;
         return respuesta;
     }
 
@@ -135,6 +139,14 @@ function calcularTarifa(tarifa, medidaTiempo, tiempoMinimo) {
         const tiempoConvertido = Math.ceil(timeDifference / conversion[medidaTiempo]);
         const tiempoTotal = Math.max(tiempoConvertido, tiempoMinimo);
         const precioTotal = tiempoTotal * tarifa.valorTarifa * tarifa.cantidad;
+        // console.log("Valores");
+        // console.log(precioTotal);
+        // console.log(tiempoTotal);
+        // console.log("time: "+ tiempoConvertido);
+        // console.log("timeTotal: "+ tiempoTotal);
+        
+        
+        
         return [precioTotal, tiempoTotal];
     }
 }

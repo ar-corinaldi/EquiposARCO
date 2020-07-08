@@ -50,7 +50,7 @@ function EscogerCotizacionDetail(props) {
     return (
         <>
             <div className='rootBodega' >
-                <h4>Escoja la cotización base para la orden</h4>
+                <h4 className="mt-3" >Escoja la cotización base para la orden</h4>
                 <div className="completeCotizacionWrapper">
                     <Autocomplete
                         openOnFocus
@@ -97,12 +97,22 @@ function EscogerCotizacionDetail(props) {
                             }
                         }
                         }
-                        options={cotizaciones}
+                        options={[...cotizaciones]
+                            .sort((a, b) => {
+                              // Muestra la bodega seleccionada primero
+                              let ai = (a == cotizacionSeleccionada) || (a == pendingValue);
+                              let bi = (b == cotizacionSeleccionada) || (b == pendingValue);
+                              return ai ? -1 : bi ? 1 : 0;
+                            })}
                         renderOption={(option, { selected }) => (
                             <React.Fragment>
                                 <Accordion defaultActiveKey="0" className="full-width">
                                     <Card className="full-width border-0 bg-transparent" >
                                         <Card.Header className="option-cotizacion-header bg-transparent" >
+                                            <Accordion.Toggle as={Button} variant="link" eventKey="1" className="float-right" >
+                                                <ExpandMoreIcon  >
+                                                </ExpandMoreIcon>
+                                            </Accordion.Toggle>
                                             <DoneIcon
                                                 className="iconSelected float-left icon-margin-left"
                                                 style={{ visibility: selected ? "visible" : "hidden" }}
@@ -119,10 +129,6 @@ function EscogerCotizacionDetail(props) {
                                                 style={{ visibility: selected ? "visible" : "hidden" }}
                                             />
                                             <span>{"Cotización con número de contrato: " + option.numeroContrato}</span>
-                                            <Accordion.Toggle as={Button} variant="link" eventKey="1" className="float-right" >
-                                                <ExpandMoreIcon  >
-                                                </ExpandMoreIcon>
-                                            </Accordion.Toggle>
                                         </Card.Header>
                                         <Accordion.Collapse eventKey="1" >
                                             <Card.Body className="bg-white ">

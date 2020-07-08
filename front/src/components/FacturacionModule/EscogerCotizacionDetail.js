@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Autocomplete, {
     createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
@@ -13,7 +14,7 @@ import './EscogerCotizacionDetail.css';
 function EscogerCotizacionDetail(props) {
     let [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;
     const [cotizaciones, setCotizaciones] = useState([]);
-    const [cotizacionSeleccionada, setCotizacionSeleccionada] = useState({});
+    const [cotizacionSeleccionada, setCotizacionSeleccionada] = props.cotizacionSeleccionada;
     const [pendingValue, setPendingValue] = React.useState({});
     const [open, setOpen] = useState(false);
 
@@ -38,19 +39,19 @@ function EscogerCotizacionDetail(props) {
     const filterOptions = createFilterOptions({
         matchFrom: "any",
         stringify: (option) =>
-          option.numeroContrato +
-          option.direccionBodega +
-          option.municipio +
-          option.pais +
-          option.telefono +
-          option.departamento,
-      });
+            option.numeroContrato +
+            option.direccionBodega +
+            option.municipio +
+            option.pais +
+            option.telefono +
+            option.departamento,
+    });
 
     return (
         <>
             <div className='rootBodega' >
                 <h4>Escoja la cotización base para la orden</h4>
-                <div className="completeWrapper">
+                <div className="completeCotizacionWrapper">
                     <Autocomplete
                         openOnFocus
                         autoHighlight
@@ -63,7 +64,7 @@ function EscogerCotizacionDetail(props) {
                             paper: "paper",
                             option: "optionBodega",
                             popper: "popper popperCotizacion",
-                            popperDisablePortal: "popperCotizacion margin-bottom" 
+                            popperDisablePortal: "popperCotizacion margin-bottom"
                         }}
                         onClose={handleClose}
                         onOpen={() => { setPendingValue(cotizacionSeleccionada); }}
@@ -99,16 +100,32 @@ function EscogerCotizacionDetail(props) {
                         options={cotizaciones}
                         renderOption={(option, { selected }) => (
                             <React.Fragment>
-                                <Accordion defaultActiveKey="0">
-                                    <Card  >
-                                        <Card.Header>
-                                            <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                                                Down
-                                            </Accordion.Toggle>
+                                <Accordion defaultActiveKey="0" className="full-width">
+                                    <Card className="full-width border-0 bg-transparent" >
+                                        <Card.Header className="option-cotizacion-header bg-transparent" >
+                                            <DoneIcon
+                                                className="iconSelected float-left icon-margin-left"
+                                                style={{ visibility: selected ? "visible" : "hidden" }}
+                                                onClick={() => {
+                                                    handleClose();
+                                                    setOpen(false);
+                                                }}
+                                            />
+                                            <CloseIcon
+                                                onClick={() => {
+                                                    setPendingValue(null);
+                                                }}
+                                                className="iconSelected float-left icon-margin-right"
+                                                style={{ visibility: selected ? "visible" : "hidden" }}
+                                            />
                                             <span>{"Cotización con número de contrato: " + option.numeroContrato}</span>
+                                            <Accordion.Toggle as={Button} variant="link" eventKey="1" className="float-right" >
+                                                <ExpandMoreIcon  >
+                                                </ExpandMoreIcon>
+                                            </Accordion.Toggle>
                                         </Card.Header>
-                                        <Accordion.Collapse eventKey="1">
-                                            <Card.Body>
+                                        <Accordion.Collapse eventKey="1" >
+                                            <Card.Body className="bg-white ">
                                                 <ul>
                                                     {option.tarifasCotizadas.map((item, index) => {
                                                         return (

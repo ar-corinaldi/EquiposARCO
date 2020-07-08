@@ -2,8 +2,8 @@ import "./CrearOrden.css";
 import React, { useState } from "react";
 import EscogerCotizacion from "./EscogerCotizacion";
 import Row from "react-bootstrap/Row";
-import Cl from "react-bootstrap/Col";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button"
 import priceLogo from "../../assets/price.svg";
 import priceLogoDark from "../../assets/price-dark.svg";
 import sheetLogo from "../../assets/sheet.svg";

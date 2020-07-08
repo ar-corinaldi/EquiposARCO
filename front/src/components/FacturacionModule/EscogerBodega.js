@@ -47,7 +47,8 @@ export default function EscogerBodega(props) {
       option.municipio +
       option.pais +
       option.telefono +
-      option.departamento,
+      option.departamento+
+      option.duenio
   });
 
   return (

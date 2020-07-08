@@ -48,3 +48,11 @@
 .text-center {
   text-align: center !important;
 }
+
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
+}

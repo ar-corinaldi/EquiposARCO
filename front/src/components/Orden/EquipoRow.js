@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import formatoFechas from "../utils/FormatoFechas";
 import formatoPrecios from "../utils/FormatoPrecios";
@@ -22,59 +22,79 @@ function EquipoRow(props) {
   const ordenadas = tarifas.sort(compareTarifasByDate);
   const index = props.index + 1;
   const tarifa = ordenadas[0];
-  ordenadas.splice(0, 1);
-  const otrasTarifas = Array.from(ordenadas);
-  console.log("otrasTarifas", otrasTarifas);
+  const otrasTarifas = [];
+  for (let i = 1; i < ordenadas.length; i++) {
+    otrasTarifas.push(ordenadas[i]);
+  }
+  //console.log("otrasTarifas", otrasTarifas);
+
+  const [open, setOpen] = useState(false);
+
+  const toggle = () => {
+    //console.log(open);
+    setOpen(!open);
+  };
 
   return (
     <React.Fragment>
       {/* Se muestra la Tarifa mas Reciente
        */}
-      <tr className="capitalize" key={tarifa._id}>
-        <td>{index}</td>
-        <td>
-          <Link to={`/inventario/equipos/${tarifa.equipo._id}`}>
-            <b>{tarifa && tarifa.equipo.nombreEquipo}</b>
+      <tbody>
+        <tr className="capitalize" key={tarifa._id}>
+          <td>
+            {index}
             <br />
-            {tarifa && tarifa.equipo.nombreGrupo}
-          </Link>
-        </td>
-        <td>{tarifa.cantidad}</td>
-        <td>{formatoPrecios(tarifa.valorTarifa)}</td>
-        <td>
-          {tarifa.precioReferencia.categoria} / {tarifa.precioReferencia.tiempo}
-        </td>
-        <td>
-          {formatoFechas(tarifa.fechaInicio)}-{formatoFechas(tarifa.fechaFin)}
-        </td>
-        <td>Falta </td>
-      </tr>
+            <button className="btn-info" onClick={toggle}>
+              +
+            </button>
+          </td>
+          <td>
+            <Link to={`/inventario/equipos/${tarifa.equipo._id}`}>
+              <b>{tarifa && tarifa.equipo.nombreEquipo}</b>
+              <br />
+              {tarifa && tarifa.equipo.nombreGrupo}
+            </Link>
+          </td>
+          <td>{tarifa.cantidad}</td>
+          <td>{formatoPrecios(tarifa.valorTarifa)}</td>
+          <td>
+            {tarifa.precioReferencia.categoria} /{" "}
+            {tarifa.precioReferencia.tiempo}
+          </td>
+          <td>
+            {formatoFechas(tarifa.fechaInicio)}-{formatoFechas(tarifa.fechaFin)}
+          </td>
+          <td>Falta </td>
+        </tr>
+      </tbody>
       {/* Se muestran las otras tarifas del equipo
        */}
-      {otrasTarifas &&
-        otrasTarifas.map((tarifa, index2) => (
-          <tr className="capitalize" key={tarifa._id}>
-            <td>{index + index2 + 1}</td>
-            <td>
-              <Link to={`/inventario/equipos/${tarifa.equipo._id}`}>
-                <b>{tarifa && tarifa.equipo.nombreEquipo}</b>
-                <br />
-                {tarifa && tarifa.equipo.nombreGrupo}
-              </Link>
-            </td>
-            <td>{tarifa.cantidad}</td>
-            <td>{formatoPrecios(tarifa.valorTarifa)}</td>
-            <td>
-              {tarifa.precioReferencia.categoria} /{" "}
-              {tarifa.precioReferencia.tiempo}
-            </td>
-            <td>
-              {formatoFechas(tarifa.fechaInicio)}-
-              {formatoFechas(tarifa.fechaFin)}
-            </td>
-            <td>Falta </td>
-          </tr>
-        ))}
+      <tbody className={"capitalize collapse" + (open ? " in" : "")}>
+        {otrasTarifas &&
+          otrasTarifas.map((tarifa2, index2) => (
+            <tr key={tarifa2._id}>
+              <td>{index + index2 + 1}</td>
+              <td>
+                <Link to={`/inventario/equipos/${tarifa2.equipo._id}`}>
+                  <b>{tarifa2 && tarifa2.equipo.nombreEquipo}</b>
+                  <br />
+                  {tarifa2 && tarifa2.equipo.nombreGrupo}
+                </Link>
+              </td>
+              <td>{tarifa2.cantidad}</td>
+              <td>{formatoPrecios(tarifa2.valorTarifa)}</td>
+              <td>
+                {tarifa2.precioReferencia.categoria} /{" "}
+                {tarifa2.precioReferencia.tiempo}
+              </td>
+              <td>
+                {formatoFechas(tarifa2.fechaInicio)}-
+                {formatoFechas(tarifa2.fechaFin)}
+              </td>
+              <td>Falta </td>
+            </tr>
+          ))}
+      </tbody>
     </React.Fragment>
   );
 }

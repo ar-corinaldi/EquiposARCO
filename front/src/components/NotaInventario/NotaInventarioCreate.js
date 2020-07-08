@@ -39,14 +39,15 @@ function NotaInventarioCreate(props) {
       const res = await fetch("/notasInventario", options);
       console.log(res);
       if (!res.ok) {
-        const dataError = await res.json();
-        setErrors(dataError);
+        const errors = await res.json();
+        Toast(errors, false, res.status);
       } else {
         const notaInventarioPost = await res.json();
         history.push(`/inventario/listar_notas_de_inventario`);
       }
     } catch (e) {
       console.log(e);
+      Toast(["Error del sistema"], true, 500);
     }
   };
 
@@ -75,7 +76,6 @@ function NotaInventarioCreate(props) {
       NotaInventario
       <Row>
         <Col>
-          {errors.length > 0 ? <Toast errors={errors} /> : null}
           <Card>
             <Card.Body>
               <form onSubmit={submit}>

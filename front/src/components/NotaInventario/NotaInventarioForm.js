@@ -61,6 +61,17 @@ function NotaInventarioForm(props) {
       </Row>
       <Row>
         <div className="group-form">
+          Descripción:
+          <textarea
+            name="descripcion"
+            value={fields.descripcion}
+            onChange={handleChange}
+            required
+          />
+        </div>
+      </Row>
+      <Row>
+        <div className="group-form">
           <Modal
             title={"Proveedor a añadir nota de inventario"}
             body={() => <div>Porveedor</div>}
@@ -74,17 +85,6 @@ function NotaInventarioForm(props) {
             <input disabled defaultValue={fields.proveedor} required />
             <button onClick={handleRemoveProveedor}>-</button>
           </Col>
-        </div>
-      </Row>
-      <Row>
-        <div className="group-form">
-          Descripción:
-          <textarea
-            name="descripcion"
-            value={fields.descripcion}
-            onChange={handleChange}
-            required
-          />
         </div>
       </Row>
     </React.Fragment>

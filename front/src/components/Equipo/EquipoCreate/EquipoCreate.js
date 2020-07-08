@@ -16,7 +16,6 @@ import Container from "react-bootstrap/Container";
 function EquipoCreate(props) {
   const [componentes, setComponentes] = useState([]);
   const [precios, setPrecios] = useState([]);
-  const [errors, setErrors] = useState([]);
   const [notaInventario, setNotaInventario] = useState({
     descripcion: "",
     cantidad: "",
@@ -49,15 +48,13 @@ function EquipoCreate(props) {
         },
       };
       const resEquipo = await fetch(props.formAction, optionsEquipo);
+      const dataEquipo = await resEquipo.json();
       if (!resEquipo.ok) {
-        const errors = resEquipo.json();
-        setErrors(errors);
+        Toast(dataEquipo, false, resEquipo.status);
       } else {
-        const equipoPost = await resEquipo.json();
-
         // Agrego la nota de inventario a la base de datos con el _id de l equipo
         const newNotaInventario = notaInventario;
-        newNotaInventario.equipo = equipoPost._id;
+        newNotaInventario.equipo = dataEquipo._id;
         setNotaInventario(newNotaInventario);
         const optionsNotaInventario = {
           method: "POST",
@@ -73,19 +70,34 @@ function EquipoCreate(props) {
         );
         if (!resInventario.ok) {
           const errorsInventario = await resInventario.json();
-          setErrors(errorsInventario);
+          Toast(errorsInventario, false, resInventario.status);
+          removeEquipo(dataEquipo);
         } else {
-          history.push(`equipos/${equipoPost._id}`);
+          history.push(`equipos/${dataEquipo._id}`);
         }
       }
     } catch (e) {
-      setErrors(e.message);
+      Toast(["Error del sistema"], true, 500);
     }
   };
+
+  const removeEquipo = async ({ _id }) => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const res = await fetch(`/equipos/${_id}`, options);
+    const dataRemoved = await res.json();
+    if (!res.ok) {
+      Toast(["Error eliminando el equipo"], true, res.status);
+    }
+  };
+
   return (
     <Container>
       <Row>
-        {errors.length > 0 ? <Toast errors={errors} /> : null}
         <form onSubmit={handleSubmitPOSTEquipo}>
           <Row>
             <Col>
@@ -117,9 +129,7 @@ function EquipoCreate(props) {
           </Row>
           <Row>
             <Col>
-              <button type="submit" onClick={() => setError(null)}>
-                Crear
-              </button>
+              <button type="submit">Crear</button>
               {error}
             </Col>
           </Row>

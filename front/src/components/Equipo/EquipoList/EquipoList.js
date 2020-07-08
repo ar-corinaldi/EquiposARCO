@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Pagination from "../../Pagination";
 import { Link } from "react-router-dom";
+import Toast from "../../Toast";
 import "./EquipoList.css";
 function Equipo(props) {
   const [equipos, setEquipos] = useState([]);
@@ -35,12 +36,20 @@ function Equipo(props) {
       setLoading(true);
       const url = `/equipos/${currentPage}/${equiposPerPage}`;
       const res = await fetch(url);
-      const newEquipos = await res.json();
-      setEquipos(newEquipos);
-      setLoading(false);
+      if (!res.ok) {
+        const errors = await res.json();
+        setEquipos([]);
+        setLoading(false);
+        Toast(errors, true, res.status);
+      } else {
+        const newEquipos = await res.json();
+        setEquipos(newEquipos);
+        setLoading(false);
+      }
     } catch (e) {
       setEquipos([]);
       setLoading(false);
+      Toast(["Error del sistema"], true, 500);
     }
   };
 

@@ -17,7 +17,9 @@ router.get("/equipos/cantidad", async (req, res) => {
     console.log("count", count);
     res.send(count + "");
   } catch (e) {
-    res.status(400).send("No se pudo contar los equipos");
+    res
+      .status(500)
+      .send("No se pudo contar los equipos, hubo un error en el sistema");
   }
 });
 
@@ -39,7 +41,9 @@ router.post("/equipos", async (req, res) => {
     await equipo.save();
     res.status(201).send(equipo);
   } catch (e) {
-    res.status(400).send(["No se pudo crear el equipo"]);
+    res
+      .status(500)
+      .send(["No se pudo crear el equipo, hubo un error en el sistema"]);
   }
 });
 
@@ -53,9 +57,12 @@ router.get("/equipos/:page/:elementsPerPage", async (req, res) => {
     const equipos = await Equipo.find({})
       .limit(elementsPerPage)
       .skip((page - 1) * elementsPerPage);
+
     res.send(equipos);
   } catch (e) {
-    res.status(400).send("");
+    res
+      .status(500)
+      .send(["No se pudieron listar los equipos, hubo un error en el sistema"]);
     console.error("error", e);
   }
 });
@@ -87,11 +94,11 @@ router.get("/equipos/:id", async (req, res) => {
         },
       });
     if (!equipo) {
-      return res.status(404).send("No hubo coincidencia");
+      return res.status(404).send(["No se encontró el equipo"]);
     }
     res.send(equipo);
-  } catch (error) {
-    res.status(500).send();
+  } catch (e) {
+    res.status(500).send("Hubo un error en el sistema");
   }
 });
 

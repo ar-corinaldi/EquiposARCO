@@ -5,12 +5,14 @@ import Row from "react-bootstrap/Row";
 import Modal from "../Modal";
 import EquipoList from "../Equipo/EquipoList/EquipoList";
 import NotaInventarioForm from "./NotaInventarioForm";
+import Toast from "../Toast";
 import withEquipoList from "../Equipo/EquipoList/withEquipoList";
 import { useHistory } from "react-router-dom";
 
 function NotaInventarioCreate(props) {
   const [showEquipo, setShowEquipo] = useState(false);
   const [showOrden, setShowOrden] = useState(false);
+  const [errors, setErrors] = useState([]);
   const [notaInventario, setNotaInventario] = useState({
     descripcion: "",
     cantidad: "",
@@ -33,11 +35,20 @@ function NotaInventarioCreate(props) {
         "Content-Type": "application/json",
       },
     };
-    const res = await fetch("/notasInventario", options);
-    const notaInventarioPost = await res.json();
-    history.push(
-      `/inventario/listar_notas_de_inventario/${notaInventarioPost._id}`
-    );
+    try {
+      const res = await fetch("/notasInventario", options);
+      console.log(res);
+      if (!res.ok) {
+        const dataError = await res.json();
+        console.log(dataError);
+        setErrors(dataError);
+      } else {
+        const notaInventarioPost = await res.json();
+        history.push(`/inventario/listar_notas_de_inventario`);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleClickEquipo = (e) => {
@@ -59,11 +70,13 @@ function NotaInventarioCreate(props) {
     e.preventDefault();
     setOrden({});
   };
+
   return (
     <Col>
       NotaInventario
       <Row>
         <Col>
+          <Toast multiple errors={errors} />
           <Card>
             <Card.Body>
               <form onSubmit={submit}>

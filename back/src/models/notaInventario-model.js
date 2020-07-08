@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Equipo = require("./equipo-model");
 
-const categoria = ["compra", "venta", "fabricación", "reparación", "daño"];
+const categorias = ["compra", "venta", "fabricación", "reparación", "daño"];
 
 /*
  * Definición del modelo con sus propiedades
@@ -14,7 +14,7 @@ const notaInventarioSchema = new Schema({
     required: true,
     lowercase: true,
     validate(value) {
-      isValid = categoria.includes(value);
+      isValid = categorias.includes(value);
       if (!isValid) {
         throw new Error("Categoria invalido");
       }
@@ -55,28 +55,95 @@ const notaInventarioSchema = new Schema({
   },
 });
 
+notaInventarioSchema.pre("save", async function (next) {
+  console.log("notaInventario pre middleware");
+  const { equipo, cantidad, categoria } = this;
+  const newEquipo = await Equipo.findById(equipo).populate({
+    path: "componentes",
+    populate: {
+      path: "equipoID",
+    },
+  });
+  if (!newEquipo) {
+    return next(["El equipo no existe"]);
+  }
+  console.log("Antes de verificar");
+  const errores = [];
+  newEquipo.componentes.forEach((componente) => {
+    const val =
+      componente.equipoID.cantidadBodega - cantidad * componente.cantidad;
+    console.log(
+      val,
+      componente.equipoID.cantidadBodega,
+      cantidad,
+      componente.cantidad
+    );
+    if (val < 0) {
+      errores.push(
+        `El equipo ${newEquipo.nombreEquipo} le faltan ${-val} de ${
+          componente.equipoID.nombreEquipo
+        } para ser construido`
+      );
+    }
+  });
+
+  if (!categorias.includes(categoria)) {
+    errores.push(
+      `La categoria ${categoria} no pertenece al grupo de categorias`
+    );
+  }
+
+  if (
+    (categoria === "venta" || categoria === "daño") &&
+    (equipo.cantidadBodega - cantidad < 0 || equipo.cantidadTotal < 0)
+  ) {
+    errores.push(
+      `No hay suficiente equipo, como para la venta o para que se haya dañado`
+    );
+  }
+
+  if (errores.length > 0) {
+    console.log("No deja hacer save()", errores);
+    next(errores);
+  } else {
+    console.log("Deja hacer save()", newEquipo);
+    next();
+  }
+});
+
 notaInventarioSchema.post("save", async (notaInventario) => {
-  console.log("notaInventario post hook");
+  console.log("notaInventario post middleware");
   const { categoria, equipo, cantidad } = notaInventario;
-  const equipoToUpdate = await Equipo.findById(equipo);
+  const equipoToUpdate = await Equipo.findById(equipo).populate({
+    path: "componentes",
+    populate: {
+      path: "equipoID",
+    },
+  });
+
   if (
     categoria === "compra" ||
-    categoria === "fabricacion" ||
-    categoria === "reparacion"
+    categoria === "fabricación" ||
+    categoria === "reparación"
   ) {
     equipoToUpdate.cantidadBodega += cantidad;
     equipoToUpdate.cantidadTotal += cantidad;
   } else if (categoria === "venta" || categoria === "daño") {
-    if (
-      !(
-        equipoToUpdate.cantidadBodega - cantidad < 0 &&
-        equipoToUpdate.cantidadTotal < 0
-      )
-    ) {
-      equipoToUpdate.cantidadBodega -= cantidad;
-      equipoToUpdate.cantidadTotal -= cantidad;
-    }
+    equipoToUpdate.cantidadBodega -= cantidad;
+    equipoToUpdate.cantidadTotal -= cantidad;
+  } else {
+    next(new Error("La categoria no existe"));
   }
+  await asyncForEach(equipoToUpdate.componentes, async (componente) => {
+    const equipoID = componente.equipoID;
+    equipoID.cantidadBodega -= cantidad * componente.cantidad;
+    equipoID.cantidadTotal -= cantidad * componente.cantidad;
+    await Equipo.findByIdAndUpdate(equipoID._id, equipoID, {
+      new: true,
+      runValidators: true,
+    });
+  });
+
   await Equipo.findByIdAndUpdate(equipo, equipoToUpdate, {
     new: true,
     runValidators: true,
@@ -109,5 +176,12 @@ NotaInventario.fieldsNotAllowedUpdates = (body) => {
   console.log(updates);
   return isValidOp;
 };
+
+// Foreach asincrono
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
 
 module.exports = NotaInventario;

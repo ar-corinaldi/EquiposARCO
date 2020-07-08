@@ -44,7 +44,8 @@ router.post("/notasInventario", async (req, res) => {
     await nota.save();
     res.status(201).send(nota);
   } catch (e) {
-    res.status(400).send("No se pudo crear la nota de inventario " + e);
+    console.log(e);
+    res.status(400).send(e);
   }
 });
 

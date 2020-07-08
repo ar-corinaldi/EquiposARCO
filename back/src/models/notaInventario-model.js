@@ -95,7 +95,8 @@ notaInventarioSchema.pre("save", async function (next) {
 
   if (
     (categoria === "venta" || categoria === "daño") &&
-    (equipo.cantidadBodega - cantidad < 0 || equipo.cantidadTotal < 0)
+    (newEquipo.cantidadBodega - cantidad < 0 ||
+      newEquipo.cantidadTotal - cantidad < 0)
   ) {
     errores.push(
       `No hay suficiente equipo, como para la venta o para que se haya dañado`

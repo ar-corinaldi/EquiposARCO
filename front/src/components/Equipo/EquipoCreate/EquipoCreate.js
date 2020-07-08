@@ -7,7 +7,7 @@ import EquipoComponente from "./EquipoComponente";
 import EquipoPrecio from "./EquipoPrecio";
 import NotaInventarioForm from "../../NotaInventario/NotaInventarioForm";
 import withFormHandling from "../../withFormHandling";
-
+import Toast from "../../Toast";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -16,6 +16,7 @@ import Container from "react-bootstrap/Container";
 function EquipoCreate(props) {
   const [componentes, setComponentes] = useState([]);
   const [precios, setPrecios] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [notaInventario, setNotaInventario] = useState({
     descripcion: "",
     cantidad: "",
@@ -47,33 +48,44 @@ function EquipoCreate(props) {
           "Content-Type": "application/json",
         },
       };
-      console.log(fields);
-      console.log(notaInventario);
       const resEquipo = await fetch(props.formAction, optionsEquipo);
-      const equipoPost = await resEquipo.json();
-      // Agrego la nota de inventario a la base de datos con el _id de l equipo
-      const newNotaInventario = notaInventario;
-      newNotaInventario.equipo = equipoPost._id;
-      setNotaInventario(newNotaInventario);
-      console.log(newNotaInventario);
-      const optionsNotaInventario = {
-        method: "POST",
-        body: JSON.stringify(notaInventario),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
+      if (!resEquipo.ok) {
+        const errors = resEquipo.json();
+        setErrors(errors);
+      } else {
+        const equipoPost = await resEquipo.json();
 
-      const resInventario = await fetch(
-        "/notasInventario",
-        optionsNotaInventario
-      );
-      history.push(`equipos/${equipoPost._id}`);
-    } catch (e) {}
+        // Agrego la nota de inventario a la base de datos con el _id de l equipo
+        const newNotaInventario = notaInventario;
+        newNotaInventario.equipo = equipoPost._id;
+        setNotaInventario(newNotaInventario);
+        const optionsNotaInventario = {
+          method: "POST",
+          body: JSON.stringify(notaInventario),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+
+        const resInventario = await fetch(
+          "/notasInventario",
+          optionsNotaInventario
+        );
+        if (!resInventario.ok) {
+          const errorsInventario = await resInventario.json();
+          setErrors(errorsInventario);
+        } else {
+          history.push(`equipos/${equipoPost._id}`);
+        }
+      }
+    } catch (e) {
+      setErrors(e.message);
+    }
   };
   return (
     <Container>
       <Row>
+        {errors.length > 0 ? <Toast errors={errors} /> : null}
         <form onSubmit={handleSubmitPOSTEquipo}>
           <Row>
             <Col>

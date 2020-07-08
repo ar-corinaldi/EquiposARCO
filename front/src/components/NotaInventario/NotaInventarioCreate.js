@@ -40,7 +40,6 @@ function NotaInventarioCreate(props) {
       console.log(res);
       if (!res.ok) {
         const dataError = await res.json();
-        console.log(dataError);
         setErrors(dataError);
       } else {
         const notaInventarioPost = await res.json();
@@ -76,7 +75,7 @@ function NotaInventarioCreate(props) {
       NotaInventario
       <Row>
         <Col>
-          <Toast multiple errors={errors} />
+          {errors.length > 0 ? <Toast errors={errors} /> : null}
           <Card>
             <Card.Body>
               <form onSubmit={submit}>

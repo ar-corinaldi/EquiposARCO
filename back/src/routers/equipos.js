@@ -17,7 +17,7 @@ router.get("/equipos/cantidad", async (req, res) => {
     console.log("count", count);
     res.send(count + "");
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send("No se pudo contar los equipos");
   }
 });
 
@@ -31,19 +31,15 @@ router.post("/equipos", async (req, res) => {
       await asyncForEach(req.body.precios, async (element) => {
         const precio = new Precio(element);
         await precio.save();
-        //console.log(precio._id);
         preciosN.push(precio._id);
       });
       req.body.precios = preciosN;
     }
     const equipo = new Equipo(req.body);
-    console.log(req.body);
-    console.log(equipo);
     await equipo.save();
     res.status(201).send(equipo);
   } catch (e) {
-    console.log("responde");
-    res.status(400).send(e);
+    res.status(400).send(["No se pudo crear el equipo"]);
   }
 });
 

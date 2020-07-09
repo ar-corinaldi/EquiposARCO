@@ -156,6 +156,16 @@ const equipoSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  precioReposicion: {
+    type: Number,
+    default: 0,
+    required: false,
+  },
+  costoEquipo: {
+    type: Number,
+    default: 0,
+    required: false,
+  },
   precios: [
     {
       type: mongoose.Schema.Types.ObjectId,

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import EquipoFilter from "./EquipoFilter";
 import EquipoTable from "./EquipoTable";
+import { ContextEquipoList } from "./withEquipoList";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -15,6 +16,7 @@ function Equipo(props) {
   const [equiposPerPage, setEquiposPerPage] = useState(10);
   const [countEquipos, setCountEquipos] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { noCompuesto } = useContext(ContextEquipoList);
 
   useEffect(() => {
     fetchEquipos();
@@ -26,7 +28,10 @@ function Equipo(props) {
   }, []);
 
   const fetchCountEquipos = async () => {
-    const res = await fetch("/equipos/cantidad");
+    let url = noCompuesto
+      ? "/equipos/cantidadNoCompuesta"
+      : "/equipos/cantidad";
+    const res = await fetch(url);
     const newCount = await res.json();
     setCountEquipos(parseInt(newCount));
   };
@@ -34,7 +39,10 @@ function Equipo(props) {
   const fetchEquipos = async () => {
     try {
       setLoading(true);
-      const url = `/equipos/${currentPage}/${equiposPerPage}`;
+      let url = `/equipos/${currentPage}/${equiposPerPage}`;
+      if (noCompuesto) {
+        url = `/equipos/darNoCompuestos/${currentPage}/${equiposPerPage}`;
+      }
       const res = await fetch(url);
       if (!res.ok) {
         const errors = await res.json();

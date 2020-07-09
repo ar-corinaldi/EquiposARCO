@@ -44,7 +44,6 @@ function NotaInventarioCreate(props) {
         history.push(`/inventario/listar_notas_de_inventario`);
       }
     } catch (e) {
-      console.log(e);
       Toast(["Error del sistema"], true, 500);
     }
   };
@@ -85,7 +84,12 @@ function NotaInventarioCreate(props) {
                   <div className="group-form">
                     <Modal
                       title={"Equipo a añadir nota de inventario"}
-                      body={withEquipoList(EquipoList, setEquipo, "inventario")}
+                      body={withEquipoList(
+                        EquipoList,
+                        setEquipo,
+                        "inventario",
+                        true
+                      )}
                       show={showEquipo}
                       setShow={setShowEquipo}
                       estado={equipo}

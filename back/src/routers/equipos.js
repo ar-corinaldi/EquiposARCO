@@ -7,6 +7,18 @@ const Precio = require("../models/precio-model");
 /**
  * EQUIPO
  */
+router.get("/equipos/cantidadNoCompuesta", async (req, res) => {
+  try {
+    const cantidadNoCompuestos = await Equipo.countDocuments({
+      componentes: { $size: 0 },
+    });
+    res.send(cantidadNoCompuestos + "");
+  } catch (e) {
+    res
+      .status(500)
+      .send(["No se puede contar los equipos, hubo un error en el sistema"]);
+  }
+});
 
 /**
  * Cantidad de documentos que hay en equipo
@@ -19,9 +31,41 @@ router.get("/equipos/cantidad", async (req, res) => {
   } catch (e) {
     res
       .status(500)
-      .send("No se pudo contar los equipos, hubo un error en el sistema");
+      .send(["No se puede contar los equipos, hubo un error en el sistema"]);
   }
 });
+
+/**
+ * Dar la lista de equipos no compuestos
+ */
+router.get(
+  "/equipos/darNoCompuestos/:page/:elementsPerPage",
+  async (req, res) => {
+    let equiposNoCompuestos = null;
+    try {
+      const page = parseInt(req.params.page);
+      const elementsPerPage = parseInt(req.params.elementsPerPage);
+      if (elementsPerPage === -1) {
+        equiposNoCompuestos = await Equipo.find({
+          componentes: { $size: 0 },
+        });
+      } else {
+        equiposNoCompuestos = await Equipo.find({
+          componentes: { $size: 0 },
+        })
+          .limit(elementsPerPage)
+          .skip((page - 1) * elementsPerPage);
+      }
+      res.send(equiposNoCompuestos);
+    } catch (e) {
+      res
+        .status(500)
+        .send([
+          "No se puede listar los equipos no compuestos, hubo un error en el sistema",
+        ]);
+    }
+  }
+);
 
 /**
  *  Post de equipo. Crea primero los precios en su tabla correspondiente y después pasa los ids
@@ -43,7 +87,7 @@ router.post("/equipos", async (req, res) => {
   } catch (e) {
     res
       .status(500)
-      .send(["No se pudo crear el equipo, hubo un error en el sistema"]);
+      .send(["No se puede crear el equipo, hubo un error en el sistema"]);
   }
 });
 
@@ -54,15 +98,19 @@ router.get("/equipos/:page/:elementsPerPage", async (req, res) => {
   try {
     const page = parseInt(req.params.page);
     const elementsPerPage = parseInt(req.params.elementsPerPage);
-    const equipos = await Equipo.find({})
-      .limit(elementsPerPage)
-      .skip((page - 1) * elementsPerPage);
-
+    let equipos = null;
+    if (elementsPerPage === -1) {
+      equipos = await Equipo.find({});
+    } else {
+      equipos = await Equipo.find({})
+        .limit(elementsPerPage)
+        .skip((page - 1) * elementsPerPage);
+    }
     res.send(equipos);
   } catch (e) {
     res
       .status(500)
-      .send(["No se pudieron listar los equipos, hubo un error en el sistema"]);
+      .send(["No se puede listar los equipos, hubo un error en el sistema"]);
     console.error("error", e);
   }
 });

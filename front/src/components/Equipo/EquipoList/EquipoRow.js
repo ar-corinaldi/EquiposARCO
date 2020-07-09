@@ -4,7 +4,7 @@ import { ContextEquipoList } from "./withEquipoList";
 
 function EquipoRow(props) {
   const { url } = useRouteMatch();
-  const handleClickEquipo = useContext(ContextEquipoList);
+  const { handleClickEquipo } = useContext(ContextEquipoList);
   return (
     <React.Fragment>
       <tr>

@@ -28,6 +28,17 @@ const ordenSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Cotizacion",
   },
+  fechaInicio: {
+    type: Date,
+    trim: true,
+    default: Date.now(),
+    lowercase: true,
+  },
+  fechaFin: {
+    type: Date,
+    trim: true,
+    lowercase: true,
+  },
 });
 
 const Orden = mongoose.model("Orden", ordenSchema);

@@ -30,7 +30,7 @@ function EquipoRow(props) {
   };
 
   const tarifasEquipo = props.tarifasPorEquipo;
-  console.log("tarifasPorEquipo", tarifasEquipo);
+  //console.log("tarifasPorEquipo", tarifasEquipo);
   const index = props.index + 1;
   tarifasEquipo.sort(recientePrimero);
   const tarifaM = tarifasEquipo[0];

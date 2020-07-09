@@ -23,6 +23,11 @@ const tarifaSchema = new Schema({
     required: true,
     lowercase: true,
   },
+  valorReposicion: {
+    type: Number,
+    trim: true,
+    lowercase: true,
+  },
   cantidad: {
     type: Number,
     trim: true,
@@ -128,22 +133,5 @@ Tarifa.filtrarPorEquipo = async (tarifas) => {
     return tarifasPorEquipo;
   }
 };
-
-/* Compara dos tarifas con base a su fecha de fin. Ordena las mas recientes primero
- * @param {*} a
- * @param {*} b
- */
-function recientePrimero(a, b) {
-  const fechaFinA = new Date(a.fechaFin);
-
-  const fechaFinB = new Date(b.fechaFin);
-  if (fechaFinA.getTime() < fechaFinB.getTime()) {
-    return 1;
-  }
-  if (fechaFinA.getTime() > fechaFinB.getTime()) {
-    return -1;
-  }
-  return 0;
-}
 
 module.exports = Tarifa;

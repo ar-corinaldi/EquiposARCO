@@ -2,8 +2,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 toast.configure();
-function Toast(errors, autoClose, status) {
-  // let { errors, noAutoClose, status } = props;
+/**
+ *
+ * @param {errores a renderizar, debe ser un arreglo} errors arreglo de errores ["error1","error2"]
+ * @param {define si se debe cerrar o no automaticamente} autoClose false, numero o true (3000 segs)
+ * @param {estado enviado del http por el servidor y lo mapea} status success: >=200, warn: >=400, error>=500
+ */
+function Toast(errors, autoClose = 3000, status) {
   if (status) {
     status =
       status >= 400 && status < 500
@@ -17,7 +22,7 @@ function Toast(errors, autoClose, status) {
     return errors.map((err) =>
       toast[status](err, {
         position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: autoClose ? undefined : false,
+        autoClose: autoClose,
       })
     );
   } catch (e) {

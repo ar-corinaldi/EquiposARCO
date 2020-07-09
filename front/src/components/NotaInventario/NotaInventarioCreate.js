@@ -37,12 +37,10 @@ function NotaInventarioCreate(props) {
     };
     try {
       const res = await fetch("/notasInventario", options);
-      console.log(res);
+      const dataNotaInventario = await res.json();
       if (!res.ok) {
-        const errors = await res.json();
-        Toast(errors, false, res.status);
+        Toast(dataNotaInventario, false, res.status);
       } else {
-        const notaInventarioPost = await res.json();
         history.push(`/inventario/listar_notas_de_inventario`);
       }
     } catch (e) {

@@ -41,8 +41,8 @@ function PrecioForm(props) {
       </Row>
       <Row>
         <div className="form-group">
-          <label className="ml-2" htmlFor="categoria">
-            Categoria:
+          <label className="ml-2" htmlFor="tiempo">
+            Tipo Cobro:
           </label>
           <select
             name="categoria"
@@ -56,14 +56,8 @@ function PrecioForm(props) {
                   : ""}
               </option>
             ))}
-          </select>
-        </div>
-      </Row>
-      <Row>
-        <div className="form-group">
-          <label className="ml-2" htmlFor="tiempo">
-            Tiempo:
-          </label>
+          </select>{" "}
+          /{" "}
           <select name="tiempo" value={fields.tiempo} onChange={handleChange}>
             {tiempos.map((tiempo) => (
               <option key={tiempo} value={tiempo}>
@@ -72,7 +66,7 @@ function PrecioForm(props) {
                   : ""}
               </option>
             ))}
-          </select>
+          </select>{" "}
         </div>
       </Row>
       <Row>

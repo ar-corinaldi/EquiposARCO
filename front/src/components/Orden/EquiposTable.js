@@ -3,6 +3,9 @@ import EquipoRow from "./EquipoRow";
 
 function EquiposTable(props) {
   const tarifas = props.tarifas;
+  // console.log("tarifas", tarifas);
+  // console.log("tarifas[0]", tarifas && tarifas[0].tarifasPorEquipo);
+  // console.log("tarifas[1]", tarifas && tarifas[1].tarifasPorEquipo);
   return (
     <div className="table-responsive">
       <table className="table">
@@ -19,8 +22,12 @@ function EquiposTable(props) {
         </thead>
         <tbody>
           {tarifas &&
-            tarifas.map((tarifa, index) => (
-              <EquipoRow key={tarifa._id} tarifa={tarifa} index={index} />
+            tarifas.map((tarifaAgrupada, index) => (
+              <EquipoRow
+                key={index}
+                tarifasPorEquipo={tarifaAgrupada.tarifasPorEquipo}
+                index={index}
+              />
             ))}
         </tbody>
       </table>

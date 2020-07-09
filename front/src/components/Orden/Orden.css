@@ -48,3 +48,18 @@
 .text-center {
   text-align: center !important;
 }
+
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: table-row;
+}
+
+.button-mas {
+  border: none;
+  background: none;
+  padding: 0px;
+  color: green;
+}

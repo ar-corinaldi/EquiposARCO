@@ -54,5 +54,12 @@
 }
 
 .collapse.in {
-  display: block;
+  display: table-row;
+}
+
+.button-mas {
+  border: none;
+  background: none;
+  padding: 0px;
+  color: green;
 }

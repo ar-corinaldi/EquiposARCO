@@ -32,12 +32,6 @@ router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
     }
     console.log("La bodega y la cotizacion existen");
     orden = new Orden(req.body);
-    // let tarifaDef;
-    // for (let i = 0; i < cotizacion.tarifasCotizadas.length; i++) {
-    //   tarifaDef = await Tarifa.findById(cotizacion.tarifasCotizadas[i]);
-    //   await tarifaDef.save();
-    //   orden.tarifasDefinitivas.push(tarifaDef._id);
-    // }
     orden.tarifasDefinitivas = await Tarifa.filtrarPorEquipo(
       cotizacion.tarifasCotizadas
     );

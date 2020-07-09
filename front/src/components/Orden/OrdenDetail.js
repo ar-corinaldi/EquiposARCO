@@ -71,7 +71,7 @@ function OrdenDetail(props) {
    */
 
   const fetchInfoOrden = async () => {
-    console.log("llegaOrdenes");
+    //console.log("llegaOrdenes");
     let res = await fetch(`/ordenes/${idOr}/tarifasPobladas`);
     const ordenA = await res.json();
     //console.log("orden", ordenA);

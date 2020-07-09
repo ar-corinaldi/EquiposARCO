@@ -30,15 +30,7 @@ const orden2Schema = new Schema({
   ],
   tarifasDefinitivas: [
     {
-      equipo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Equipo",
-      },
-      precioRef: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Precio",
-      },
-      tarifas: [
+      tarifasPorEquipo: [
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Tarifa",

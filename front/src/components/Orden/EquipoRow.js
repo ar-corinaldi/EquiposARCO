@@ -17,23 +17,23 @@ function compareTarifasByDate(a, b) {
 }
 
 function EquipoRow(props) {
-  // const tarifa = props.tarifa;
-  const tarifas = props.tarifaComp;
-  const ordenadas = tarifas.sort(compareTarifasByDate);
+  const tarifa = props.tarifa;
   const index = props.index + 1;
-  const tarifa = ordenadas[0];
-  const otrasTarifas = [];
-  for (let i = 1; i < ordenadas.length; i++) {
-    otrasTarifas.push(ordenadas[i]);
-  }
+  // const tarifas = props.tarifaComp;
+  // const ordenadas = tarifas.sort(compareTarifasByDate);
+  // const tarifa = ordenadas[0];
+  // const otrasTarifas = [];
+  // for (let i = 1; i < ordenadas.length; i++) {
+  //   otrasTarifas.push(ordenadas[i]);
+  // }
   //console.log("otrasTarifas", otrasTarifas);
 
-  const [open, setOpen] = useState(false);
+  //const [open, setOpen] = useState(false);
 
-  const toggle = () => {
-    //console.log(open);
-    setOpen(!open);
-  };
+  // const toggle = () => {
+  //   //console.log(open);
+  //   setOpen(!open);
+  // };
 
   return (
     <React.Fragment>
@@ -44,9 +44,9 @@ function EquipoRow(props) {
           <td>
             {index}
             <br />
-            <button className="btn-info" onClick={toggle}>
+            {/* <button className="btn-info" onClick={toggle}>
               +
-            </button>
+            </button> */}
           </td>
           <td>
             <Link to={`/inventario/equipos/${tarifa.equipo._id}`}>
@@ -68,7 +68,7 @@ function EquipoRow(props) {
         </tr>
       </tbody>
       {/* Se muestran las otras tarifas del equipo
-       */}
+       
       <tbody className={"capitalize collapse" + (open ? " in" : "")}>
         {otrasTarifas &&
           otrasTarifas.map((tarifa2, index2) => (
@@ -94,7 +94,7 @@ function EquipoRow(props) {
               <td>Falta </td>
             </tr>
           ))}
-      </tbody>
+      </tbody>*/}
     </React.Fragment>
   );
 }

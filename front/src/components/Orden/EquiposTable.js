@@ -53,11 +53,11 @@ const filtrarPorEquipo = (tarifasOrdenadas) => {
 
 function EquiposTable(props) {
   const tarifas = props.tarifas;
-  const tarifasOrdenadas = tarifas && tarifas.sort(compare);
-  //console.log(tarifasOrdenadas);
-  const tarifasPorEquipo = filtrarPorEquipo(tarifasOrdenadas);
-  //console.log(tarifasPorEquipo);
-  console.log("tarifasPorEquipo", tarifasPorEquipo);
+  // const tarifasOrdenadas = tarifas && tarifas.sort(compare);
+  // //console.log(tarifasOrdenadas);
+  // const tarifasPorEquipo = filtrarPorEquipo(tarifasOrdenadas);
+  // //console.log(tarifasPorEquipo);
+  //console.log("tarifasPorEquipo", tarifasPorEquipo);
   return (
     <div className="table-responsive">
       <table className="table">
@@ -70,12 +70,11 @@ function EquiposTable(props) {
             <th>Tipo de Cobro</th>
             <th>Periodo Cobro</th>
             <th>Status</th>
-            <th>Mas tarifas</th>
           </tr>
         </thead>
-        {tarifasPorEquipo &&
-          tarifasPorEquipo.map((tarifaComp, index) => (
-            <EquipoRow key={index} tarifaComp={tarifaComp} index={index} />
+        {tarifas &&
+          tarifas.map((tarifa, index) => (
+            <EquipoRow key={index} tarifa={tarifa} index={index} />
           ))}
         {/* {tarifas &&
             tarifasOrdenadas.map((tarifa, index) => (

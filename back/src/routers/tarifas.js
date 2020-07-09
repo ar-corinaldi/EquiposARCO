@@ -105,30 +105,51 @@ router.get("/cotizaciones/:idC/tarifasPobladas", async (req, res, next) => {
 
 /**
  * Agrega una tarifa nueva a una orden
+ * LA TARIFA DEBE SER SOBRE UN EQUIPO QUE YA TIENE TARIFAS
+ * NO CONTEMPLA EL CASO EN EL QUE NO HAYAN TARIFAS YA CON ESE EQUIPO
  */
-router.post("/ordenes/:id/tarifasDefinitivas", async (req, res) => {
+router.post("/ordenes/:idOr/tarifasDefinitivas", async (req, res) => {
+  let newTarifa = new Tarifa(req.body);
   try {
-    const newTarifa = new Tarifa(req.body);
-    const orden = await Orden.findById(req.params.id);
+    const orden = await Orden.findById(req.params.idOr).populate({
+      path: "tarifasDefinitivas",
+      populate: {
+        path: "tarifasPorEquipo",
+      },
+    });
     if (!orden) {
       return res.status(404).send("Ninguna orden coincidio con ese id");
     }
-    console.log("Existe la orden");
-    await newTarifa.save();
-    orden.tarifasDefinitivas.push(newTarifa._id);
+    console.log("Existe la orden y está poblada");
+    // console.log(
+    //   "ver que hay adentro",
+    //   orden.tarifasDefinitivas[0].tarifasPorEquipo
+    // );
+    newTarifa = await newTarifa.save();
+    orden.tarifasDefinitivas.forEach((tarifaDefinitiva) => {
+      const actual = tarifaDefinitiva.tarifasPorEquipo[0].equipo.toString();
+      console.log("actual", actual);
+      const buscado = newTarifa.equipo;
+      console.log("buscado", buscado);
+      console.log("son iguales", actual.localeCompare(buscado));
+      if (actual.localeCompare(buscado) === 0) {
+        tarifaDefinitiva.tarifasPorEquipo.push(newTarifa._id);
+        console.log(
+          "Encuentra el grupo de tarifas correspondeinte y lo agrega"
+        );
+        return;
+      }
+    });
+    // orden.tarifasDefinitivas.push(newTarifa._id);
     await orden.save();
     console.log("Guarda orden con tarifa");
     res.status(201).send(orden);
   } catch (e) {
     console.log("Hubo un error");
-    if (newTarifa !== undefined) {
+    if (newTarifa) {
       console.log("Elimina la tarifa");
       // Manejo en caso de que no se agregue la bodega
       Tarifa.findByIdAndDelete(newTarifa._id);
-      const index = orden.tarifasDefinitivas.indexOf(newTarifa._id);
-      if (index > -1) {
-        orden.tarifasDefinitivas.splice(index, 1);
-      }
     }
     res.status(400).send("No se pudo agregar la tarifa a la orden " + e);
     console.error("error", e);
@@ -137,6 +158,8 @@ router.post("/ordenes/:id/tarifasDefinitivas", async (req, res) => {
 
 /**
  * Agrega una tarifa existente a una orden
+ * LA TARIFA DEBE SER SOBRE UN EQUIPO QUE YA TIENE TARIFAS
+ * NO CONTEMPLA EL CASO EN EL QUE NO HAYAN TARIFAS YA CON ESE EQUIPO
  */
 router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
   try {
@@ -144,12 +167,30 @@ router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
     if (!newTarifa) {
       return res.status(404).send("Ninguna tarifa coincidio con ese id");
     }
-    const orden = await Orden.findById(req.params.id);
+    const orden = await Orden.findById(req.params.id).populate({
+      path: "tarifasDefinitivas",
+      populate: {
+        path: "tarifasPorEquipo",
+      },
+    });
     if (!orden) {
       return res.status(404).send("Ninguna orden coincidio con ese id");
     }
     console.log("Existe la orden y la tarifa");
-    orden.tarifasDefinitivas.push(newTarifa._id);
+    orden.tarifasDefinitivas.forEach((tarifaDefinitiva) => {
+      const actual = tarifaDefinitiva.tarifasPorEquipo[0].equipo.toString();
+      console.log("actual", actual);
+      const buscado = newTarifa.equipo;
+      console.log("buscado", buscado);
+      console.log("son iguales", actual.localeCompare(buscado));
+      if (actual.localeCompare(buscado) === 0) {
+        tarifaDefinitiva.tarifasPorEquipo.push(newTarifa._id);
+        console.log(
+          "Encuentra el grupo de tarifas correspondeinte y lo agrega"
+        );
+        return;
+      }
+    });
     await orden.save();
     console.log("Guarda orden con tarifa");
     res.status(201).send(orden);
@@ -165,19 +206,15 @@ router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
  */
 router.get("/ordenes/:idOr/tarifasPobladas", async (req, res, next) => {
   try {
-    const orden = await Orden.findById(req.params.idOr)
-      .populate({
-        path: "tarifasDefinitivas",
+    const orden = await Orden.findById(req.params.idOr).populate({
+      path: "tarifasDefinitivas",
+      populate: {
+        path: "tarifasPorEquipo",
         populate: {
-          path: "equipo",
+          path: "equipo precioReferencia",
         },
-      })
-      .populate({
-        path: "tarifasDefinitivas",
-        populate: {
-          path: "precioReferencia",
-        },
-      });
+      },
+    });
     if (!orden) {
       return res.send("La orden no existe");
     }

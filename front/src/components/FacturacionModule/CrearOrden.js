@@ -14,22 +14,18 @@ function CrearOrden(props) {
   const [secondStepState, setSecondStep] = useState("pending");
 
   function stepOneHandler(params) {
-    if (firstStepState === "active") {
-      setFirstStep("complete");
-    } else if (firstStepState === "complete") {
-      setFirstStep("pending");
-    } else {
+    if (firstStepState === "complete" || firstStepState === "pending") {
       setFirstStep("active");
+      setSecondStep("pending");
     }
   }
 
   function stepTwoHandler() {
-    if (secondStepState === "active") {
-      setSecondStep("complete");
-    } else if (secondStepState === "complete") {
-      setSecondStep("pending");
-    } else {
+    if (secondStepState === "pending") {
       setSecondStep("active");
+      if (firstStepState !== "complete") {
+        setFirstStep("pending");
+      }
     }
   }
 
@@ -48,7 +44,7 @@ function CrearOrden(props) {
   return (
     <div id="create-order-wrapper">
       <h2 className="margin-bottom" >Crear Orden</h2>
-      <hr/>
+      <hr />
       <Row >
         <Col align="center" className="col-step">
           <button
@@ -73,6 +69,8 @@ function CrearOrden(props) {
       </Row>
       <Row>
         <EscogerCotizacion
+          miEstado={[firstStepState, setFirstStep]}
+          segundoEstado={[secondStepState, setSecondStep]}
           estadoStepOne={firstStepState}
           setEstadoStepOne={setFirstStep}
         />

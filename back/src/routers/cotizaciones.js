@@ -91,7 +91,9 @@ router.get("/cotizaciones", async (req, res) => {
       path: "tarifasCotizadas",
       populate: {
         path: "precioReferencia",
-      },
+      }
+    }).populate({
+      path: "tarifasCotizadas",
       populate: {
         path: "equipo"
       }

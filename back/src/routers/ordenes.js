@@ -11,7 +11,8 @@ const router = express.Router();
  */
 
 /**
- * Crea una orden a partir de una cotizacion y la agrega a una bodega
+ * Crea una orden a partir de una cotizacion y la agrega a una bodega.
+ * Copia la infromacion de las tarifas definidas en la cotizacion,y crea nuevas instancias de ellas que las relaciona con la orden
  */
 router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
   let orden = null;
@@ -26,8 +27,14 @@ router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
     }
     console.log("La bodega y la cotizacion existen");
     orden = new Orden(req.body);
-    orden.tarifasDefinitivas = Array.from(cotizacion.tarifasCotizadas);
-    orden.cotizacion = cotizacion._id;
+    let tarifaDef;
+    for (let i = 0; i < cotizacion.tarifasCotizadas.length; i++) {
+      tarifaDef = await Tarifa.findById(cotizacion.tarifasCotizadas[i]);
+      await tarifaDef.save();
+      orden.tarifasDefinitivas.push(tarifaDef._id);
+    }
+    //orden.tarifasDefinitivas = Array.from(cotizacion.tarifasCotizadas);
+    //orden.cotizacion = cotizacion._id;
     await orden.save();
     console.log("orden guardada");
     cotizacion.orden = orden._id;

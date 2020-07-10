@@ -47,6 +47,55 @@ function RemisionForm(props) {
             required
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="direccionBodega"> Equipos : </label>
+          <input
+            name="direccionBodega"
+            type="text"
+            value={fields.direccionBodega}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="direccionBodega">
+            ¿Quién se encarga del transporte?
+          </label>
+          <input
+            type="radio"
+            id="tercero"
+            name="asumidoTercero"
+            value="tercero"
+          />{" "}
+          <label for="male"> El Tercero</label>
+          <input
+            type="radio"
+            id="equiposARCO"
+            name="asumidoTercero"
+            value="equiposARCO"
+          />{" "}
+          <label for="male"> Equipos ARCO</label>
+        </div>
+        <div className="form-group">
+          <label htmlFor="direccionBodega"> Vehiculo : </label>
+          <input
+            name="direccionBodega"
+            type="text"
+            value={fields.direccionBodega}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="direccionBodega"> Conductor : </label>
+          <input
+            name="direccionBodega"
+            type="text"
+            value={fields.direccionBodega}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
         <div id="button-wrapper">
           <button type="submit" className="buttonTercero">

@@ -15,6 +15,7 @@ const tarifaSchema = new Schema({
   fechaFin: {
     type: Date,
     trim: true,
+    required: true,
     lowercase: true,
   },
   valorTarifa: {
@@ -40,6 +41,7 @@ const tarifaSchema = new Schema({
   },
   equipo: {
     type: mongoose.Schema.Types.ObjectId,
+    required: true,
     ref: "Equipo",
   },
 });

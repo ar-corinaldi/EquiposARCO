@@ -17,6 +17,7 @@ import NotaInventarioCreate from "./components/NotaInventario/NotaInventarioCrea
 import NotaInventarioList from "./components/NotaInventario/NotaInventarioList";
 import BodegaCreate from "./components/Bodega/BodegaCreate";
 import CotizacionDetail from "./components/Cotizacion/CotizacionDetail";
+import RemisionCreate from "./components/Remision/RemisionCreate";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -76,7 +77,12 @@ function App() {
                 <Route path="/terceros/:id" exact component={TerceroDetail} />
                 <Route
                   path="/terceros/:id/bodegas/:idB/ordenes/:idOr"
+                  exact
                   component={OrdenDetail}
+                />
+                <Route
+                  path="/terceros/:id/bodegas/:idB/ordenes/:idOr/remisiones/create"
+                  component={RemisionCreate}
                 />
                 <Route
                   path="/terceros/:id/bodegas/:idB/cotizaciones/:idC"

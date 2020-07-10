@@ -105,8 +105,7 @@ router.get("/cotizaciones/:idC/tarifasPobladas", async (req, res, next) => {
 
 /**
  * Agrega una tarifa nueva a una orden
- * LA TARIFA DEBE SER SOBRE UN EQUIPO QUE YA TIENE TARIFAS
- * NO CONTEMPLA EL CASO EN EL QUE NO HAYAN TARIFAS YA CON ESE EQUIPO
+ * LA TARIFA debería SER SOBRE UN EQUIPO QUE YA TIENE TARIFAS pero CONTEMPLA EL CASO EN EL QUE NO HAYAN TARIFAS YA CON ESE EQUIPO
  */
 router.post("/ordenes/:idOr/tarifasDefinitivas", async (req, res) => {
   let newTarifa = new Tarifa(req.body);
@@ -121,11 +120,8 @@ router.post("/ordenes/:idOr/tarifasDefinitivas", async (req, res) => {
       return res.status(404).send("Ninguna orden coincidio con ese id");
     }
     console.log("Existe la orden y está poblada");
-    // console.log(
-    //   "ver que hay adentro",
-    //   orden.tarifasDefinitivas[0].tarifasPorEquipo
-    // );
     newTarifa = await newTarifa.save();
+    let equipoYaCotizado = false;
     orden.tarifasDefinitivas.forEach((tarifaDefinitiva) => {
       const actual = tarifaDefinitiva.tarifasPorEquipo[0].equipo.toString();
       console.log("actual", actual);
@@ -134,12 +130,18 @@ router.post("/ordenes/:idOr/tarifasDefinitivas", async (req, res) => {
       console.log("son iguales", actual.localeCompare(buscado));
       if (actual.localeCompare(buscado) === 0) {
         tarifaDefinitiva.tarifasPorEquipo.push(newTarifa._id);
+        equipoYaCotizado = true;
         console.log(
           "Encuentra el grupo de tarifas correspondeinte y lo agrega"
         );
         return;
       }
     });
+    if (!equipoYaCotizado) {
+      orden.tarifasDefinitivas.push({ tarifasPorEquipo: [newTarifa.id] });
+      equipoYaCotizado = true;
+      console.log("No se había cotizado ya el equipo así que lo agrega");
+    }
     // orden.tarifasDefinitivas.push(newTarifa._id);
     await orden.save();
     console.log("Guarda orden con tarifa");
@@ -158,8 +160,7 @@ router.post("/ordenes/:idOr/tarifasDefinitivas", async (req, res) => {
 
 /**
  * Agrega una tarifa existente a una orden
- * LA TARIFA DEBE SER SOBRE UN EQUIPO QUE YA TIENE TARIFAS
- * NO CONTEMPLA EL CASO EN EL QUE NO HAYAN TARIFAS YA CON ESE EQUIPO
+ * LA TARIFA debería SER SOBRE UN EQUIPO QUE YA TIENE TARIFAS pero CONTEMPLA EL CASO EN EL QUE NO HAYAN TARIFAS YA CON ESE EQUIPO
  */
 router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
   try {
@@ -177,6 +178,7 @@ router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
       return res.status(404).send("Ninguna orden coincidio con ese id");
     }
     console.log("Existe la orden y la tarifa");
+    let equipoYaCotizado = false;
     orden.tarifasDefinitivas.forEach((tarifaDefinitiva) => {
       const actual = tarifaDefinitiva.tarifasPorEquipo[0].equipo.toString();
       console.log("actual", actual);
@@ -185,12 +187,18 @@ router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
       console.log("son iguales", actual.localeCompare(buscado));
       if (actual.localeCompare(buscado) === 0) {
         tarifaDefinitiva.tarifasPorEquipo.push(newTarifa._id);
+        equipoYaCotizado = true;
         console.log(
           "Encuentra el grupo de tarifas correspondeinte y lo agrega"
         );
         return;
       }
     });
+    if (!equipoYaCotizado) {
+      orden.tarifasDefinitivas.push({ tarifasPorEquipo: [newTarifa.id] });
+      equipoYaCotizado = true;
+      console.log("No se había cotizado ya el equipo así que lo agrega");
+    }
     await orden.save();
     console.log("Guarda orden con tarifa");
     res.status(201).send(orden);

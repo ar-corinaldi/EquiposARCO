@@ -1,6 +1,7 @@
 import "./CrearOrden.css";
 import React, { useState } from "react";
 import EscogerCotizacion from "./EscogerCotizacion";
+import ConfirmarTarifas from "./ConfirmarTarifas";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button"
@@ -8,10 +9,14 @@ import priceLogo from "../../assets/price.svg";
 import priceLogoDark from "../../assets/price-dark.svg";
 import sheetLogo from "../../assets/sheet.svg";
 import sheetLogoDark from "../../assets/sheetDark.svg";
+import BodegaOrdenDetail from "./BodegaOrdenDetail";
 
 function CrearOrden(props) {
+  //Estados globales
   const [firstStepState, setFirstStep] = useState("active");
   const [secondStepState, setSecondStep] = useState("pending");
+  const [bodegaSeleccionada, setBodegaSeleccionada] = useState({});
+  const [cotizacionSeleccionada, setCotizacionSeleccionada] = useState({});
 
   function stepOneHandler(params) {
     if (firstStepState === "complete" || firstStepState === "pending") {
@@ -71,8 +76,14 @@ function CrearOrden(props) {
         <EscogerCotizacion
           miEstado={[firstStepState, setFirstStep]}
           segundoEstado={[secondStepState, setSecondStep]}
-          estadoStepOne={firstStepState}
-          setEstadoStepOne={setFirstStep}
+          bodegaSeleccionada = {[bodegaSeleccionada, setBodegaSeleccionada]}
+          cotizacionSeleccionada = {[cotizacionSeleccionada, setCotizacionSeleccionada]}
+        />
+        <ConfirmarTarifas
+          miEstado={[secondStepState, setSecondStep]}
+          primerEstado={[firstStepState, setFirstStep]}
+          bodegaSeleccionada = {[bodegaSeleccionada, setBodegaSeleccionada]}
+          cotizacionSeleccionada = {[cotizacionSeleccionada, setCotizacionSeleccionada]}
         />
       </Row>
     </div>

@@ -4,12 +4,15 @@ import EscogerBodega from "./EscogerBodega";
 import BodegaOrdenDetail from "./BodegaOrdenDetail";
 import EscogerCotizacionDetail from "./EscogerCotizacionDetail";
 import CotizacionDetailTable from "./CotizacionDetailTable";
-function EscogerCotizacion(params) {
-  const [miEstado, setMiEstado] = params.miEstado;
-  const [segundoEstado, setSegundoEstado] = params.segundoEstado;
 
-  const [bodegaSeleccionada, setBodegaSeleccionada] = useState({});
-  const [cotizacionSeleccionada, setCotizacionSeleccionada] = useState({});
+
+function EscogerCotizacion(props) {
+  //Estados globales
+  const [miEstado, setMiEstado] = props.miEstado;
+  const [segundoEstado, setSegundoEstado] = props.segundoEstado;
+  const [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;
+  const [cotizacionSeleccionada, setCotizacionSeleccionada] = props.cotizacionSeleccionada;
+  //Estados propios
   const [bodegas, setBodegas] = useState([]);
   const [terceros, setTerceros] = useState([]);
 
@@ -54,7 +57,6 @@ function EscogerCotizacion(params) {
       <EscogerBodega
         bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
         bodegas={[bodegas, setBodegas]}
-        terceros={[terceros, setTerceros]}
       />
       <BodegaOrdenDetail
         bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}

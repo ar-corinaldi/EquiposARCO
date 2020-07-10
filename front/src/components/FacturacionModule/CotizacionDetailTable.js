@@ -6,7 +6,7 @@ import './CotizacionDetailTable.css';
 
 function CotizacionDetailTable(props) {
     const [cotizacionSeleccionada, setCotizacionSeleccionada] = props.cotizacionSeleccionada;
-    console.log(cotizacionSeleccionada);
+    // console.log(cotizacionSeleccionada);
 
 
 
@@ -42,7 +42,6 @@ function CotizacionDetailTable(props) {
 
 
                         return (<tr key={index}>
-                            {console.log(tarifa)}
                             <th >{tarifa.equipo.nombreEquipo}</th>
                             <th >{tarifa.precioReferencia.categoria}</th>
                             <th>{formatoPrecio(tarifa.valorTarifa)}</th>

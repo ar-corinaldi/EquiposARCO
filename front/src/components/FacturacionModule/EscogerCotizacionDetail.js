@@ -39,18 +39,13 @@ function EscogerCotizacionDetail(props) {
     const filterOptions = createFilterOptions({
         matchFrom: "any",
         stringify: (option) =>
-            option.numeroContrato +
-            option.direccionBodega +
-            option.municipio +
-            option.pais +
-            option.telefono +
-            option.departamento,
+            toString( option.numeroContrato )
     });
 
     return (
         <>
             <div className='rootBodega' >
-                <h4 className="mt-3" >Escoja la cotización base para la orden</h4>
+                <h4 >Escoja la cotización base para la orden</h4>
                 <div className="completeCotizacionWrapper">
                     <Autocomplete
                         openOnFocus
@@ -90,7 +85,10 @@ function EscogerCotizacionDetail(props) {
                         }}
                         getOptionLabel={(option) => {
                             if (option && option.numeroContrato) {
-                                return option._id;
+                                console.log('=====================dfdfdfdffdf===============');
+                                console.log(option.numeroContrato);
+                                console.log('====================================');
+                                return toString(option.numeroContrato);
                             }
                             else {
                                 return "";
@@ -99,10 +97,10 @@ function EscogerCotizacionDetail(props) {
                         }
                         options={[...cotizaciones]
                             .sort((a, b) => {
-                              // Muestra la bodega seleccionada primero
-                              let ai = (a == cotizacionSeleccionada) || (a == pendingValue);
-                              let bi = (b == cotizacionSeleccionada) || (b == pendingValue);
-                              return ai ? -1 : bi ? 1 : 0;
+                                // Muestra la bodega seleccionada primero
+                                let ai = (a == cotizacionSeleccionada) || (a == pendingValue);
+                                let bi = (b == cotizacionSeleccionada) || (b == pendingValue);
+                                return ai ? -1 : bi ? 1 : 0;
                             })}
                         renderOption={(option, { selected }) => (
                             <React.Fragment>

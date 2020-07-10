@@ -11,21 +11,20 @@ import InputBase from "@material-ui/core/InputBase";
 export default function EscogerBodega(props) {
   const [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;
   const [bodegas, setBodegas] = props.bodegas;
-  const [terceros, setTerceros] = props.terceros;
   const [pendingValue, setPendingValue] = React.useState({});
   const [open, setOpen] = useState(false);
 
   // console.log('====================================');
   // console.log(terceros  );
   // console.log('====================================');
-  let bodegasPrueba = [];
+  // let bodegasPrueba = [];
 
-  terceros.map((tercero) => {
-    tercero.bodegas.map((bodega) => {
-      bodega.duenio = { bodegas, ...tercero };
-      bodegasPrueba.push(bodega);
-    });
-  });
+  // terceros.map((tercero) => {
+  //   tercero.bodegas.map((bodega) => {
+  //     bodega.duenio = { bodegas, ...tercero };
+  //     bodegasPrueba.push(bodega);
+  //   });
+  // });
   // console.log("Bodegas");
 
   // console.log(bodegasPrueba);

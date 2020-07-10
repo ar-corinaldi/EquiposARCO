@@ -40,6 +40,7 @@ const tarifaSchema = new Schema({
   },
   equipo: {
     type: mongoose.Schema.Types.ObjectId,
+    required: true,
     ref: "Equipo",
   },
 });

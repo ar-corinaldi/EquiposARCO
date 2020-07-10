@@ -4,10 +4,15 @@ import CalcularTarifa from '../utils/CacularTarifas';
 import formatoPrecio from '../utils/FormatoPrecios'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+import "moment/locale/es";
 
 function ConfirmarTarifaDetail(props) {
     let miTarifa = props.tarifa;
+    const [inventario, setInventario] = props.inventario;
     const [tarifa, setTarifa] = useState(miTarifa);
+    const [selectedDate, handleDateChange] = useState(new Date());
     let cobro = CalcularTarifa([tarifa])[tarifa._id];
 
     return (
@@ -37,6 +42,18 @@ function ConfirmarTarifaDetail(props) {
                         </Col>
                         <Col>
                             <p>Total a pagar: {formatoPrecio(cobro.cobroTotal)}</p>
+                            <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
+                            <DateTimePicker
+                                value={selectedDate}
+                                disablePast
+                                onChange={handleDateChange}
+                                label="With Today Button"
+                                showTodayButton
+                                cancelLabel = "Cancelar"
+                                todayLabel = "Hoy"
+                            >
+                            </DateTimePicker>
+                            </MuiPickersUtilsProvider>
                         </Col>
                     </Row>
                 </Col>

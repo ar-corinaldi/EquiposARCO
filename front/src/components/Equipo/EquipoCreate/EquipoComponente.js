@@ -16,7 +16,8 @@ function EquipoComponenteForm(props) {
     setShow(true);
   };
 
-  const handleRemove = (currentIndex) => {
+  const handleRemove = (e, currentIndex) => {
+    e.preventDefault();
     setComponentes((prev) =>
       prev.filter((prev, index) => currentIndex !== index)
     );
@@ -42,7 +43,7 @@ function EquipoComponenteForm(props) {
               setComponentes={setComponentes}
               componente={componente}
             />
-            <button className="m-2" onClick={() => handleRemove(index)}>
+            <button className="m-2" onClick={(e) => handleRemove(e, index)}>
               -
             </button>
           </li>

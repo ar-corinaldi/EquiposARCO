@@ -2,7 +2,11 @@ import React from "react";
 import Table from "react-bootstrap/Table";
 import Col from "react-bootstrap/Col";
 
-function EquipoComponentes(props) {
+function ComponenteDetail(props) {
+  console.log(props.componentes);
+  if (!props.componentes || props.componentes.length === 0) {
+    return <h5 className="m-4">No se compone de ningun equipo</h5>;
+  }
   return (
     <Col>
       <Table>
@@ -31,4 +35,4 @@ function EquipoComponentes(props) {
   );
 }
 
-export default EquipoComponentes;
+export default ComponenteDetail;

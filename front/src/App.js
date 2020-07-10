@@ -47,7 +47,7 @@ function App() {
                 />
                 <Route
                   path="/inventario/crearEquipo"
-                  component={() => <EquipoCreate />}
+                  component={EquipoCreate}
                 />
                 <Route path="/inventario/equipos" component={EquipoList} />
                 <Route
@@ -56,7 +56,7 @@ function App() {
                 />
                 <Route
                   path="/inventario/crearNotaInventario"
-                  component={() => <NotaInventarioCreate />}
+                  component={NotaInventarioCreate}
                 />
                 <Route
                   path="/terceros/listar_terceros"

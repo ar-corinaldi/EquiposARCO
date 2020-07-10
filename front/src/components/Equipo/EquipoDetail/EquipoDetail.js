@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PrecioTable from "./PrecioTable";
 import EquipoDetailBadges from "./EquipoDetailBadges";
-import PropiedadesComponentesContainer from "./PropiedadesComponentesContainer";
+import Container2Components from "../../Container2Components";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import formatoPrecios from "../../utils/FormatoPrecios";
+import PropiedadesDetail from "./PropiedadDetail";
+import ComponenteDetail from "./ComponenteDetail";
+
 function EquipoDetail() {
   const [equipo, setEquipo] = useState({});
   const [loading, setLoading] = useState(false);
@@ -95,7 +98,13 @@ function EquipoDetail() {
       </Row>
       <Row>
         <Col>
-          <PropiedadesComponentesContainer equipo={equipo} />
+          <Container2Components
+            componentes={[
+              () => <ComponenteDetail componentes={equipo.componentes} />,
+              () => <PropiedadesDetail equipo={equipo} />,
+            ]}
+            nombres={["Componentes", "Propiedades"]}
+          />
         </Col>
       </Row>
     </Container>

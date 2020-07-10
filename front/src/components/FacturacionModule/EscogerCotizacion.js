@@ -36,7 +36,7 @@ function EscogerCotizacion(props) {
 
   useEffect(() => {
     async function fetchBodegas() {
-      const bodegasBack = await (await fetch("/bodegas")).json();
+      const bodegasBack = await (await fetch("/bodegas/all")).json();
       const tercerosBack = await (await fetch("/terceros/bodegas")).json();
       setBodegas(bodegasBack);
       setTerceros(tercerosBack);

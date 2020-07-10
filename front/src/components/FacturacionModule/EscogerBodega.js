@@ -40,7 +40,7 @@ export default function EscogerBodega(props) {
 
   const filterOptions = createFilterOptions({
     matchFrom: "any",
-    limit: 5,
+    limit: 15,
     stringify: (option) =>
       option.nombreBodega +
       option.direccionBodega +
@@ -48,7 +48,7 @@ export default function EscogerBodega(props) {
       option.pais +
       option.telefono +
       option.departamento+
-      option.duenio
+      (option.duenio? option.duenio.nombre + option.duenio.numeroDocumento: "")
   });
 
   return (
@@ -118,7 +118,7 @@ export default function EscogerBodega(props) {
                   }}
                 /> */}
                 <div className="nombreBodega">
-                  <span>{option.nombreBodega}</span>
+                  <span>{(option.duenio? option.duenio.nombre + " - ": "")+ option.nombreBodega}</span>
                   <br />
                   <span className="bodegaDescripcion">
                     {option.municipio +

@@ -20,7 +20,7 @@ function BodegaOrdenDetail(props) {
           }}
         />
         <div className="bodegaHeader">
-          <h2>{bodegaSeleccionada.nombreBodega} </h2>
+          <h2>{(bodegaSeleccionada.duenio?bodegaSeleccionada.duenio.nombre + " - ": "")+bodegaSeleccionada.nombreBodega} </h2>
         </div>
         <div className="descripcionBodega">
           <p>{bodegaSeleccionada.municipio + (bodegaSeleccionada.departamento ? ", " + bodegaSeleccionada.departamento : "")

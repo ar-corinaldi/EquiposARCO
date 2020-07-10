@@ -1,3 +1,9 @@
 .cotizacion-table th{
     font-size: 13px;
 }
+
+.cotizacion-table th{
+    align-self: center;
+    /* align-content: center; */
+    text-align: start;
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import Table from 'react-bootstrap/Table';
 import formatoPrecio from '../utils/FormatoPrecios'
 import CalcularTarifa from '../utils/CacularTarifas';
+import {formatoCategoriaHTML, formatoTiempo} from '../utils/FormatoInfoPrecios';
 import './CotizacionDetailTable.css';
 
 function CotizacionDetailTable(props) {
@@ -43,11 +44,11 @@ function CotizacionDetailTable(props) {
 
                         return (<tr key={index}>
                             <th >{tarifa.equipo.nombreEquipo}</th>
-                            <th >{tarifa.precioReferencia.categoria}</th>
+                            <th >{formatoCategoriaHTML(tarifa.precioReferencia.categoria, true)}</th>
                             <th>{formatoPrecio(tarifa.valorTarifa)}</th>
                             <th>{tarifa.cantidad}</th>
-                            <th>{tarifa.precioReferencia.tiempo}</th>
-                            <th>{cobro[tarifa._id].tiempoTotal}</th>
+                            <th>{formatoTiempo(tarifa.precioReferencia.tiempo)}</th>
+                            <th>{cobro[tarifa._id].tiempoTotal+ " " + formatoTiempo(tarifa.precioReferencia.tiempo, cobro[tarifa._id].tiempoTotal!=1)}</th>
                             <th>{formatoPrecio(cobro[tarifa._id].cobroTotal)}</th>
                         </tr>
                         )

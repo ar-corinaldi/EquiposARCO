@@ -166,6 +166,18 @@ router.get("/bodegas", async (req, res) => {
 });
 
 /**
+ * Get de todas las bodegas que existen. Con duenios populado
+ */
+router.get("/bodegas/all", async (req, res) => {
+  try {
+    const bodegas = await Bodega.find({}).populate("duenio");
+    res.send(bodegas);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+/**
  * Get de Bodega por su id
  */
 router.get("/bodegas/:idB", async (req, res) => {

@@ -15,6 +15,7 @@ const tarifaSchema = new Schema({
   fechaFin: {
     type: Date,
     trim: true,
+    required: true,
     lowercase: true,
   },
   valorTarifa: {

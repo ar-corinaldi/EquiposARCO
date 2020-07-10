@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import formatoFechas from "../utils/FormatoFechas";
 import formatoPrecios from "../utils/FormatoPrecios";
 import { FaPlusCircle } from "react-icons/fa";
+import {
+  formatoCategoriaHTML,
+  formatoTiempo,
+} from "../utils/FormatoInfoPrecios";
 
 /* Compara dos tarifas con base a su fecha de fin. Ordena las mas recientes primero
  * @param {*} a
@@ -57,8 +61,16 @@ function EquipoRow(props) {
         <td>{tarifaM.cantidad}</td>
         <td>{formatoPrecios(tarifaM.valorTarifa)}</td>
         <td>
-          {tarifaM.precioReferencia.categoria} /{" "}
-          {tarifaM.precioReferencia.tiempo}
+          <span
+            className={
+              (tarifaM.precioReferencia.categoria.includes("metro")
+                ? "not-"
+                : "") + "capitalize"
+            }
+          >
+            {formatoCategoriaHTML(tarifaM.precioReferencia.categoria, false)}
+          </span>{" "}
+          / {formatoTiempo(tarifaM.precioReferencia.tiempo, false)}
         </td>
         <td>
           {formatoFechas(tarifaM.fechaInicio)}-{formatoFechas(tarifaM.fechaFin)}
@@ -83,8 +95,19 @@ function EquipoRow(props) {
             <td>{tarifa2.cantidad}</td>
             <td>{formatoPrecios(tarifa2.valorTarifa)}</td>
             <td>
-              {tarifa2.precioReferencia.categoria} /{" "}
-              {tarifa2.precioReferencia.tiempo}
+              <span
+                className={
+                  (tarifa2.precioReferencia.categoria.includes("metro")
+                    ? "not-"
+                    : "") + "capitalize"
+                }
+              >
+                {formatoCategoriaHTML(
+                  tarifa2.precioReferencia.categoria,
+                  false
+                )}
+              </span>{" "}
+              / {formatoTiempo(tarifa2.precioReferencia.tiempo, false)}{" "}
             </td>
             <td>
               {formatoFechas(tarifa2.fechaInicio)}-

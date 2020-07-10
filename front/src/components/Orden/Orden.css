@@ -34,6 +34,9 @@
 .capitalize {
   text-transform: capitalize;
 }
+.not-capitalize {
+  text-transform: none;
+}
 
 .table-responsive {
   display: block;

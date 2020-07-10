@@ -2,6 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import formatoFechas from "../utils/FormatoFechas";
 import formatoPrecios from "../utils/FormatoPrecios";
+import {
+  formatoCategoriaHTML,
+  formatoTiempo,
+} from "../utils/FormatoInfoPrecios";
 
 function EquipoRow(props) {
   const tarifa = props.tarifa;
@@ -19,7 +23,16 @@ function EquipoRow(props) {
       <td>{tarifa.cantidad}</td>
       <td>{formatoPrecios(tarifa.valorTarifa)}</td>
       <td>
-        {tarifa.precioReferencia.categoria} / {tarifa.precioReferencia.tiempo}
+        <span
+          className={
+            (tarifa.precioReferencia.categoria.includes("metro")
+              ? "not-"
+              : "") + "capitalize"
+          }
+        >
+          {formatoCategoriaHTML(tarifa.precioReferencia.categoria, false)}
+        </span>{" "}
+        / {formatoTiempo(tarifa.precioReferencia.tiempo, false)}{" "}
       </td>
       <td>
         {formatoFechas(tarifa.fechaInicio)}-{formatoFechas(tarifa.fechaFin)}{" "}

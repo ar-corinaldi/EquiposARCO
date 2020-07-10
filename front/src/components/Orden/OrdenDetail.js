@@ -6,8 +6,11 @@ import "./Orden.css";
 import { useParams, Link } from "react-router-dom";
 import EquiposTable from "./EquiposTable";
 import formatoFechas from "../utils/FormatoFechas";
+import { useHistory } from "react-router-dom";
 
 function OrdenDetail(props) {
+  const history = useHistory();
+
   const { id, idB, idOr } = useParams();
 
   const [orden, setOrden] = useState({});
@@ -79,6 +82,9 @@ function OrdenDetail(props) {
     setOrden(ordenA);
   };
 
+  const crearRemision = () => {
+    history.push(`${orden._id}/remisiones/create`);
+  };
   return (
     <Container fluid>
       <Row>
@@ -89,7 +95,7 @@ function OrdenDetail(props) {
               <Col>
                 <p className="capitalize">
                   <b>Tercero : </b>
-                  <Link to={`terceros/${tercero._id}`}>{tercero.nombre}</Link>
+                  <Link to={`/terceros/${tercero._id}`}>{tercero.nombre}</Link>
                 </p>
                 <p className="capitalize">
                   <b>Bodega : </b> {bodega.nombreBodega}
@@ -120,20 +126,18 @@ function OrdenDetail(props) {
       </Row>
       <Row>
         <Col xs={8}>
-          <Row>
-            <div className="orden-wrapper" id="orden-botones-wrapper">
-              <Row>
-                <Col>
-                  <button className="btn-reg red">Registrar Remisión</button>
-                </Col>
-                <Col>
-                  <button className="btn-reg green">
-                    Registrar Devolución
-                  </button>
-                </Col>
-              </Row>
-            </div>
-          </Row>
+          <div className="mgl-10">
+            <Row>
+              <Col>
+                <button className="btn-reg blue" onClick={crearRemision}>
+                  Registrar Remisión
+                </button>
+              </Col>
+              <Col>
+                <button className="btn-reg blue">Registrar Devolución</button>
+              </Col>
+            </Row>
+          </div>
           <Row>
             <div className="orden-wrapper" id="orden-equipos-wrapper">
               <h4 className="page-title-orden">Equipos</h4>

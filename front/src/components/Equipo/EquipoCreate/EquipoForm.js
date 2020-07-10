@@ -1,4 +1,5 @@
 import React from "react";
+import withFormHandling from "../../withFormHandling";
 
 const tiposEquipo = [
   "",
@@ -141,6 +142,24 @@ function EquipoForm(props) {
         />
       </div>
       <div className="form-group">
+        <label htmlFor="precioReposicion">Precio Reposicion:</label>
+        <input
+          name="precioReposicion"
+          type="text"
+          value={fields.precioReposicion}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="costoEquipo">Costo Equipo:</label>
+        <input
+          name="costoEquipo"
+          type="text"
+          value={fields.costoEquipo}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
         <label htmlFor="codigo">Código:</label>
         <input
           name="codigo"
@@ -153,4 +172,4 @@ function EquipoForm(props) {
   );
 }
 
-export default EquipoForm;
+export default withFormHandling(EquipoForm);

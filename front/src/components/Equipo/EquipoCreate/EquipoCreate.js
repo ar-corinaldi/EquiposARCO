@@ -6,7 +6,6 @@ import EquipoForm from "./EquipoForm";
 import EquipoComponente from "./EquipoComponente";
 import EquipoPrecio from "./EquipoPrecio";
 import NotaInventarioForm from "../../NotaInventario/NotaInventarioForm";
-import withFormHandling from "../../withFormHandling";
 import Toast from "../../Toast";
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -21,15 +20,25 @@ function EquipoCreate(props) {
     cantidad: "",
     categoria: "",
   });
+  const [equipo, setEquipo] = useState({
+    tipoEquipo: "",
+    nombreFamilia: "",
+    nombreGrupo: "",
+    nombreEquipo: "",
+    precioReposicion: "",
+    costoEquipo: "",
+    codigo: "",
+  });
   const [error, setError] = useState(null);
-  const { handleChange, fields } = props;
+  const { handleChange } = props;
   const history = useHistory();
   const handleSubmitPOSTEquipo = async (e) => {
     e.preventDefault();
 
     // Agrego componentes
     try {
-      fields.componentes = componentes.map((componente) => {
+      const newEquipo = equipo;
+      newEquipo.componentes = componentes.map((componente) => {
         const newComponente = {};
         newComponente.cantidad = componente.cantidad;
         newComponente.equipoID = componente.equipo._id;
@@ -39,15 +48,16 @@ function EquipoCreate(props) {
         }
         return newComponente;
       });
-      fields.precios = precios;
+      newEquipo.precios = precios;
+      setEquipo(newEquipo);
       const optionsEquipo = {
         method: "POST",
-        body: JSON.stringify(fields),
+        body: JSON.stringify(newEquipo),
         headers: {
           "Content-Type": "application/json",
         },
       };
-      const resEquipo = await fetch(props.formAction, optionsEquipo);
+      const resEquipo = await fetch("/equipos", optionsEquipo);
       const dataEquipo = await resEquipo.json();
       if (!resEquipo.ok) {
         Toast(dataEquipo, false, resEquipo.status);
@@ -73,6 +83,14 @@ function EquipoCreate(props) {
           Toast(errorsInventario, false, resInventario.status);
           removeEquipo(dataEquipo);
         } else {
+          Toast(
+            [
+              "Equipo añadido con éxito",
+              "Nota de inventario añadida con éxito",
+            ],
+            true,
+            resInventario.status
+          );
           history.push(`equipos/${dataEquipo._id}`);
         }
       }
@@ -102,8 +120,8 @@ function EquipoCreate(props) {
           <Row>
             <Col>
               <EquipoForm
-                formAction={props.formAction}
-                fields={fields}
+                fields={equipo}
+                setFields={setEquipo}
                 handleChange={handleChange}
               />
             </Col>
@@ -139,4 +157,4 @@ function EquipoCreate(props) {
   );
 }
 
-export default withFormHandling(EquipoCreate);
+export default EquipoCreate;

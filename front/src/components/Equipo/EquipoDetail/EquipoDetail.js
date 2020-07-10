@@ -6,7 +6,7 @@ import PropiedadesComponentesContainer from "./PropiedadesComponentesContainer";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
-
+import formatoPrecios from "../../utils/FormatoPrecios";
 function EquipoDetail() {
   const [equipo, setEquipo] = useState({});
   const [loading, setLoading] = useState(false);
@@ -51,16 +51,35 @@ function EquipoDetail() {
           </h3>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <nav aria-label="breadcrumb">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item">{equipo.tipoEquipo}</li>
-              <li className="breadcrumb-item">{equipo.nombreFamilia}</li>
-              <li className="breadcrumb-item">{equipo.nombreGrupo}</li>
-            </ol>
-          </nav>
-        </Col>
+      <Row className="d-flex justify-content-around">
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <h6>
+                Costo Equipo: {formatoPrecios(equipo.costoEquipo) || "$0.00"}
+              </h6>
+            </li>
+            <li className="breadcrumb-item">
+              <h6>
+                Precio Reposicion:{" "}
+                {formatoPrecios(equipo.precioReposicion) || "$0.00"}
+              </h6>
+            </li>
+          </ol>
+        </nav>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <h6>{equipo.tipoEquipo}</h6>
+            </li>
+            <li className="breadcrumb-item">
+              <h6>{equipo.nombreFamilia}</h6>
+            </li>
+            <li className="breadcrumb-item">
+              <h6>{equipo.nombreGrupo}</h6>
+            </li>
+          </ol>
+        </nav>
       </Row>
       <Row className="d-flex justify-content-around">
         <EquipoDetailBadges

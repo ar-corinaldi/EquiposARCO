@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import "./Orden.css";
 import { useParams, Link } from "react-router-dom";
 import EquiposTable from "./EquiposTable";
+import formatoFechas from "../utils/FormatoFechas";
 
 function OrdenDetail(props) {
   const { id, idB, idOr } = useParams();
@@ -71,7 +72,7 @@ function OrdenDetail(props) {
    */
 
   const fetchInfoOrden = async () => {
-    console.log("llegaOrdenes");
+    //console.log("llegaOrdenes");
     let res = await fetch(`/ordenes/${idOr}/tarifasPobladas`);
     const ordenA = await res.json();
     //console.log("orden", ordenA);
@@ -93,11 +94,11 @@ function OrdenDetail(props) {
                 <p className="capitalize">
                   <b>Bodega : </b> {bodega.nombreBodega}
                 </p>
+                <p>
+                  <b>Fecha Inicial :</b> {formatoFechas(orden.fechaInicio)}
+                </p>
               </Col>
               <Col>
-                <p>
-                  <b>Status :</b> {statusOr}{" "}
-                </p>
                 <p>
                   <b>Cotizacion :</b>{" "}
                   <Link
@@ -106,6 +107,12 @@ function OrdenDetail(props) {
                     {orden.cotizacion}{" "}
                   </Link>
                 </p>
+                <p>
+                  <b>Status :</b> {statusOr}{" "}
+                </p>
+                <p>
+                  <b>Fecha Final :</b> {formatoFechas(orden.fechaFin)}
+                </p>
               </Col>
             </Row>
           </div>
@@ -113,10 +120,26 @@ function OrdenDetail(props) {
       </Row>
       <Row>
         <Col xs={8}>
-          <div className="orden-wrapper" id="orden-equipos-wrapper">
-            <h4 className="page-title-orden">Equipos</h4>
-            <EquiposTable tarifas={orden.tarifasDefinitivas}></EquiposTable>
-          </div>
+          <Row>
+            <div className="orden-wrapper" id="orden-botones-wrapper">
+              <Row>
+                <Col>
+                  <button className="btn-reg red">Registrar Remisión</button>
+                </Col>
+                <Col>
+                  <button className="btn-reg green">
+                    Registrar Devolución
+                  </button>
+                </Col>
+              </Row>
+            </div>
+          </Row>
+          <Row>
+            <div className="orden-wrapper" id="orden-equipos-wrapper">
+              <h4 className="page-title-orden">Equipos</h4>
+              <EquiposTable tarifas={orden.tarifasDefinitivas}></EquiposTable>
+            </div>
+          </Row>
         </Col>
         <Col>
           <Row>

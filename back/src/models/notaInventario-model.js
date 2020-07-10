@@ -69,23 +69,18 @@ notaInventarioSchema.pre("save", async function (next) {
   }
   console.log("Antes de verificar");
   const errores = [];
-  newEquipo.componentes.forEach((componente) => {
-    const val =
-      componente.equipoID.cantidadBodega - cantidad * componente.cantidad;
-    console.log(
-      val,
-      componente.equipoID.cantidadBodega,
-      cantidad,
-      componente.cantidad
-    );
-    if (val < 0) {
-      errores.push(
-        `El equipo ${newEquipo.nombreEquipo} le faltan ${-val} de ${
-          componente.equipoID.nombreEquipo
-        } para ser construido`
-      );
+  console.log(newEquipo.componentes);
+
+  if (newEquipo.componentes && newEquipo.componentes.length > 0) {
+    errores.push("Los equipos compuestos no deben tener notas de inventario");
+    for (const componente of newEquipo.componentes) {
+      if (componente.equipoID) {
+        errores.push(
+          `Se puede hacer nota de inventario de ${componente.equipoID.nombreEquipo}`
+        );
+      }
     }
-  });
+  }
 
   if (!categorias.includes(categoria)) {
     errores.push(
@@ -173,6 +168,7 @@ NotaInventario.fieldsNotAllowedUpdates = (body) => {
   allowedUpdates = allowedUpdates.filter(
     (update) => !noUpdatable.includes(update)
   );
+
   const isValidOp = updates.every((update) => allowedUpdates.includes(update));
   console.log(updates);
   return isValidOp;

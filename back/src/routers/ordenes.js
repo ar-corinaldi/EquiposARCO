@@ -2,6 +2,7 @@ const express = require("express");
 const Orden = require("../models/orden-model");
 const Bodega = require("../models/bodega-model");
 const Cotizacion = require("../models/cotizacion-model");
+const Tarifa = require("../models/tarifa-model");
 
 //const Tercero = require("../models/tercero-model");
 const router = express.Router();
@@ -12,7 +13,9 @@ const router = express.Router();
 
 /**
  * Crea una orden a partir de una cotizacion y la agrega a una bodega.
- * Copia la infromacion de las tarifas definidas en la cotizacion,y crea nuevas instancias de ellas que las relaciona con la orden
+ * Copia la infromacion de las tarifas definidas en la cotizacion,y crea nuevas instancias de ellas que las relaciona con la orden.
+ * Separa las tarifas nuevas tarifas creada de acuerdo al equipo al que están relacionadas
+ * No se espera que en la cotizacion haya mas de una tarifa por equipo pero igual maneja esta situacion
  */
 router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
   let orden = null;
@@ -21,20 +24,18 @@ router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
     if (!bodega) {
       return res.status(404).send("Ninguna bodega coincidio con ese id");
     }
-    const cotizacion = await Cotizacion.findById(req.params.idC);
+    const cotizacion = await Cotizacion.findById(req.params.idC).populate(
+      "tarifasCotizadas"
+    );
     if (!cotizacion) {
       return res.status(404).send("Ninguna cotizacion coincidio con ese id");
     }
     console.log("La bodega y la cotizacion existen");
     orden = new Orden(req.body);
-    let tarifaDef;
-    for (let i = 0; i < cotizacion.tarifasCotizadas.length; i++) {
-      tarifaDef = await Tarifa.findById(cotizacion.tarifasCotizadas[i]);
-      await tarifaDef.save();
-      orden.tarifasDefinitivas.push(tarifaDef._id);
-    }
-    //orden.tarifasDefinitivas = Array.from(cotizacion.tarifasCotizadas);
-    //orden.cotizacion = cotizacion._id;
+    orden.tarifasDefinitivas = await Tarifa.filtrarPorEquipo(
+      cotizacion.tarifasCotizadas
+    );
+    orden.cotizacion = cotizacion._id;
     await orden.save();
     console.log("orden guardada");
     cotizacion.orden = orden._id;

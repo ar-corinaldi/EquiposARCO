@@ -18,6 +18,13 @@
 
 #orden-equipos-wrapper {
   width: 100%;
+  margin-left: 25px;
+}
+
+#orden-botones-wrapper {
+  width: 100%;
+  margin-left: 25px;
+  padding: 5px;
 }
 
 #orden-actividad-wrapper {
@@ -47,4 +54,46 @@
 
 .text-center {
   text-align: center !important;
+}
+
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: table-row;
+}
+
+.button-mas {
+  border: none;
+  background: none;
+  padding: 0px;
+  color: green;
+}
+
+.btn-reg {
+  width: 100%;
+  border: none;
+  border: none;
+  color: white;
+  text-align: center;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.red {
+  background-color: #f06a6c;
+  box-shadow: 0 2px 6px 0 rgba(250, 92, 124, 0.5);
+}
+
+.green {
+  background-color: #28a745;
+  box-shadow: 0 2px 6px 0 #28a74540;
+}
+
+.btn-reg:hover {
+  opacity: 1;
 }

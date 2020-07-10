@@ -5,7 +5,8 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Pagination from "../Pagination";
 import { Link } from "react-router-dom";
-// import "./EquipoList.css";
+import Toast from "../Toast";
+
 function NotaInventarioList(props) {
   const [notasInventario, setNotasInventario] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,12 +34,17 @@ function NotaInventarioList(props) {
       setLoading(true);
       const url = `/notasInventario/${currentPage}/${notasInventarioPerPage}`;
       const res = await fetch(url);
-      const newNotasInventario = await res.json();
-      setNotasInventario(newNotasInventario);
-      setLoading(false);
+      const dataInventario = await res.json();
+      if (!res.ok) {
+        Toast(dataInventario, false, 500);
+      } else {
+        setNotasInventario(dataInventario);
+        setLoading(false);
+      }
     } catch (e) {
       setNotasInventario([]);
       setLoading(false);
+      Toast(["Error del sistema"], true, 500);
     }
   };
 

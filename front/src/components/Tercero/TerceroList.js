@@ -33,9 +33,7 @@ function Tercero() {
   const fetchTerceros = async () => {
     setLoading(true);
     let url = `/terceros/${currentPage}/${tercerosPerPage}`;
-    if (tercerosPerPage === -1) {
-      url = `/terceros`;
-    }
+
     const res = await fetch(url);
     const newTerceros = await res.json();
     setTerceros(newTerceros);

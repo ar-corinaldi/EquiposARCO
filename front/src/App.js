@@ -47,18 +47,7 @@ function App() {
                 />
                 <Route
                   path="/inventario/crearEquipo"
-                  component={() => (
-                    <EquipoCreate
-                      fields={{
-                        nombreEquipo: "",
-                        tipoEquipo: "",
-                        nombreFamilia: "",
-                        nombreGrupo: "",
-                        codigo: "",
-                      }}
-                      formAction="/equipos"
-                    />
-                  )}
+                  component={() => <EquipoCreate />}
                 />
                 <Route path="/inventario/equipos" component={EquipoList} />
                 <Route

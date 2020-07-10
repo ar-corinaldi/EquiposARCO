@@ -29,7 +29,7 @@ router.post("/terceros", async (req, res) => {
   const tercero = new Tercero(req.body);
   try {
     await tercero.save();
-    tercero.bodegas.forEach( async (element) => {
+    tercero.bodegas.forEach(async (element) => {
       let bodega = await Bodega.findById(element._id);
       bodega.duenio = tercero._id;
       await bodega.save();
@@ -46,11 +46,16 @@ router.post("/terceros", async (req, res) => {
  */
 router.get("/terceros/:page/:elementsPerPage", async (req, res) => {
   try {
+    let terceros = null;
     const page = parseInt(req.params.page);
     const elementsPerPage = parseInt(req.params.elementsPerPage);
-    const terceros = await Tercero.find({})
-      .limit(elementsPerPage)
-      .skip((page - 1) * elementsPerPage);
+    if (elementsPerPage === -1) {
+      terceros = await Tercero.find({});
+    } else {
+      terceros = await Tercero.find({})
+        .limit(elementsPerPage)
+        .skip((page - 1) * elementsPerPage);
+    }
     res.send(terceros);
   } catch (e) {
     res.status(500).send();

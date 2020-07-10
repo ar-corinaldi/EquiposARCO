@@ -54,8 +54,9 @@ function EquipoPrecioForm(props) {
                   <tr>
                     <td>Valor Venta: {precio.valorVenta}</td>
                     <td>Valor Alquiler: {precio.valorAlquiler}</td>
-                    <td>Categoria: {precio.categoria}</td>
-                    <td>Tiempo: {precio.tiempo}</td>
+                    <td>
+                      Tipo Cobro: {precio.categoria} / {precio.tiempo}
+                    </td>
                     <td>Tiempo Minimo: {precio.tiempoMinimo}</td>
                   </tr>
                 </thead>

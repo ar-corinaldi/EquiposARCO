@@ -6,6 +6,7 @@ import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
 import InputBase from "@material-ui/core/InputBase";
+import "./EscogerEquipos.css";
 
 export default function EscogerEquipos(props) {
   const [equipoSel, setEquipoSel] = props.equipoSel;
@@ -22,7 +23,7 @@ export default function EscogerEquipos(props) {
     console.log("equiposSels", equiposSels);
     console.log("pendingValue", pendingValue);
     const newEquiposSels = equiposSels.concat(pendingValue);
-    console.log("newEquiposSels", newEquiposSels);
+    //console.log("newEquiposSels", newEquiposSels);
     setEquiposSels(newEquiposSels);
     setPendingValue({});
     setOpen(false);
@@ -41,10 +42,8 @@ export default function EscogerEquipos(props) {
 
   return (
     <>
-      <div className="rootBodega">
-        <label htmlFor="direccionBodega">
-          Escoja los equipos que serán enviados{" "}
-        </label>
+      <div className="rootEquipo">
+        <label htmlFor="equipos">Escoja los equipos que serán enviados </label>
         <div className="completeWrapper">
           <Autocomplete
             openOnFocus
@@ -99,6 +98,10 @@ export default function EscogerEquipos(props) {
               //   return ai ? -1 : bi ? 1 : 0;
               // })}
             }
+            getOptionDisabled={(option) => {
+              return equiposSels.includes(option);
+              console.log("verificacion", equiposSels.includes(option));
+            }}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 <div className="nombreEquipo">

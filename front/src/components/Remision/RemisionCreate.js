@@ -1,6 +1,6 @@
 import React from "react";
 import RemisionForm from "./RemisionForm";
-import "./Remision.css";
+import "./Remision.cssyar";
 
 //const formAction = "/remision";
 const fields = {};

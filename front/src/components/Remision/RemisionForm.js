@@ -2,6 +2,9 @@ import React from "react";
 import withFormHandling from "../withFormHandling";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
+import "moment/locale/es";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -27,26 +30,17 @@ function RemisionForm(props) {
         }
       >
         <h4 className="titulo">Registrar una remisión</h4>
-        <div className="form-group">
-          <label htmlFor="nombreBodega"> Dia de salida : </label>
-          <input
-            name="nombreBodega"
-            type="text"
-            value={fields.nombreBodega}
+        <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
+          <DateTimePicker
+            value={fields.fechaSalida}
+            disablePast
             onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="direccionBodega"> Hora de salida : </label>
-          <input
-            name="direccionBodega"
-            type="text"
-            value={fields.direccionBodega}
-            onChange={handleChange}
-            required
-          />
-        </div>
+            label="Fecha y hora de salida"
+            showTodayButton
+            cancelLabel="Cancelar"
+            todayLabel="Hoy"
+          ></DateTimePicker>
+        </MuiPickersUtilsProvider>
         <div className="form-group">
           <label htmlFor="direccionBodega"> Equipos : </label>
           <input

@@ -20,13 +20,27 @@ export default function EscogerEquipos(props) {
       return;
     }
     setEquipoSel(pendingValue);
-    console.log("equiposSels", equiposSels);
-    console.log("pendingValue", pendingValue);
+    //console.log("equiposSels", equiposSels);
+    //console.log("pendingValue", pendingValue);
     const newEquiposSels = equiposSels.concat(pendingValue);
     //console.log("newEquiposSels", newEquiposSels);
     setEquiposSels(newEquiposSels);
     setPendingValue({});
+    setEquipoSel({});
     setOpen(false);
+  };
+  const handleSelect = (event, reason) => {
+    if (reason === "toggleInput") {
+      return;
+    }
+    //setEquipoSel(pendingValue);
+    //console.log("equiposSels", equiposSels);
+    //console.log("pendingValue", pendingValue);
+    const newEquiposSels = equiposSels.concat(pendingValue);
+    //console.log("newEquiposSels", newEquiposSels);
+    setEquiposSels(newEquiposSels);
+    setPendingValue({});
+    setEquipoSel({});
   };
 
   const filterOptions = createFilterOptions({
@@ -59,9 +73,6 @@ export default function EscogerEquipos(props) {
               popper: "popper",
             }}
             onClose={handleClose}
-            onOpen={() => {
-              setPendingValue(equipoSel);
-            }}
             onFocus={() => {
               setOpen(true);
             }}
@@ -100,7 +111,7 @@ export default function EscogerEquipos(props) {
             }
             getOptionDisabled={(option) => {
               return equiposSels.includes(option);
-              console.log("verificacion", equiposSels.includes(option));
+              //console.log("verificacion", equiposSels.includes(option));
             }}
             renderOption={(option, { selected }) => (
               <React.Fragment>
@@ -119,8 +130,8 @@ export default function EscogerEquipos(props) {
                   className="iconSelected"
                   style={{ visibility: selected ? "visible" : "hidden" }}
                   onClick={() => {
-                    handleClose();
-                    setOpen(false);
+                    handleSelect();
+                    //setOpen(false);
                   }}
                 />
                 <CloseIcon

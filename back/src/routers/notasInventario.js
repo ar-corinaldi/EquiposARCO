@@ -1,5 +1,7 @@
 const express = require("express");
 const NotaInventario = require("../models/notaInventario-model");
+const Equipo = require("../models/equipo-model");
+const Precio = require("../models/precio-model");
 const router = new express.Router();
 
 /**
@@ -32,6 +34,46 @@ router.get("/notasInventario/:page/:elementsPerPage", async (req, res) => {
   } catch (e) {
     res.status(400).send("");
     console.error("error", e);
+  }
+});
+
+router.post("/notasInventario/equipos", async (req, res) => {
+  let { equipo, notaInventario } = req.body;
+  let equipoCreated = null;
+  try {
+    let preciosN = [];
+    if (equipo.precios) {
+      await asyncForEach(equipo.precios, async (element) => {
+        let precio = new Precio(element);
+        precio = await precio.save();
+
+        preciosN.push(precio._id);
+      });
+      equipo.precios = preciosN;
+    }
+    equipoCreated = new Equipo(equipo);
+    equipoCreated = await equipoCreated.save();
+
+    if (notaInventario) {
+      notaInventario.equipo = equipoCreated._id;
+      const notaInventarioCreated = new NotaInventario(notaInventario);
+      await notaInventarioCreated.save();
+    }
+    res.status(201).send(equipoCreated);
+  } catch (e) {
+    console.log("error deleting equipo if created");
+    console.log(e);
+    const equipoDelete = await Equipo.findByIdAndDelete(equipoCreated._id);
+    if (!equipoDelete) {
+      return res.status(404).send(["No se encontró ningun equipo cone se id"]);
+    }
+    await asyncForEach(equipoDelete.precios, async (element) => {
+      await Precio.findByIdAndDelete(element._id);
+    });
+    if (e.length && e.length > 0) {
+      return res.status(400).send(e);
+    }
+    res.status(500).send(["No se pudo crear el equipo ni la orden"]);
   }
 });
 
@@ -128,5 +170,12 @@ router.delete("/notasInventario/:id", async (req, res) => {
       .send("No se pudo eliminar la nota de id: " + req.params.id + e);
   }
 });
+
+// Foreach asincrono
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
 
 module.exports = router;

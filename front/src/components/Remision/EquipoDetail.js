@@ -3,8 +3,9 @@ import CloseIcon from "@material-ui/icons/Close";
 
 function EquipoDetail(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
+  const equipoRender = props.equipoRender;
 
-  if (!equiposSels || !equiposSels.nombreEquipo) {
+  if (!equipoRender || !equipoRender.nombreEquipo) {
     return <></>;
   } else {
     return (
@@ -12,14 +13,17 @@ function EquipoDetail(props) {
         <CloseIcon
           className="closeIcon"
           onClick={() => {
-            setEquiposSels({});
+            equiposSels.splice(equiposSels.indexOf(equipoRender));
+            setEquiposSels(
+              equiposSels.splice(equiposSels.indexOf(equipoRender))
+            );
           }}
         />
         <div className="bodegaHeader">
-          <p>{equiposSels.nombreEquipo} </p>
+          <p>{equipoRender.nombreEquipo} </p>
         </div>
         <div className="descripcionBodega">
-          <p>{equiposSels.nombreGrupo}</p>
+          <p>{equipoRender.nombreGrupo}</p>
         </div>
       </div>
     );

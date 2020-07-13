@@ -19,7 +19,11 @@ export default function EscogerEquipos(props) {
       return;
     }
     setEquipoSel(pendingValue);
-    setEquiposSels(equipoSel.push(pendingValue));
+    console.log("equiposSels", equiposSels);
+    console.log("pendingValue", pendingValue);
+    const newEquiposSels = equiposSels.concat(pendingValue);
+    console.log("newEquiposSels", newEquiposSels);
+    setEquiposSels(newEquiposSels);
     setPendingValue({});
     setOpen(false);
   };

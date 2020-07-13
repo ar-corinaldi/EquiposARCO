@@ -13,7 +13,7 @@ function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
   const [asumidoTercero, setAsumidoTercero] = useState(true);
   const [equipoSel, setEquipoSel] = useState({});
-  const [equiposSels, setEquiposSels] = useState({});
+  const [equiposSels, setEquiposSels] = useState([]);
   const [equipos, setEquipos] = props.equipos;
 
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
@@ -70,11 +70,14 @@ function RemisionForm(props) {
             equipoSel={[equipoSel, setEquipoSel]}
             equiposSels={[equiposSels, setEquiposSels]}
           ></EscogerEquipos>
-          {equiposSels.map(
-            <EquipoDetail
-              equiposSels={[equiposSels, setEquiposSels]}
-            ></EquipoDetail>
-          )}
+          {equiposSels &&
+            equiposSels.map((equipoRender, index) => (
+              <EquipoDetail
+                key={index}
+                equipoRender={equipoRender}
+                equiposSels={[equiposSels, setEquiposSels]}
+              ></EquipoDetail>
+            ))}
         </div>
         <div className="form-group">
           <label htmlFor="direccionBodega">

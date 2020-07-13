@@ -4,11 +4,21 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
+import EscogerEquipos from "./EscogerEquipos";
+import EquipoDetail from "./EquipoDetail";
+
 import "moment/locale/es";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
+  const [asumidoTercero, setAsumidoTercero] = useState(true);
+  const [equipoSel, setEquipoSel] = useState({});
+  const [equiposSels, setEquiposSels] = useState({});
+  const [equipos, setEquipos] = props.equipos;
+
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
+  console.log("equipos", equipos);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -22,19 +32,32 @@ function RemisionForm(props) {
     }
   };
 
+  const jsonConsola = (e) => {
+    e.preventDefault();
+    console.log(fields);
+  };
+
+  const handleRadio = (event) => {
+    const asumidoTerceroP = event.currentTarget.value === "true" ? true : false;
+    //console.log("handle", asumidoTerceroP);
+    setAsumidoTercero(asumidoTerceroP);
+    fields.asumidoTercero = asumidoTerceroP;
+  };
+
   return (
     <div className="remision-registrar-card">
       <form
-        onSubmit={(e) =>
-          handleSubmitPOST(e).then((value) => setRemision(value))
-        }
+        onSubmit={jsonConsola}
+        // onSubmit={(e) =>
+        //   handleSubmitPOST(e).then((value) => setRemision(value))
+        // }
       >
         <h4 className="titulo">Registrar una remisión</h4>
         <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
           <DateTimePicker
             value={fields.fechaSalida}
             disablePast
-            onChange={handleChange}
+            //onChange={handleChange}
             label="Fecha y hora de salida"
             showTodayButton
             cancelLabel="Cancelar"
@@ -42,54 +65,64 @@ function RemisionForm(props) {
           ></DateTimePicker>
         </MuiPickersUtilsProvider>
         <div className="form-group">
-          <label htmlFor="direccionBodega"> Equipos : </label>
-          <input
-            name="direccionBodega"
-            type="text"
-            value={fields.direccionBodega}
-            onChange={handleChange}
-            required
-          />
+          <EscogerEquipos
+            equipos={[equipos, setEquipos]}
+            equipoSel={[equipoSel, setEquipoSel]}
+            equiposSels={[equiposSels, setEquiposSels]}
+          ></EscogerEquipos>
+          {equiposSels.map(
+            <EquipoDetail
+              equiposSels={[equiposSels, setEquiposSels]}
+            ></EquipoDetail>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="direccionBodega">
             ¿Quién se encarga del transporte?
           </label>
-          <input
-            type="radio"
-            id="tercero"
-            name="asumidoTercero"
-            value="tercero"
-          />{" "}
-          <label for="male"> El Tercero</label>
-          <input
-            type="radio"
-            id="equiposARCO"
-            name="asumidoTercero"
-            value="equiposARCO"
-          />{" "}
-          <label for="male"> Equipos ARCO</label>
+          <label htmlFor="asumidoTercero">
+            <input
+              type="radio"
+              id="tercero"
+              name="asumidoTercero"
+              onChange={handleRadio}
+              checked={asumidoTercero === true}
+              value="true"
+            />{" "}
+            El Tercero
+          </label>
+          <label htmlFor="asumidoTercero">
+            <input
+              type="radio"
+              id="equiposARCO"
+              name="asumidoTercero"
+              onChange={handleRadio}
+              checked={asumidoTercero === false}
+              value="false"
+            />{" "}
+            Equipos ARCO
+          </label>
         </div>
-        <div className="form-group">
-          <label htmlFor="direccionBodega"> Vehiculo : </label>
-          <input
-            name="direccionBodega"
-            type="text"
-            value={fields.direccionBodega}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="direccionBodega"> Conductor : </label>
-          <input
-            name="direccionBodega"
-            type="text"
-            value={fields.direccionBodega}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        {!asumidoTercero && [
+          <div key="1" className="form-group">
+            <label htmlFor="vehiculoTransportador"> Vehiculo : </label>
+            <input
+              name="vehiculoTransportador"
+              type="text"
+              value={fields.vehiculoTransportador}
+              onChange={handleChange}
+            />
+          </div>,
+          <div key="2" className="form-group">
+            <label htmlFor="conductor"> Conductor : </label>
+            <input
+              name="conductor"
+              type="text"
+              value={fields.conductor}
+              onChange={handleChange}
+            />
+          </div>,
+        ]}
 
         <div id="button-wrapper">
           <button type="submit" className="buttonTercero">

@@ -4,11 +4,11 @@ import EscogerCotizacion from "./EscogerCotizacion";
 import ConfirmarTarifas from "./ConfirmarTarifas";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button"
-import priceLogo from "../../assets/price.svg";
-import priceLogoDark from "../../assets/price-dark.svg";
-import sheetLogo from "../../assets/sheet.svg";
-import sheetLogoDark from "../../assets/sheetDark.svg";
+import Button from "react-bootstrap/Button";
+import priceLogo from "../../../assets/price.svg";
+import priceLogoDark from "../../../assets/price-dark.svg";
+import sheetLogo from "../../../assets/sheet.svg";
+import sheetLogoDark from "../../../assets/sheetDark.svg";
 import BodegaOrdenDetail from "./BodegaOrdenDetail";
 
 function CrearOrden(props) {
@@ -48,9 +48,9 @@ function CrearOrden(props) {
 
   return (
     <div id="create-order-wrapper">
-      <h2 className="margin-bottom" >Crear Orden</h2>
+      <h2 className="margin-bottom">Crear Orden</h2>
       <hr />
-      <Row >
+      <Row>
         <Col align="center" className="col-step">
           <button
             type="button"
@@ -76,14 +76,20 @@ function CrearOrden(props) {
         <EscogerCotizacion
           miEstado={[firstStepState, setFirstStep]}
           segundoEstado={[secondStepState, setSecondStep]}
-          bodegaSeleccionada = {[bodegaSeleccionada, setBodegaSeleccionada]}
-          cotizacionSeleccionada = {[cotizacionSeleccionada, setCotizacionSeleccionada]}
+          bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
+          cotizacionSeleccionada={[
+            cotizacionSeleccionada,
+            setCotizacionSeleccionada,
+          ]}
         />
         <ConfirmarTarifas
           miEstado={[secondStepState, setSecondStep]}
           primerEstado={[firstStepState, setFirstStep]}
-          bodegaSeleccionada = {[bodegaSeleccionada, setBodegaSeleccionada]}
-          cotizacionSeleccionada = {[cotizacionSeleccionada, setCotizacionSeleccionada]}
+          bodegaSeleccionada={[bodegaSeleccionada, setBodegaSeleccionada]}
+          cotizacionSeleccionada={[
+            cotizacionSeleccionada,
+            setCotizacionSeleccionada,
+          ]}
         />
       </Row>
     </div>

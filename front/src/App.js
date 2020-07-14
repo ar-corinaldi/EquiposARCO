@@ -10,7 +10,8 @@ import TerceroDetail from "./components/Tercero/TerceroDetail";
 import TerceroCreate from "./components/Tercero/TerceroCreate";
 import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
-import CrearOrden from "./components/FacturacionModule/CrearOrden";
+import CrearOrden from "./components/Factura/CrearOrden/CrearOrden";
+import FacturaList from "./components/Factura/FacturaList";
 import EquipoDetail from "./components/Equipo/EquipoDetail/EquipoDetail";
 import EquipoCreate from "./components/Equipo/EquipoCreate/EquipoCreate";
 import NotaInventarioCreate from "./components/NotaInventario/NotaInventarioCreate";
@@ -18,7 +19,6 @@ import NotaInventarioList from "./components/NotaInventario/NotaInventarioList";
 import BodegaCreate from "./components/Bodega/BodegaCreate";
 import CotizacionDetail from "./components/Cotizacion/CotizacionDetail";
 import RemisionCreate from "./components/Remision/RemisionCreate";
-
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -89,9 +89,11 @@ function App() {
                   component={CotizacionDetail}
                 />
                 <Route
-                  path="/facturacion/crear_orden"
-                  component={CrearOrden}
-                ></Route>
+                  path="/facturacion/listar_facturas"
+                  exact
+                  component={FacturaList}
+                />
+                <Route path="/facturacion/crear_orden" component={CrearOrden} />
                 <Route path="*"> Pagina no encontrada </Route>
               </Switch>
             </Row>

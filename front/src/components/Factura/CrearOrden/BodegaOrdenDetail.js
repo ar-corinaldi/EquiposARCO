@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./BodegaOrdenDetail.css";
-import holiday from '../utils/CacularTarifas';
+import holiday from "../../utils/CacularTarifas";
 import CloseIcon from "@material-ui/icons/Close";
 
 function BodegaOrdenDetail(props) {
@@ -20,12 +20,25 @@ function BodegaOrdenDetail(props) {
           }}
         />
         <div className="bodegaHeader">
-          <h2>{(bodegaSeleccionada.duenio?bodegaSeleccionada.duenio.nombre + " - ": "")+bodegaSeleccionada.nombreBodega} </h2>
+          <h2>
+            {(bodegaSeleccionada.duenio
+              ? bodegaSeleccionada.duenio.nombre + " - "
+              : "") + bodegaSeleccionada.nombreBodega}{" "}
+          </h2>
         </div>
         <div className="descripcionBodega">
-          <p>{bodegaSeleccionada.municipio + (bodegaSeleccionada.departamento ? ", " + bodegaSeleccionada.departamento : "")
-            + ", " + bodegaSeleccionada.pais + "."}</p>
-          <p className="direccionBodega" >{bodegaSeleccionada.direccionBodega}</p>
+          <p>
+            {bodegaSeleccionada.municipio +
+              (bodegaSeleccionada.departamento
+                ? ", " + bodegaSeleccionada.departamento
+                : "") +
+              ", " +
+              bodegaSeleccionada.pais +
+              "."}
+          </p>
+          <p className="direccionBodega">
+            {bodegaSeleccionada.direccionBodega}
+          </p>
         </div>
       </div>
     );

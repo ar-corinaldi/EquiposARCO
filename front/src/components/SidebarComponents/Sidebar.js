@@ -82,6 +82,11 @@ function Sidebar(props) {
     },
     {
       type: "Link",
+      name: "Listar Facturas",
+      ref: "/listar_facturas",
+    },
+    {
+      type: "Link",
       name: "Ordenes",
       ref: "/crear_orden",
     },

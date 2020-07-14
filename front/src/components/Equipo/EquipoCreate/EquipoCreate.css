@@ -1,3 +1,7 @@
 .list-items-form {
   list-style: none;
 }
+
+.form-error {
+  color: red;
+}

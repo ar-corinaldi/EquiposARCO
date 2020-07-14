@@ -30,7 +30,7 @@ function EquipoComponenteForm(props) {
 
       <Modal
         title={"Componente del Equipo"}
-        body={withEquipoList(EquipoList, setComponentes, "componentes")}
+        body={withEquipoList(EquipoList, setComponentes, "componentes", true)}
         show={show}
         setShow={setShow}
         estado={componentes}

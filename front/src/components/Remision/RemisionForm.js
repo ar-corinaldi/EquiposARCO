@@ -1,29 +1,35 @@
 import React from "react";
 import withFormHandling from "../withFormHandling";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
-import MomentUtils from "@date-io/moment";
 import EscogerEquipos from "./EscogerEquipos";
 import EquipoDetail from "./EquipoDetail";
-
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
 import "moment/locale/es";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
   const [asumidoTercero, setAsumidoTercero] = useState(true);
-  const [equipoSel, setEquipoSel] = useState({});
   const [equiposSels, setEquiposSels] = useState([]);
   const [equipos, setEquipos] = props.equipos;
+  const [selectedDate, handleDateChange] = useState(new Date());
 
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
-  console.log("equipos", equipos);
+  //console.log("equipos", equipos);
 
   const history = useHistory();
 
   useEffect(() => {
     mostrarOrden();
   }, [remision]);
+
+  useEffect(() => {
+    handleChangeEquipos();
+  }, [equiposSels]);
 
   const mostrarOrden = () => {
     //console.log("bodega", bodega);
@@ -44,6 +50,17 @@ function RemisionForm(props) {
     fields.asumidoTercero = asumidoTerceroP;
   };
 
+  const handleChangeEquipos = () => {
+    fields.equiposEnRemision = equiposSels;
+  };
+
+  const eliminarEquipoSelect = (equipo) => {
+    console.log("equiposSels", equiposSels);
+    console.log("indice", equiposSels.indexOf(equipo));
+    setEquiposSels(equiposSels.splice(equiposSels.indexOf(equipo), 1));
+    console.log(equiposSels);
+  };
+
   return (
     <div className="remision-registrar-card">
       <form
@@ -53,31 +70,51 @@ function RemisionForm(props) {
         // }
       >
         <h4 className="titulo">Registrar una remisión</h4>
+        <label>Fecha y hora de salida : </label>{" "}
         <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
           <DateTimePicker
-            value={fields.fechaSalida}
+            value={selectedDate}
             disablePast
-            //onChange={handleChange}
-            label="Fecha y hora de salida"
+            onChange={handleDateChange}
             showTodayButton
             cancelLabel="Cancelar"
             todayLabel="Hoy"
           ></DateTimePicker>
         </MuiPickersUtilsProvider>
         <div className="form-group">
-          <EscogerEquipos
-            equipos={[equipos, setEquipos]}
-            equipoSel={[equipoSel, setEquipoSel]}
-            equiposSels={[equiposSels, setEquiposSels]}
-          ></EscogerEquipos>
-          {equiposSels &&
-            equiposSels.map((equipoRender, index) => (
-              <EquipoDetail
-                key={index}
-                equipoRender={equipoRender}
+          <Row>
+            <Col>
+              <label>Equipos a trasportar : </label>
+            </Col>
+            <Col>
+              <EscogerEquipos
+                equipos={[equipos, setEquipos]}
                 equiposSels={[equiposSels, setEquiposSels]}
-              ></EquipoDetail>
-            ))}
+              ></EscogerEquipos>
+            </Col>
+          </Row>
+          <Row>
+            <table className="table-width">
+              <thead class="thead-light">
+                <tr>
+                  <th>Equipo</th>
+                  <th>Cantidad</th>
+                  <th className="w50"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {equiposSels &&
+                  equiposSels.map((equipoRender, index) => (
+                    <EquipoDetail
+                      key={index}
+                      equipoRender={equipoRender}
+                      equiposSels={[equiposSels, setEquiposSels]}
+                      eliminarEquipoSelect={eliminarEquipoSelect}
+                    ></EquipoDetail>
+                  ))}
+              </tbody>
+            </table>
+          </Row>
         </div>
         <div className="form-group">
           <label htmlFor="direccionBodega">
@@ -126,7 +163,6 @@ function RemisionForm(props) {
             />
           </div>,
         ]}
-
         <div id="button-wrapper">
           <button type="submit" className="buttonTercero">
             Crear

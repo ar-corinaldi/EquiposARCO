@@ -9,7 +9,6 @@ import InputBase from "@material-ui/core/InputBase";
 import "./EscogerEquipos.css";
 
 export default function EscogerEquipos(props) {
-  const [equipoSel, setEquipoSel] = props.equipoSel;
   const [equiposSels, setEquiposSels] = props.equiposSels;
   const [equipos, setEquipos] = props.equipos;
   const [pendingValue, setPendingValue] = React.useState({});
@@ -19,28 +18,18 @@ export default function EscogerEquipos(props) {
     if (reason === "toggleInput") {
       return;
     }
-    setEquipoSel(pendingValue);
-    //console.log("equiposSels", equiposSels);
-    //console.log("pendingValue", pendingValue);
-    const newEquiposSels = equiposSels.concat(pendingValue);
-    //console.log("newEquiposSels", newEquiposSels);
-    setEquiposSels(newEquiposSels);
-    setPendingValue({});
-    setEquipoSel({});
     setOpen(false);
   };
   const handleSelect = (event, reason) => {
     if (reason === "toggleInput") {
       return;
     }
-    //setEquipoSel(pendingValue);
     //console.log("equiposSels", equiposSels);
     //console.log("pendingValue", pendingValue);
     const newEquiposSels = equiposSels.concat(pendingValue);
     //console.log("newEquiposSels", newEquiposSels);
     setEquiposSels(newEquiposSels);
     setPendingValue({});
-    setEquipoSel({});
   };
 
   const filterOptions = createFilterOptions({
@@ -57,7 +46,6 @@ export default function EscogerEquipos(props) {
   return (
     <>
       <div className="rootEquipo">
-        <label htmlFor="equipos">Escoja los equipos que serán enviados </label>
         <div className="completeWrapper">
           <Autocomplete
             openOnFocus
@@ -100,15 +88,7 @@ export default function EscogerEquipos(props) {
                 return "";
               }
             }}
-            options={
-              [...equipos]
-              //   .sort((a, b) => {
-              //   // Muestra la bodega seleccionada primero
-              //   let ai = a === equipoSeleccionado || a === pendingValue;
-              //   let bi = b === equipoSeleccionado || b === pendingValue;
-              //   return ai ? -1 : bi ? 1 : 0;
-              // })}
-            }
+            options={[...equipos]}
             getOptionDisabled={(option) => {
               return equiposSels.includes(option);
               //console.log("verificacion", equiposSels.includes(option));

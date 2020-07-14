@@ -20,6 +20,14 @@
   padding-bottom: 10px;
 }
 
+.w50 {
+  width: 50px;
+}
+
+.table-width {
+  width: 95%;
+}
+
 @media (max-width: 570px) {
   .completeWrapper {
     width: 100%;

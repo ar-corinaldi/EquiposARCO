@@ -40,6 +40,7 @@ function RemisionForm(props) {
 
   const jsonConsola = (e) => {
     e.preventDefault();
+    handleEquiposRemision();
     console.log(fields);
   };
 
@@ -61,6 +62,17 @@ function RemisionForm(props) {
     console.log(equiposSels);
   };
 
+  const handleEquiposRemision = () => {
+    const equiposEnRemision = [];
+    equiposSels.forEach((equipoSel) => {
+      const equipo = {
+        cantidad: equipoSel.cantidad,
+        equipoID: equipoSel.equipoID._id,
+      };
+      equiposEnRemision.push(equipo);
+    });
+    fields.equiposEnRemision = equiposEnRemision;
+  };
   return (
     <div className="remision-registrar-card">
       <form
@@ -95,7 +107,7 @@ function RemisionForm(props) {
           </Row>
           <Row>
             <table className="table-width">
-              <thead class="thead-light">
+              <thead className="thead-light">
                 <tr>
                   <th>Equipo</th>
                   <th>Cantidad</th>

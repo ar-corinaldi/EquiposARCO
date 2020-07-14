@@ -28,6 +28,10 @@
   width: 95%;
 }
 
+.w90 {
+  width: 90px;
+}
+
 @media (max-width: 570px) {
   .completeWrapper {
     width: 100%;

@@ -26,8 +26,9 @@ export default function EscogerEquipos(props) {
     }
     //console.log("equiposSels", equiposSels);
     //console.log("pendingValue", pendingValue);
-    const newEquiposSels = equiposSels.concat(pendingValue);
-    //console.log("newEquiposSels", newEquiposSels);
+    const equipoSeleccionado = { cantidad: 1, equipoID: pendingValue };
+    const newEquiposSels = equiposSels.concat(equipoSeleccionado);
+    console.log("newEquiposSels", newEquiposSels);
     setEquiposSels(newEquiposSels);
     setPendingValue({});
   };
@@ -90,7 +91,12 @@ export default function EscogerEquipos(props) {
             }}
             options={[...equipos]}
             getOptionDisabled={(option) => {
-              return equiposSels.includes(option);
+              equiposSels.forEach((equipoSel) => {
+                if (equipoSel.equipoID === option) {
+                  return true;
+                }
+              });
+              return false;
               //console.log("verificacion", equiposSels.includes(option));
             }}
             renderOption={(option, { selected }) => (

@@ -10,6 +10,7 @@ import EquipoDetail from "./EquipoDetail";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import "moment/locale/es";
+import Escoger from "./Escoger";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -164,6 +165,7 @@ function RemisionForm(props) {
               value={fields.vehiculoTransportador}
               onChange={handleChange}
             />
+            <Escoger></Escoger>
           </div>,
           <div key="2" className="form-group">
             <label htmlFor="conductor"> Conductor : </label>

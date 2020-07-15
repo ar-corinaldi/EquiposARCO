@@ -55,9 +55,8 @@ const bodegaSchema = new Schema({
   },
   duenio: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Tercero"
-  }
-  ,
+    ref: "Tercero",
+  },
   ordenesActuales: [
     {
       type: mongoose.Schema.Types.ObjectId,

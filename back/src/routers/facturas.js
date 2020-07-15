@@ -7,6 +7,44 @@ var router = express.Router();
  */
 
 /**
+ * Cantidad de documentos que hay en factura
+ */
+router.get("/facturas/cantidad", async (req, res) => {
+  try {
+    const count = await Factura.estimatedDocumentCount();
+    console.log("count", count);
+    res.send(count + "");
+  } catch (e) {
+    res
+      .status(500)
+      .send(["No se puede contar los facturas, hubo un error en el sistema"]);
+  }
+});
+
+/**
+ *  Get de facturas paginacion
+ */
+router.get("/facturas/:page/:elementsPerPage", async (req, res) => {
+  try {
+    const page = parseInt(req.params.page);
+    const elementsPerPage = parseInt(req.params.elementsPerPage);
+    let facturas = null;
+    if (elementsPerPage === -1) {
+      facturas = await Factura.find({});
+    } else {
+      facturas = await Factura.find({})
+        .limit(elementsPerPage)
+        .skip((page - 1) * elementsPerPage);
+    }
+    res.send(facturas);
+  } catch (e) {
+    res
+      .status(500)
+      .send(["No se puede listar los facturas, hubo un error en el sistema"]);
+  }
+});
+
+/**
  *  Post de factura
  */
 router.post("/facturas", async (req, res) => {
@@ -16,7 +54,6 @@ router.post("/facturas", async (req, res) => {
     res.status(201).send(factura);
   } catch (e) {
     res.status(400).send(e);
-    console.error("error", e);
   }
 });
 
@@ -31,7 +68,6 @@ router.get("/facturas", async (req, res) => {
   } catch (e) {
     res.status(500).send();
     console.log(facturas);
-    console.error("error", e);
   }
 });
 
@@ -40,14 +76,13 @@ router.get("/facturas", async (req, res) => {
  */
 router.get("/facturas/:id", async (req, res) => {
   try {
-    const factura = await Factura.findById(req.params.id);
+    const factura = await Factura.findById(req.params.id).populate("ordenes");
     if (!factura) {
       return res.status(404).send("No hubo coincidencia");
     }
     res.send(factura);
   } catch (error) {
     res.status(500).send();
-    console.error("error", error);
   }
 });
 
@@ -70,7 +105,6 @@ router.patch("/facturas/:id", async (req, res) => {
     res.send(factura);
   } catch (e) {
     res.status(400).send(e);
-    console.error("error", e);
   }
 });
 
@@ -86,7 +120,6 @@ router.delete("/facturas/:id", async (req, res) => {
     res.send(factura);
   } catch (error) {
     res.status(500).send();
-    console.error("error", e);
   }
 });
 

@@ -4,8 +4,9 @@ var Schema = mongoose.Schema;
 const facturaSchema = new Schema({
   fechaEmision: {
     type: Date,
+    default: Date.now(),
   },
-  orden: [
+  ordenes: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Orden",

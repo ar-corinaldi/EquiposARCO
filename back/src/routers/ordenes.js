@@ -70,8 +70,7 @@ router.post("/bodegas/:idB/ordenes", async (req, res) => {
     console.log("Bodega aniadida al tercero con exito");
     res.status(201).send(bodega);
   } catch (e) {
-    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
-    console.error("error", e);
+    res.status(400).send("No se pudo agregar la bodega al tercero ");
   }
 });
 
@@ -102,8 +101,7 @@ router.patch("/bodegas/:idB/ordenes/:idOr", async (req, res) => {
     console.log("Bodega aniadida al tercero con exito");
     res.status(201).send(bodega);
   } catch (e) {
-    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
-    console.error("error", e);
+    res.status(400).send("No se pudo agregar la bodega al tercero ");
   }
 });
 
@@ -133,8 +131,7 @@ router.patch("/bodegas/:idB/ordenes/:idOr/terminar", async (req, res) => {
     console.log("Bodega aniadida al tercero con exito");
     res.status(201).send(bodega);
   } catch (e) {
-    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
-    console.error("error", e);
+    res.status(400).send("No se pudo agregar la bodega al tercero ");
   }
 });
 
@@ -153,7 +150,7 @@ router.get("/bodegas/:idB/ordenesActuales", async (req, res, next) => {
     res.send(bodega.ordenesActuales);
     console.log("La bodega existe");
   } catch (e) {
-    res.status(404).send("No se pudo hacer la solicitud " + e);
+    res.status(404).send("No se pudo hacer la solicitud ");
   }
 });
 
@@ -172,7 +169,7 @@ router.get("/bodegas/:idB/ordenesPasadas", async (req, res, next) => {
     res.send(bodega.ordenesPasadas);
     console.log("La bodega existe");
   } catch (e) {
-    res.status(404).send("No se pudo hacer la solicitud " + e);
+    res.status(404).send("No se pudo hacer la solicitud ");
   }
 });
 
@@ -189,8 +186,7 @@ router.get("/ordenes/cantidad", async (req, res) => {
     console.log("count", count);
     res.send(count + "");
   } catch (e) {
-    res.status(500).send(e);
-    console.err(e);
+    res.status(500).send("Error del sistema");
   }
 });
 
@@ -203,8 +199,7 @@ router.post("/ordenes", async (req, res) => {
     await orden.save();
     res.status(201).send(orden);
   } catch (e) {
-    res.status(400).send(e);
-    console.error("error", e);
+    res.status(400).send("Error del sistema");
   }
 });
 
@@ -217,8 +212,7 @@ router.get("/ordenes", async (req, res) => {
     ordenes = await Orden.find({});
     res.send(ordenes);
   } catch (e) {
-    res.status(500).send();
-    console.error("error", e);
+    res.status(500).send("Error del sistema");
   }
 });
 
@@ -233,8 +227,7 @@ router.get("/ordenes/:id", async (req, res) => {
     }
     res.send(orden);
   } catch (error) {
-    res.status(500).send();
-    console.error("error", e);
+    res.status(500).send("Error del sistema");
   }
 });
 
@@ -256,15 +249,14 @@ router.patch("/ordenes/:id", async (req, res) => {
     }
     res.send(orden);
   } catch (e) {
-    res.status(400).send(e);
-    console.error("error", e);
+    res.status(400).send("Error del sistema");
   }
 });
 
 /**
  * Elimina un Orden
  */
-router.delete("/terceros/:id", async (req, res) => {
+router.delete("/ordenes/:id", async (req, res) => {
   try {
     const orden = await Orden.findByIdAndDelete(req.params.id);
     if (!orden) {
@@ -272,8 +264,7 @@ router.delete("/terceros/:id", async (req, res) => {
     }
     res.send(orden);
   } catch (error) {
-    res.status(500).send();
-    console.error("error", e);
+    res.status(500).send("Error del sistema");
   }
 });
 

@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+const Counter = require("./counter-model");
 
 const cotizacionSchema = new Schema({
-  numeroContrato: {
-    type: Number,
+  codigo: {
+    type: String,
     trim: true,
     required: true,
     lowercase: true,
@@ -11,7 +12,7 @@ const cotizacionSchema = new Schema({
   precioTotal: {
     type: Number,
     trim: true,
-    required: true
+    required: true,
   },
   tarifasCotizadas: [
     {
@@ -27,6 +28,17 @@ const cotizacionSchema = new Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Tercero",
   },
+});
+
+cotizacionSchema.pre("validate", async function (next) {
+  const cotizacion = this;
+  if (cotizacion.codigo) {
+    return next();
+  }
+  const seq = await Counter.getNextSequence("cotizacion");
+  if (!seq) return next("seq is undefined");
+  cotizacion.codigo = `CO${seq}`;
+  next();
 });
 
 const Cotizacion = mongoose.model("Cotizacion", cotizacionSchema);

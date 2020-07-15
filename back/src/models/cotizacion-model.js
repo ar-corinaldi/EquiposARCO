@@ -23,6 +23,10 @@ const cotizacionSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Orden",
   },
+  tercero: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tercero",
+  },
 });
 
 const Cotizacion = mongoose.model("Cotizacion", cotizacionSchema);

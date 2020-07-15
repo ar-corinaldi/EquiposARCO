@@ -70,12 +70,12 @@ const bodegaSchema = new Schema({
       ref: "Orden",
     },
   ],
-  cotizaciones: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Cotizacion",
-    },
-  ],
+  // cotizaciones: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Cotizacion",
+  //   },
+  // ],
 });
 
 bodegaSchema.index(

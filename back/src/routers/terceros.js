@@ -1,8 +1,26 @@
 const express = require("express");
 const Tercero = require("../models/tercero-model");
+const Cotizacion = require("../models/cotizacion-model");
 const Bodega = require("../models/bodega-model");
 const bodegasRouter = require("./bodegas");
 const router = new express.Router();
+
+/**
+ * Devuelve todas las cotizaciones de un tercero
+ */
+router.get("/terceros/:id/cotizaciones",  async (req, res) => {
+  try {
+    const tercero = await Tercero.findById(req.params.id);
+    const cotizaciones = await Cotizacion.find({tercero: req.params.id }).exec();
+    if (!tercero) {
+      return res.status(404).send("No se encontro el tercero");
+    }
+    res.json(tercero);
+
+  } catch (e) {
+    res.status(400).send("No se pudo encontrar las cotizaciones" + e);
+  }
+})
 
 /**
  *  Tercero

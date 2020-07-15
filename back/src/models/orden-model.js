@@ -39,6 +39,17 @@ const ordenSchema = new Schema({
     trim: true,
     lowercase: true,
   },
+  codigo: {
+    type: String,
+    required: true,
+  },
+  codigoObra: {
+    type: String,
+  },
+  bodega: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Bodega",
+  },
 });
 
 const Orden = mongoose.model("Orden", ordenSchema);

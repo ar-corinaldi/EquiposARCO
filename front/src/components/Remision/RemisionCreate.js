@@ -11,9 +11,13 @@ function RemisionCreate(props) {
 
   const [orden, setOrden] = useState({});
   const [equipos, setEquipos] = useState([]);
+  const [vehiculos, setVehiculos] = useState({});
+  const [empleados, setEmpleados] = useState({});
 
   useEffect(() => {
     fetchOrden();
+    fetchVehiculos();
+    fetchEmpleados();
   }, []);
 
   const fetchOrden = async () => {
@@ -32,6 +36,20 @@ function RemisionCreate(props) {
     });
     setEquipos(equiposO);
     //console.log("equipos", equiposO);
+  };
+
+  const fetchVehiculos = async () => {
+    let res = await fetch(`/vehiculos`);
+    const newVehiculos = await res.json();
+    console.log("newVehiculos", newVehiculos);
+    setVehiculos(newVehiculos);
+  };
+
+  const fetchEmpleados = async () => {
+    let res = await fetch(`/empleados`);
+    const newEmpleados = await res.json();
+    console.log("newEmpleados", newEmpleados);
+    setEmpleados(newEmpleados);
   };
 
   const fields = {

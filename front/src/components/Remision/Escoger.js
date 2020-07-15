@@ -9,6 +9,18 @@ import InputBase from "@material-ui/core/InputBase";
 
 export default function Escoger(props) {
   const nombre = props.nombre;
+  /**
+   * Campos que se usaran para buscar el elemento
+   */
+  const camposBuscar = props.camposBuscar;
+  /**
+   * Campos principal para mostrar en las opciones
+   */
+  const campos = props.campos;
+  /**
+   * Campos descripcion de las opciones
+   */
+  const campoDescripcion = props.campoDescripcion;
   const nombre_plural = props.nombre_plural;
   const [elementoSelected, setElementoSelected] = props.elementoSelected;
   const [elementos, setElementos] = props.elementos;
@@ -30,8 +42,25 @@ export default function Escoger(props) {
   const filterOptions = createFilterOptions({
     matchFrom: "any",
     limit: 15,
-    stringify: (option) => option.modelo + option.placa,
+    stringify: (option) => {
+      let filtOp;
+      camposBuscar.forEach((campo) => {
+        filtOp += option[campo];
+      });
+      return filtOp;
+    },
   });
+
+  const nombreElemento = (option) => {
+    let nombre = "";
+    campos.forEach((campo) => {
+      if (nombre.length != 0) {
+        nombre += " - ";
+      }
+      nombre += option[campo];
+    });
+    return nombre;
+  };
 
   return (
     <>
@@ -72,17 +101,21 @@ export default function Escoger(props) {
               setPendingValue(newValue);
             }}
             getOptionLabel={(option) => {
-              if (option && option.modelo && option.placa) {
-                return option.modelo && option.placa;
-              } else {
-                return "";
-              }
+              let label;
+              campos.forEach((campo) => {
+                if (option && option[campo]) {
+                  label += option[campo];
+                } else {
+                  label += "";
+                }
+              });
+              return label;
             }}
             options={[...elementos]}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 <div className="nombreElemento">
-                  <span>{option.modelo + " - " + option.placa}</span>
+                  <span>{nombreElemento(option)}</span>
                 </div>
                 <DoneIcon
                   className="iconSelected"
@@ -107,7 +140,7 @@ export default function Escoger(props) {
                 inputProps={params.inputProps}
                 autoFocus
                 className="inputElemento"
-                placeholder="Buscar "
+                placeholder={buscar}
               />
             )}
           ></Autocomplete>

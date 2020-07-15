@@ -2,17 +2,27 @@ const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 const vehiculoSchema = new Schema({
+  marca: {
+    type: String,
+    lowercase: true,
+    trim: true,
+  },
+  modelo: {
+    type: String,
+    lowercase: true,
+    trim: true,
+  },
+  color: {
+    type: String,
+    lowercase: true,
+    trim: true,
+  },
   placa: {
     type: String,
     required: true,
     lowercase: true,
     trim: true,
     unique: true,
-  },
-  modelo: {
-    type: String,
-    lowercase: true,
-    trim: true,
   },
   capacidad: {
     type: Number,

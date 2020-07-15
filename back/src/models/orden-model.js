@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
+const Counter = require("./counter-model");
 
 const ordenSchema = new Schema({
   remisiones: [
@@ -50,6 +51,25 @@ const ordenSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Bodega",
   },
+});
+
+ordenSchema.pre("validate", async function (next) {
+  // Nombre en singular de la collection y en minuscula
+  const orden = this;
+  if (orden.codigo && orden.codigoObra) return next();
+
+  if (!orden.codigo) {
+    const seq = await Counter.getNextSequence("orden");
+    if (!seq) return next("seq es undefined");
+    orden.codigo = `OR${seq}`;
+  }
+
+  if (!orden.codigoObra) {
+    const seqOb = await Counter.getNextSequence("obra");
+    if (!seqOb) return next("seqOb es undefined");
+    orden.codigoObra = `OB${seqOb}`;
+  }
+  next();
 });
 
 const Orden = mongoose.model("Orden", ordenSchema);

@@ -24,6 +24,10 @@ const cotizacionSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Orden",
   },
+  tercero: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tercero",
+  },
 });
 
 cotizacionSchema.pre("validate", async function (next) {

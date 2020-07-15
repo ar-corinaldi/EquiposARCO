@@ -12,12 +12,12 @@ function RemisionCreate(props) {
   const [orden, setOrden] = useState({});
   const [equipos, setEquipos] = useState([]);
   const [vehiculos, setVehiculos] = useState({});
-  const [empleados, setEmpleados] = useState({});
+  const [conductores, setConductores] = useState({});
 
   useEffect(() => {
     fetchOrden();
     fetchVehiculos();
-    fetchEmpleados();
+    fetchConductores();
   }, []);
 
   const fetchOrden = async () => {
@@ -45,11 +45,11 @@ function RemisionCreate(props) {
     setVehiculos(newVehiculos);
   };
 
-  const fetchEmpleados = async () => {
-    let res = await fetch(`/empleados`);
-    const newEmpleados = await res.json();
-    console.log("newEmpleados", newEmpleados);
-    setEmpleados(newEmpleados);
+  const fetchConductores = async () => {
+    let res = await fetch(`/empleados/conductores`);
+    const newConductores = await res.json();
+    console.log("newConductores", newConductores);
+    setConductores(newConductores);
   };
 
   const fields = {
@@ -67,6 +67,8 @@ function RemisionCreate(props) {
     <div className="remision-registrar-wrapper">
       <RemisionForm
         equipos={[equipos, setEquipos]}
+        conductores={[conductores, setConductores]}
+        vehiculos={[vehiculos, setVehiculos]}
         fields={fields}
       ></RemisionForm>
     </div>

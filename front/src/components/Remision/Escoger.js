@@ -9,6 +9,7 @@ import InputBase from "@material-ui/core/InputBase";
 
 export default function Escoger(props) {
   const nombre = props.nombre;
+  const nombre_plural = props.nombre_plural;
   /**
    * Campos que se usaran para buscar el elemento
    */
@@ -21,20 +22,20 @@ export default function Escoger(props) {
    * Campos descripcion de las opciones
    */
   const campoDescripcion = props.campoDescripcion;
-  const nombre_plural = props.nombre_plural;
-  const [elementoSelected, setElementoSelected] = props.elementoSelected;
-  const [elementos, setElementos] = props.elementos;
+  const [elementoSeleceted, setElementoSelected] = props.elementoSelected;
+  const elementos = props.elementos;
   const [pendingValue, setPendingValue] = React.useState({});
   const [open, setOpen] = useState(false);
 
-  const noHay = "No hay " + nombre_plural;
-  const buscar = "Buscar " + nombre;
+  const noHay = `No hay ${nombre_plural}`;
+  const buscar = `Buscar ${nombre}`;
 
   const handleClose = (event, reason) => {
     if (reason === "toggleInput") {
       return;
     }
     setElementoSelected(pendingValue);
+    console.log("pendingValue", pendingValue);
     setPendingValue({});
     setOpen(false);
   };
@@ -111,7 +112,7 @@ export default function Escoger(props) {
               });
               return label;
             }}
-            options={[...elementos]}
+            options={elementos}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 <div className="nombreElemento">

@@ -15,8 +15,11 @@ import Escoger from "./Escoger";
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
   const [asumidoTercero, setAsumidoTercero] = useState(true);
-  const [equiposSels, setEquiposSels] = useState([]);
   const [equipos, setEquipos] = props.equipos;
+  const [equiposSels, setEquiposSels] = useState([]);
+  const [conductor, setConductores] = props.conductores;
+  const [vehiculos, setVehiculos] = props.vehiculos;
+  const [vehiculoSelected, setVehiculoSelected] = useState({});
   const [selectedDate, handleDateChange] = useState(new Date());
 
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
@@ -165,7 +168,14 @@ function RemisionForm(props) {
               value={fields.vehiculoTransportador}
               onChange={handleChange}
             />
-            <Escoger></Escoger>
+            <Escoger
+              nombre={"Vehículo"}
+              nombre_plural={"vehículos"}
+              camposBuscar={["placa", "marca", "modelo", "color"]}
+              campos={["marca", "modelo", "placa"]}
+              elementoSelected={[vehiculoSelected, setVehiculoSelected]}
+              elementos={vehiculos}
+            ></Escoger>
           </div>,
           <div key="2" className="form-group">
             <label htmlFor="conductor"> Conductor : </label>

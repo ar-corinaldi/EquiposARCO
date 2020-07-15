@@ -127,26 +127,28 @@ function RemisionForm(props) {
             </Col>
           </Row>
           <Row>
-            <table className="table-width">
-              <thead className="thead-light">
-                <tr>
-                  <th>Equipo</th>
-                  <th>Cantidad</th>
-                  <th className="w50"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {equiposSels &&
-                  equiposSels.map((equipoRender, index) => (
-                    <EquipoDetail
-                      key={index}
-                      equipoRender={equipoRender}
-                      equiposSels={[equiposSels, setEquiposSels]}
-                      eliminarEquipoSelect={eliminarEquipoSelect}
-                    ></EquipoDetail>
-                  ))}
-              </tbody>
-            </table>
+            <Col>
+              <table className="table-width">
+                <thead className="thead-light">
+                  <tr>
+                    <th>Equipo</th>
+                    <th>Cantidad</th>
+                    <th className="w50"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {equiposSels &&
+                    equiposSels.map((equipoRender, index) => (
+                      <EquipoDetail
+                        key={index}
+                        equipoRender={equipoRender}
+                        equiposSels={[equiposSels, setEquiposSels]}
+                        eliminarEquipoSelect={eliminarEquipoSelect}
+                      ></EquipoDetail>
+                    ))}
+                </tbody>
+              </table>
+            </Col>
           </Row>
         </div>
         <div className="form-group">

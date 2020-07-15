@@ -83,6 +83,8 @@ export default function EscogerEquipos(props) {
               setPendingValue(newValue);
             }}
             getOptionLabel={(option) => {
+              console.log("option", option);
+
               if (option && option.nombreEquipo) {
                 return option.nombreEquipo;
               } else {

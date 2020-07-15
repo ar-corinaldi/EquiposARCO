@@ -17,7 +17,8 @@ function RemisionForm(props) {
   const [asumidoTercero, setAsumidoTercero] = useState(true);
   const [equipos, setEquipos] = props.equipos;
   const [equiposSels, setEquiposSels] = useState([]);
-  const [conductor, setConductores] = props.conductores;
+  const [conductores, setConductores] = props.conductores;
+  const [conductorSelected, setConductorSelected] = useState({});
   const [vehiculos, setVehiculos] = props.vehiculos;
   const [vehiculoSelected, setVehiculoSelected] = useState({});
   const [selectedDate, handleDateChange] = useState(new Date());
@@ -34,6 +35,14 @@ function RemisionForm(props) {
   useEffect(() => {
     handleChangeEquipos();
   }, [equiposSels]);
+
+  useEffect(() => {
+    handleChangeVehiculo();
+  }, [vehiculoSelected]);
+
+  useEffect(() => {
+    handleChangeConductor();
+  }, [conductorSelected]);
 
   const mostrarOrden = () => {
     //console.log("bodega", bodega);
@@ -57,6 +66,14 @@ function RemisionForm(props) {
 
   const handleChangeEquipos = () => {
     fields.equiposEnRemision = equiposSels;
+  };
+
+  const handleChangeVehiculo = () => {
+    fields.vehiculoTransportador = vehiculoSelected._id;
+  };
+
+  const handleChangeConductor = () => {
+    fields.conductor = conductorSelected._id;
   };
 
   const eliminarEquipoSelect = (equipo) => {
@@ -162,12 +179,6 @@ function RemisionForm(props) {
         {!asumidoTercero && [
           <div key="1" className="form-group">
             <label htmlFor="vehiculoTransportador"> Vehiculo : </label>
-            <input
-              name="vehiculoTransportador"
-              type="text"
-              value={fields.vehiculoTransportador}
-              onChange={handleChange}
-            />
             <Escoger
               nombre={"Vehículo"}
               nombre_plural={"vehículos"}
@@ -179,12 +190,14 @@ function RemisionForm(props) {
           </div>,
           <div key="2" className="form-group">
             <label htmlFor="conductor"> Conductor : </label>
-            <input
-              name="conductor"
-              type="text"
-              value={fields.conductor}
-              onChange={handleChange}
-            />
+            <Escoger
+              nombre={"Conductor"}
+              nombre_plural={"conductores"}
+              camposBuscar={["nombres", "apellidos", "numeroDocumento"]}
+              campos={["nombres", "apellidos", "numeroDocumento"]}
+              elementoSelected={[conductorSelected, setConductorSelected]}
+              elementos={conductores}
+            ></Escoger>
           </div>,
         ]}
         <div id="button-wrapper">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Escoger.css";
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
@@ -36,7 +36,7 @@ export default function Escoger(props) {
     }
     setElementoSelected(pendingValue);
     console.log("pendingValue", pendingValue);
-    setPendingValue({});
+    //setPendingValue({});
     setOpen(false);
   };
 
@@ -58,7 +58,9 @@ export default function Escoger(props) {
       if (nombre.length != 0) {
         nombre += " - ";
       }
-      nombre += option[campo];
+      if (option[campo]) {
+        nombre += option[campo];
+      }
     });
     return nombre;
   };
@@ -80,6 +82,9 @@ export default function Escoger(props) {
               option: "optionElemento",
               popper: "popper",
             }}
+            // onOpen={() => {
+            //   setPendingValue(elementoSeleceted);
+            // }}
             onClose={handleClose}
             onFocus={() => {
               setOpen(true);
@@ -102,15 +107,22 @@ export default function Escoger(props) {
               setPendingValue(newValue);
             }}
             getOptionLabel={(option) => {
-              let label;
-              campos.forEach((campo) => {
-                if (option && option[campo]) {
-                  label += option[campo];
-                } else {
-                  label += "";
-                }
-              });
-              return label;
+              console.log("pendingValue", pendingValue);
+              if (option) {
+                return nombreElemento(option);
+              } else {
+                return "";
+              }
+              //
+              // let label;
+              // campos.forEach((campo) => {
+              //   if (option && option[campo]) {
+              //     label += option[campo];
+              //   } else {
+              //     label += "";
+              //   }
+              // });
+              // return label;
             }}
             options={elementos}
             renderOption={(option, { selected }) => (

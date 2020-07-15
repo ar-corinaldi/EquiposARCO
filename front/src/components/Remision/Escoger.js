@@ -82,9 +82,9 @@ export default function Escoger(props) {
               option: "optionElemento",
               popper: "popper",
             }}
-            // onOpen={() => {
-            //   setPendingValue(elementoSeleceted);
-            // }}
+            onOpen={() => {
+              setPendingValue(elementoSeleceted);
+            }}
             onClose={handleClose}
             onFocus={() => {
               setOpen(true);
@@ -113,16 +113,6 @@ export default function Escoger(props) {
               } else {
                 return "";
               }
-              //
-              // let label;
-              // campos.forEach((campo) => {
-              //   if (option && option[campo]) {
-              //     label += option[campo];
-              //   } else {
-              //     label += "";
-              //   }
-              // });
-              // return label;
             }}
             options={elementos}
             renderOption={(option, { selected }) => (

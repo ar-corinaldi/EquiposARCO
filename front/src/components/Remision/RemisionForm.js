@@ -116,7 +116,7 @@ function RemisionForm(props) {
         </MuiPickersUtilsProvider>
         <div className="form-group">
           <Row>
-            <Col>
+            <Col md="auto" className="vertical-center">
               <label>Equipos a trasportar : </label>
             </Col>
             <Col>
@@ -178,26 +178,38 @@ function RemisionForm(props) {
         </div>
         {!asumidoTercero && [
           <div key="1" className="form-group">
-            <label htmlFor="vehiculoTransportador"> Vehiculo : </label>
-            <Escoger
-              nombre={"Vehículo"}
-              nombre_plural={"vehículos"}
-              camposBuscar={["placa", "marca", "modelo", "color"]}
-              campos={["marca", "modelo", "placa"]}
-              elementoSelected={[vehiculoSelected, setVehiculoSelected]}
-              elementos={vehiculos}
-            ></Escoger>
+            <Row>
+              <Col md="auto" className="vertical-center">
+                <label htmlFor="vehiculoTransportador"> Vehiculo : </label>
+              </Col>
+              <Col>
+                <Escoger
+                  nombre={"Vehículo"}
+                  nombre_plural={"vehículos"}
+                  camposBuscar={["placa", "marca", "modelo", "color"]}
+                  campos={["marca", "modelo", "placa"]}
+                  elementoSelected={[vehiculoSelected, setVehiculoSelected]}
+                  elementos={vehiculos}
+                ></Escoger>
+              </Col>
+            </Row>
           </div>,
           <div key="2" className="form-group">
-            <label htmlFor="conductor"> Conductor : </label>
-            <Escoger
-              nombre={"Conductor"}
-              nombre_plural={"conductores"}
-              camposBuscar={["nombres", "apellidos", "numeroDocumento"]}
-              campos={["nombres", "apellidos", "numeroDocumento"]}
-              elementoSelected={[conductorSelected, setConductorSelected]}
-              elementos={conductores}
-            ></Escoger>
+            <Row>
+              <Col md="auto" className="vertical-center">
+                <label htmlFor="conductor"> Conductor : </label>
+              </Col>
+              <Col>
+                <Escoger
+                  nombre={"Conductor"}
+                  nombre_plural={"conductores"}
+                  camposBuscar={["nombres", "apellidos", "numeroDocumento"]}
+                  campos={["nombres", "apellidos", "numeroDocumento"]}
+                  elementoSelected={[conductorSelected, setConductorSelected]}
+                  elementos={conductores}
+                ></Escoger>
+              </Col>
+            </Row>
           </div>,
         ]}
         <div id="button-wrapper">

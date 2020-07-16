@@ -15,9 +15,16 @@ function PropiedadesDetail(props) {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {equipo.propiedades &&
+            equipo.propiedades.map((propiedad) => (
+              <tr key={propiedad._id}>
+                <td>{propiedad.nombre}</td>
+                <td>{propiedad.valor}</td>
+              </tr>
+            ))}
+          {/* <tr>
             <td>Peso</td>
-            <td>{equipo.peso}</td>
+            <td>{equipo.ancho}</td>
           </tr>
           <tr>
             <td>Ancho</td>
@@ -30,7 +37,7 @@ function PropiedadesDetail(props) {
           <tr>
             <td>Largo</td>
             <td>{equipo.largo}</td>
-          </tr>
+          </tr> */}
         </tbody>
       </Table>
     </Col>

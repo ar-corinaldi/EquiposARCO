@@ -6,6 +6,28 @@ const Bodega = require("../models/bodega-model");
 const router = new express.Router();
 
 /**
+ *  Relacion Tercero -> Cotizacion
+ */
+
+/**
+ * Devuelve todas las cotizaciones de un tercero
+ */
+router.get("/terceros/:id/cotizaciones/all", async (req, res) => {
+  try {
+    const tercero = await Tercero.findById(req.params.id);
+    const cotizaciones = await Cotizacion.find({
+      tercero: req.params.id,
+    });
+    if (!tercero) {
+      return res.status(404).send("No se encontro el tercero");
+    }
+    res.json(cotizaciones);
+  } catch (e) {
+    res.status(400).send("No se pudo encontrar las cotizaciones" + e);
+  }
+});
+
+/**
  *  Relacion Bodega -> Cotizacion
  */
 
@@ -88,7 +110,7 @@ router.post("/cotizaciones/:idC/tercero/:idT", async (req, res) => {
   } catch (e) {
     res.status(500).send(e);
   }
-})
+});
 
 /**
  *  Obtiene todas las cotizaciones
@@ -109,23 +131,25 @@ router.get("/cotizaciones", async (req, res) => {
 
 router.get("/cotizaciones/all", async (req, res) => {
   try {
-    const cotizaciones = await Cotizacion.find({}).populate("tarifasCotizadas").populate({
-      path: "tarifasCotizadas",
-      populate: {
-        path: "precioReferencia",
-      }
-    }).populate({
-      path: "tarifasCotizadas",
-      populate: {
-        path: "equipo"
-      }
-    }).populate("tercero");
+    const cotizaciones = await Cotizacion.find({})
+      .populate("tarifasCotizadas")
+      .populate({
+        path: "tarifasCotizadas",
+        populate: {
+          path: "precioReferencia",
+        },
+      })
+      .populate({
+        path: "tarifasCotizadas",
+        populate: {
+          path: "equipo",
+        },
+      })
+      .populate("tercero");
     res.json(cotizaciones);
-
   } catch (e) {
     console.error("error", e);
   }
-
 });
 
 /**

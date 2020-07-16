@@ -6,11 +6,11 @@ import Col from "react-bootstrap/Col";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import EscogerEquipos from "./EscogerEquipos";
-import EquipoDetail from "./EquipoDetail";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import "moment/locale/es";
 import Escoger from "./Escoger";
+import EquipoTable from "./EquipoTable";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -122,25 +122,9 @@ function RemisionForm(props) {
           </Row>
           <Row>
             <Col>
-              <table className="table-width">
-                <thead className="thead-light">
-                  <tr>
-                    <th>Equipo</th>
-                    <th>Cantidad</th>
-                    <th className="w50"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {equiposSels &&
-                    equiposSels.map((equipoRender, index) => (
-                      <EquipoDetail
-                        key={index}
-                        equipoRender={equipoRender}
-                        equiposSels={[equiposSels, setEquiposSels]}
-                      ></EquipoDetail>
-                    ))}
-                </tbody>
-              </table>
+              <EquipoTable
+                equiposSels={[equiposSels, setEquiposSels]}
+              ></EquipoTable>
             </Col>
           </Row>
         </div>

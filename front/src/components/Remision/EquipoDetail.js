@@ -5,6 +5,13 @@ function EquipoDetail(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
   const equipoRender = props.equipoRender;
   const [cantidad, setCantidad] = useState(equipoRender.cantidad);
+  let peso = 0;
+
+  equipoRender.equipoID.propiedades.forEach((propiedad) => {
+    if (propiedad.nombre === "peso") {
+      peso = propiedad.valor;
+    }
+  });
 
   const handleCantidad = (e) => {
     const target = e.target;
@@ -28,8 +35,10 @@ function EquipoDetail(props) {
         <td>
           <b>{equipoRender.equipoID.nombreEquipo}</b>
           <br />
-          {equipoRender.equipoID.nombreGrupo}
+          {equipoRender.equipoID.tipoEquipo}
         </td>
+        <td>{equipoRender.equipoID.nombreFamilia}</td>
+        <td>{peso}</td>
         <td>
           <input
             type="number"

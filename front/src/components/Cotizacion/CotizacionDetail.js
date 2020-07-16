@@ -7,11 +7,11 @@ import { useParams, Link } from "react-router-dom";
 import EquiposTable from "./EquiposTable";
 
 function CotizacionDetail(props) {
-  const { id, idB, idC } = useParams();
+  const { id, idC } = useParams();
 
   const [cotizacion, setCotizacion] = useState({});
   const [tercero, setTercero] = useState({});
-  const [bodega, setBodega] = useState({});
+  const [orden, setOrden] = useState({});
 
   useEffect(() => {
     fetchInfo();
@@ -25,20 +25,7 @@ function CotizacionDetail(props) {
     const terceroA = await res.json();
     //console.log("tercero", terceroA);
     setTercero(terceroA);
-    let bodegaA;
-    terceroA.bodegas.forEach((bod) => {
-      if (bod._id.toString() === idB) {
-        bodegaA = bod;
-      }
-    });
-    //console.log("bodega", bodegaA);
-    setBodega(bodegaA);
-    bodegaA.cotizaciones.forEach((co) => {
-      if (co._id.toString() === idC) {
-        fetchInfoCotizacion();
-        return;
-      }
-    });
+    fetchInfoCotizacion();
   };
 
   /*
@@ -51,6 +38,15 @@ function CotizacionDetail(props) {
     const coti = await res.json();
     //console.log("cotizacion", coti);
     setCotizacion(coti);
+    fetchInfoOrden(coti);
+  };
+
+  const fetchInfoOrden = async (coti) => {
+    //console.log(`/ordenes/${coti.orden}`);
+    let res = await fetch(`/ordenes/${coti.orden}`);
+    const ord = await res.json();
+    //console.log("cotizacion", coti);
+    setOrden(ord);
   };
 
   return (
@@ -67,15 +63,12 @@ function CotizacionDetail(props) {
                   <b>Tercero : </b>
                   <Link to={`terceros/${tercero._id}`}>{tercero.nombre}</Link>
                 </p>
-                <p className="capitalize">
-                  <b>Bodega : </b> {bodega.nombreBodega}
-                </p>
               </Col>
               <Col>
                 <p>
                   <b>Orden :</b>{" "}
                   <Link
-                    to={`/terceros/${id}/bodegas/${idB}/ordenes/${cotizacion.orden}`}
+                    to={`/terceros/${id}/bodegas/${orden.bodega}/ordenes/${cotizacion.orden}`}
                   >
                     {cotizacion.orden}{" "}
                   </Link>

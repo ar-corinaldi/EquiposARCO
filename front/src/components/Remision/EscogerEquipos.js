@@ -28,7 +28,7 @@ export default function EscogerEquipos(props) {
     //console.log("pendingValue", pendingValue);
     const equipoSeleccionado = { cantidad: 1, equipoID: pendingValue };
     const newEquiposSels = equiposSels.concat(equipoSeleccionado);
-    console.log("newEquiposSels", newEquiposSels);
+    //console.log("newEquiposSels", newEquiposSels);
     setEquiposSels(newEquiposSels);
     setPendingValue({});
   };
@@ -83,8 +83,6 @@ export default function EscogerEquipos(props) {
               setPendingValue(newValue);
             }}
             getOptionLabel={(option) => {
-              console.log("option", option);
-
               if (option && option.nombreEquipo) {
                 return option.nombreEquipo;
               } else {
@@ -93,13 +91,16 @@ export default function EscogerEquipos(props) {
             }}
             options={[...equipos]}
             getOptionDisabled={(option) => {
-              equiposSels.forEach((equipoSel) => {
-                if (equipoSel.equipoID === option) {
-                  return true;
+              //console.log("llega");
+              if (equiposSels) {
+                //console.log("entra");
+                for (let i = 0; i < equiposSels.length; i++) {
+                  if (option === equiposSels[i].equipoID) {
+                    return true;
+                  }
                 }
-              });
+              }
               return false;
-              //console.log("verificacion", equiposSels.includes(option));
             }}
             renderOption={(option, { selected }) => (
               <React.Fragment>

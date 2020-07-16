@@ -65,6 +65,7 @@ function RemisionForm(props) {
   };
 
   const handleChangeEquipos = () => {
+    console.log("equiposSels", equiposSels);
     fields.equiposEnRemision = equiposSels;
   };
 

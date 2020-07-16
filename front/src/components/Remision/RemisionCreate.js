@@ -41,14 +41,14 @@ function RemisionCreate(props) {
   const fetchVehiculos = async () => {
     let res = await fetch(`/vehiculos`);
     const newVehiculos = await res.json();
-    console.log("newVehiculos", newVehiculos);
+    //console.log("newVehiculos", newVehiculos);
     setVehiculos(newVehiculos);
   };
 
   const fetchConductores = async () => {
     let res = await fetch(`/empleados/conductores`);
     const newConductores = await res.json();
-    console.log("newConductores", newConductores);
+    //console.log("newConductores", newConductores);
     setConductores(newConductores);
   };
 

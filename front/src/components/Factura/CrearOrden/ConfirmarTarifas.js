@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ConfirmarTarifas.css'
 import ConfirmarTarifaDetail from './ConfirmarTarifaDetail';
+import Table from "react-bootstrap/Table";
 
 function ConfirmarTarifas(props) {
     //Estados globales
@@ -17,20 +18,20 @@ function ConfirmarTarifas(props) {
         inventario = {};
         tarifasFinales.forEach((tarifa) => {
             const cantidad = tarifa.cantidad;
-            if(tarifa.equipo.componentes.length == 0){
+            if (tarifa.equipo.componentes.length == 0) {
                 //Suma la cantidad de esta tarifa a la ya existente en el inventario
-                const valorActual = inventario[tarifa.equipo._id]? inventario[tarifa.equipo._id]: 0;
+                const valorActual = inventario[tarifa.equipo._id] ? inventario[tarifa.equipo._id] : 0;
                 inventario[tarifa.equipo._id] = valorActual + cantidad;
             }
-            else if(tarifa.equipo.componentes.length > 0) {
+            else if (tarifa.equipo.componentes.length > 0) {
                 tarifa.equipo.componentes.forEach((equipo) => {
-                    const valorActual = inventario[equipo.equipoID]? inventario[equipo.equipoID]: 0;
-                    inventario[equipo.equipoID] = valorActual + cantidad*equipo.cantidad;
+                    const valorActual = inventario[equipo.equipoID] ? inventario[equipo.equipoID] : 0;
+                    inventario[equipo.equipoID] = valorActual + cantidad * equipo.cantidad;
                 })
             }
         })
         console.log(inventario);
-        
+
     }
     calcularInventarioRequerido();
 
@@ -45,10 +46,27 @@ function ConfirmarTarifas(props) {
 
 
     return (
-        <div className={(miEstado === "active" ? "show" : "hide")}>
-            {!tarifasFinales ? "" : tarifasFinales.map((tarifa, index) => {
+        <div className={(miEstado === "active" ? "show" : "hide") + " width100"}>
+            {/* {!tarifasFinales ? "" : tarifasFinales.map((tarifa, index) => {
                 return <ConfirmarTarifaDetail tarifa={tarifa} cobro={{}} inventario={[inventario, setInventario]} />
-            })}
+            })} */}
+            <Table responsive className="mt-4"  >
+                <thead>
+                    <tr>
+                        <th>Nombre Equipo</th>
+                        <th>Unidad de Cobro</th>
+                        <th>Precio x Unidad</th>
+                        <th>Cantidad</th>
+                        <th>Tipo de Cobro</th>
+                        <th>Tiempo a cobrar</th>
+                        <th>Valor a cobrar</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                {!tarifasFinales ? "" : tarifasFinales.map((tarifa, index) => {
+                    return <ConfirmarTarifaDetail tarifa={tarifa} cobro={{}} inventario={[inventario, setInventario]} />
+                })}
+            </Table>
         </div>
     );
 }

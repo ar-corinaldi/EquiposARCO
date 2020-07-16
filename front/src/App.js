@@ -12,7 +12,7 @@ import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
 import CrearOrden from "./components/Factura/CrearOrden/CrearOrden";
 import FacturaList from "./components/Factura/FacturaList";
-// import FacturaDetail from "./components/Factura/FacturaDetail";
+import FacturaDetail from "./components/Factura/FacturaDetail";
 import EquipoDetail from "./components/Equipo/EquipoDetail/EquipoDetail";
 import EquipoCreate from "./components/Equipo/EquipoCreate/EquipoCreate";
 import NotaInventarioCreate from "./components/NotaInventario/NotaInventarioCreate";
@@ -89,17 +89,17 @@ function App() {
                   path="/terceros/:id/bodegas/:idB/cotizaciones/:idC"
                   component={CotizacionDetail}
                 />
-                {/* <Route
-                  path="/facturacion/:idFactura"
-                  exact
-                  component={FacturaDetail}
-                /> */}
+                <Route path="/facturacion/crear_orden" component={CrearOrden} exact />
                 <Route
                   path="/facturacion/listar_facturas"
                   exact
                   component={FacturaList}
                 />
-                <Route path="/facturacion/crear_orden" component={CrearOrden} />
+                <Route
+                  path="/facturacion/:idFactura"
+                  exact
+                  component={FacturaDetail}
+                />
                 <Route path="*"> Pagina no encontrada </Route>
               </Switch>
             </Row>

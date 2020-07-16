@@ -72,3 +72,9 @@
   margin-bottom: 0px !important;
   margin-top: 2px !important;
 }
+
+.stickyRow{
+  position: sticky;
+  position: -webkit-sticky;
+  top: 5px;
+}

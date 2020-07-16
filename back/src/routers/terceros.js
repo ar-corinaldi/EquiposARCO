@@ -6,23 +6,6 @@ const bodegasRouter = require("./bodegas");
 const router = new express.Router();
 
 /**
- * Devuelve todas las cotizaciones de un tercero
- */
-router.get("/terceros/:id/cotizaciones",  async (req, res) => {
-  try {
-    const tercero = await Tercero.findById(req.params.id);
-    const cotizaciones = await Cotizacion.find({tercero: req.params.id }).exec();
-    if (!tercero) {
-      return res.status(404).send("No se encontro el tercero");
-    }
-    res.json(tercero);
-
-  } catch (e) {
-    res.status(400).send("No se pudo encontrar las cotizaciones" + e);
-  }
-})
-
-/**
  *  Tercero
  */
 
@@ -112,7 +95,8 @@ router.get("/terceros/bodegas", async (req, res) => {
 });
 
 /**
- *  Get de tercero por su id. Puebla las bodegas, y en cada bodega las ordenes pasadas y las actuales
+ *  Get de tercero por su id. Puebla las bodegas, y en cada bodega las ordenes pasadas y las actuales.
+ *  También las cotizaciones ( aunque no hagan parte del modelo )
  */
 router.get("/terceros/:id", async (req, res) => {
   try {
@@ -129,15 +113,14 @@ router.get("/terceros/:id", async (req, res) => {
           path: "ordenesPasadas",
         },
       })
-      .populate({
-        path: "bodegas",
-        populate: {
-          path: "cotizaciones",
-        },
-      });
+      .lean();
     if (!tercero) {
       return res.status(404).send("No hubo coincidencia");
     }
+    const cotizaciones = await Cotizacion.find({
+      tercero: req.params.id,
+    });
+    tercero.cotizaciones = cotizaciones;
     res.send(tercero);
   } catch (error) {
     res.status(500).send();

@@ -107,9 +107,7 @@ function OrdenDetail(props) {
               <Col>
                 <p>
                   <b>Cotizacion :</b>{" "}
-                  <Link
-                    to={`/terceros/${id}/bodegas/${idB}/cotizaciones/${orden.cotizacion}`}
-                  >
+                  <Link to={`/terceros/${id}/cotizaciones/${orden.cotizacion}`}>
                     {orden.cotizacion}{" "}
                   </Link>
                 </p>

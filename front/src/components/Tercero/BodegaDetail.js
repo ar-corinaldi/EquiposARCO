@@ -10,7 +10,6 @@ function BodegaDetail(props) {
   const [open, setOpen] = useState(false);
   const [openOrAct, setOpenOrAct] = useState(false);
   const [openOrPas, setOpenOrPas] = useState(false);
-  const [openCot, setOpenCot] = useState(false);
 
   const toggle = () => {
     //console.log(open);
@@ -25,11 +24,6 @@ function BodegaDetail(props) {
   const toggleOrPas = () => {
     //console.log(open);
     setOpenOrPas(!openOrPas);
-  };
-
-  const toggleCot = () => {
-    //console.log(open);
-    setOpenCot(!openCot);
   };
 
   const eliminarBodega = async () => {
@@ -151,38 +145,6 @@ function BodegaDetail(props) {
             ))
           ) : (
             <p>No hay ordenes finalizadas</p>
-          )}
-        </Row>
-        <p>
-          <button className="btn bodega-collapse" onClick={toggleCot}>
-            <strong> Cotizaciones : </strong>{" "}
-            {openCot ? (
-              <FaChevronUp className="icono" />
-            ) : (
-              <FaChevronDown className="icono" />
-            )}
-          </button>
-        </p>
-        <Row className={"pdl-15 collapse" + (openCot ? " in" : "")}>
-          {bodega.cotizaciones.length > 0 ? (
-            bodega.cotizaciones.map((coti) => (
-              <p key={coti._id}>
-                <Link
-                  to={
-                    "/terceros/" +
-                    tercero._id +
-                    "/bodegas/" +
-                    bodega._id +
-                    "/cotizaciones/" +
-                    coti._id
-                  }
-                >
-                  {coti._id}
-                </Link>
-              </p>
-            ))
-          ) : (
-            <p> No hay cotizaciones</p>
           )}
         </Row>
         <Row className="pdl-15">

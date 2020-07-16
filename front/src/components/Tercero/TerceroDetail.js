@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./Tercero.css";
 import BodegaDetail from "./BodegaDetail";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import formatoFechas from "../utils/FormatoFechas";
 
 function TerceroDetail({ match }) {
@@ -20,7 +20,9 @@ function TerceroDetail({ match }) {
   const fetchTercero = async () => {
     const res = await fetch("/terceros/" + params.id);
     const terceroActual = await res.json();
-    //console.log(terceroActual);
+    console.log("terceroActual", terceroActual);
+    //console.log("coti", terceroActual.cotizaciones);
+
     setTercero(terceroActual);
   };
 
@@ -74,35 +76,57 @@ function TerceroDetail({ match }) {
           </div>
         </Col>
         <Col>
-          <div id="info-wrapper">
-            <h4 id="titulos">Información</h4>
-            <p>
-              <strong>Nombre : </strong>
-              {capitalize(tercero.nombre || "")}
-            </p>
-            <p>
-              <strong>
-                {(tercero.tipoDocumento || "").toString().toUpperCase()} :{" "}
-              </strong>
-              {tercero.numeroDocumento}
-            </p>
-            <p>
-              <strong>Email : </strong>
-              {tercero.email}
-            </p>
-            <p>
-              <strong>Telefono : </strong>
-              {tercero.telefono}
-            </p>
-            <p>
-              <strong>Celular : </strong>
-              {tercero.celular}
-            </p>
-            <p>
-              <strong>Fecha de registro : </strong>
-              {formatoFechas(tercero.fechaCreacion)}
-            </p>
-          </div>
+          <Row>
+            <div id="info-wrapper">
+              <h4 id="titulos">Información</h4>
+              <p>
+                <strong>Nombre : </strong>
+                {capitalize(tercero.nombre || "")}
+              </p>
+              <p>
+                <strong>
+                  {(tercero.tipoDocumento || "").toString().toUpperCase()} :{" "}
+                </strong>
+                {tercero.numeroDocumento}
+              </p>
+              <p>
+                <strong>Email : </strong>
+                {tercero.email}
+              </p>
+              <p>
+                <strong>Telefono : </strong>
+                {tercero.telefono}
+              </p>
+              <p>
+                <strong>Celular : </strong>
+                {tercero.celular}
+              </p>
+              <p>
+                <strong>Fecha de registro : </strong>
+                {formatoFechas(tercero.fechaCreacion)}
+              </p>
+            </div>
+          </Row>
+          <Row>
+            <div id="info-wrapper">
+              <h4 id="titulos">Cotizaciones</h4>
+              {tercero.cotizaciones &&
+                tercero.cotizaciones.map((cotizacion) => (
+                  <p key={cotizacion._id}>
+                    <Link
+                      to={
+                        "/terceros/" +
+                        tercero._id +
+                        "/cotizaciones/" +
+                        cotizacion._id
+                      }
+                    >
+                      {cotizacion._id}
+                    </Link>
+                  </p>
+                ))}
+            </div>
+          </Row>
         </Col>
       </Row>
       <Row>

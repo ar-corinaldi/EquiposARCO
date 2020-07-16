@@ -48,12 +48,7 @@ function CotizacionDetailTable(props) {
             return (
               <tr key={index}>
                 <th>{tarifa.equipo.nombreEquipo}</th>
-                <th>
-                  {formatoCategoriaHTML(
-                    tarifa.precioReferencia.categoria,
-                    true
-                  )}
-                </th>
+                <th>{formatoCategoriaHTML(tarifa.precioReferencia.categoria,true)}</th>
                 <th>{formatoPrecio(tarifa.valorTarifa).replace(" ","\xa0")}</th>
                 <th>{tarifa.cantidad}</th>
                 <th>{formatoTiempo(tarifa.precioReferencia.tiempo)}</th>

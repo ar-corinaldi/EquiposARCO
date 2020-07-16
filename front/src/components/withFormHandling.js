@@ -6,7 +6,8 @@ const withFormHandling = (FormComponent) => (props) => {
 
   const handleChange = (e) => {
     const target = e.target;
-    let value = target.type === "checkbox" ? target.checked : target.value;
+    let value =
+      target.type === ("checkbox" || "radio") ? target.checked : target.value;
     let name = target.name;
     const newFields = { ...fields };
     // errors = { ...errors };

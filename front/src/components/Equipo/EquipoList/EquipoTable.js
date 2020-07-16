@@ -4,14 +4,10 @@ import Table from "react-bootstrap/Table";
 
 function EquipoTable(props) {
   if (props.loading) {
-    return (
-      <div className="spinner-border" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    );
+    return props.loading;
   }
 
-  if (!props.loading && props.equipos.length === 0) {
+  if (!props.equipos && props.equipos.length === 0) {
     return <h2>No hay equipos disponibles</h2>;
   }
 

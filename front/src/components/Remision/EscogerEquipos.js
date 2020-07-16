@@ -91,9 +91,7 @@ export default function EscogerEquipos(props) {
             }}
             options={[...equipos]}
             getOptionDisabled={(option) => {
-              //console.log("llega");
               if (equiposSels) {
-                //console.log("entra");
                 for (let i = 0; i < equiposSels.length; i++) {
                   if (option === equiposSels[i].equipoID) {
                     return true;

@@ -4,13 +4,22 @@ import CloseIcon from "@material-ui/icons/Close";
 function EquipoDetail(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
   const equipoRender = props.equipoRender;
-  const eliminarEquipoSelect = props.eliminarEquipoSelect;
   const [cantidad, setCantidad] = useState(equipoRender.cantidad);
 
   const handleCantidad = (e) => {
     const target = e.target;
     setCantidad(target.value);
     equipoRender.cantidad = target.value;
+  };
+
+  const handleRemoveEquipo = (e, equipo) => {
+    e.preventDefault();
+    //console.log("equiposSels", equiposSels);
+    const currentIndex = equiposSels.indexOf(equipo);
+    setEquiposSels((prev) =>
+      prev.filter((prev, index) => currentIndex !== index)
+    );
+    //console.log("equiposSels", equiposSels);
   };
 
   return (
@@ -34,9 +43,7 @@ function EquipoDetail(props) {
         <td>
           <CloseIcon
             className="closeIcon"
-            onClick={() => {
-              eliminarEquipoSelect(equipoRender);
-            }}
+            onClick={(e) => handleRemoveEquipo(e, equipoRender)}
           />
         </td>
       </tr>

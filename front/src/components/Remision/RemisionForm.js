@@ -77,13 +77,6 @@ function RemisionForm(props) {
     fields.conductor = conductorSelected._id;
   };
 
-  const eliminarEquipoSelect = (equipo) => {
-    console.log("equiposSels", equiposSels);
-    console.log("indice", equiposSels.indexOf(equipo));
-    setEquiposSels(equiposSels.splice(equiposSels.indexOf(equipo), 1));
-    console.log(equiposSels);
-  };
-
   const handleEquiposRemision = () => {
     const equiposEnRemision = [];
     equiposSels.forEach((equipoSel) => {
@@ -144,7 +137,6 @@ function RemisionForm(props) {
                         key={index}
                         equipoRender={equipoRender}
                         equiposSels={[equiposSels, setEquiposSels]}
-                        eliminarEquipoSelect={eliminarEquipoSelect}
                       ></EquipoDetail>
                     ))}
                 </tbody>

@@ -15,11 +15,11 @@ export default function Escoger(props) {
    */
   const camposBuscar = props.camposBuscar;
   /**
-   * Campos principal para mostrar en las opciones
+   * Campos principales para mostrar en las opciones
    */
   const campos = props.campos;
   /**
-   * Campos descripcion de las opciones
+   * Campos para descripcion de las opciones
    */
   const campoDescripcion = props.campoDescripcion;
   const [elementoSeleceted, setElementoSelected] = props.elementoSelected;
@@ -35,7 +35,7 @@ export default function Escoger(props) {
       return;
     }
     setElementoSelected(pendingValue);
-    console.log("pendingValue", pendingValue);
+    //console.log("pendingValue", pendingValue);
     //setPendingValue({});
     setOpen(false);
   };
@@ -107,7 +107,7 @@ export default function Escoger(props) {
               setPendingValue(newValue);
             }}
             getOptionLabel={(option) => {
-              console.log("pendingValue", pendingValue);
+              //console.log("pendingValue", pendingValue);
               if (option) {
                 return nombreElemento(option);
               } else {

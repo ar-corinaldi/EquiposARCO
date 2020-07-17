@@ -1,55 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import OrdenRow from "../Orden/EquipoRow";
-import Toast from "../Toast";
+import useAPIDetail from "../../hooks/useFetchAPI";
+
 function FacturaOrdenDetail(props) {
   const { ordenNoDetail } = props;
-  const [orden, setOrden] = useState(ordenNoDetail);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    fetchInfoOrden();
-  }, []);
 
-  const fetchInfoOrden = async () => {
-    try {
-      let res = await fetch(`/ordenes/${orden._id}/tarifasPobladas`);
-      const ordenFound = await res.json();
-      if (!res.ok) {
-        setOrden(undefined);
-        Toast(["No se encontro la orden"], true, res.status);
-      } else {
-        setOrden({ ...ordenFound });
-      }
-    } catch (e) {
-      setOrden(undefined);
-      Toast(["Error del sistema"], true, 500);
-    }
-    setLoading(false);
-  };
-
-  if (loading) {
-    return (
-      <div className="spinner-border" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    );
-  }
+  const url = `/ordenes/${ordenNoDetail._id}/tarifasPobladas`;
+  const { resource, loading, notFound } = useAPIDetail(url);
+  const orden = resource;
 
   if (!orden) {
-    return <div>No se encontro la factura con orden</div>;
+    return notFound("No se encontro la factura con orden");
   }
 
   return (
     <table className="table">
       <thead>
-        <tr>
-          <th>#</th>
-          <th>Item</th>
-          <th>Cantidad</th>
-          <th>Valor</th>
-          <th>Tipo de Cobro</th>
-          <th>Periodo Cobro</th>
-          <th>Status</th>
-        </tr>
+        {!loading ? (
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Cantidad</th>
+            <th>Valor</th>
+            <th>Tipo de Cobro</th>
+            <th>Periodo Cobro</th>
+            <th>Status</th>
+          </tr>
+        ) : null}
       </thead>
       <tbody>
         {!loading &&

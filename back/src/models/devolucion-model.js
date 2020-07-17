@@ -29,7 +29,7 @@ const devolucionSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Orden",
   },
-  equipoEnDevolucion: [
+  equiposEnDevolucion: [
     {
       cantidad: {
         type: Number,

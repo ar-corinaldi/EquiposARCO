@@ -4,7 +4,8 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Pagination from "../Pagination";
 import usePagination from "../../hooks/usePagination";
-
+import formatoFechas from "../utils/FormatoFechas";
+import { Link } from "react-router-dom";
 function FacturaList(props) {
   const {
     loading,
@@ -29,6 +30,7 @@ function FacturaList(props) {
   };
 
   if (loading) return loading;
+
   if (!facturas || facturas.length === 0) {
     return <div>No hay facturas para mostrar</div>;
   }
@@ -52,9 +54,26 @@ function FacturaList(props) {
             </Row>
             <Row>
               <Col>
-                {facturas.map((factura, index) => (
-                  <div key={factura._id}>{index + 1}</div>
-                ))}
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Fecha de Emision</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {facturas.map((factura, index) => (
+                      <tr key={factura._id}>
+                        <td>
+                          <Link to={`/facturacion/${factura._id}`}>
+                            {index + 1}
+                          </Link>
+                        </td>
+                        <td>{formatoFechas(factura.fechaEmision)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </Col>
             </Row>
             <Row>

@@ -91,16 +91,20 @@ function App() {
                   component={CotizacionDetail}
                 />
                 <Route
-                  path="/facturacion/:idFactura"
-                  exact
-                  component={FacturaDetail}
-                />
-                <Route
                   path="/facturacion/listar_facturas"
                   exact
                   component={FacturaList}
                 />
-                <Route path="/facturacion/crear_orden" component={CrearOrden} />
+                <Route
+                  path="/facturacion/crear_orden"
+                  component={CrearOrden}
+                  exact
+                />
+                <Route
+                  path="/facturacion/:idFactura"
+                  exact
+                  component={FacturaDetail}
+                />
                 <Route path="*"> Pagina no encontrada </Route>
               </Switch>
             </Row>

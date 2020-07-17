@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import PrecioTable from "./PrecioTable";
 import EquipoDetailBadges from "./EquipoDetailBadges";
@@ -9,29 +9,13 @@ import Col from "react-bootstrap/Col";
 import formatoPrecios from "../../utils/FormatoPrecios";
 import PropiedadesDetail from "./PropiedadDetail";
 import ComponenteDetail from "./ComponenteDetail";
-
+import useFetchAPI from "../../../hooks/useFetchAPI";
 function EquipoDetail() {
-  const [equipo, setEquipo] = useState({});
-  const [loading, setLoading] = useState(false);
   let { idEquipo } = useParams();
+  const { resource, loading, notFound } = useFetchAPI(`/equipos/${idEquipo}`);
 
-  useEffect(() => {
-    fetchEquipoDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const equipo = resource;
 
-  const fetchEquipoDetail = async () => {
-    try {
-      setLoading(true);
-      const url = `/equipos/${idEquipo}`;
-      const res = await fetch(url);
-      const newEquipo = await res.json();
-      setEquipo(newEquipo);
-      setLoading(false);
-    } catch (e) {
-      setLoading(null);
-    }
-  };
   if (loading) {
     return (
       <div className="spinner-border" role="status">
@@ -39,8 +23,8 @@ function EquipoDetail() {
       </div>
     );
   }
-  if (loading === null) {
-    return <div>No se encontro equipo con este id</div>;
+  if (!equipo) {
+    return notFound("No se encontro equipo con este id");
   }
   return (
     <Container>

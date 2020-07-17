@@ -75,7 +75,28 @@ router.get("/facturas", async (req, res) => {
  */
 router.get("/facturas/:id", async (req, res) => {
   try {
-    const factura = await Factura.findById(req.params.id).populate("ordenes");
+    const factura = await Factura.findById(req.params.id)
+      .populate("ordenes")
+      .populate({
+        path: "ordenes",
+        populate: {
+          path: "remisiones",
+          populate: {
+            path: "equiposEnRemision",
+            populate: { path: "equipoID" },
+          },
+        },
+      })
+      .populate({
+        path: "ordenes",
+        populate: {
+          path: "devoluciones",
+          populate: {
+            path: "equiposEnDevolucion",
+            populate: { path: "equipoID" },
+          },
+        },
+      });
     if (!factura) {
       return res.status(404).send("No hubo coincidencia");
     }

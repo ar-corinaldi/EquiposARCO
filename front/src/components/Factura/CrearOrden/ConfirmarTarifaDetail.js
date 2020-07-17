@@ -68,7 +68,7 @@ function ConfirmarTarifaDetail(props) {
       </div> */}
       <tbody responsive className="cotizacion-table">
           <tr>
-            <th>{tarifa.equipo.nombreEquipo}</th>
+            <th className="sticky-col" >{tarifa.equipo.nombreEquipo}</th>
             <th>{formatoCategoriaHTML(tarifa.precioReferencia.categoria,true)}</th>
                 <th>{formatoPrecio(tarifa.valorTarifa).replace(" ","\xa0")}</th>
                 <th>{tarifa.cantidad}</th>

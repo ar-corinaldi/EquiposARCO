@@ -104,9 +104,9 @@ function EscogerCotizacionDetail(props) {
                                 return ai ? -1 : bi ? 1 : 0;
                             })}
                         renderOption={(option, { selected }) =>{ 
-                            console.log('====================================');
-                            console.log("");
-                            console.log('====================================');
+                            // console.log('====================================');
+                            // console.log("");
+                            // console.log('====================================');
                             return (
                             <React.Fragment>
                                 <Accordion defaultActiveKey="0" className="full-width">

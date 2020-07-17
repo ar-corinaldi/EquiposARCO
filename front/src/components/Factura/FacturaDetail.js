@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import FacturaOrdenDetail from "./FacturaOrdenDetail";
+import React from "react";
+import { useParams, Link } from "react-router-dom";
 import useAPIDetail from "../../hooks/useFetchAPI";
 import formatoFechas from "../utils/FormatoFechas";
 import Prefacturas from "./Prefacturas";
@@ -73,6 +72,35 @@ function FacturaDetail() {
           <div id="info-wrapper">
             <h4 id="titulos">Informacion factura</h4>
             <p>
+              <strong>Nombre Tercero : </strong>
+              {factura.ordenes &&
+              factura.ordenes.length > 0 &&
+              factura.ordenes[0].bodega &&
+              factura.ordenes[0].bodega.duenio ? (
+                <Link to={`/terceros/${factura.ordenes[0].bodega.duenio._id}`}>
+                  {factura.ordenes[0].bodega.duenio.nombre}
+                </Link>
+              ) : null}
+            </p>
+            <p>
+              <strong>Tipo Documento : </strong>
+              {factura.ordenes &&
+              factura.ordenes.length > 0 &&
+              factura.ordenes[0].bodega &&
+              factura.ordenes[0].bodega.duenio
+                ? factura.ordenes[0].bodega.duenio.tipoDocumento
+                : null}
+            </p>
+            <p>
+              <strong>Numero Documento : </strong>
+              {factura.ordenes &&
+              factura.ordenes.length > 0 &&
+              factura.ordenes[0].bodega &&
+              factura.ordenes[0].bodega.duenio
+                ? factura.ordenes[0].bodega.duenio.numeroDocumento
+                : null}
+            </p>
+            <p>
               <strong>Fecha Inicial - Fecha Final : </strong>
               {`${formatoFechas(fechaInicial)} - ${formatoFechas(fechaActual)}`}
             </p>
@@ -81,21 +109,16 @@ function FacturaDetail() {
       </Col>
       <Row>
         <Col>
-          {!loading ? (
-            <Prefacturas
-              fechaInicial={fechaInicial}
-              fechaActual={fechaActual}
-              factura={factura}
-            />
-          ) : null}
+          {factura.ordenes &&
+            factura.ordenes.map((orden) => (
+              <Prefacturas
+                fechaInicial={fechaInicial}
+                fechaActual={fechaActual}
+                ordenes={factura.ordenes}
+              />
+            ))}
         </Col>
       </Row>
-      <Col>
-        {factura.ordenes &&
-          factura.ordenes.map((orden) => (
-            <FacturaOrdenDetail key={orden._id} ordenNoDetail={orden} />
-          ))}
-      </Col>
       <Col>
         <Row>
           <div id="info-wrapper">

@@ -17,14 +17,14 @@ const nombreMeses = [
 ];
 
 function Prefacturas(props) {
-  const { fechaInicial, fechaActual, factura } = props;
+  const { fechaInicial, fechaActual, ordenes } = props;
   const [prefacturas, setPrefacturas] = useState([]);
+  const [equipos, setEquipos] = useState([]);
   const lastDays = {};
   useEffect(() => {
-    factura.ordenes &&
-      factura.ordenes.forEach((orden) => {
-        loadPrefacturas(orden);
-      });
+    ordenes.forEach((orden) => {
+      loadPrefacturas(orden);
+    });
   }, []);
 
   const loadPrefacturas = (orden) => {
@@ -48,8 +48,12 @@ function Prefacturas(props) {
       (_remisiones &&
         _remisiones.filter((remision) => {
           const fecha = new Date(remision.fechaLlegada);
-          const cond = fecha.getMonth() === _mes;
+          let cond = fecha.getMonth() === _mes;
+          if (_mes === fechaActual.getMonth()) {
+            cond = cond && fecha.getTime() <= fechaActual.getTime();
+          }
           if (mesYAnio === null && cond) mesYAnio = fecha;
+
           return cond;
         })) ||
       [];
@@ -59,6 +63,9 @@ function Prefacturas(props) {
       _devoluciones.filter((dev) => {
         let fecha = new Date(dev.fechaSalida);
         let cond = fecha.getMonth() === _mes;
+        if (_mes === fechaActual.getMonth()) {
+          cond = cond && fecha.getTime() <= fechaActual.getTime();
+        }
         if (mesYAnio === null && fecha.getMonth() === _mes) mesYAnio = fecha;
         return cond;
       });
@@ -67,6 +74,9 @@ function Prefacturas(props) {
     let daysOfMonth =
       (mesYAnio && new Date(mesYAnio.getFullYear(), _mes + 1, 0).getDate()) ||
       0;
+    if (daysOfMonth !== 0 && _mes === fechaActual.getMonth()) {
+      daysOfMonth = fechaActual.getDate();
+    }
     const prefacturas = {};
 
     for (let i = 1; i <= daysOfMonth; i++) {
@@ -104,12 +114,17 @@ function Prefacturas(props) {
 
     for (const remision of filterRemByDay) {
       for (const equipo of remision.equiposEnRemision) {
-        const idEquipo = `${equipo.equipoID}`;
+        const idEquipo = `_${equipo.equipoID._id}`;
         let newCantidad = 0;
 
         if (!prefacturas[idEquipo]) {
           prefacturas[idEquipo] = new Array(daysOfMonth).fill(0);
           newCantidad = equipo.cantidad;
+          const newEquipos = equipos;
+          if (!newEquipos.some((equip) => `_${equip._id}` === idEquipo)) {
+            newEquipos.push(equipo.equipoID);
+            setEquipos(newEquipos);
+          }
         } else {
           const lastElement = day !== 0 ? prefacturas[idEquipo][day - 1] : 0;
           newCantidad = equipo.cantidad + lastElement;
@@ -133,8 +148,9 @@ function Prefacturas(props) {
       });
     for (const devolucion of filterDevByDay) {
       for (const equipo of devolucion.equiposEnDevolucion) {
-        const idEquipo = `${equipo.equipoID}`;
+        const idEquipo = `_${equipo.equipoID._id}`;
         let newCantidad = 0;
+
         if (!prefacturas[idEquipo]) {
           prefacturas[idEquipo] = new Array(daysOfMonth).fill(0);
           newCantidad = equipo.cantidad;
@@ -151,43 +167,41 @@ function Prefacturas(props) {
   const cargarEquiposMesAnterior = (_remisiones, day, mesYAnio) => {
     const equiposMesAnterior = Object.keys(lastDays);
     equiposMesAnterior.forEach((equipo) => {
-      const equiposMesAnterior = Object.keys(lastDays);
-      equiposMesAnterior.forEach((equipo) => {
-        const cantidad = lastDays[equipo];
-        _remisiones.push({
-          fechaLlegada: new Date(
-            mesYAnio.getFullYear(),
-            mesYAnio.getMonth(),
-            day
-          ),
-          equiposEnRemision: [{ equipoID: equipo, cantidad }],
-        });
+      const cantidad = lastDays[equipo];
+      const found = equipos.find(
+        (equipoState) => `_${equipoState._id}` === equipo
+      );
+      _remisiones.push({
+        fechaLlegada: new Date(
+          mesYAnio.getFullYear(),
+          mesYAnio.getMonth(),
+          day
+        ),
+        equiposEnRemision: [{ equipoID: found, cantidad }],
       });
     });
   };
 
   return (
-    <div id="info-wrapper">
+    <div>
       <div>Prefacturas</div>
-      <div>
-        {prefacturas.map(({ mes, prefacturasDiarias, anio }) => (
-          <div key={mes} className="row">
-            <div className="col-2">{nombreMeses[mes]}</div>
-            <div className="col">
-              {Object.keys(prefacturasDiarias) &&
-                Object.keys(prefacturasDiarias).map((equipo) => (
-                  <PrefacturaTable
-                    key={equipo._id}
-                    equipo={equipo}
-                    prefactura={prefacturasDiarias[equipo]}
-                    mes={mes + 1}
-                    anio={anio}
-                  />
-                ))}
-            </div>
+      {prefacturas.map(({ mes, prefacturasDiarias, anio }) => (
+        <div key={mes} className="row" id="info-wrapper">
+          <div className="col-2">{nombreMeses[mes]}</div>
+          <div className="col">
+            {equipos &&
+              equipos.map((equipo) => (
+                <PrefacturaTable
+                  key={equipo._id}
+                  equipo={equipo}
+                  prefactura={prefacturasDiarias["_" + equipo._id]}
+                  mes={mes + 1}
+                  anio={anio}
+                />
+              ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }

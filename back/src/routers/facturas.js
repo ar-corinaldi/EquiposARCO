@@ -90,6 +90,15 @@ router.get("/facturas/:id", async (req, res) => {
       .populate({
         path: "ordenes",
         populate: {
+          path: "bodega",
+          populate: {
+            path: "duenio",
+          },
+        },
+      })
+      .populate({
+        path: "ordenes",
+        populate: {
           path: "devoluciones",
           populate: {
             path: "equiposEnDevolucion",

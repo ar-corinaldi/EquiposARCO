@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import EquipoFilter from "./EquipoFilter";
+import React, { useState, useContext } from "react";
 import EquipoTable from "./EquipoTable";
 import { ContextEquipoList } from "./withEquipoList";
 import Row from "react-bootstrap/Row";
@@ -7,59 +6,32 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Pagination from "../../Pagination";
 import { Link } from "react-router-dom";
-import Toast from "../../Toast";
 import "./EquipoList.css";
+import usePagination from "../../../hooks/usePagination";
+
 function Equipo(props) {
-  const [equipos, setEquipos] = useState([]);
-  const [filterText, setFilterText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [equiposPerPage, setEquiposPerPage] = useState(10);
-  const [countEquipos, setCountEquipos] = useState(0);
-  const [loading, setLoading] = useState(false);
   const { noCompuesto } = useContext(ContextEquipoList);
+  let urlResource = `/equipos`;
+  let urlCount = "/equipos/cantidad";
+  if (noCompuesto) {
+    urlResource = `/equipos/darNoCompuestos`;
+    urlCount = "/equipos/cantidadNoCompuesta";
+  }
+  const {
+    loading,
+    resource,
+    setResource,
+    currentPage,
+    setCurrentPage,
+    countResources,
+    resourcesPerPage,
+    setResourcesPerPage,
+  } = usePagination(urlResource, urlCount);
 
-  useEffect(() => {
-    fetchEquipos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, equiposPerPage]);
-
-  useEffect(() => {
-    fetchCountEquipos();
-  }, []);
-
-  const fetchCountEquipos = async () => {
-    let url = noCompuesto
-      ? "/equipos/cantidadNoCompuesta"
-      : "/equipos/cantidad";
-    const res = await fetch(url);
-    const newCount = await res.json();
-    setCountEquipos(parseInt(newCount));
-  };
-
-  const fetchEquipos = async () => {
-    try {
-      setLoading(true);
-      let url = `/equipos/${currentPage}/${equiposPerPage}`;
-      if (noCompuesto) {
-        url = `/equipos/darNoCompuestos/${currentPage}/${equiposPerPage}`;
-      }
-      const res = await fetch(url);
-      if (!res.ok) {
-        const errors = await res.json();
-        setEquipos([]);
-        setLoading(false);
-        Toast(errors, true, res.status);
-      } else {
-        const newEquipos = await res.json();
-        setEquipos(newEquipos);
-        setLoading(false);
-      }
-    } catch (e) {
-      setEquipos([]);
-      setLoading(false);
-      Toast(["Error del sistema"], true, 500);
-    }
-  };
+  const equipos = resource;
+  const equiposPerPage = resourcesPerPage;
+  const setEquiposPerPage = setResourcesPerPage;
+  const countEquipos = countResources;
 
   const cambiarDisplay = (e) => {
     const target = e.target;
@@ -72,12 +44,6 @@ function Equipo(props) {
       <Row>
         <Col>
           <div id="equipo-wrapper">
-            <Row>
-              <EquipoFilter
-                filterText={filterText}
-                setFilterText={setFilterText}
-              />
-            </Row>
             <Row className="mb-4">
               <Link className="buttonEquipo" to={"/inventario/crearEquipo"}>
                 Agregar un equipo
@@ -97,11 +63,7 @@ function Equipo(props) {
             </Row>
             <Row>
               <Col>
-                <EquipoTable
-                  equipos={equipos}
-                  filterText={filterText}
-                  loading={loading}
-                />
+                <EquipoTable equipos={equipos} loading={loading} />
               </Col>
             </Row>
             <Row>

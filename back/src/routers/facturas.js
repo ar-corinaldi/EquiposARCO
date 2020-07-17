@@ -67,7 +67,6 @@ router.get("/facturas", async (req, res) => {
     res.send(facturas);
   } catch (e) {
     res.status(500).send();
-    console.log(facturas);
   }
 });
 

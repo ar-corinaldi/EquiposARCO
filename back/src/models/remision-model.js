@@ -12,7 +12,7 @@ const remisionSchema = new Schema({
     type: Number,
     defualt: 0,
   },
-  esAsumidoCliente: {
+  asumidoTercero: {
     type: Boolean,
     required: true,
   },
@@ -29,7 +29,7 @@ const remisionSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Orden",
   },
-  equipoEnRemision: [
+  equiposEnRemision: [
     {
       cantidad: {
         type: Number,

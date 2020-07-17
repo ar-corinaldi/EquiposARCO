@@ -14,6 +14,11 @@ const tiposDocumentos = [
 ];
 
 /**
+ * Roles que puede tener un empleado
+ */
+const roles = ["conductor", "asesor", "jefe"];
+
+/**
  * Definición del documento que contendrá la información de un empleado
  */
 const empleadoSchema = new Schema({
@@ -59,7 +64,7 @@ const empleadoSchema = new Schema({
     required: true,
     lowercase: true,
   },
-  ciudad: {
+  departamento: {
     type: String,
     trim: true,
     required: true,
@@ -88,6 +93,18 @@ const empleadoSchema = new Schema({
     trim: true,
     required: true,
     lowercase: true,
+  },
+  rol: {
+    type: String,
+    trim: true,
+    required: true,
+    lowercase: true,
+    validate(value) {
+      isValid = roles.includes(value);
+      if (!isValid) {
+        throw new Error("Rol invalido");
+      }
+    },
   },
 });
 

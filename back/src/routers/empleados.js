@@ -11,10 +11,11 @@ const router = new express.Router();
  */
 router.post("/empleados", async (req, resp) => {
   try {
-    const empleado = new Empleado(req, body);
+    const empleado = new Empleado(req.body);
     await empleado.save();
     return resp.status(201).send(empleado);
   } catch (error) {
+    console.log(error);
     resp.status(400).send(error);
   }
 });
@@ -25,6 +26,18 @@ router.post("/empleados", async (req, resp) => {
 router.get("/empleados", async (req, res) => {
   try {
     const empleados = await Empleado.find({});
+    return res.send(empleados);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+/**
+ *  Devuelve todos los empleados que sean conductores
+ */
+router.get("/empleados/conductores", async (req, res) => {
+  try {
+    const empleados = await Empleado.find({ rol: "conductor" });
     return res.send(empleados);
   } catch (e) {
     res.status(500).send();

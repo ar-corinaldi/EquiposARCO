@@ -86,7 +86,8 @@ function App() {
                   component={RemisionCreate}
                 />
                 <Route
-                  path="/terceros/:id/bodegas/:idB/cotizaciones/:idC"
+                  path="/terceros/:id/cotizaciones/:idC"
+                  exact
                   component={CotizacionDetail}
                 />
                 <Route path="/facturacion/crear_orden" component={CrearOrden} exact />

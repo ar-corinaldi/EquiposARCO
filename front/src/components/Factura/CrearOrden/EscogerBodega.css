@@ -16,6 +16,7 @@
 .inputBodega{
   padding: 10px;
   width: 100%;
+  position: static !important;
 }
 
 .inputBodega input{
@@ -26,6 +27,7 @@
   /* border-radius: 0px; */
   background-color: white;
   font-size: 15px;
+  position: static;
 }
 
 .inputBodega input:focus{

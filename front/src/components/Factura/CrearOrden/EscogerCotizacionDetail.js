@@ -21,7 +21,7 @@ function EscogerCotizacionDetail(props) {
     useEffect(() => {
         async function fetchCotizaciones() {
             const cotizacionesBack = await (await fetch("/cotizaciones/all")).json();
-            console.log(cotizacionesBack);
+            // console.log(cotizacionesBack);
             setCotizaciones(cotizacionesBack);
         }
         fetchCotizaciones();
@@ -38,8 +38,9 @@ function EscogerCotizacionDetail(props) {
 
     const filterOptions = createFilterOptions({
         matchFrom: "any",
-        stringify: (option) =>
-            toString( option.numeroContrato )
+        stringify: (option) =>{
+            
+            return toString(option.numeroContrato)}
     });
 
     return (
@@ -85,10 +86,10 @@ function EscogerCotizacionDetail(props) {
                         }}
                         getOptionLabel={(option) => {
                             if (option && option.numeroContrato) {
-                                console.log('=====================dfdfdfdffdf===============');
-                                console.log(option.numeroContrato);
-                                console.log('====================================');
-                                return toString(option.numeroContrato);
+                                // console.log('=====================dfdfdfdffdf===============');
+                                // console.log(option.numeroContrato);
+                                // console.log('====================================');
+                                return "" + option.numeroContrato;
                             }
                             else {
                                 return "";
@@ -102,7 +103,11 @@ function EscogerCotizacionDetail(props) {
                                 let bi = (b == cotizacionSeleccionada) || (b == pendingValue);
                                 return ai ? -1 : bi ? 1 : 0;
                             })}
-                        renderOption={(option, { selected }) => (
+                        renderOption={(option, { selected }) =>{ 
+                            // console.log('====================================');
+                            // console.log("");
+                            // console.log('====================================');
+                            return (
                             <React.Fragment>
                                 <Accordion defaultActiveKey="0" className="full-width">
                                     <Card className="full-width border-0 bg-transparent" >
@@ -144,16 +149,20 @@ function EscogerCotizacionDetail(props) {
                                     </Card>
                                 </Accordion>
                             </React.Fragment>
-                        )}
-                        renderInput={(params) => (
-                            <InputBase
-                                ref={params.InputProps.ref}
-                                inputProps={params.inputProps}
-                                autoFocus
-                                className="inputBodega"
-                                placeholder="Buscar cotizaciones"
-                            />
-                        )}
+                        )}}
+                        renderInput={(params) => {
+                            // console.log('====================================');
+                            // console.log(params);
+                            // console.log('====================================');
+                            return (
+                                <InputBase
+                                    ref={params.InputProps.ref}
+                                    inputProps={params.inputProps}
+                                    autoFocus
+                                    className="inputBodega"
+                                    placeholder="Buscar cotizaciones"
+                                />)
+                        }}
                     >
                     </Autocomplete>
 

@@ -141,7 +141,7 @@ export default function Escoger(props) {
               <InputBase
                 ref={params.InputProps.ref}
                 inputProps={params.inputProps}
-                autoFocus
+                // autoFocus
                 className="inputElemento"
                 placeholder={buscar}
               />

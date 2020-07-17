@@ -90,15 +90,11 @@ function App() {
                   exact
                   component={CotizacionDetail}
                 />
+                <Route path="/facturacion/crear_orden" component={CrearOrden} exact />
                 <Route
                   path="/facturacion/listar_facturas"
                   exact
                   component={FacturaList}
-                />
-                <Route
-                  path="/facturacion/crear_orden"
-                  component={CrearOrden}
-                  exact
                 />
                 <Route
                   path="/facturacion/:idFactura"

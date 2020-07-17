@@ -17,3 +17,16 @@
 .confirmarTarifaDetailWrapper col{
     display: flexbox;
 }
+
+.sticky-col {
+    position: sticky;
+    position: -webkit-sticky;
+    background-color: white;
+    left: 0px;
+    /* box-shadow: 0px 0px 15px 3px rgba(134, 118, 118, 0.12); */
+  }
+
+.shadowCover{
+    width: 3px;
+    background-color: white;
+}

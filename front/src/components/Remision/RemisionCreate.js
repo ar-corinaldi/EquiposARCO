@@ -3,9 +3,6 @@ import { useParams } from "react-router-dom";
 import RemisionForm from "./RemisionForm";
 import "./Remision.css";
 
-//const formAction = "/remision";
-const fields = {};
-
 function RemisionCreate(props) {
   const { id, idB, idOr } = useParams();
 
@@ -52,10 +49,12 @@ function RemisionCreate(props) {
     setConductores(newConductores);
   };
 
+  const formAction = `/ordenes/${idOr}/remisiones`;
+
   const fields = {
     fechaSalida: "",
     fechaLlegada: "",
-    costoTrasporte: "",
+    costoTransporte: "",
     asumidoTercero: "",
     vehiculoTransportador: "",
     conductor: "",
@@ -70,6 +69,10 @@ function RemisionCreate(props) {
         conductores={[conductores, setConductores]}
         vehiculos={[vehiculos, setVehiculos]}
         fields={fields}
+        formAction={formAction}
+        idT={id}
+        idB={idB}
+        idOr={idOr}
       ></RemisionForm>
     </div>
   );

@@ -9,8 +9,9 @@ import EscogerEquipos from "./EscogerEquipos";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import "moment/locale/es";
-import Escoger from "./Escoger";
+import Escoger from "../Escoger";
 import EquipoTable from "./EquipoTable";
+import FormatoPreiocs from "../utils/FormatoPrecios";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -21,7 +22,8 @@ function RemisionForm(props) {
   const [conductorSelected, setConductorSelected] = useState({});
   const [vehiculos, setVehiculos] = props.vehiculos;
   const [vehiculoSelected, setVehiculoSelected] = useState({});
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const [fechaSalida, setFechaSalida] = useState(new Date());
+  const [fechaLlegada, setFechaLlegada] = useState(new Date());
 
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
   //console.log("equipos", equipos);
@@ -31,10 +33,6 @@ function RemisionForm(props) {
   useEffect(() => {
     mostrarOrden();
   }, [remision]);
-
-  useEffect(() => {
-    handleChangeEquipos();
-  }, [equiposSels]);
 
   useEffect(() => {
     handleChangeVehiculo();
@@ -51,10 +49,16 @@ function RemisionForm(props) {
     }
   };
 
-  const jsonConsola = (e) => {
+  const handleSubit = (e) => {
     e.preventDefault();
+    fields.fechaSalida = fechaSalida;
+    // console.log(typeof fields.fechaSalida);
+    fields.fechaLlegada = fechaLlegada;
+    // console.log(typeof fields.fechaLlegada);
+    fields.asumidoTercero = asumidoTercero;
     handleEquiposRemision();
     console.log(fields);
+    return handleSubmitPOST(e).then((value) => setRemision(value));
   };
 
   const handleRadio = (event) => {
@@ -62,11 +66,6 @@ function RemisionForm(props) {
     //console.log("handle", asumidoTerceroP);
     setAsumidoTercero(asumidoTerceroP);
     fields.asumidoTercero = asumidoTerceroP;
-  };
-
-  const handleChangeEquipos = () => {
-    console.log("equiposSels", equiposSels);
-    fields.equiposEnRemision = equiposSels;
   };
 
   const handleChangeVehiculo = () => {
@@ -90,24 +89,35 @@ function RemisionForm(props) {
   };
   return (
     <div className="remision-registrar-card">
-      <form
-        onSubmit={jsonConsola}
-        // onSubmit={(e) =>
-        //   handleSubmitPOST(e).then((value) => setRemision(value))
-        // }
-      >
+      <form onSubmit={handleSubit}>
         <h4 className="titulo">Registrar una remisión</h4>
-        <label>Fecha y hora de salida : </label>{" "}
-        <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
-          <DateTimePicker
-            value={selectedDate}
-            disablePast
-            onChange={handleDateChange}
-            showTodayButton
-            cancelLabel="Cancelar"
-            todayLabel="Hoy"
-          ></DateTimePicker>
-        </MuiPickersUtilsProvider>
+        <Row>
+          <Col>
+            <label>Fecha y hora de salida : </label>{" "}
+            <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
+              <DateTimePicker
+                value={fechaSalida}
+                onChange={setFechaSalida}
+                showTodayButton
+                cancelLabel="Cancelar"
+                todayLabel="Hoy"
+              ></DateTimePicker>
+            </MuiPickersUtilsProvider>
+          </Col>
+          <Col>
+            <label>Fecha y hora de llegada : </label>{" "}
+            <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
+              <DateTimePicker
+                value={fechaLlegada}
+                onChange={setFechaLlegada}
+                showTodayButton
+                cancelLabel="Cancelar"
+                todayLabel="Hoy"
+              ></DateTimePicker>
+            </MuiPickersUtilsProvider>
+          </Col>
+        </Row>
+
         <div className="form-group">
           <Row>
             <Col md="auto" className="vertical-center">
@@ -189,6 +199,15 @@ function RemisionForm(props) {
                 ></Escoger>
               </Col>
             </Row>
+          </div>,
+          <div key="3" className="form-group">
+            <label htmlFor="costoTransporte"> Costo : </label>
+            <input
+              name="costoTransporte"
+              type="number"
+              value={fields.costoTransporte}
+              onChange={handleChange}
+            />
           </div>,
         ]}
         <div id="button-wrapper">

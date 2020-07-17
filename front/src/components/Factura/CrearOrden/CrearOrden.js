@@ -50,7 +50,7 @@ function CrearOrden(props) {
     <div id="create-order-wrapper">
       <h2 className="margin-bottom">Crear Orden</h2>
       <hr />
-      <Row>
+      <Row className="stickyRow">
         <Col align="center" className="col-step">
           <button
             type="button"

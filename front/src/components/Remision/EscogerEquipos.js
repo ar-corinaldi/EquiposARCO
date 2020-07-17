@@ -134,7 +134,7 @@ export default function EscogerEquipos(props) {
               <InputBase
                 ref={params.InputProps.ref}
                 inputProps={params.inputProps}
-                autoFocus
+                // autoFocus
                 className="inputEquipo"
                 placeholder="Buscar equipo"
               />

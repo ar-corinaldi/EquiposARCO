@@ -40,19 +40,7 @@ function PrefacturaTable(props) {
     return render;
   };
 
-  return (
-    <table className="table">
-      <thead>
-        <tr>
-          <th>Nombre Equipo</th>
-          <th>Cantidad</th>
-          <th>Fecha</th>
-          <th>Periodo Facturado</th>
-        </tr>
-      </thead>
-      <tbody>{equipoPrefactura()}</tbody>
-    </table>
-  );
+  return <React.Fragment>{equipoPrefactura()}</React.Fragment>;
 }
 
 export default PrefacturaTable;

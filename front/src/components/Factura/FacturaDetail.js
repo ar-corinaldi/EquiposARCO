@@ -1,9 +1,8 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useAPIDetail from "../../hooks/useFetchAPI";
-import formatoFechas from "../utils/FormatoFechas";
 import Prefacturas from "./Prefacturas";
-
+import InfoFactura from "./InfoFactura";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -67,56 +66,32 @@ function FacturaDetail() {
 
   return (
     <Container fluid>
-      <Col>
-        <Row>
-          <div id="info-wrapper">
-            <h4 id="titulos">Informacion factura</h4>
-            <p>
-              <strong>Nombre Tercero : </strong>
-              {factura.ordenes &&
-              factura.ordenes.length > 0 &&
-              factura.ordenes[0].bodega &&
-              factura.ordenes[0].bodega.duenio ? (
-                <Link to={`/terceros/${factura.ordenes[0].bodega.duenio._id}`}>
-                  {factura.ordenes[0].bodega.duenio.nombre}
-                </Link>
-              ) : null}
-            </p>
-            <p>
-              <strong>Tipo Documento : </strong>
-              {factura.ordenes &&
-              factura.ordenes.length > 0 &&
-              factura.ordenes[0].bodega &&
-              factura.ordenes[0].bodega.duenio
-                ? factura.ordenes[0].bodega.duenio.tipoDocumento
-                : null}
-            </p>
-            <p>
-              <strong>Numero Documento : </strong>
-              {factura.ordenes &&
-              factura.ordenes.length > 0 &&
-              factura.ordenes[0].bodega &&
-              factura.ordenes[0].bodega.duenio
-                ? factura.ordenes[0].bodega.duenio.numeroDocumento
-                : null}
-            </p>
-            <p>
-              <strong>Fecha Inicial - Fecha Final : </strong>
-              {`${formatoFechas(fechaInicial)} - ${formatoFechas(fechaActual)}`}
-            </p>
-          </div>
-        </Row>
-      </Col>
+      <Row>
+        <InfoFactura
+          tercero={
+            factura.ordenes.length > 0 &&
+            factura.ordenes[0].bodega &&
+            factura.ordenes[0].bodega.duenio
+              ? factura.ordenes[0].bodega.duenio
+              : null
+          }
+          bodega={
+            factura.ordenes.length > 0 && factura.ordenes[0].bodega
+              ? factura.ordenes[0].bodega
+              : null
+          }
+          fechaInicial={fechaInicial}
+          fechaActual={fechaActual}
+        />
+      </Row>
       <Row>
         <Col>
-          {factura.ordenes &&
-            factura.ordenes.map((orden) => (
-              <Prefacturas
-                fechaInicial={fechaInicial}
-                fechaActual={fechaActual}
-                ordenes={factura.ordenes}
-              />
-            ))}
+          <Prefacturas
+            key={factura._id}
+            fechaInicial={fechaInicial}
+            fechaActual={fechaActual}
+            ordenes={factura.ordenes}
+          />
         </Col>
       </Row>
       <Col>

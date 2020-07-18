@@ -214,15 +214,30 @@ router.patch("/ordenes/:id/tarifasDefinitivas/:idT", async (req, res) => {
  */
 router.get("/ordenes/:idOr/tarifasPobladas", async (req, res, next) => {
   try {
-    const orden = await Orden.findById(req.params.idOr).populate({
-      path: "tarifasDefinitivas",
-      populate: {
-        path: "tarifasPorEquipo",
+    const orden = await Orden.findById(req.params.idOr)
+      .populate({
+        path: "tarifasDefinitivas",
         populate: {
-          path: "equipo precioReferencia",
+          path: "tarifasPorEquipo",
+          populate: {
+            path: "equipo precioReferencia",
+          },
         },
-      },
-    });
+      })
+      .populate({
+        path: "remisiones",
+        populate: {
+          path: "equiposEnRemision",
+          populate: { path: "equipoID" },
+        },
+      })
+      .populate({
+        path: "devoluciones",
+        populate: {
+          path: "equiposEnDevolucion",
+          populate: { path: "equipoID" },
+        },
+      });
     if (!orden) {
       return res.send("La orden no existe");
     }

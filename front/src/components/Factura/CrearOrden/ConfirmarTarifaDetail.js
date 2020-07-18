@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ConfirmarTarifaDetail.css";
 import formatoPrecio from "../../utils/FormatoPrecios";
 import CalcularTarifa from "../../utils/CacularTarifas";
@@ -15,11 +15,25 @@ import MomentUtils from "@date-io/moment";
 import "moment/locale/es";
 
 function ConfirmarTarifaDetail(props) {
-  let miTarifa = props.tarifa;
+  //Estados globales
+  const [tarifasFinales, setTarifasFinales] = props.tarifas;
+  let miTarifa = tarifasFinales[props.index];
   const [inventario, setInventario] = props.inventario;
+
+  //Estados propios
   const [tarifa, setTarifa] = useState(miTarifa);
   const [selectedDate, handleDateChange] = useState(new Date());
+
+  //variables
   let cobro = CalcularTarifa([tarifa])[tarifa._id];
+  const index = props.index;
+
+  //Effects
+
+  useEffect(() => {
+    tarifasFinales[index] = miTarifa
+    setTarifasFinales(tarifasFinales);
+  },[tarifa])
 
   return (
     <>
@@ -66,7 +80,7 @@ function ConfirmarTarifaDetail(props) {
           </Col>
         </Row>
       </div> */}
-      <tbody responsive className="cotizacion-table">
+      <tbody className="cotizacion-table">
           <tr>
             <th className="sticky-col" >{tarifa.equipo.nombreEquipo}</th>
             <th>{formatoCategoriaHTML(tarifa.precioReferencia.categoria,true)}</th>

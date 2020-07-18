@@ -149,7 +149,7 @@ export default function EscogerBodega(props) {
               <InputBase
                 ref={params.InputProps.ref}
                 inputProps={params.inputProps}
-                autoFocus
+                // autoFocus
                 className="inputBodega"
                 placeholder="Buscar bodega"
               />

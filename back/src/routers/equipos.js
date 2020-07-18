@@ -35,6 +35,20 @@ router.get("/equipos/cantidad", async (req, res) => {
   }
 });
 
+router.get("/equipos/:id/cantidadBodega", async (req, res)=>{
+  try {
+    const ans = await Equipo.findById(req.params.id, 'cantidadBodega').exec();
+    if(!ans){
+      res.json(0);
+    }
+    res.json(ans.cantidadBodega);
+
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+
 /**
  * Dar la lista de equipos no compuestos
  */

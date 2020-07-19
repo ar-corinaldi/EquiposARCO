@@ -12,7 +12,7 @@ const devolucionSchema = new Schema({
     type: Number,
     default: 0,
   },
-  esAsumidoCliente: {
+  asumidoTercero: {
     type: Boolean,
     required: true,
   },
@@ -24,11 +24,11 @@ const devolucionSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Empleado",
   },
-  // es una referencia a orden
-  orden: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Orden",
-  },
+  // // es una referencia a orden
+  // orden: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Orden",
+  // },
   equiposEnDevolucion: [
     {
       cantidad: {

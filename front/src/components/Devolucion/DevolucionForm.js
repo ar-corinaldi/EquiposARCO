@@ -12,8 +12,8 @@ import Escoger from "../Escoger";
 import EquipoTable from "./EquipoTable";
 import formatoPrecios from "../utils/FormatoPrecios";
 
-function RemisionForm(props) {
-  const [remision, setRemision] = useState(undefined);
+function DevolucionForm(props) {
+  const [devolucion, setDevolucion] = useState(undefined);
   const [asumidoTercero, setAsumidoTercero] = useState(true);
   const [equipos, setEquipos] = props.equipos;
   const [equiposSels, setEquiposSels] = useState([]);
@@ -31,7 +31,7 @@ function RemisionForm(props) {
 
   useEffect(() => {
     mostrarOrden();
-  }, [remision]);
+  }, [devolucion]);
 
   useEffect(() => {
     handleChangeVehiculo();
@@ -43,7 +43,7 @@ function RemisionForm(props) {
 
   const mostrarOrden = () => {
     //console.log("bodega", bodega);
-    if (remision) {
+    if (devolucion) {
       history.replace(`/terceros/${idT}/bodegas/${idB}/ordenes/${idOr}`);
     }
   };
@@ -55,9 +55,9 @@ function RemisionForm(props) {
     fields.fechaLlegada = fechaLlegada;
     // console.log(typeof fields.fechaLlegada);
     fields.asumidoTercero = asumidoTercero;
-    handleEquiposRemision();
+    handleEquiposDevolucion();
     console.log(fields);
-    handleSubmitPOST(e).then((value) => setRemision(value));
+    handleSubmitPOST(e).then((value) => setDevolucion(value));
     manejarInventario();
   };
 
@@ -76,16 +76,16 @@ function RemisionForm(props) {
     fields.conductor = conductorSelected._id;
   };
 
-  const handleEquiposRemision = () => {
-    const equiposEnRemision = [];
+  const handleEquiposDevolucion = () => {
+    const equiposEnDevolucion = [];
     equiposSels.forEach((equipoSel) => {
       const equipo = {
         cantidad: equipoSel.cantidad,
         equipoID: equipoSel.equipoID._id,
       };
-      equiposEnRemision.push(equipo);
+      equiposEnDevolucion.push(equipo);
     });
-    fields.equiposEnRemision = equiposEnRemision;
+    fields.equiposEnDevolucion = equiposEnDevolucion;
   };
 
   const manejarInventario = async () => {
@@ -98,7 +98,7 @@ function RemisionForm(props) {
 
   const editarCantidadBodega = async (equipoR) => {
     const cantidadPrev = equipoR.equipoID.cantidadBodega;
-    const cantidadNew = cantidadPrev - equipoR.cantidad;
+    const cantidadNew = +cantidadPrev + +equipoR.cantidad;
     const field = { cantidadBodega: cantidadNew };
     const options = {
       method: "PATCH",
@@ -115,9 +115,9 @@ function RemisionForm(props) {
   };
 
   return (
-    <div className="remision-registrar-card">
+    <div className="devolucion-registrar-card">
       <form onSubmit={handleSubit}>
-        <h4 className="titulo">Registrar una remisión</h4>
+        <h4 className="titulo">Registrar una devolución</h4>
         <Row>
           <Col>
             <label>Fecha y hora de salida : </label>{" "}
@@ -247,4 +247,4 @@ function RemisionForm(props) {
   );
 }
 
-export default withFormHandling(RemisionForm);
+export default withFormHandling(DevolucionForm);

@@ -1,6 +1,49 @@
 var express = require("express");
 const Devolucion = require("../models/devolucion-model");
+const Orden = require("../models/orden-model");
+
 var router = express.Router();
+
+/**
+ *  Relacion Orden -> Devolucion
+ */
+
+/**
+ * Agrega una nueva devolucion a una orden
+ */
+router.post("/ordenes/:idOr/devoluciones", async (req, res) => {
+  let newDevolucion;
+  let orden;
+  try {
+    orden = await Orden.findById(req.params.idOr);
+    if (!orden) {
+      return res.status(404).send("Ninguna orden coincidio con ese id");
+    }
+    console.log("Encuentra orden", orden);
+    console.log("body", req.body);
+    newDevolucion = new Devolucion(req.body);
+    await newDevolucion.save();
+    console.log("Agrega devolucion");
+    orden.devoluciones.push(newDevolucion._id);
+    await orden.save();
+    console.log("Guarda orden con devolucion");
+    res.status(201).send(orden);
+    console.log("newDevolucion", newDevolucion);
+  } catch (e) {
+    console.log("Hubo un error");
+    if (newDevolucion !== undefined) {
+      console.log("Elimina la devolucion");
+      // Manejo en caso de que no se agregue la devolucion
+      Devolucion.findByIdAndDelete(newDevolucion._id);
+      const i = orden.devoluciones.indexOf(newDevolucion._id);
+      if (i != -1) {
+        orden.devoluciones.splice(i, 1);
+      }
+    }
+    res.status(400).send("No se pudo agregar la devolucion a la orden " + e);
+    console.error("error", e);
+  }
+});
 
 /**
  *  Devolucion
@@ -36,11 +79,19 @@ router.get("/devoluciones", async (req, res) => {
 });
 
 /**
- *  Get de devolucion por su id.
+ *  Get de devolucion por su id. Puebla los equipos y conductor y vehiculo en caso de no ser asumido por el tercero
  */
 router.get("/devoluciones/:id", async (req, res) => {
   try {
-    const devolucion = await Devolucion.findById(req.params.id);
+    const devolucion = await Devolucion.findById(req.params.id)
+      .populate({
+        path: "equiposEnDevolucion",
+        populate: {
+          path: "equipoID",
+        },
+      })
+      .populate("conductor")
+      .populate("vehiculoTransportador");
     if (!devolucion) {
       return res.status(404).send("No hubo coincidencia");
     }

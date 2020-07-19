@@ -64,7 +64,7 @@ router.post("/remisiones", async (req, res) => {
 });
 
 /**
- *  Get de remisiones
+ *  Get de remisiones.
  */
 router.get("/remisiones", async (req, res) => {
   let remisiones = null;
@@ -79,11 +79,19 @@ router.get("/remisiones", async (req, res) => {
 });
 
 /**
- *  Get de remision por su id.
+ *  Get de remision por su id. Puebla los equipos, y si no es asumida por el tercero, el vehiculo y el conductor.
  */
 router.get("/remisiones/:id", async (req, res) => {
   try {
-    const remision = await Remision.findById(req.params.id);
+    const remision = await Remision.findById(req.params.id)
+      .populate({
+        path: "equiposEnRemision",
+        populate: {
+          path: "equipoID",
+        },
+      })
+      .populate("conductor")
+      .populate("vehiculoTransportador");
     if (!remision) {
       return res.status(404).send("No hubo coincidencia");
     }

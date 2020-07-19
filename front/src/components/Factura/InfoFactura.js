@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 
 function InfoFactura(props) {
-  const { tercero, bodega, fechaInicial, fechaActual } = props;
+  const { tercero, bodega, fechaInicial, fechaCorte } = props;
   return (
     <React.Fragment>
       <Col>
@@ -26,7 +26,7 @@ function InfoFactura(props) {
           </p>
           <p>
             <strong>Fecha Inicial - Fecha Final : </strong>
-            {`${formatoFechas(fechaInicial)} - ${formatoFechas(fechaActual)}`}
+            {`${formatoFechas(fechaInicial)} - ${formatoFechas(fechaCorte)}`}
           </p>
         </div>
       </Col>

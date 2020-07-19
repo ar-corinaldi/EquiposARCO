@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import useAPIDetail from "../../hooks/useFetchAPI";
 import Prefacturas from "./Prefacturas";
@@ -9,19 +9,19 @@ import Col from "react-bootstrap/Col";
 
 function FacturaDetail() {
   let { idFactura } = useParams();
-  const { resource, loading, notFound, setLoading } = useAPIDetail(
+  const { resource, loading, notFound } = useAPIDetail(
     `/facturas/${idFactura}`
   );
-
-  const factura = resource;
-
-  let fechaActual = new Date();
-  let fechaInicial = fechaActual;
+  const [factura, setFactura] = useState(resource);
+  const [fechaCorte, setFechaCorte] = useState(new Date());
+  const [fechaInicial, setFechaInicial] = useState(new Date(2020, 5, 1));
+  const refFechaCorte = useRef();
+  const refFechaInicial = useRef();
 
   const getOrdenMenorFechaInicio = () => {
-    let fechaIni = fechaActual;
-    let fechaFin = fechaActual;
-    const { ordenes } = factura;
+    let fechaIni = fechaCorte;
+    let fechaFin = fechaCorte;
+    const ordenes = factura && factura.ordenes;
     ordenes &&
       ordenes.forEach((orden) => {
         orden.remisiones.forEach((remision) => {
@@ -47,7 +47,30 @@ function FacturaDetail() {
     fechaInicial = fechaIni;
   };
 
-  getOrdenMenorFechaInicio();
+  useEffect(() => {
+    // getOrdenMenorFechaInicio();
+    setFactura(resource);
+  }, [resource]);
+
+  const cambioFechaInicial = (e) => {
+    e.preventDefault();
+    const val = refFechaInicial.current.value;
+    const newFecha = new Date(val);
+    setFechaInicial(newFecha);
+  };
+
+  const cambioFechaCorte = (e) => {
+    e.preventDefault();
+    const val = refFechaCorte.current.value;
+    const newFecha = new Date(val);
+    setFechaCorte(newFecha);
+  };
+
+  const parseDate = (date) => {
+    let mes = ("0" + (date.getMonth() + 1)).slice(-2);
+    let dia = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mes, dia].join("-");
+  };
 
   if (loading) {
     return (
@@ -60,7 +83,7 @@ function FacturaDetail() {
     return notFound("La factura no fue encontrada");
   }
 
-  if (factura.ordenes && factura.ordenes.length === 0) {
+  if (!factura.ordenes || factura.ordenes.length === 0) {
     return <div>No se encontraron ordenes asociadas a la factura</div>;
   }
 
@@ -69,6 +92,8 @@ function FacturaDetail() {
       <Row>
         <InfoFactura
           tercero={
+            factura &&
+            factura.ordenes &&
             factura.ordenes.length > 0 &&
             factura.ordenes[0].bodega &&
             factura.ordenes[0].bodega.duenio
@@ -76,22 +101,45 @@ function FacturaDetail() {
               : null
           }
           bodega={
-            factura.ordenes.length > 0 && factura.ordenes[0].bodega
+            factura &&
+            factura.ordenes &&
+            factura.ordenes.length > 0 &&
+            factura.ordenes[0].bodega
               ? factura.ordenes[0].bodega
               : null
           }
           fechaInicial={fechaInicial}
-          fechaActual={fechaActual}
+          fechaCorte={fechaCorte}
         />
       </Row>
       <Row>
         <Col>
-          <Prefacturas
-            key={factura._id}
-            fechaInicial={fechaInicial}
-            fechaActual={fechaActual}
-            ordenes={factura.ordenes}
+          <label htmlFor="fechaInicial">Fecha Inicial</label>
+          <input
+            name="fechaInicial"
+            defaultValue={parseDate(fechaInicial)}
+            type="date"
+            ref={refFechaInicial}
           />
+          <button onClick={cambioFechaInicial}>Cambiar Fecha Inicial</button>
+          <label htmlFor="fechaCorte">Fecha Corte</label>
+          <input
+            name="fechaCorte"
+            defaultValue={parseDate(fechaCorte)}
+            type="date"
+            ref={refFechaCorte}
+          />
+          <button onClick={cambioFechaCorte}>Cambiar Fecha Corte</button>
+          {factura.ordenes ? (
+            <Prefacturas
+              key={factura._id}
+              fechaInicial={fechaInicial}
+              fechaCorte={fechaCorte}
+              ordenes={factura.ordenes}
+            />
+          ) : (
+            loading
+          )}
         </Col>
       </Row>
       <Col>

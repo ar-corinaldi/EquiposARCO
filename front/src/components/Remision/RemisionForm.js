@@ -11,7 +11,7 @@ import MomentUtils from "@date-io/moment";
 import "moment/locale/es";
 import Escoger from "../Escoger";
 import EquipoTable from "./EquipoTable";
-import FormatoPreiocs from "../utils/FormatoPrecios";
+import formatoPrecios from "../utils/FormatoPrecios";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -58,7 +58,8 @@ function RemisionForm(props) {
     fields.asumidoTercero = asumidoTercero;
     handleEquiposRemision();
     console.log(fields);
-    return handleSubmitPOST(e).then((value) => setRemision(value));
+    handleSubmitPOST(e).then((value) => setRemision(value));
+    manejarInventario();
   };
 
   const handleRadio = (event) => {
@@ -87,6 +88,33 @@ function RemisionForm(props) {
     });
     fields.equiposEnRemision = equiposEnRemision;
   };
+
+  const manejarInventario = async () => {
+    let equipoR;
+    for (let i = 0; i < equiposSels.length; i++) {
+      equipoR = equiposSels[i];
+      await editarCantidadBodega(equipoR);
+    }
+  };
+
+  const editarCantidadBodega = async (equipoR) => {
+    const cantidadPrev = equipoR.equipoID.cantidadBodega;
+    const cantidadNew = cantidadPrev - equipoR.cantidad;
+    const field = { cantidadBodega: cantidadNew };
+    const options = {
+      method: "PATCH",
+      body: JSON.stringify(field),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const formAction = `/equipos/${equipoR.equipoID._id}`;
+    const res = await fetch(formAction, options);
+    const objeto = await res.json();
+    console.log(objeto);
+    return objeto;
+  };
+
   return (
     <div className="remision-registrar-card">
       <form onSubmit={handleSubit}>

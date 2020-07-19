@@ -98,7 +98,7 @@ function DevolucionForm(props) {
 
   const editarCantidadBodega = async (equipoR) => {
     const cantidadPrev = equipoR.equipoID.cantidadBodega;
-    const cantidadNew = cantidadPrev + equipoR.cantidad;
+    const cantidadNew = +cantidadPrev + +equipoR.cantidad;
     const field = { cantidadBodega: cantidadNew };
     const options = {
       method: "PATCH",

@@ -43,7 +43,7 @@ function ConfirmarTarifas(props) {
         if(!equipo.componentes || equipo.componentes.length === 0){
             const id = equipo.equipoID ? equipo.equipoID : equipo._id; //Si es un componente se usa EquipoID, si no, el _id es precisamente el id del equipo.
             const valorActual = inventario[id] ? inventario[id] : 0;
-            inventario[id] = valorActual + cantidad;
+            inventario[id] = valorActual + new Number(cantidad);
         }
         else if(equipo.componentes.length > 0){
             equipo.componentes.forEach( (componente) => {
@@ -86,8 +86,11 @@ function ConfirmarTarifas(props) {
                 //y reducir el número de equipos disponibles (subrutina a parte).
                 //Mensaje de confirmación y se les redirige a orden detail. Recuerda guardar tarifas agrupadas.
                 //Opcional, meter nombre de obra (esto va a ser algo complejo)
-                if( inventarioFaltante.length == 0){
+                if( inventarioFaltante.length === 0){
                     setCamposCorrectos(true);
+                }
+                else{
+                    setCamposCorrectos(false);
                 }
                 console.log("inventario Faltante");
                 console.log(inventarioFaltante);

@@ -30,3 +30,16 @@
     width: 3px;
     background-color: white;
 }
+
+input.inputRoot{
+    text-align: center;
+}
+
+input.inputRoot:enabled{
+    font-family: 'Nunito';
+    font-size: 13px;
+    font-weight: 700;
+    color: #6c757d;
+    border: 1px solid #6c757d;
+    border-radius: 2px;
+}

@@ -85,6 +85,11 @@ function OrdenDetail(props) {
   const crearRemision = () => {
     history.push(`${orden._id}/remisiones/create`);
   };
+
+  const crearDevolucion = () => {
+    history.push(`${orden._id}/devoluciones/create`);
+  };
+
   return (
     <Container fluid>
       <Row>
@@ -132,7 +137,9 @@ function OrdenDetail(props) {
                 </button>
               </Col>
               <Col>
-                <button className="btn-reg blue">Registrar Devolución</button>
+                <button className="btn-reg blue" onClick={crearDevolucion}>
+                  Registrar Devolución
+                </button>
               </Col>
             </Row>
           </div>

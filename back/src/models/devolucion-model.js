@@ -12,7 +12,7 @@ const devolucionSchema = new Schema({
     type: Number,
     default: 0,
   },
-  esAsumidoCliente: {
+  asumidoTercero: {
     type: Boolean,
     required: true,
   },
@@ -29,7 +29,7 @@ const devolucionSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Orden",
   },
-  equipoEnDevolucion: [
+  equiposEnDevolucion: [
     {
       cantidad: {
         type: Number,

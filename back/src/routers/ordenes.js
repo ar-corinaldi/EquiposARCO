@@ -217,17 +217,29 @@ router.get("/ordenes", async (req, res) => {
 });
 
 /**
- *  Get de orden por su id
+ *  Get de orden por su id. Puebla las tarifas, las remisiones y las devoluciones
  */
 router.get("/ordenes/:id", async (req, res) => {
   try {
-    const orden = await Orden.findById(req.params.id);
+    const orden = await Orden.findById(req.params.id)
+      .populate({
+        path: "tarifasDefinitivas",
+        populate: {
+          path: "tarifasPorEquipo",
+          populate: {
+            path: "equipo precioReferencia",
+          },
+        },
+      })
+      .populate("remisiones")
+      .populate("devoluciones");
     if (!orden) {
-      return res.status(404).send("No hubo coincidencia");
+      return res.send("La orden no existe");
     }
     res.send(orden);
-  } catch (error) {
-    res.status(500).send("Error del sistema");
+    console.log("La orden existe");
+  } catch (e) {
+    res.status(404).send("No se pudo hacer la solicitud " + e);
   }
 });
 

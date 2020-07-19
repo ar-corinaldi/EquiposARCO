@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import "./Orden.css";
 import { useParams, Link } from "react-router-dom";
 import EquiposTable from "./EquiposTable";
+import ActividadReciente from "./ActividadReciente";
 import formatoFechas from "../utils/FormatoFechas";
 import { useHistory } from "react-router-dom";
 
@@ -76,7 +77,7 @@ function OrdenDetail(props) {
 
   const fetchInfoOrden = async () => {
     //console.log("llegaOrdenes");
-    let res = await fetch(`/ordenes/${idOr}/tarifasPobladas`);
+    let res = await fetch(`/ordenes/${idOr}`);
     const ordenA = await res.json();
     //console.log("orden", ordenA);
     setOrden(ordenA);
@@ -154,6 +155,12 @@ function OrdenDetail(props) {
           <Row>
             <div className="orden-wrapper" id="orden-actividad-wrapper">
               <h4 className="page-title-orden">Actividad reciente</h4>
+              <ActividadReciente
+                orden={orden}
+                id={id}
+                idB={idB}
+                idOr={idOr}
+              ></ActividadReciente>
             </div>
           </Row>
           <Row>

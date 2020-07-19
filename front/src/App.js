@@ -20,8 +20,9 @@ import NotaInventarioList from "./components/NotaInventario/NotaInventarioList";
 import BodegaCreate from "./components/Bodega/BodegaCreate";
 import CotizacionDetail from "./components/Cotizacion/CotizacionDetail";
 import RemisionCreate from "./components/Remision/RemisionCreate";
+import RemisionDetail from "./components/Remision/RemisionDetail";
 import DevolucionCreate from "./components/Devolucion/DevolucionCreate";
-
+import DevolucionDetail from "./components/Devolucion/DevolucionDetail";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -89,9 +90,19 @@ function App() {
                   component={RemisionCreate}
                 />
                 <Route
+                  path="/terceros/:id/bodegas/:idB/ordenes/:idOr/remisiones/:idR"
+                  exact
+                  component={RemisionDetail}
+                />
+                <Route
                   path="/terceros/:id/bodegas/:idB/ordenes/:idOr/devoluciones/create"
                   exact
                   component={DevolucionCreate}
+                />
+                <Route
+                  path="/terceros/:id/bodegas/:idB/ordenes/:idOr/devoluciones/:idD"
+                  exact
+                  component={DevolucionDetail}
                 />
                 <Route
                   path="/terceros/:id/cotizaciones/:idC"

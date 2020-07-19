@@ -57,20 +57,6 @@ function EquipoDetail(props) {
         </td>
       </tr>
     </React.Fragment>
-    //   <div id="BodegaOrdenDetailWrapper">
-    //     <CloseIcon
-    //       className="closeIcon"
-    //       onClick={() => {
-    //         eliminarEquipoSelect(equipoRender);
-    //       }}
-    //     />
-    //     <div className="bodegaHeader">
-    //       <p>{equipoRender.nombreEquipo} </p>
-    //     </div>
-    //     <div className="descripcionBodega">
-    //       <p>{equipoRender.nombreGrupo}</p>
-    //     </div>
-    //   </div>
   );
 }
 

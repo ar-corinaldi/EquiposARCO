@@ -79,11 +79,19 @@ router.get("/devoluciones", async (req, res) => {
 });
 
 /**
- *  Get de devolucion por su id.
+ *  Get de devolucion por su id. Puebla los equipos y conductor y vehiculo en caso de no ser asumido por el tercero
  */
 router.get("/devoluciones/:id", async (req, res) => {
   try {
-    const devolucion = await Devolucion.findById(req.params.id);
+    const devolucion = await Devolucion.findById(req.params.id)
+      .populate({
+        path: "equiposEnDevolucion",
+        populate: {
+          path: "equipoID",
+        },
+      })
+      .populate("conductor")
+      .populate("vehiculoTransportador");
     if (!devolucion) {
       return res.status(404).send("No hubo coincidencia");
     }

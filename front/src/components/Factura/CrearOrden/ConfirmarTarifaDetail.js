@@ -9,6 +9,7 @@ import {
   formatoCategoriaHTML,
   formatoTiempo,
 } from "../../utils/FormatoInfoPrecios";
+import formatoFechas from "../../utils/FormatoFechas";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
@@ -64,10 +65,6 @@ function ConfirmarTarifaDetail(props) {
         <tr>
           <th className="sticky-col">{tarifa.equipo.nombreEquipo}</th>
           <th>
-            {formatoCategoriaHTML(tarifa.precioReferencia.categoria, true)}
-          </th>
-          <th>{formatoPrecio(tarifa.valorTarifa).replace(" ", "\xa0")}</th>
-          <th>
             <InputBase
               defaultValue={tarifa.cantidad}
               // disabled
@@ -86,6 +83,10 @@ function ConfirmarTarifaDetail(props) {
               }}
             ></InputBase>
           </th>
+          <th>
+            {formatoCategoriaHTML(tarifa.precioReferencia.categoria, true)}
+          </th>
+          <th>{formatoPrecio(tarifa.valorTarifa).replace(" ", "\xa0")}</th>
           <th>{formatoTiempo(tarifa.precioReferencia.tiempo)}</th>
           <th>
             {cobro.tiempoTotal +
@@ -95,7 +96,14 @@ function ConfirmarTarifaDetail(props) {
                 cobro.tiempoTotal != 1
               )}
           </th>
-          <th>{formatoPrecio(cobro.cobroTotal).replace(" ", "\xa0")}</th>
+              <th>
+              <p>{"Desde: "+formatoFechas(tarifa.fechaInicio).toString()}</p>
+              <p>{"  Hasta: "+ (tarifa.fechaFin? formatoFechas(tarifa.fechaFin).toString(): "Sin límite. ")}</p>
+                {/* {"Desde: "+formatoFechas(tarifa.fechaInicio).toString()+"  Hasta: "+
+              (tarifa.fechaFin? formatoFechas(tarifa.fechaFin).toString(): "Sin límite. ")
+
+              } */}
+              </th>
           <th>
             <EditIcon></EditIcon>
             <CloseIcon></CloseIcon>

@@ -30,7 +30,7 @@ router.post("/terceros/:id/bodegas", async (req, res) => {
     if (!tercero) {
       return res.status(404).send("Ninguna tercero coincidio con ese id");
     }
-    newBodega.duenio = tercero._id;
+    newBodega.set({duenio: tercero._id})
     await newBodega.save();
     console.log("Agrega bodega");
     tercero.bodegas.push(newBodega._id);

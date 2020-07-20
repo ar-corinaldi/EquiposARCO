@@ -52,7 +52,7 @@ function ActividadReciente(props) {
                   actividad.remision._id
                 }
               >
-                Remision: {actividad.remision._id}
+                Remision: {actividad.remision.codigo}
               </Link>
             ) : (
               <Link
@@ -67,7 +67,7 @@ function ActividadReciente(props) {
                   actividad.devolucion._id
                 }
               >
-                Devolucion: {actividad.devolucion._id}
+                Devolucion: {actividad.devolucion.codigo}
               </Link>
             )}
           </p>

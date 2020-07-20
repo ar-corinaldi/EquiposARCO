@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function EquiposRemision(props) {
   const equiposEnRemision = props.equiposEnRemision;
@@ -28,9 +29,11 @@ function EquiposRemision(props) {
           equiposEnRemision.map((equipo, index) => (
             <tr key={equipo.equipoID._id} className="capitalize">
               <td>
-                <b>{equipo.equipoID.nombreEquipo}</b>
-                <br />
-                {equipo.equipoID.tipoEquipo}
+                <Link to={`/inventario/equipos/${equipo.equipoID._id}`}>
+                  <b>{equipo.equipoID.nombreEquipo}</b>
+                  <br />
+                  {equipo.equipoID.tipoEquipo}
+                </Link>
               </td>
               <td>{equipo.equipoID.nombreFamilia}</td>
               <td>{calcularPeso(equipo)}</td>

@@ -47,6 +47,7 @@ const ordenSchema = new Schema({
   },
   codigoObra: {
     type: String,
+    required: true,
   },
   bodega: {
     type: mongoose.Schema.Types.ObjectId,

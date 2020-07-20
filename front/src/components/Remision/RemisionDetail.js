@@ -1,47 +1,128 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./Remision.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EquiposRemision from "./EquiposRemision";
 import formatoFechas from "../utils/FormatoFechas";
+import { formatoHora } from "../utils/FormatoFechas";
 import formatoPrecios from "../utils/FormatoPrecios";
 
 function RemisionDetail(props) {
   const { id, idB, idOr, idR } = useParams();
   const [remision, setRemision] = useState({});
+  const [orden, setOrden] = useState({});
+  const [bodega, setBodega] = useState({});
+  const [tercero, setTercero] = useState({});
 
   useEffect(() => {
     fetchRemision();
+    fetchOrden();
+    fetchBodega();
+    fetchTercero();
   }, []);
 
   const fetchRemision = async () => {
     let res = await fetch(`/remisiones/${idR}`);
     const newRemision = await res.json();
-    console.log("newRemision", newRemision);
+    //console.log("newRemision", newRemision);
     setRemision(newRemision);
+  };
+
+  const fetchOrden = async () => {
+    let res = await fetch(`/ordenes/${idOr}`);
+    const newOrden = await res.json();
+    //console.log("newOrden", newOrden);
+    setOrden(newOrden);
+  };
+
+  const fetchBodega = async () => {
+    let res = await fetch(`/bodegas/${idB}`);
+    const newBodega = await res.json();
+    //console.log("newBodega", newBodega);
+    setBodega(newBodega);
+  };
+
+  const fetchTercero = async () => {
+    let res = await fetch(`/terceros/${id}`);
+    const newTercero = await res.json();
+    //console.log("newTercero", newTercero);
+    setTercero(newTercero);
   };
 
   return (
     <div className="remision-registrar-wrapper ">
       <div className="remision-registrar-card ">
-        <h4 className="titulo">Remisión No. {remision._id}</h4>
+        <h4 className="titulo">Remisión No. {remision.codigo}</h4>
+
         <Row>
           <Col>
             <p>
-              Fecha y hora de salida : {formatoFechas(remision.fechaSalida)}
+              <b>Fecha y hora de salida : </b>{" "}
+              {formatoFechas(remision.fechaSalida) +
+                " " +
+                formatoHora(remision.fechaSalida)}
             </p>
           </Col>
           <Col>
             <p>
-              Fecha y hora de llegada : {formatoFechas(remision.fechaLlegada)}
+              <b>Fecha y hora de llegada : </b>
+              {formatoFechas(remision.fechaLlegada) +
+                " " +
+                formatoHora(remision.fechaLlegada)}
             </p>
           </Col>
         </Row>
+        <Row>
+          <Col>
+            <p className="capitalize">
+              <b>Tercero : </b>{" "}
+              <Link to={`/terceros/${tercero._id}`}>{tercero.nombre}</Link>
+            </p>
+          </Col>
+          <Col>
+            <p className="capitalize">
+              <b>Bodega : </b>{" "}
+              {bodega.nombreBodega +
+                " - " +
+                bodega.direccionBodega +
+                ", " +
+                bodega.municipio}
+            </p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <p className="capitalize">
+              <b>Obra : </b> {orden.codigoObra}
+            </p>
+          </Col>
+          <Col>
+            <p>
+              <b>Orden : </b>{" "}
+              <Link
+                to={
+                  "/terceros/" +
+                  tercero._id +
+                  "/bodegas/" +
+                  bodega._id +
+                  "/ordenes/" +
+                  orden._id
+                }
+              >
+                {orden.codigo}
+              </Link>
+            </p>
+          </Col>
+        </Row>
+
+        <br />
         <div>
           <Row>
-            <Col md="auto" className="vertical-center">
-              <p>Equipos a trasportar : </p>
+            <Col className="center ">
+              <p>
+                <b>Equipos enviados</b>
+              </p>
             </Col>
           </Row>
           <Row>
@@ -52,37 +133,53 @@ function RemisionDetail(props) {
             </Col>
           </Row>
         </div>
+        <br />
         <div>
-          <p>
-            Trasporte asumido por{" "}
-            {remision.asumidoTercero ? "el tercero" : "Equipos ARCO"}
-          </p>
+          <Row>
+            <Col>
+              <p>
+                Trasporte asumido por{" "}
+                {remision.asumidoTercero ? "el tercero" : "Equipos ARCO"}
+              </p>
+            </Col>
+          </Row>
         </div>
         {!remision.asumidoTercero && [
-          <div key="1" className="capitalize">
-            <p>
-              Vehículo :{" "}
-              {remision.vehiculoTransportador &&
-                remision.vehiculoTransportador.marca +
-                  " " +
-                  remision.vehiculoTransportador.modelo +
-                  " - " +
-                  remision.vehiculoTransportador.placa}
-            </p>
-          </div>,
-          <div key="2" className="capitalize">
-            <p>
-              {" "}
-              Conductor : {remision.conductor &&
-                remision.conductor.nombres}{" "}
-              {remision.conductor && remision.conductor.apellidos} -{" "}
-              {remision.conductor && remision.conductor.tipoDocumento}{" "}
-              {remision.conductor && remision.conductor.numeroDocumento}{" "}
-            </p>
-          </div>,
-          <div key="3" className="form-group">
-            <p> Costo : {formatoPrecios(remision.costoTransporte)}</p>
-          </div>,
+          <Row key="1">
+            <Col>
+              <div key="1" className="capitalize">
+                <p>
+                  Vehículo :{" "}
+                  {remision.vehiculoTransportador &&
+                    remision.vehiculoTransportador.marca +
+                      " " +
+                      remision.vehiculoTransportador.modelo +
+                      " - " +
+                      remision.vehiculoTransportador.placa}
+                </p>
+              </div>
+            </Col>
+            ,
+            <Col key="2">
+              <div className="capitalize">
+                <p>
+                  {" "}
+                  Conductor : {remision.conductor &&
+                    remision.conductor.nombres}{" "}
+                  {remision.conductor && remision.conductor.apellidos} -{" "}
+                  {remision.conductor && remision.conductor.tipoDocumento}{" "}
+                  {remision.conductor && remision.conductor.numeroDocumento}{" "}
+                </p>
+              </div>
+            </Col>
+          </Row>,
+          <Row key="3">
+            <Col>
+              <div className="form-group">
+                <p> Costo : {formatoPrecios(remision.costoTransporte)}</p>
+              </div>
+            </Col>
+          </Row>,
         ]}
       </div>
     </div>

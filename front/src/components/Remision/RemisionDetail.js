@@ -138,8 +138,10 @@ function RemisionDetail(props) {
           <Row>
             <Col>
               <p>
-                Trasporte asumido por{" "}
-                {remision.asumidoTercero ? "el tercero" : "Equipos ARCO"}
+                <b>
+                  Trasporte asumido por{" "}
+                  {remision.asumidoTercero ? "el tercero" : "Equipos ARCO"}
+                </b>
               </p>
             </Col>
           </Row>
@@ -147,9 +149,9 @@ function RemisionDetail(props) {
         {!remision.asumidoTercero && [
           <Row key="1">
             <Col>
-              <div key="1" className="capitalize">
+              <div className="capitalize">
                 <p>
-                  Vehículo :{" "}
+                  <b>Vehículo : </b>
                   {remision.vehiculoTransportador &&
                     remision.vehiculoTransportador.marca +
                       " " +
@@ -159,13 +161,11 @@ function RemisionDetail(props) {
                 </p>
               </div>
             </Col>
-            ,
             <Col key="2">
               <div className="capitalize">
                 <p>
-                  {" "}
-                  Conductor : {remision.conductor &&
-                    remision.conductor.nombres}{" "}
+                  <b>Conductor : </b>
+                  {remision.conductor && remision.conductor.nombres}{" "}
                   {remision.conductor && remision.conductor.apellidos} -{" "}
                   {remision.conductor && remision.conductor.tipoDocumento}{" "}
                   {remision.conductor && remision.conductor.numeroDocumento}{" "}
@@ -176,7 +176,10 @@ function RemisionDetail(props) {
           <Row key="3">
             <Col>
               <div className="form-group">
-                <p> Costo : {formatoPrecios(remision.costoTransporte)}</p>
+                <p>
+                  <b>Costo : </b>
+                  {formatoPrecios(remision.costoTransporte)}
+                </p>
               </div>
             </Col>
           </Row>,

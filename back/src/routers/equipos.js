@@ -37,7 +37,7 @@ router.get("/equipos/cantidad", async (req, res) => {
 
 router.get("/equipos/:id/cantidadBodega", async (req, res)=>{
   try {
-    const ans = await Equipo.findById(req.params.id, 'cantidadBodega').exec();
+    const ans = await Equipo.findById(req.params.id).select('+cantidadBodega').lean();
     if(!ans){
       res.json(0);
     }

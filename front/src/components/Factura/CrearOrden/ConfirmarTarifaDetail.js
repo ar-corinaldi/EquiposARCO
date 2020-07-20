@@ -18,8 +18,9 @@ import "moment/locale/es";
 function ConfirmarTarifaDetail(props) {
   //Estados globales
   const [tarifasFinales, setTarifasFinales] = props.tarifas;
-  let miTarifa = tarifasFinales[props.index];
+  let miTarifa = tarifasFinales[props.index].tarifasPorEquipo[0];
   const [inventario, setInventario] = props.inventario;
+  const setCamposCorrectos = props.camposCorrectos;
 
   //Estados propios
   const [tarifa, setTarifa] = useState(miTarifa);
@@ -38,7 +39,7 @@ function ConfirmarTarifaDetail(props) {
    * Cuando la tarifa cambia actualiza la referencia de esta en la lista de tarifas finales que son globales a varios componentes
    */
   useEffect(() => {
-    tarifasFinales[index] = tarifa;
+    tarifasFinales[index].tarifasPorEquipo[0] = tarifa;
     setTarifasFinales([...tarifasFinales]);
     console.log('Tarifas finales');
     
@@ -74,6 +75,7 @@ function ConfirmarTarifaDetail(props) {
                 input: "inputRoot",
               }}
               onChange={(e) => {
+                setCamposCorrectos(false);
                 e.persist();
                 let nuevo = tarifa;
                 nuevo.cantidad = e.target.value;

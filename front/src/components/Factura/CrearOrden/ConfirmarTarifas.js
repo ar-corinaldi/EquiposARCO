@@ -23,9 +23,9 @@ function ConfirmarTarifas(props) {
      */
     function calcularInventarioRequerido() {
         inventario = {};
-        tarifasFinales.forEach((tarifa) => {
-            const cantidad = tarifa.cantidad;
-            inventarioRequeridoPorEquipo( inventario, tarifa.equipo, cantidad);
+        tarifasFinales.forEach((tarifaAgrupada) => {
+            const cantidad = tarifaAgrupada.tarifasPorEquipo[0].cantidad;
+            inventarioRequeridoPorEquipo( inventario, tarifaAgrupada.tarifasPorEquipo[0].equipo, cantidad);
         })
         console.log(inventario);
         setInventario(inventario);
@@ -99,6 +99,15 @@ function ConfirmarTarifas(props) {
         
     }
 
+    /**
+     * Se activa cuando se le da click a confirmar y guardar orden. Este botón solo está activo cuando los campos son correctos.
+     * Es decir, cuando hay suficiente disponibilidad en inventario como para realizar la orden
+     * @param {*} props 
+     */
+    function guardarOrden(props) {
+        
+    }
+
     //Effects
 
     //TODO
@@ -114,7 +123,15 @@ function ConfirmarTarifas(props) {
 
     useEffect(() => {
         if (cotizacionSeleccionada && cotizacionSeleccionada.tarifasCotizadas) {
-            setTarifasFinales(cotizacionSeleccionada.tarifasCotizadas);
+            // setTarifasFinales(cotizacionSeleccionada.tarifasCotizadas);
+            let tarifasAgrupadas = []
+            cotizacionSeleccionada.tarifasCotizadas.forEach((tarifa)=>{
+                let grupo = []
+                grupo.push(tarifa);
+                const object = {tarifasPorEquipo: grupo}
+                tarifasAgrupadas.push(object);
+            })
+            setTarifasFinales(tarifasAgrupadas);
         }
         else {
             setTarifasFinales([]);
@@ -149,7 +166,9 @@ function ConfirmarTarifas(props) {
                     index = {index} 
                     tarifas={[tarifasFinales, setTarifasFinales]} 
                     cobro={{}} 
-                    inventario={[inventario, setInventario]} />
+                    inventario={[inventario, setInventario]} 
+                    camposCorrectos = {setCamposCorrectos}
+                    />
                 })}
             </Table>
             {/*Agregar una tarifa */}

@@ -55,7 +55,7 @@ function CotizacionDetail(props) {
         <Col>
           <div className="orden-wrapper">
             <h3 className="page-title-orden">
-              Cotizacion No. {cotizacion._id}
+              Cotizacion No. {cotizacion.codigo}
             </h3>
             <Row>
               <Col>
@@ -70,7 +70,7 @@ function CotizacionDetail(props) {
                   <Link
                     to={`/terceros/${id}/bodegas/${orden.bodega}/ordenes/${cotizacion.orden}`}
                   >
-                    {cotizacion.orden}{" "}
+                    {orden.codigo}{" "}
                   </Link>
                 </p>
               </Col>
@@ -80,7 +80,7 @@ function CotizacionDetail(props) {
       </Row>
       <Row>
         <Col>
-          <div className="orden-wrapper" id="orden-equipos-wrapper">
+          <div className="orden-wrapper">
             <h4 className="page-title-orden">Equipos</h4>
             <EquiposTable tarifas={cotizacion.tarifasCotizadas}></EquiposTable>
           </div>

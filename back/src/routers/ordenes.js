@@ -232,7 +232,8 @@ router.get("/ordenes/:id", async (req, res) => {
         },
       })
       .populate("remisiones")
-      .populate("devoluciones");
+      .populate("devoluciones")
+      .populate("cotizacion");
     if (!orden) {
       return res.send("La orden no existe");
     }

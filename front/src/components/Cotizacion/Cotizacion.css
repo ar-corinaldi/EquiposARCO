@@ -15,11 +15,6 @@
   border-radius: 5px;
   padding: 35px;
 }
-
-#orden-equipos-wrapper {
-  width: 97%;
-}
-
 .capitalize {
   text-transform: capitalize;
 }

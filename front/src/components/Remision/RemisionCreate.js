@@ -54,7 +54,7 @@ function RemisionCreate(props) {
   const fields = {
     fechaSalida: "",
     fechaLlegada: "",
-    costoTransporte: "",
+    costoTransporte: 0,
     asumidoTercero: "",
     vehiculoTransportador: "",
     conductor: "",

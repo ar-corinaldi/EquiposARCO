@@ -121,7 +121,7 @@ function TerceroDetail({ match }) {
                         cotizacion._id
                       }
                     >
-                      {cotizacion._id}
+                      {cotizacion.codigo}
                     </Link>
                   </p>
                 ))}

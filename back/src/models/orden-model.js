@@ -28,6 +28,7 @@ const ordenSchema = new Schema({
   cotizacion: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Cotizacion",
+    required: true,
   },
   fechaInicio: {
     type: Date,
@@ -50,6 +51,7 @@ const ordenSchema = new Schema({
   bodega: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Bodega",
+    required: true,
   },
 });
 

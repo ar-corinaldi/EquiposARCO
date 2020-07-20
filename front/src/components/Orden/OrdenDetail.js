@@ -79,7 +79,7 @@ function OrdenDetail(props) {
     //console.log("llegaOrdenes");
     let res = await fetch(`/ordenes/${idOr}`);
     const ordenA = await res.json();
-    //console.log("orden", ordenA);
+    console.log("orden", ordenA);
     setOrden(ordenA);
   };
 
@@ -96,7 +96,7 @@ function OrdenDetail(props) {
       <Row>
         <Col>
           <div className="orden-wrapper">
-            <h3 className="page-title-orden">Orden No. {orden._id}</h3>
+            <h3 className="page-title-orden">Orden No. {orden.codigo}</h3>
             <Row>
               <Col>
                 <p className="capitalize">
@@ -106,6 +106,9 @@ function OrdenDetail(props) {
                 <p className="capitalize">
                   <b>Bodega : </b> {bodega.nombreBodega}
                 </p>
+                <p className="capitalize">
+                  <b>Obra : </b> {orden.codigoObra}
+                </p>
                 <p>
                   <b>Fecha Inicial :</b> {formatoFechas(orden.fechaInicio)}
                 </p>
@@ -113,12 +116,19 @@ function OrdenDetail(props) {
               <Col>
                 <p>
                   <b>Cotizacion :</b>{" "}
-                  <Link to={`/terceros/${id}/cotizaciones/${orden.cotizacion}`}>
-                    {orden.cotizacion}{" "}
+                  <Link
+                    to={`/terceros/${id}/cotizaciones/${
+                      orden.cotizacion && orden.cotizacion._id
+                    }`}
+                  >
+                    {orden.cotizacion && orden.cotizacion.codigo}{" "}
                   </Link>
                 </p>
                 <p>
                   <b>Status :</b> {statusOr}{" "}
+                </p>
+                <p className="capitalize">
+                  <br />
                 </p>
                 <p>
                   <b>Fecha Final :</b> {formatoFechas(orden.fechaFin)}

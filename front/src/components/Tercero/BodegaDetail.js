@@ -107,7 +107,7 @@ function BodegaDetail(props) {
                     orden._id
                   }
                 >
-                  {orden._id}
+                  {orden.codigo}
                 </Link>
               </p>
             ))
@@ -139,7 +139,7 @@ function BodegaDetail(props) {
                     orden._id
                   }
                 >
-                  {orden._id}
+                  {orden.codigo}
                 </Link>
               </p>
             ))

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+const Counter = require("./counter-model");
 
 const remisionSchema = new Schema({
   fechaSalida: {
@@ -42,6 +43,23 @@ const remisionSchema = new Schema({
       },
     },
   ],
+  codigo: {
+    type: String,
+    required: true,
+  },
+});
+
+remisionSchema.pre("validate", async function (next) {
+  // Nombre en singular de la collection y en minuscula
+  const remision = this;
+  if (remision.codigo) return next();
+
+  if (!remision.codigo) {
+    const seq = await Counter.getNextSequence("remision");
+    if (!seq) return next("seq es undefined");
+    remision.codigo = `RE${seq}`;
+  }
+  next();
 });
 
 const Remision = mongoose.model("Remision", remisionSchema);

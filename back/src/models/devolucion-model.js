@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+const Counter = require("./counter-model");
 
 const devolucionSchema = new Schema({
   fechaSalida: {
@@ -42,6 +43,23 @@ const devolucionSchema = new Schema({
       },
     },
   ],
+  codigo: {
+    type: String,
+    required: true,
+  },
+});
+
+devolucionSchema.pre("validate", async function (next) {
+  // Nombre en singular de la collection y en minuscula
+  const devolucion = this;
+  if (devolucion.codigo) return next();
+
+  if (!devolucion.codigo) {
+    const seq = await Counter.getNextSequence("devolucion");
+    if (!seq) return next("seq es undefined");
+    devolucion.codigo = `DE${seq}`;
+  }
+  next();
 });
 
 const Devolucion = mongoose.model("Devolucion", devolucionSchema);

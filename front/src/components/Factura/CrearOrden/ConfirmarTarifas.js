@@ -108,10 +108,11 @@ function ConfirmarTarifas(props) {
     function guardarOrden(props) {
         if (bodegaSeleccionada && bodegaSeleccionada.direccionBodega) {
             let orden = {};
-            orden.bodegaDestino = bodegaSeleccionada;
+            orden.bodega = bodegaSeleccionada;
             if (tarifasFinales) {
                 orden.tarifasDefinitivas = tarifasFinales;
-                fetch("/bodegas/" + orden.bodegaDestino._id + "/ordenes", {
+                orden.cotizacion = cotizacionSeleccionada._id;
+                fetch("/bodegas/" + orden.bodega._id + "/ordenes", {
                     method: "POST",
                     body: JSON.stringify(orden),
                     headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -119,8 +120,8 @@ function ConfirmarTarifas(props) {
                     .then(response => response.json())
                     .then(response => {
                         console.log(response)
-                        document.location.href="/terceros/"+response.bodegaDestino.duenio
-                        +"/bodegas/"+response.bodegaDestino._id+"/ordenes/"
+                        document.location.href="/terceros/"+response.bodega.duenio
+                        +"/bodegas/"+response.bodega._id+"/ordenes/"
                         +response._id;
                     })      
             }

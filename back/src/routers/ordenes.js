@@ -69,7 +69,7 @@ router.post("/bodegas/:idB/ordenes", async (req, res) => {
     await bodega.save();
     console.log("Orden aniadida a bodega con exito");
     orden = orden.toObject();
-    orden.bodegaDestino = bodega;
+    orden.bodega = bodega;
     res.status(201).json(orden);
   } catch (e) {
     console.log(e);

@@ -20,13 +20,12 @@ const nombreMeses = [
 function Prefacturas(props) {
   const { fechaInicial, fechaCorte, ordenes } = props;
   let { prefacturas } = usePrefacturas(fechaInicial, fechaCorte, ordenes);
-
   return (
     <React.Fragment>
       <div>Prefacturas</div>
       {prefacturas.map(({ mes, prefacturaMes, anio }) =>
         Object.keys(prefacturaMes).length > 0 ? (
-          <div key={mes} className="row" id="info-wrapper">
+          <div key={`${anio}-${mes}`} className="row" id="info-wrapper">
             <div className="col-2">
               {anio}/{nombreMeses[mes]}
             </div>
@@ -37,7 +36,9 @@ function Prefacturas(props) {
                     <th>Nombre Equipo</th>
                     <th>Cantidad</th>
                     <th>Periodo</th>
-                    <th>Cantidad Facturada</th>
+                    <th>Facturado</th>
+                    <th>Precio</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>

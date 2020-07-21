@@ -135,7 +135,7 @@ function FacturaDetail() {
               key={factura._id}
               fechaInicial={fechaInicial}
               fechaCorte={fechaCorte}
-              ordenes={factura.ordenes}
+              ordenes={factura.ordenes || []}
             />
           ) : (
             loading

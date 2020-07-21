@@ -230,13 +230,6 @@ router.get("/ordenes/:idOr/tarifasPobladas", async (req, res, next) => {
           path: "equiposEnRemision",
           populate: { path: "equipoID" },
         },
-      })
-      .populate({
-        path: "devoluciones",
-        populate: {
-          path: "equiposEnDevolucion",
-          populate: { path: "equipoID" },
-        },
       });
     if (!orden) {
       return res.send("La orden no existe");

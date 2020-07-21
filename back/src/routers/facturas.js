@@ -83,7 +83,7 @@ router.get("/facturas/:id", async (req, res) => {
           path: "remisiones",
           populate: {
             path: "equiposEnRemision",
-            populate: { path: "equipoID" },
+            populate: { path: "equipoID", populate: { path: "precios" } },
           },
         },
       })
@@ -102,7 +102,24 @@ router.get("/facturas/:id", async (req, res) => {
           path: "devoluciones",
           populate: {
             path: "equiposEnDevolucion",
-            populate: { path: "equipoID" },
+            populate: {
+              path: "equipoID",
+              populate: {
+                path: "precios",
+              },
+            },
+          },
+        },
+      })
+      .populate({
+        path: "ordenes",
+        populate: {
+          path: "tarifasDefinitivas",
+          populate: {
+            path: "tarifasPorEquipo",
+            populate: {
+              path: "equipo precioReferencia",
+            },
           },
         },
       });

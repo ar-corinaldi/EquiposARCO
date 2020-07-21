@@ -10,13 +10,19 @@ function ContenidoPrefactura(props) {
       let current = listaMes[i];
       if (prev !== current) {
         if (prev !== 0) {
-          const date = `${prevDay + 1}/${mes}/${anio} - ${i}/${mes}/${anio}`;
+          const date = `${prevDay + 1}/${mes}/${anio} - ${
+            i + 1
+          }/${mes}/${anio}`;
+          const facturado = i - (prevDay + 1) + 1;
+          const cantidad = prev;
           render.push(
             <tr key={date}>
               <td>{equipo && equipo.nombreEquipo}</td>
-              <td>{prev}</td>
+              <td>{cantidad}</td>
               <td>{date}</td>
-              <td>{i - (prevDay + 1) + 1}</td>
+              <td>{facturado}</td>
+              <td>{equipo.precio}</td>
+              <td>{equipo.precio * facturado * cantidad}</td>
             </tr>
           );
         }
@@ -26,16 +32,20 @@ function ContenidoPrefactura(props) {
       prev = current;
     }
     const lastIndex = listaMes.length;
+    const cantidad = listaMes[lastIndex - 1];
     const date = `${prevDay + 1}/${mes}/${anio} - ${
       listaMes.length
     }/${mes}/${anio}`;
+    const facturado = listaMes.length - (prevDay + 1) + 1;
     if (prev !== 0) {
       render.push(
         <tr key={date}>
           <td>{equipo && equipo.nombreEquipo}</td>
-          <td>{listaMes[lastIndex - 1]}</td>
+          <td>{cantidad}</td>
           <td>{date}</td>
-          <td>{listaMes.length - (prevDay + 1) + 1}</td>
+          <td>{facturado}</td>
+          <td>{equipo.precio}</td>
+          <td>{equipo.precio * facturado * cantidad}</td>
         </tr>
       );
     }

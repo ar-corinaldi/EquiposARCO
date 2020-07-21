@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ConfirmarTarifas.css'
 import ConfirmarTarifaDetail from './ConfirmarTarifaDetail';
 import Table from "react-bootstrap/Table";
+import Toast from "../../Toast";
 
 function ConfirmarTarifas(props) {
     //Estados globales
@@ -121,14 +122,14 @@ function ConfirmarTarifas(props) {
                         document.location.href="/terceros/"+response.bodegaDestino.duenio
                         +"/bodegas/"+response.bodegaDestino._id+"/ordenes/"
                         +response._id;
-                    })
-
+                    })      
             }
             else {
 
             }
         }
         else {
+            Toast(["Profavor, seleccione una bodega destino"], 7000, 500);
 
         }
 

@@ -7,22 +7,6 @@ const ordenesRouter = require("../routers/ordenes");
 const { ObjectId } = require("mongodb").ObjectId;
 const router = new express.Router();
 
-router.patch("/terceros/:idT/actualizarbodegas", async (req, res) => {
-  try {
-    console.log('Actualizando bodegas');
-    const tercero = await Tercero.findById(req.params.idT);
-    const bodegas = await Bodega.find({duenio: ObjectId(tercero._id)}).lean();
-    bodegas.forEach((bodega) => {
-      tercero.bodegas.push(bodega._id);
-    })
-    console.log('Bodegas del tercero actualizadas');
-    tercero.save();
-    res.status(200).json(tercero);
-  } catch (e) {
-    console.log(e);
-    res.status(400).send("No se pudo agregar la bodega al tercero " + e);
-  }
-})
 
 
 /**
@@ -235,6 +219,23 @@ router.patch("/bodegas/:idB", async (req, res) => {
     res.status(400).send(e);
   }
 });
+
+// router.patch("/terceros/:idT/actualizarbodegas", async (req, res) => {
+//   try {
+//     console.log('Actualizando bodegas');
+//     const tercero = await Tercero.findById(req.params.idT);
+//     const bodegas = await Bodega.find({duenio: ObjectId(tercero._id)}).lean();
+//     bodegas.forEach((bodega) => {
+//       tercero.bodegas.push(bodega._id);
+//     })
+//     console.log('Bodegas del tercero actualizadas');
+//     tercero.save();
+//     res.status(200).json(tercero);
+//   } catch (e) {
+//     console.log(e);
+//     res.status(400).send("No se pudo agregar la bodega al tercero " + e);
+//   }
+// })
 
 /**
  * Elimina un Bodega

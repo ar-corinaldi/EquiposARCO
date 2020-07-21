@@ -42,3 +42,9 @@
   background-color: #e9ecef;
   border-color: #dee2e6;
 }
+
+.button-crear {
+  /* margin: auto; */
+  width: 100%;
+  text-align: center;
+}

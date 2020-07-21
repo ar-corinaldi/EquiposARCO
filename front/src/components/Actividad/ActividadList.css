@@ -1,0 +1,36 @@
+#actividad-wrapper {
+  background-color: white;
+  box-shadow: 0px 0px 20px 1px rgba(134, 118, 118, 0.12);
+  font-family: "Nunito", "sans-serif";
+  color: #6c757d;
+  width: 97%;
+  margin: 10px 10px 10px 10px;
+  border-radius: 5px;
+  padding: 35px;
+}
+.btn-reg {
+  width: 100%;
+  border: none;
+  border: none;
+  color: white;
+  text-align: center;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 3px;
+}
+
+.blue {
+  background-color: #007bff;
+  box-shadow: 0 2px 6px 0 rgba(0, 123, 255, 0.5);
+}
+.btn-reg:hover {
+  opacity: 1;
+}
+
+.center {
+  text-align: center;
+}

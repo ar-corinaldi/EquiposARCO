@@ -1,6 +1,8 @@
 var express = require("express");
 const Remision = require("../models/remision-model");
 const Orden = require("../models/orden-model");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 var router = express.Router();
 
@@ -44,6 +46,157 @@ router.post("/ordenes/:idOr/remisiones", async (req, res) => {
     console.error(e);
   }
 });
+
+/**
+ *  Get de remisiones de una orden
+ */
+router.get("/ordenes/:idOr/remisiones", async (req, res) => {
+  let orden;
+  try {
+    orden = await Orden.findById(req.params.idOr).populate("remisiones");
+    if (!orden) {
+      return res.status(404).send("Ninguna orden coincidio con ese id");
+    }
+    console.log("Encuentra orden", orden);
+    res.send(orden.remisiones);
+  } catch (e) {
+    res.status(500).send();
+    console.log(orden);
+    console.error("error", e);
+  }
+});
+
+/**
+ * Cantidad de remisiones que hay en una orden
+ */
+router.get("/ordenes/:idOr/remisiones/cantidad", async (req, res) => {
+  let orden;
+  try {
+    orden = await Orden.findById(req.params.idOr);
+    if (!orden) {
+      return res.status(404).send("Ninguna orden coincidio con ese id");
+    }
+    console.log("Encuentra orden", orden);
+    res.send(orden.remisiones.length + "");
+  } catch (e) {
+    res.status(500).send();
+    console.log(orden);
+    console.error("error", e);
+  }
+});
+
+/**
+ * Cantidad de remisiones y devoluciones que hay en una orden
+ */
+router.get("/ordenes/:idOr/actividades/cantidad", async (req, res) => {
+  let orden;
+  try {
+    orden = await Orden.findById(req.params.idOr);
+    if (!orden) {
+      return res.status(404).send("Ninguna orden coincidio con ese id");
+    }
+    console.log("Encuentra orden", orden);
+    const count = +orden.remisiones.length + +orden.devoluciones.length;
+    res.send(count + "");
+  } catch (e) {
+    res.status(500).send();
+    console.log(orden);
+    console.error("error", e);
+  }
+});
+
+/**
+ *  Get de remisiones y devolucioens de una orden para paginacion
+ */
+router.get(
+  "/ordenes/:idOr/actividades/:page/:elementsPerPage",
+  async (req, res) => {
+    try {
+      let orden;
+      let remisiones;
+      let devoluciones;
+      console.log("Encuentra orden", orden);
+      const page = parseInt(req.params.page);
+      const elementsPerPage = parseInt(req.params.elementsPerPage);
+      if (elementsPerPage === -1) {
+        orden = await Orden.aggregate([
+          { $match: { _id: ObjectId(req.params.idOr) } },
+          {
+            $lookup: {
+              from: "remisions",
+              localField: "remisiones",
+              foreignField: "_id",
+              as: "remisiones",
+            },
+          },
+          { $project: { remisiones: 1, devoluciones: 1 } },
+          {
+            $lookup: {
+              from: "devolucions",
+              localField: "devoluciones",
+              foreignField: "_id",
+              as: "devoluciones",
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              actividades: { $concatArrays: ["$devoluciones", "$remisiones"] },
+            },
+          },
+          { $unwind: "$actividades" },
+          {
+            $sort: {
+              "actividades.fechaSalida": -1,
+            },
+          },
+        ]);
+      } else {
+        orden = await Orden.aggregate([
+          { $match: { _id: ObjectId(req.params.idOr) } },
+          {
+            $lookup: {
+              from: "remisions",
+              localField: "remisiones",
+              foreignField: "_id",
+              as: "remisiones",
+            },
+          },
+          { $project: { remisiones: 1, devoluciones: 1 } },
+          {
+            $lookup: {
+              from: "devolucions",
+              localField: "devoluciones",
+              foreignField: "_id",
+              as: "devoluciones",
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              actividades: { $concatArrays: ["$devoluciones", "$remisiones"] },
+            },
+          },
+          { $unwind: "$actividades" },
+          {
+            $sort: {
+              "actividades.fechaSalida": -1,
+            },
+          },
+          { $limit: elementsPerPage },
+          { $skip: (page - 1) * elementsPerPage },
+        ]);
+      }
+      if (!orden) {
+        return res.status(404).send("Ninguna orden coincidio con ese id");
+      }
+      res.send(orden);
+    } catch (e) {
+      res.status(500).send();
+      console.error("error", e);
+    }
+  }
+);
 
 /**
  *  Remision

@@ -46,3 +46,9 @@
 .center {
   text-align: center;
 }
+
+.button-crear {
+  /* margin: auto; */
+  width: 100%;
+  text-align: center;
+}

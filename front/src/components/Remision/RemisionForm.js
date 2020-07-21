@@ -237,7 +237,7 @@ function RemisionForm(props) {
             />
           </div>,
         ]}
-        <div id="button-wrapper">
+        <div className="button-crear ">
           <button type="submit" className="buttonTercero">
             Crear
           </button>

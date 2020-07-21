@@ -15,6 +15,9 @@ function ConfirmarTarifas(props) {
     //Estados propios
     const [tarifasFinales, setTarifasFinales] = useState([]);
     const [camposCorrectos, setCamposCorrectos] = useState(false);
+    let [toastRender, setToastRender] = useState({tiempo: new Date().getTime(), mensajePrevio: ""});
+
+    //variables
 
     //Funciones
 
@@ -63,13 +66,13 @@ function ConfirmarTarifas(props) {
     /**
      * Verifica la disponibilidad en bodega de los equipos de la variable inventario que contiene cuantos se necesitan de cada uno
      */
-    function verificarDisponibilidadInventario() {
+    async function verificarDisponibilidadInventario() {
         if (Object.keys(inventario).length == 0) {
 
         }
         else {
             let inventarioFaltante = [];
-            Object.keys(inventario).forEach(async (equipo) => {
+            for (const equipo of Object.keys(inventario)) {
                 //verfificar en el back la cantidad de equipo en inventario
                 let cantidadRequerida = inventario[equipo];
                 const cantidadDisponible = await (await fetch("/equipos/" + equipo + "/cantidadBodega")).json();
@@ -83,19 +86,65 @@ function ConfirmarTarifas(props) {
                 else {
                     //todo good, continúe
                 }
-                //Si tooodo está good, Se activa el botón que deja registrar la orden en el back 
-                //y reducir el número de equipos disponibles (subrutina a parte).
-                //Mensaje de confirmación y se les redirige a orden detail. Recuerda guardar tarifas agrupadas.
-                //Opcional, meter nombre de obra (esto va a ser algo complejo)
-                if (inventarioFaltante.length === 0) {
-                    setCamposCorrectos(true);
-                }
-                else {
-                    setCamposCorrectos(false);
-                }
-                console.log("inventario Faltante");
+            }
+
+            //Si tooodo está good, Se activa el botón que deja registrar la orden en el back 
+            //y reducir el número de equipos disponibles (subrutina a parte).
+            //Mensaje de confirmación y se les redirige a orden detail. Recuerda guardar tarifas agrupadas.
+            //Opcional, meter nombre de obra (esto va a ser algo complejo)
+            if (inventarioFaltante.length === 0) {
+                setCamposCorrectos(true);
+            }
+            else {
+                setCamposCorrectos(false);
+                mostrarError(inventarioFaltante);
+            }
+            // setInventarioFaltante(Object.assign({}, inventarioFaltante));
+            console.log("inventario Faltante");
+            console.log(inventarioFaltante);
+        }
+
+    }
+
+    /**
+     * Muestra hasta 4 mensajes de error por cada equipo del cual no hayan las existencias requeridas para
+     * hacer la orden
+     * @param {Array} inventarioFaltante. Arreglo con información de cuánto falta por equipo.
+     */
+    function mostrarError(inventarioFaltante) {
+        //Solo renderiza el Toast si han pasado más de 150ms desde el último render
+        let now = new Date().getTime();
+        const diff = now - toastRender.tiempo;
+        if ( diff > 150 && primerEstado === "complete") {
+            if (inventarioFaltante.length > 0) {
+                let errores = "";
+                let erroresSobrantes = 0;
+                console.log('====================================');
                 console.log(inventarioFaltante);
-            })
+                console.log('====================================');
+                inventarioFaltante.forEach((equipoFaltante, index) => 
+                {
+                    if (index < 3) {
+                        let error = ("Falta " + (equipoFaltante.requerido - equipoFaltante.disponible) + " existencias de "
+                            + equipoFaltante.equipo + " en inventario." + "\n");
+                        errores += error;
+                    }
+                    else {
+                        erroresSobrantes += 1;
+                    }
+                })
+                if (erroresSobrantes) {
+                    errores += ("Hay otros" + erroresSobrantes + " equipos en esta orden con errores." + "\n")
+                }
+                if((errores != toastRender.mensajePrevio) || (errores === toastRender.mensajePrevio && diff > 2000)){
+                    //Renderiza solo si el mensaje es distinto o si es igual y ha pasado más de dos segundos desde el último render
+                    console.log("previo: "+ toastRender.mensajePrevio);
+                    console.log("actual: "+ errores);
+                    Toast([errores], 5000, 500);
+                }
+                setToastRender({tiempo: new Date().getTime(), mensajePrevio: errores});
+                console.log("previo ahora: "+ toastRender.mensajePrevio);
+            }
         }
 
     }
@@ -105,14 +154,16 @@ function ConfirmarTarifas(props) {
      * Es decir, cuando hay suficiente disponibilidad en inventario como para realizar la orden
      * @param {*} props 
      */
-    function guardarOrden(props) {
+    async function guardarOrden(props) {
         if (bodegaSeleccionada && bodegaSeleccionada.direccionBodega) {
             let orden = {};
             orden.bodega = bodegaSeleccionada;
-            if (tarifasFinales) {
+            if (tarifasFinales && tarifasFinales.length > 0) {
                 orden.tarifasDefinitivas = tarifasFinales;
                 orden.cotizacion = cotizacionSeleccionada._id;
-                fetch("/bodegas/" + orden.bodega._id + "/ordenes", {
+                console.log('orden crear orden');
+                console.log(orden); 
+                await fetch("/bodegas/" + orden.bodega._id + "/ordenes", {
                     method: "POST",
                     body: JSON.stringify(orden),
                     headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -120,13 +171,13 @@ function ConfirmarTarifas(props) {
                     .then(response => response.json())
                     .then(response => {
                         console.log(response)
-                        document.location.href="/terceros/"+response.bodega.duenio
-                        +"/bodegas/"+response.bodega._id+"/ordenes/"
-                        +response._id;
-                    })      
+                        document.location.href = "/terceros/" + response.bodega.duenio
+                            + "/bodegas/" + response.bodega._id + "/ordenes/"
+                            + response._id;
+                    })
             }
             else {
-
+                Toast(["La orden está vacía"], 6000, 400);
             }
         }
         else {

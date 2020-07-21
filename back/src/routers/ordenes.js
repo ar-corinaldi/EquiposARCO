@@ -67,9 +67,12 @@ router.post("/bodegas/:idB/ordenes", async (req, res) => {
     console.log("orden guardada");
     bodega.ordenesActuales.push(orden._id);
     await bodega.save();
-    console.log("Bodega aniadida al tercero con exito");
-    res.status(201).send(bodega);
+    console.log("Orden aniadida a bodega con exito");
+    orden = orden.toObject();
+    orden.bodegaDestino = bodega;
+    res.status(201).json(orden);
   } catch (e) {
+    console.log(e);
     res.status(400).send("No se pudo agregar la bodega al tercero ");
   }
 });

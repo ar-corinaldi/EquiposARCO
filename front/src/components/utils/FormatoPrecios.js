@@ -9,7 +9,7 @@ function formatoPrecios(
   decimal = ".",
   thousands = ","
 ) {
-  if (amount) {
+  if (amount || amount === 0 ) {
     try {
       decimalCount = Math.abs(decimalCount);
       decimalCount = isNaN(decimalCount) ? 2 : decimalCount;

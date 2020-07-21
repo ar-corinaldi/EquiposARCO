@@ -17,18 +17,38 @@
 .confirmarTarifaDetailWrapper col{
     display: flexbox;
 }
-
+/* 
 .sticky-col {
     position: sticky;
     position: -webkit-sticky;
     background-color: white;
     left: 0px;
-    /* box-shadow: 0px 0px 15px 3px rgba(134, 118, 118, 0.12); */
-  }
+  } */
+
+.editando{
+    box-shadow: 0px 4px 3px 0px #5c5f7d1f;
+    /* #5c5f7d1f */
+    /* #0a20ff1f */
+}
 
 .shadowCover{
     width: 3px;
     background-color: white;
+}
+
+.px13-nunito span{
+    font-family: 'Nunito';
+    font-size: 13px;
+    font-weight: 500;
+    color: #6c757d;
+
+}
+
+.MuiInputBase-input{
+    font-family: 'Nunito'!important;
+    font-size: 13px !important;
+    font-weight: 630 !important;
+    color: #575e64 !important;
 }
 
 input.inputRoot{

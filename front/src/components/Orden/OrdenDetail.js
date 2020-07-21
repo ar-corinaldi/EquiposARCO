@@ -170,7 +170,7 @@ function OrdenDetail(props) {
                   <h4 className="page-title-orden">Actividad reciente</h4>
                 </Col>
                 <Col md="auto">
-                  <button className="button-icon" onClick={""}>
+                  <button className="button-icon">
                     <FaEllipsisV></FaEllipsisV>
                   </button>
                 </Col>

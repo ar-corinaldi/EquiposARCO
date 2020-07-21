@@ -1,12 +1,23 @@
-.timeline-alt .timeline-item:before {
+/* .timeline-item:before {
   background-color: #f1f3fa;
   bottom: 0;
   content: "";
   left: 9px;
   position: absolute;
+  top: 20px;
+  width: 2px;
+  z-index: 0;
+} */
+.timeline-line {
+  background-color: #f1f3fa;
+  bottom: 0;
+  content: "";
+  left: 9px;
+  position: absolute !important;
   top: 40px;
   width: 2px;
   z-index: 0;
+  height: 64px;
 }
 .timeline-alt {
   padding: 20px 0;
@@ -26,9 +37,10 @@
   background-color: rgba(57, 175, 209, 0.25) !important;
 }
 
-/* .text-info {
-  color: #39afd1 !important;
-} */
+.text-info {
+  color: #007bff !important;
+}
+
 .timeline-alt .timeline-item .timeline-icon {
   float: left;
   height: 20px;
@@ -46,4 +58,9 @@
 ::before {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.devolucion {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }

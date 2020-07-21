@@ -1,20 +1,20 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn install
+  /usr/bin/node /usr/local/bin/yarn install
 
 PATH: 
-  /tmp/yarn--1595092827577-0.8910135303309341:/media/diego/e07d68b0-7262-4d74-b390-eb08c42e1c7a/home/diegogomez/Documents/git/EquiposARCO/node_modules/.bin:/home/diego/.config/yarn/link/node_modules/.bin:/home/diego/.yarn/bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/home/diego/.local/bin:/home/diego/bin:/home/diego/.local/bin:/home/diego/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+  /tmp/yarn--1595350097952-0.9919180181298095:/home/diegogomez/Documents/git/EquiposARCO/node_modules/.bin:/home/diegogomez/.config/yarn/link/node_modules/.bin:/home/diegogomez/.yarn/bin:/usr/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/lib/node_modules/npm/bin/node-gyp-bin:/usr/bin/node_modules/npm/bin/node-gyp-bin:/home/diegogomez/bin/pycharm-2020.1.2/bin:/home/diegogomez/bin:/home/diegogomez/bin:/home/diegogomez/miniconda3/bin:/home/diegogomez/miniconda3/condabin:/home/diegogomez/bin/pycharm-2020.1.2/bin:/home/diegogomez/bin:/home/diegogomez/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
 
 Yarn version: 
   1.22.4
 
 Node version: 
-  12.17.0
+  10.19.0
 
 Platform: 
   linux x64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/media/diego/e07d68b0-7262-4d74-b390-eb08c42e1c7a/home/diegogomez/Documents/git/EquiposARCO/back/node_modules/ansi-align/node_modules/ansi-regex/index.js'
+  Error: EACCES: permission denied, unlink '/home/diegogomez/Documents/git/EquiposARCO/back/node_modules/ansi-align/node_modules/ansi-regex/index.js'
 
 npm manifest: 
   {

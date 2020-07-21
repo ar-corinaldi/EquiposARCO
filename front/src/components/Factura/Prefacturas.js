@@ -18,8 +18,9 @@ const nombreMeses = [
 ];
 
 function Prefacturas(props) {
-  const { fechaInicial, fechaCorte, ordenes } = props;
+  const { fechaInicial, fechaCorte, ordenes, setPrecioTotal } = props;
   let { prefacturas } = usePrefacturas(fechaInicial, fechaCorte, ordenes);
+
   return (
     <React.Fragment>
       <div>Prefacturas</div>
@@ -50,6 +51,7 @@ function Prefacturas(props) {
                         listaMes={prefacturaMes[idEquipo].listaMes}
                         mes={mes + 1}
                         anio={anio}
+                        setPrecioTotal={setPrecioTotal}
                       />
                     ))}
                 </tbody>

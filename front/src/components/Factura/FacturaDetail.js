@@ -15,40 +15,11 @@ function FacturaDetail() {
   const [factura, setFactura] = useState(resource);
   const [fechaCorte, setFechaCorte] = useState(new Date());
   const [fechaInicial, setFechaInicial] = useState(new Date(2020, 5, 1));
+  const [precioTotal, setPrecioTotal] = useState(0);
   const refFechaCorte = useRef();
   const refFechaInicial = useRef();
 
-  const getOrdenMenorFechaInicio = () => {
-    let fechaIni = fechaCorte;
-    let fechaFin = fechaCorte;
-    const ordenes = factura && factura.ordenes;
-    ordenes &&
-      ordenes.forEach((orden) => {
-        orden.remisiones.forEach((remision) => {
-          const currentRemisionDate = new Date(remision.fechaLlegada);
-          if (currentRemisionDate.getTime() < fechaIni.getTime()) {
-            fechaIni = currentRemisionDate;
-          }
-          if (currentRemisionDate.getTime() > fechaFin.getTime()) {
-            fechaFin = currentRemisionDate;
-          }
-        });
-        orden.devoluciones.forEach((devolucion) => {
-          const currentDevolucionDate = new Date(devolucion.fechaSalida);
-          if (currentDevolucionDate.getTime() < fechaIni.getTime()) {
-            fechaIni = currentDevolucionDate;
-          }
-          if (currentDevolucionDate.getTime() > fechaFin.getTime()) {
-            fechaFin = currentDevolucionDate;
-          }
-        });
-      });
-
-    fechaInicial = fechaIni;
-  };
-
   useEffect(() => {
-    // getOrdenMenorFechaInicio();
     setFactura(resource);
   }, [resource]);
 
@@ -67,6 +38,7 @@ function FacturaDetail() {
   };
 
   const parseDate = (date) => {
+    console.log(date);
     let mes = ("0" + (date.getMonth() + 1)).slice(-2);
     let dia = ("0" + date.getDate()).slice(-2);
     return [date.getFullYear(), mes, dia].join("-");
@@ -136,6 +108,7 @@ function FacturaDetail() {
               fechaInicial={fechaInicial}
               fechaCorte={fechaCorte}
               ordenes={factura.ordenes || []}
+              setPrecioTotal={setPrecioTotal}
             />
           ) : (
             loading
@@ -147,8 +120,7 @@ function FacturaDetail() {
           <div id="info-wrapper">
             <h4 id="titulos">Total</h4>
             <p>
-              <strong>Nombre : </strong>
-              {"Total"}
+              <strong>{precioTotal}</strong>
             </p>
           </div>
         </Row>

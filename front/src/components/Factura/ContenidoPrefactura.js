@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 function ContenidoPrefactura(props) {
-  const { equipo, listaMes, mes, anio } = props;
+  const { equipo, listaMes, mes, anio, setPrecioTotal } = props;
+  const [render, setRender] = useState([]);
+  useEffect(() => {
+    setRender(equipoPrefactura());
+  }, [listaMes, equipo, mes, anio]);
+
   const equipoPrefactura = () => {
     let prev = 0,
       prevDay = -1;
-    let render = [];
+    let newRender = [];
+    let newPrecioTotal = 0;
     for (let i = 0; i < listaMes.length; i++) {
       let current = listaMes[i];
       if (prev !== current) {
@@ -13,16 +19,19 @@ function ContenidoPrefactura(props) {
           const date = `${prevDay + 1}/${mes}/${anio} - ${
             i + 1
           }/${mes}/${anio}`;
+
           const facturado = i - (prevDay + 1) + 1;
           const cantidad = prev;
-          render.push(
+          const total = equipo.precio * facturado * cantidad;
+          newPrecioTotal += total;
+          newRender.push(
             <tr key={date}>
               <td>{equipo && equipo.nombreEquipo}</td>
               <td>{cantidad}</td>
               <td>{date}</td>
               <td>{facturado}</td>
               <td>{equipo.precio}</td>
-              <td>{equipo.precio * facturado * cantidad}</td>
+              <td>{total}</td>
             </tr>
           );
         }
@@ -38,21 +47,24 @@ function ContenidoPrefactura(props) {
     }/${mes}/${anio}`;
     const facturado = listaMes.length - (prevDay + 1) + 1;
     if (prev !== 0) {
-      render.push(
+      const total = equipo.precio * facturado * cantidad;
+      newPrecioTotal += total;
+      newRender.push(
         <tr key={date}>
           <td>{equipo && equipo.nombreEquipo}</td>
           <td>{cantidad}</td>
           <td>{date}</td>
           <td>{facturado}</td>
           <td>{equipo.precio}</td>
-          <td>{equipo.precio * facturado * cantidad}</td>
+          <td>{total}</td>
         </tr>
       );
     }
-    return render;
+    setPrecioTotal((prev) => prev + newPrecioTotal);
+    return newRender;
   };
 
-  return <React.Fragment>{equipoPrefactura()}</React.Fragment>;
+  return <React.Fragment>{render}</React.Fragment>;
 }
 
 export default ContenidoPrefactura;

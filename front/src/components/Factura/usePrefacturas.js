@@ -147,7 +147,6 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
           const idEquipoTarifa = equipoT._id;
           return idEquipoTarifa === equipoID._id;
         });
-        console.log(equipoTarifas);
         //length equipoTarifa, en caso de que sea nullo, sera false y no entra al if
         let precio = calcularPrecioEquipo(equipoTarifas, remision, equipoID);
 
@@ -279,15 +278,11 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     if (len && len > 0) {
       let fechaFinTarifa = new Date(equipoTarifas[len - 1].fechaFin);
       const fechaRemision = new Date(remision.fechaLlegada);
-      console.log(equipoTarifas.length);
-      console.log(fechaFinTarifa);
-      console.log(fechaRemision);
       while (
         fechaFinTarifa.getTime() < fechaRemision.getTime() &&
         equipoTarifas.length > 0
       ) {
         equipoTarifas.pop();
-        console.log(equipoTarifas.length);
 
         if (equipoTarifas.length > 0) {
           const cur = equipoTarifas[equipoTarifas.length - 1];

@@ -47,7 +47,7 @@ function EquipoRow(props) {
         <td>
           {index}
           <br />
-          <button className="button-mas" onClick={toggle}>
+          <button className="button-icon green" onClick={toggle}>
             <FaPlusCircle></FaPlusCircle>
           </button>
         </td>

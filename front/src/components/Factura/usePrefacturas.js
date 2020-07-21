@@ -125,18 +125,6 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
       for (const equipo of remision.equiposEnRemision) {
         const { equipoID, cantidad } = equipo;
 
-        const equipoTarifa = tarifasMes.find((tarifa) => {
-          const fechaRem = new Date(remision.fechaLlegada);
-          const fechaTar = new Date(tarifa.fechaInicio);
-
-          return (
-            tarifa.equipo &&
-            tarifa.equipo._id === equipoID._id &&
-            fechaRem.getTime() &&
-            fechaTar.getTime()
-          );
-        });
-
         const idEquipo = `_${equipoID._id}`;
         let cantidadAObra = cantidad;
 
@@ -148,24 +136,61 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
           prefacturaMes[idEquipo] = {};
           prefacturaMes[idEquipo].listaMes = new Array(daysOfMonth).fill(0);
           prefacturaMes[idEquipo].equipo = equipoID;
-          prefacturaMes[idEquipo].equipo.precio =
-            (equipoTarifa && equipoTarifa.valorTarifa) ||
-            (equipoID.precios &&
-              equipoID.precios.length > 0 &&
-              equipoID.precios[0].valorAlquiler) ||
-            0;
-          if (prefacturaMes[idEquipo].equipo.precio === 0) {
-            Toast(
-              [`No se le asignó precio al equipo ${equipoID.nombreEquipo}`],
-              true,
-              404
-            );
-          }
         } else {
           const lastElement =
             day !== 0 ? prefacturaMes[idEquipo].listaMes[day - 1] : 0;
           cantidadAObra = lastElement + cantidad;
         }
+
+        const equipoTarifas = tarifasMes.find((tarifasPorEquipo) => {
+          const equipoT = tarifasPorEquipo.equipoTarifa;
+          const idEquipoTarifa = equipoT._id;
+          return idEquipoTarifa === equipoID._id;
+        });
+        console.log(equipoTarifas);
+        //length equipoTarifa, en caso de que sea nullo, sera false y no entra al if
+        const len = equipoTarifas && equipoTarifas.length;
+        let precio = 0;
+        if (len && len > 0) {
+          let fechaFinTarifa = new Date(equipoTarifas[len - 1].fechaFin);
+          const fechaRemision = new Date(remision.fechaLlegada);
+          console.log(equipoTarifas.length);
+          console.log(fechaFinTarifa);
+          console.log(fechaRemision);
+          while (
+            fechaFinTarifa.getTime() < fechaRemision.getTime() &&
+            equipoTarifas.length > 0
+          ) {
+            equipoTarifas.pop();
+            console.log(equipoTarifas.length);
+
+            if (equipoTarifas.length > 0) {
+              const cur = equipoTarifas[equipoTarifas.length - 1];
+              fechaFinTarifa = new Date(cur.fechaFin);
+            }
+          }
+          precio =
+            (equipoTarifas.length > 0 &&
+              equipoTarifas[equipoTarifas.length - 1].valorTarifa) ||
+            0;
+        }
+
+        if (precio === 0) {
+          precio =
+            equipoID.precios &&
+            equipoID.precios.length > 0 &&
+            equipoID.precios[0].valorAlquiler;
+        }
+
+        prefacturaMes[idEquipo].equipo.precio = precio;
+        if (prefacturaMes[idEquipo].equipo.precio === 0) {
+          Toast(
+            [`No se le asignó precio al equipo ${equipoID.nombreEquipo}`],
+            true,
+            404
+          );
+        }
+
         prefacturaMes[idEquipo].listaMes.fill(
           cantidadAObra,
           day - 1,
@@ -268,18 +293,34 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
 
       let tarifasDefinitivas = orden.tarifasDefinitivas || [];
       tarifasDefinitivas.forEach((tarifa) => {
-        const tarifasPorEquipo = tarifa && tarifa.tarifasPorEquipo;
+        const tarifasPorEquipo = tarifa.tarifasPorEquipo;
         if (tarifasPorEquipo && tarifasPorEquipo.length > 0) {
-          tarifasMes = tarifasMes.concat(tarifasPorEquipo);
+          let equipoTarifa = tarifasPorEquipo[0].equipo;
+          tarifasPorEquipo.equipoTarifa = equipoTarifa;
+          tarifasPorEquipo.sort((a, b) => {
+            let fechaA = new Date(a.fechaInicio);
+            let fechaB = new Date(b.fechaInicio);
+            return fechaB.getTime() - fechaA.getTime();
+          });
+          tarifasMes.push(tarifasPorEquipo);
         }
       });
-
-      tarifasMes = filtrarListaPorFecha(
-        tarifasMes,
-        "fechaInicio",
-        inicioMes,
-        finMes
-      );
+      // let tarifaMesPorEquipo = [];
+      // if (tarifasMes.length > 0) {
+      //   for (let tarifa of tarifasMes) {
+      //     let temp = filtrarListaPorFecha(
+      //       tarifa,
+      //       "fechaInicio",
+      //       inicioMes,
+      //       finMes
+      //     );
+      //     console.log(temp);
+      //     if (temp) tarifaMesPorEquipo.push(temp);
+      //   }
+      // }
+      // for (let tar of tarifaMesPorEquipo) {
+      //   if (tar.length > 0) tarifasMes = tar;
+      // }
     }
 
     return { remisionesMes, devolucionesMes, tarifasMes };

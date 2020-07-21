@@ -20,7 +20,6 @@ function Equipo(props) {
   const {
     loading,
     resource,
-    setResource,
     currentPage,
     setCurrentPage,
     countResources,

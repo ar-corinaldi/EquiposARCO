@@ -31,7 +31,7 @@ function ConfirmarTarifaDetail(props) {
   let cobro = CalcularTarifa([tarifa])[tarifa._id];
   const index = props.index;
   // console.log('Tarifas finales 1----------');
-    
+
   // console.log([...tarifasFinales]);
 
   //Effects
@@ -43,10 +43,10 @@ function ConfirmarTarifaDetail(props) {
     tarifasFinales[index].tarifasPorEquipo[0] = tarifa;
     setTarifasFinales([...tarifasFinales]);
     console.log('Tarifas finales');
-    
+
     console.log(tarifasFinales);
-    
-  },[tarifa]);
+
+  }, [tarifa]);
 
   return (
     <>
@@ -78,8 +78,9 @@ function ConfirmarTarifaDetail(props) {
                 nuevo.cantidad = e.target.value;
                 setTarifa(tarifa => {
                   const value = e.target.value;
-                  tarifa.cantidad = value? value : 0; 
-                  return Object.assign({}, tarifa)});
+                  tarifa.cantidad = value ? value : 0;
+                  return Object.assign({}, tarifa)
+                });
               }}
             ></InputBase>
           </th>
@@ -88,22 +89,22 @@ function ConfirmarTarifaDetail(props) {
           </th>
           <th>{formatoPrecio(tarifa.valorTarifa).replace(" ", "\xa0")}</th>
           <th>{formatoTiempo(tarifa.precioReferencia.tiempo)}</th>
-          <th>
+          {/* <th>
             {cobro.tiempoTotal +
               " " +
               formatoTiempo(
                 tarifa.precioReferencia.tiempo,
                 cobro.tiempoTotal != 1
               )}
-          </th>
-              <th>
-              <p>{"Desde: "+formatoFechas(tarifa.fechaInicio).toString()}</p>
-              <p>{"  Hasta: "+ (tarifa.fechaFin? formatoFechas(tarifa.fechaFin).toString(): "Sin límite. ")}</p>
-                {/* {"Desde: "+formatoFechas(tarifa.fechaInicio).toString()+"  Hasta: "+
+          </th> */}
+          <th>
+            <p>{"Desde: " + formatoFechas(tarifa.fechaInicio).toString()}</p>
+            <p>{"  Hasta: " + (tarifa.fechaFin ? formatoFechas(tarifa.fechaFin).toString() : "Sin límite. ")}</p>
+            {/* {"Desde: "+formatoFechas(tarifa.fechaInicio).toString()+"  Hasta: "+
               (tarifa.fechaFin? formatoFechas(tarifa.fechaFin).toString(): "Sin límite. ")
 
               } */}
-              </th>
+          </th>
           <th>
             <EditIcon></EditIcon>
             <CloseIcon></CloseIcon>

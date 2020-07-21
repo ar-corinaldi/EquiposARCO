@@ -178,7 +178,7 @@ function ConfirmarTarifas(props) {
                         <th>Unidad de Cobro</th>
                         <th>Precio x Unidad</th>
                         <th>Tipo de Cobro</th>
-                        <th>Tiempo a cobrar</th>{/*Editable. Cuándo me meta con multiples tarifas toca verificar que no se traslapen*/}
+                        {/* <th>Tiempo a cobrar</th>Editable. Cuándo me meta con multiples tarifas toca verificar que no se traslapen */}
                         {/*También hay que dejar seleccionarlo basado en fecha inicial y fecha final o basado en unidad de tiempo y fecha inicial*/}
                         <th>Periodo de Validez</th>
                         <th>Acción</th>{/*Habilitar edición solo cuando le hagan click al lapicito, toca tener un botón de aceptar, otro de cancelar

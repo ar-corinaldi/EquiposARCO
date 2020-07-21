@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FaTruck } from "react-icons/fa";
+import "./ActividadReciente.css";
 
 function ActividadReciente(props) {
   const [actividad, setActividad] = useState([]);
@@ -35,8 +37,32 @@ function ActividadReciente(props) {
   };
 
   return (
-    <div>
-      {actividad &&
+    <div className="timeline-alt pb-0">
+      <div className="timeline-item">
+        <FaTruck className="bg-info-lighten text-info timeline-icon"></FaTruck>
+        <div className="timeline-item-info">
+          <a href="#" className="text-info font-weight-bold mb-1 d-block">
+            You sold an item
+          </a>
+          <small>Paul Burgess just purchased “Hyper - Admin Dashboard”!</small>
+          <p className="mb-0 pb-2">
+            <small className="text-muted">5 minutes ago</small>
+          </p>
+        </div>
+      </div>
+      {/* <div className="timeline-item">
+        <FaTruck className="bg-info-lighten text-info timeline-icon"></FaTruck>
+        <div className="timeline-item-info">
+          <a href="#" className="text-info font-weight-bold mb-1 d-block">
+            You sold an item
+          </a>
+          <small>Paul Burgess just purchased “Hyper - Admin Dashboard”!</small>
+          <p className="mb-0 pb-2">
+            <small className="text-muted">5 minutes ago</small>
+          </p>
+        </div>
+      </div> */}
+      {/* {actividad &&
         actividad.map((actividad, index) => (
           <p key={index}>
             {actividad.remision ? (
@@ -71,7 +97,7 @@ function ActividadReciente(props) {
               </Link>
             )}
           </p>
-        ))}
+        ))} */}
     </div>
   );
 }

@@ -55,8 +55,22 @@ router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
  * Crea una orden y la agrega a una bodega
  */
 router.post("/bodegas/:idB/ordenes", async (req, res) => {
-  let orden = null;
+  let orden = req.body;
+  let tarifasNuevas = [];
   try {
+    console.log(req.body);
+    for (let tarifasPorEquipo of req.body.tarifasDefinitivas) {
+      let tarifasAgrupadas = { tarifasPorEquipo: [] }
+      for (let tarifa of tarifasPorEquipo.tarifasPorEquipo) {
+        delete tarifa._id;
+        let newTarifa = new Tarifa(tarifa);
+        newTarifa = await newTarifa.save();
+        tarifasAgrupadas.tarifasPorEquipo.push(newTarifa);
+      }
+      tarifasNuevas.push(tarifasAgrupadas);
+    }
+    orden.tarifasDefinitivas = tarifasNuevas;
+
     orden = new Orden(req.body);
     const bodega = await Bodega.findById(req.params.idB);
     if (!bodega) {
@@ -72,6 +86,10 @@ router.post("/bodegas/:idB/ordenes", async (req, res) => {
     orden.bodega = bodega;
     res.status(201).json(orden);
   } catch (e) {
+    //borrar tarifas nuevas
+    // for (let tarifa of tarifasNuevas){
+    //   await Tarifa.findByIdAndDelete(tarifa._id);
+    // }
     console.log(e);
     res.status(400).send("No se pudo agregar la bodega al tercero ");
   }

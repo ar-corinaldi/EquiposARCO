@@ -176,7 +176,7 @@ function OrdenDetail(props) {
                 </Col>
               </Row>
 
-              <Row>
+              <Row className="scrollable">
                 <Col>
                   <ActividadReciente
                     orden={orden}

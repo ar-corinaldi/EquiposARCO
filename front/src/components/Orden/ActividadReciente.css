@@ -14,13 +14,13 @@
   content: "";
   left: 9px;
   position: absolute !important;
-  top: 40px;
+  top: 20px;
   width: 2px;
   z-index: 0;
   height: 64px;
 }
 .timeline-alt {
-  padding: 20px 0;
+  padding: 5px 0;
   position: relative;
 }
 
@@ -51,6 +51,10 @@
   text-align: center;
   line-height: 16px;
   background-color: #fff;
+}
+
+.timeline-item {
+  position: relative;
 }
 
 *,

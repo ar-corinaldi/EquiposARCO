@@ -103,3 +103,8 @@
 .mgl-10 {
   margin-left: 10px;
 }
+
+.scrollable {
+  overflow-y: auto;
+  height: 250px;
+}

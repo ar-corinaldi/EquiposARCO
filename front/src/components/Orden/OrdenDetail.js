@@ -8,6 +8,7 @@ import EquiposTable from "./EquiposTable";
 import ActividadReciente from "./ActividadReciente";
 import formatoFechas from "../utils/FormatoFechas";
 import { useHistory } from "react-router-dom";
+import { FaEllipsisV } from "react-icons/fa";
 
 function OrdenDetail(props) {
   const history = useHistory();
@@ -164,13 +165,27 @@ function OrdenDetail(props) {
         <Col>
           <Row>
             <div className="orden-wrapper" id="orden-actividad-wrapper">
-              <h4 className="page-title-orden">Actividad reciente</h4>
-              <ActividadReciente
-                orden={orden}
-                id={id}
-                idB={idB}
-                idOr={idOr}
-              ></ActividadReciente>
+              <Row>
+                <Col>
+                  <h4 className="page-title-orden">Actividad reciente</h4>
+                </Col>
+                <Col md="auto">
+                  <button className="button-icon">
+                    <FaEllipsisV></FaEllipsisV>
+                  </button>
+                </Col>
+              </Row>
+
+              <Row className="scrollable">
+                <Col>
+                  <ActividadReciente
+                    orden={orden}
+                    id={id}
+                    idB={idB}
+                    idOr={idOr}
+                  ></ActividadReciente>{" "}
+                </Col>
+              </Row>
             </div>
           </Row>
           <Row>

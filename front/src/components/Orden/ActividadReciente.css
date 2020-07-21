@@ -1,0 +1,70 @@
+/* .timeline-item:before {
+  background-color: #f1f3fa;
+  bottom: 0;
+  content: "";
+  left: 9px;
+  position: absolute;
+  top: 20px;
+  width: 2px;
+  z-index: 0;
+} */
+.timeline-line {
+  background-color: #f1f3fa;
+  bottom: 0;
+  content: "";
+  left: 9px;
+  position: absolute !important;
+  top: 20px;
+  width: 2px;
+  z-index: 0;
+  height: 64px;
+}
+.timeline-alt {
+  padding: 5px 0;
+  position: relative;
+}
+
+.pb-0,
+.py-0 {
+  padding-bottom: 0 !important;
+}
+
+.timeline-alt .timeline-item .timeline-item-info {
+  margin-left: 30px;
+}
+
+.bg-info-lighten {
+  background-color: rgba(57, 175, 209, 0.25) !important;
+}
+
+.text-info {
+  color: #007bff !important;
+}
+
+.timeline-alt .timeline-item .timeline-icon {
+  float: left;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  font-size: 12px;
+  text-align: center;
+  line-height: 16px;
+  background-color: #fff;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+*,
+::after,
+::before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.devolucion {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}

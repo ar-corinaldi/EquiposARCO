@@ -67,10 +67,12 @@
   display: table-row;
 }
 
-.button-mas {
+.button-icon {
   border: none;
   background: none;
   padding: 0px;
+}
+.green {
   color: green;
 }
 
@@ -100,4 +102,9 @@
 
 .mgl-10 {
   margin-left: 10px;
+}
+
+.scrollable {
+  overflow-y: auto;
+  height: 250px;
 }

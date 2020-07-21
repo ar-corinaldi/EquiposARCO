@@ -16,7 +16,6 @@ function usePagination(urlResource, urlCount) {
   const [currentPage, setCurrentPage] = useState(1);
   const [resourcesPerPage, setResourcesPerPage] = useState(10);
   const [countResources, setCountResources] = useState(0);
-
   const { resource, loading, setResource, setLoading } = useAPIDetail(
     // Automaticamente actualiza la pagina actual y recursos de la pagina
     // Por default son 1 y 10

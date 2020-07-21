@@ -12,7 +12,7 @@ function EquipoTable(props) {
           <th>Familia</th>
           <th>Peso</th>
           <th>Cantidad</th>
-          <th className="w50"></th>
+          <th>Accion</th>
         </tr>
       </thead>
       <tbody>

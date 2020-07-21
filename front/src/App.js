@@ -23,6 +23,7 @@ import RemisionCreate from "./components/Remision/RemisionCreate";
 import RemisionDetail from "./components/Remision/RemisionDetail";
 import DevolucionCreate from "./components/Devolucion/DevolucionCreate";
 import DevolucionDetail from "./components/Devolucion/DevolucionDetail";
+import ActividadList from "./components/Actividad/ActividadList";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -103,6 +104,11 @@ function App() {
                   path="/terceros/:id/bodegas/:idB/ordenes/:idOr/devoluciones/:idD"
                   exact
                   component={DevolucionDetail}
+                />
+                <Route
+                  path="/terceros/:id/bodegas/:idB/ordenes/:idOr/actividad"
+                  exact
+                  component={ActividadList}
                 />
                 <Route
                   path="/terceros/:id/cotizaciones/:idC"

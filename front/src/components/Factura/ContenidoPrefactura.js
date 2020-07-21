@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import formatoPrecios from "../utils/FormatoPrecios";
+import { formatoCategoria, formatoTiempo } from "../utils/FormatoInfoPrecios";
 
 function ContenidoPrefactura(props) {
   const { equipo, listaMes, mes, anio, setPrecioTotal } = props;
@@ -27,11 +29,14 @@ function ContenidoPrefactura(props) {
           newRender.push(
             <tr key={date}>
               <td>{equipo && equipo.nombreEquipo}</td>
-              <td>{cantidad}</td>
+              <td>{`${cantidad} ${formatoCategoria(equipo.categoria)}`}</td>
               <td>{date}</td>
-              <td>{facturado}</td>
-              <td>{equipo.precio}</td>
-              <td>{total}</td>
+              <td>{`${facturado} ${formatoTiempo(
+                equipo.tiempo,
+                facturado
+              )}`}</td>
+              <td>{formatoPrecios(equipo.precio)}</td>
+              <td>{formatoPrecios(total)}</td>
             </tr>
           );
         }
@@ -52,11 +57,11 @@ function ContenidoPrefactura(props) {
       newRender.push(
         <tr key={date}>
           <td>{equipo && equipo.nombreEquipo}</td>
-          <td>{cantidad}</td>
+          <td>{`${cantidad} ${formatoCategoria(equipo.categoria)}`}</td>
           <td>{date}</td>
-          <td>{facturado}</td>
-          <td>{equipo.precio}</td>
-          <td>{total}</td>
+          <td>{`${facturado} ${formatoTiempo(equipo.tiempo, facturado)}`}</td>
+          <td>{formatoPrecios(equipo.precio)}</td>
+          <td>{formatoPrecios(total)}</td>
         </tr>
       );
     }

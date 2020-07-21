@@ -6,6 +6,7 @@ import InfoFactura from "./InfoFactura";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import formatoPrecios from "../utils/FormatoPrecios";
 
 function FacturaDetail() {
   let { idFactura } = useParams();
@@ -38,7 +39,6 @@ function FacturaDetail() {
   };
 
   const parseDate = (date) => {
-    console.log(date);
     let mes = ("0" + (date.getMonth() + 1)).slice(-2);
     let dia = ("0" + date.getDate()).slice(-2);
     return [date.getFullYear(), mes, dia].join("-");
@@ -120,7 +120,7 @@ function FacturaDetail() {
           <div id="info-wrapper">
             <h4 id="titulos">Total</h4>
             <p>
-              <strong>{precioTotal}</strong>
+              <strong>{formatoPrecios(precioTotal)}</strong>
             </p>
           </div>
         </Row>

@@ -7,16 +7,24 @@ const tiempo = ["hora", "dia cal", "dia habil", "semana", "mes", "anio"];
  *
  * @param {string} tiempoString. String a formatear, debe se una de: "hora", "dia cal", "dia habil", "semana", "mes", "anio".
  * Si no lo es, se retornará un String vacío. Tiene que ser un match exacto, se usa ===. Se retorna todo sin mayúscula inicial.
- * @param {boolean} plural .Indica si el valor a retornar está en plural. Por defecto es true
+ * @param {boolean} plural .Indica si el valor a retornar está en plural. Por defecto es false
  */
-export function formatoTiempo(tiempoString, plural = true) {
+export function formatoTiempo(tiempoString, plural = false) {
+  if (plural !== true) {
+    try {
+      plural = plural && plural > 1;
+    } catch (e) {
+      plural = true;
+    }
+  }
+
   if (!tiempoString) {
     return "";
   } else {
     if (tiempoString === "hora") {
       return plural ? "horas" : "hora";
     } else if (tiempoString === "dia cal") {
-      return plural ? "días calendario" : "día calendario.";
+      return plural ? "días calendario" : "día calendario";
     } else if (tiempoString === "dia habil") {
       return plural ? "días hábiles" : "día hábil";
     } else if (tiempoString === "semana") {
@@ -64,6 +72,7 @@ export function formatoCategoria(categoriaString, plural = true) {
  * @param {boolean} plural. Indica si el valor a retornar está en plural. Por defecto es true
  */
 export function formatoCategoriaHTML(categoriaString, plural = true) {
+  console.log(categoriaString);
   if (!categoriaString) {
     return "";
   } else {

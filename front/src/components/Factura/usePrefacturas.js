@@ -148,9 +148,16 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
           return idEquipoTarifa === equipoID._id;
         });
         //length equipoTarifa, en caso de que sea nullo, sera false y no entra al if
-        let precio = calcularPrecioEquipo(equipoTarifas, remision, equipoID);
+        let { precio, categoria, tiempo, tiempoMinimo } = calcularPrecioEquipo(
+          equipoTarifas,
+          remision,
+          equipoID
+        );
 
         prefacturaMes[idEquipo].equipo.precio = precio;
+        prefacturaMes[idEquipo].equipo.categoria = categoria;
+        prefacturaMes[idEquipo].equipo.tiempo = tiempo;
+        prefacturaMes[idEquipo].equipo.tiempoMinimo = tiempoMinimo;
 
         prefacturaMes[idEquipo].listaMes.fill(
           cantidadAObra,
@@ -274,6 +281,9 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
 
   const calcularPrecioEquipo = (equipoTarifas, remision, equipoID) => {
     let precio = 0;
+    let categoria = "unidad";
+    let tiempo = "dia cal";
+    let tiempoMinimo = 0;
     const len = equipoTarifas && equipoTarifas.length;
     if (len && len > 0) {
       let fechaFinTarifa = new Date(equipoTarifas[len - 1].fechaFin);
@@ -293,6 +303,12 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
         (equipoTarifas.length > 0 &&
           equipoTarifas[equipoTarifas.length - 1].valorTarifa) ||
         0;
+      const precioRef = equipoTarifas.precioReferencia;
+      if (precioRef) {
+        categoria = precioRef.categoria;
+        tiempo = precioRef.tiempo;
+        tiempoMinimo = precioRef.tiempoMinimo;
+      }
     }
 
     if (precio === 0) {
@@ -310,7 +326,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
       );
     }
 
-    return precio;
+    return { precio, categoria, tiempoMinimo, tiempo };
   };
 
   /**

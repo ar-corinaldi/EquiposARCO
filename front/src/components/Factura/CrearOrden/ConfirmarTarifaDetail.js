@@ -89,21 +89,9 @@ function ConfirmarTarifaDetail(props) {
           </th>
           <th>{formatoPrecio(tarifa.valorTarifa).replace(" ", "\xa0")}</th>
           <th>{formatoTiempo(tarifa.precioReferencia.tiempo)}</th>
-          {/* <th>
-            {cobro.tiempoTotal +
-              " " +
-              formatoTiempo(
-                tarifa.precioReferencia.tiempo,
-                cobro.tiempoTotal != 1
-              )}
-          </th> */}
           <th>
             <p>{"Desde: " + formatoFechas(tarifa.fechaInicio).toString()}</p>
             <p>{"  Hasta: " + (tarifa.fechaFin ? formatoFechas(tarifa.fechaFin).toString() : "Sin límite. ")}</p>
-            {/* {"Desde: "+formatoFechas(tarifa.fechaInicio).toString()+"  Hasta: "+
-              (tarifa.fechaFin? formatoFechas(tarifa.fechaFin).toString(): "Sin límite. ")
-
-              } */}
           </th>
           <th>
             <EditIcon></EditIcon>

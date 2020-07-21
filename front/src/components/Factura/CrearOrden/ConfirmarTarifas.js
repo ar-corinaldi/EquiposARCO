@@ -15,7 +15,7 @@ function ConfirmarTarifas(props) {
     //Estados propios
     const [tarifasFinales, setTarifasFinales] = useState([]);
     const [camposCorrectos, setCamposCorrectos] = useState(false);
-    let [toastRender] = useState(new Date().getTime());
+    let [toastRender, setToastRender] = useState({tiempo: new Date().getTime(), mensajePrevio: ""});
 
     //variables
 
@@ -114,7 +114,8 @@ function ConfirmarTarifas(props) {
     function mostrarError(inventarioFaltante) {
         //Solo renderiza el Toast si han pasado más de 150ms desde el último render
         let now = new Date().getTime();
-        if ((now - toastRender) > 150) {
+        const diff = now - toastRender.tiempo;
+        if ( diff > 150 && primerEstado === "complete") {
             if (inventarioFaltante.length > 0) {
                 let errores = "";
                 let erroresSobrantes = 0;
@@ -135,8 +136,14 @@ function ConfirmarTarifas(props) {
                 if (erroresSobrantes) {
                     errores += ("Hay otros" + erroresSobrantes + " equipos en esta orden con errores." + "\n")
                 }
-                Toast([errores], 5000, 500);
-                toastRender = new Date().getTime();
+                if((errores != toastRender.mensajePrevio) || (errores === toastRender.mensajePrevio && diff > 2000)){
+                    //Renderiza solo si el mensaje es distinto o si es igual y ha pasado más de dos segundos desde el último render
+                    console.log("previo: "+ toastRender.mensajePrevio);
+                    console.log("actual: "+ errores);
+                    Toast([errores], 5000, 500);
+                }
+                setToastRender({tiempo: new Date().getTime(), mensajePrevio: errores});
+                console.log("previo ahora: "+ toastRender.mensajePrevio);
             }
         }
 
@@ -147,14 +154,16 @@ function ConfirmarTarifas(props) {
      * Es decir, cuando hay suficiente disponibilidad en inventario como para realizar la orden
      * @param {*} props 
      */
-    function guardarOrden(props) {
+    async function guardarOrden(props) {
         if (bodegaSeleccionada && bodegaSeleccionada.direccionBodega) {
             let orden = {};
             orden.bodega = bodegaSeleccionada;
             if (tarifasFinales && tarifasFinales.length > 0) {
                 orden.tarifasDefinitivas = tarifasFinales;
                 orden.cotizacion = cotizacionSeleccionada._id;
-                fetch("/bodegas/" + orden.bodega._id + "/ordenes", {
+                console.log('orden crear orden');
+                console.log(orden); 
+                await fetch("/bodegas/" + orden.bodega._id + "/ordenes", {
                     method: "POST",
                     body: JSON.stringify(orden),
                     headers: { "Content-type": "application/json; charset=UTF-8" }

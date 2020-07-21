@@ -149,47 +149,9 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
         });
         console.log(equipoTarifas);
         //length equipoTarifa, en caso de que sea nullo, sera false y no entra al if
-        const len = equipoTarifas && equipoTarifas.length;
-        let precio = 0;
-        if (len && len > 0) {
-          let fechaFinTarifa = new Date(equipoTarifas[len - 1].fechaFin);
-          const fechaRemision = new Date(remision.fechaLlegada);
-          console.log(equipoTarifas.length);
-          console.log(fechaFinTarifa);
-          console.log(fechaRemision);
-          while (
-            fechaFinTarifa.getTime() < fechaRemision.getTime() &&
-            equipoTarifas.length > 0
-          ) {
-            equipoTarifas.pop();
-            console.log(equipoTarifas.length);
-
-            if (equipoTarifas.length > 0) {
-              const cur = equipoTarifas[equipoTarifas.length - 1];
-              fechaFinTarifa = new Date(cur.fechaFin);
-            }
-          }
-          precio =
-            (equipoTarifas.length > 0 &&
-              equipoTarifas[equipoTarifas.length - 1].valorTarifa) ||
-            0;
-        }
-
-        if (precio === 0) {
-          precio =
-            equipoID.precios &&
-            equipoID.precios.length > 0 &&
-            equipoID.precios[0].valorAlquiler;
-        }
+        let precio = calcularPrecioEquipo(equipoTarifas, remision, equipoID);
 
         prefacturaMes[idEquipo].equipo.precio = precio;
-        if (prefacturaMes[idEquipo].equipo.precio === 0) {
-          Toast(
-            [`No se le asignó precio al equipo ${equipoID.nombreEquipo}`],
-            true,
-            404
-          );
-        }
 
         prefacturaMes[idEquipo].listaMes.fill(
           cantidadAObra,
@@ -246,6 +208,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
             400
           );
         }
+
         prefacturaMes[idEquipo].listaMes.fill(
           cantidadAObra,
           day - 1,
@@ -305,25 +268,54 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
           tarifasMes.push(tarifasPorEquipo);
         }
       });
-      // let tarifaMesPorEquipo = [];
-      // if (tarifasMes.length > 0) {
-      //   for (let tarifa of tarifasMes) {
-      //     let temp = filtrarListaPorFecha(
-      //       tarifa,
-      //       "fechaInicio",
-      //       inicioMes,
-      //       finMes
-      //     );
-      //     console.log(temp);
-      //     if (temp) tarifaMesPorEquipo.push(temp);
-      //   }
-      // }
-      // for (let tar of tarifaMesPorEquipo) {
-      //   if (tar.length > 0) tarifasMes = tar;
-      // }
     }
 
     return { remisionesMes, devolucionesMes, tarifasMes };
+  };
+
+  const calcularPrecioEquipo = (equipoTarifas, remision, equipoID) => {
+    let precio = 0;
+    const len = equipoTarifas && equipoTarifas.length;
+    if (len && len > 0) {
+      let fechaFinTarifa = new Date(equipoTarifas[len - 1].fechaFin);
+      const fechaRemision = new Date(remision.fechaLlegada);
+      console.log(equipoTarifas.length);
+      console.log(fechaFinTarifa);
+      console.log(fechaRemision);
+      while (
+        fechaFinTarifa.getTime() < fechaRemision.getTime() &&
+        equipoTarifas.length > 0
+      ) {
+        equipoTarifas.pop();
+        console.log(equipoTarifas.length);
+
+        if (equipoTarifas.length > 0) {
+          const cur = equipoTarifas[equipoTarifas.length - 1];
+          fechaFinTarifa = new Date(cur.fechaFin);
+        }
+      }
+      precio =
+        (equipoTarifas.length > 0 &&
+          equipoTarifas[equipoTarifas.length - 1].valorTarifa) ||
+        0;
+    }
+
+    if (precio === 0) {
+      precio =
+        equipoID.precios &&
+        equipoID.precios.length > 0 &&
+        equipoID.precios[0].valorAlquiler;
+    }
+
+    if (precio === 0) {
+      Toast(
+        [`No se le asignó precio al equipo ${equipoID.nombreEquipo}`],
+        true,
+        404
+      );
+    }
+
+    return precio;
   };
 
   /**

@@ -27,11 +27,6 @@ function RemisionCreate(props) {
   };
 
   const equiposOrden = (orden) => {
-    // const equiposO = [];
-    // orden.tarifasDefinitivas.forEach((tarifa) => {
-    //   const equipo = tarifa.tarifasPorEquipo[0].equipo;
-    //   equiposO.push(equipo);
-    // });
     const equiposO = calcularDisponiblesRemision(orden);
     setEquipos(equiposO);
     //console.log("equipos", equiposO);

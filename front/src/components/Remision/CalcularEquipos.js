@@ -41,22 +41,16 @@ export function calcularDisponiblesRemision(orden) {
   if (!orden) return equipos;
   let equipo;
   console.log("orden", orden);
-  //
+  // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
   orden.tarifasDefinitivas.sort(compareTarifas);
-
-  console.log("tarifas ordenadas:", orden.tarifasDefinitivas);
-
+  // Revisar las cantidades originales de acuerdo con la tarifa valida
   orden.tarifasDefinitivas.forEach((tarifa) => {
     tarifa.tarifasPorEquipo.forEach((tarifaEquipo) => {
-      console.log("entra");
-
       //   console.log("tarifaEquipo", tarifa);
       //   console.log("tarifaValida", tarifaValida(tarifa));
       if (tarifaValida(tarifaEquipo)) {
         equipo = tarifaEquipo.equipo;
         if (equipo.componentes && equipo.componentes.length > 0) {
-          console.log("equipo compuesto");
-
           equipo.componentes.forEach((componente) => {
             let yaEsta = false;
             equipos.forEach((equipoYa) => {
@@ -74,25 +68,29 @@ export function calcularDisponiblesRemision(orden) {
             }
           });
         } else {
-          console.log("equipo normi");
           equipo.porEnviar = tarifaEquipo.cantidad;
           equipos.push(equipo);
         }
       }
     });
   });
-  //   equipos.sort(compareEquipos);
-  //   console.log("equipos1", equipos);
+  // Restar las cantidades de las remisiones realizadas. Si se hace remision y devolucion y depués se hace una nueva remision se daña en el mismo equipo
   orden.remisiones.forEach((remision) => {
     remision.equiposEnRemision.forEach((equipoRemision) => {
-      equipos.forEach((equipo) => {
-        if (equipo._id === equipoRemision.equipoID._id) {
+      for (let index = 0; index < equipos.length; index++) {
+        const equipo = equipos[index];
+        console.log("entra");
+        if (equipo._id === equipoRemision.equipoID) {
           const newCant = equipo.porEnviar - equipoRemision.cantidad;
-          equipo.porEnviar = newCant;
+          if (newCant === 0) {
+            equipos.splice(index, 1);
+          } else {
+            equipo.porEnviar = newCant;
+          }
         }
-      });
+      }
     });
   });
-  console.log("equipos2", equipos);
+  console.log("equipos", equipos);
   return equipos;
 }

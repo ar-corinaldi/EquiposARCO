@@ -64,7 +64,6 @@ function EquipoRow(props) {
         <td>{equipo.cantidadOr}</td>
         <td>{equipo.enviado}</td>
         <td>{equipo.devuelto}</td>
-
         <td>{equipo.porEnviar}</td>
         <td>{equipo.porDevolver}</td>
 

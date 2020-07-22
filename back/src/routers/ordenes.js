@@ -258,8 +258,24 @@ router.get("/ordenes/:id", async (req, res) => {
           },
         },
       })
-      .populate("remisiones")
-      .populate("devoluciones")
+      .populate({
+        path: "remisiones",
+        populate: {
+          path: "equiposEnRemision",
+          populate: {
+            path: "equipoID",
+          },
+        },
+      })
+      .populate({
+        path: "devoluciones",
+        populate: {
+          path: "equiposEnDevolucion",
+          populate: {
+            path: "equipoID",
+          },
+        },
+      })
       .populate("cotizacion");
     if (!orden) {
       return res.send("La orden no existe");

@@ -1,5 +1,5 @@
 import React from "react";
-import withFormHandling from "../withFormHandling";
+import withFormHandling from "../../withFormHandling";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useState, useEffect } from "react";
@@ -8,9 +8,9 @@ import EscogerEquipos from "./EscogerEquipos";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import "moment/locale/es";
-import Escoger from "../Escoger";
+import Escoger from "../../Escoger";
 import EquipoTable from "./EquipoTable";
-import formatoPrecios from "../utils/FormatoPrecios";
+import formatoPrecios from "../../utils/FormatoPrecios";
 
 function DevolucionForm(props) {
   const [devolucion, setDevolucion] = useState(undefined);

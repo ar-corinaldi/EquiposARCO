@@ -3,10 +3,10 @@ import ActividadTable from "./ActividadTable";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import Pagination from "../Pagination";
+import Pagination from "../../Pagination";
 import { useHistory, useParams } from "react-router-dom";
 import "./ActividadList.css";
-import usePagination from "../../hooks/usePagination";
+import usePagination from "../../../hooks/usePagination";
 
 function ActividadList(props) {
   const { id, idB, idOr } = useParams();

@@ -55,7 +55,7 @@ export default function EscogerEquipos(props) {
             open={open}
             value={pendingValue}
             filterOptions={filterOptions}
-            noOptionsText="No hay equipos registrados en la orden"
+            noOptionsText="No hay equipos disponibles para devolver"
             classes={{
               paper: "paper",
               option: "optionEquipo",

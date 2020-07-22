@@ -36,8 +36,8 @@ export default function calcularTarifaCotizacion(tarifas) {
         const hd1 = holidays[0];
         console.log(hd1.date);
         console.log(new Date("2020-07-04T05:00:00.000+00:00").getDay());
-        console.log(0%6);
-        
+        console.log(0 % 6);
+
 
 
 
@@ -45,25 +45,25 @@ export default function calcularTarifaCotizacion(tarifas) {
     else {
         tarifas.map((tarifa) => {
             let informaciónCobroTarifa = {}
-            if(!tarifa.precioReferencia || !tarifa.precioReferencia.tiempo ){
+            if (!tarifa.precioReferencia || !tarifa.precioReferencia.tiempo) {
                 return null;
             }
-            else{
+            else {
                 const tiempoMinimo = tarifa.precioReferencia.tiempoMinimo;
                 const medidaTiempo = tarifa.precioReferencia.tiempo;
-                if(medidaTiempo != "dia habil"){
-                    let [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo, tiempoMinimo);
-                    informaciónCobroTarifa.cobroTotal = precioTotal;
-                    informaciónCobroTarifa.tiempoTotal = tiempoTotal;
-                    cobroCompleto += precioTotal;
+                if (medidaTiempo != "dia habil") {
+                    const calculo = calcularTarifa(tarifa, medidaTiempo, tiempoMinimo);
+                    informaciónCobroTarifa.cobroTotal = calculo.precioTotal;
+                    informaciónCobroTarifa.tiempoTotal = calculo.tiempoTotal;
+                    cobroCompleto += calculo.precioTotal;
 
                 }
-                else{
-                    let [precioTotal, tiempoTotal, festivosEnMedio] = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
-                    informaciónCobroTarifa.cobroTotal = precioTotal;
-                    informaciónCobroTarifa.tiempoTotal = tiempoTotal;
-                    informaciónCobroTarifa.festivos = festivosEnMedio;
-                    cobroCompleto += precioTotal;
+                else {
+                    const calculo = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
+                    informaciónCobroTarifa.cobroTotal = calculo.precioTotal;
+                    informaciónCobroTarifa.tiempoTotal = calculo.diasTotales;
+                    informaciónCobroTarifa.festivos = calculo.festivosEnMedio;
+                    cobroCompleto += calculo.precioTotal;
                 }
             }
             respuesta[tarifa._id] = informaciónCobroTarifa;
@@ -76,11 +76,18 @@ export default function calcularTarifaCotizacion(tarifas) {
 }
 
 
-
-function calcularTarifaDiaHabil(tarifa, tiempoMinimo) {
-    const fechaInicial = new Date( tarifa.fechaInicio);
-    const fechaFinal = new Date( tarifa.fechaFin);
-    if (!fechaFinal) {
+/**
+ * @param {Object} tarifa. Único campo requerido, si los otros faltan, los campos de tarifa serán los usados por defecto
+ * @param {Number} tiempoMinimo. Tiempo mínimo para calcular el valor da cobrar, por defecto es 0.
+ * @param {Date} fechaInicio. Fecha de inicio del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
+ * @param {Date} fechaFin. Fecha fin del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
+ * @param {Number}} cantidad. Cantidad de equipos para los cuales sacar el cobro total, si no se pasa se usa la de tarifa.
+ */
+function calcularTarifaDiaHabil(tarifa, tiempoMinimo = 0, fechaInicio, fechaFin, cantidad) {
+    const fechaInicial = fechaInicio || new Date(tarifa.fechaInicio);
+    const fechaFinal = fechaFin || new Date(tarifa.fechaFin);
+    const cantidadUsada = cantidad || tarifa.cantidad;
+    if (!fechaFinal || !fechaInicial || (cantidadUsada!==0 && !cantidadUsada)) {
         return null;
     }
 
@@ -110,43 +117,45 @@ function calcularTarifaDiaHabil(tarifa, tiempoMinimo) {
         }
 
         let festivosEnMedio = []
-        holidays.forEach( dia => {
+        holidays.forEach(dia => {
             const festivo = new Date(dia.date);
-            if(festivo >= diaInicial && festivo <= diaFinal){
+            if (festivo >= diaInicial && festivo <= diaFinal) {
                 //Si el festivo no es ni Sábado (6) ni Domingo (0)
-                if((festivo.getDay() % 6 ) != 0){
+                if ((festivo.getDay() % 6) != 0) {
                     dias--;
                     festivosEnMedio.push(dia);
                 }
             }
         })
         const diasTotales = Math.max(dias, tiempoMinimo);
-        const precioTotal = diasTotales * tarifa.valorTarifa * tarifa.cantidad;
-        return [precioTotal, diasTotales, festivosEnMedio];
+        const precioTotal = diasTotales * tarifa.valorTarifa * cantidadUsada;
+        return { precioTotal: precioTotal, diasTotales: diasTotales, festivosEnMedio: festivosEnMedio };
     }
 
 
 }
 
-function calcularTarifa(tarifa, medidaTiempo, tiempoMinimo) {
-    const fechaInicial = new Date( tarifa.fechaInicio);
-    const fechaFinal = new Date( tarifa.fechaFin);
-    if (!fechaFinal || !conversion[medidaTiempo]) {
+/**
+ * 
+ * @param {Object} tarifa. Campo requerido, a excepción de medidaTiempo, si los otros faltan, los campos de tarifa serán los usados por defecto.
+ * @param {String} medidaTiempo. Campo requerido, Un string entre: "hora", "dia cal", "dia habil", "semana", "mes", "anio.
+ * @param {Number} tiempoMinimo. Tiempo mínimo para calcular el valor da cobrar, por defecto es 0.
+ * @param {Date} fechaInicio. Fecha de inicio del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
+ * @param {Date} fechaFin. Fecha fin del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
+ * @param {Number}} cantidad. Cantidad de equipos para los cuales sacar el cobro total, si no se pasa se usa la de tarifa.
+ */
+function calcularTarifa(tarifa, medidaTiempo, tiempoMinimo = 0, fechaInicio, fechaFin, cantidad) {
+    const fechaInicial = fechaInicio || new Date(tarifa.fechaInicio);
+    const fechaFinal = fechaFin || new Date(tarifa.fechaFin);
+    const cantidadUsada = cantidad || tarifa.cantidad;
+    if (!fechaFinal || !fechaInicial || !conversion[medidaTiempo] || (cantidadUsada!==0 && !cantidadUsada)) {
         return [null, -1];
     }
     else {
         const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
         const tiempoConvertido = Math.ceil(timeDifference / conversion[medidaTiempo]);
         const tiempoTotal = Math.max(tiempoConvertido, tiempoMinimo);
-        const precioTotal = tiempoTotal * tarifa.valorTarifa * tarifa.cantidad;
-        // console.log("Valores");
-        // console.log(precioTotal);
-        // console.log(tiempoTotal);
-        // console.log("time: "+ tiempoConvertido);
-        // console.log("timeTotal: "+ tiempoTotal);
-        
-        
-        
-        return [precioTotal, tiempoTotal];
+        const precioTotal = tiempoTotal * tarifa.valorTarifa * cantidadUsada;
+        return { precioTotal: precioTotal, tiempoTotal: tiempoTotal };
     }
 }

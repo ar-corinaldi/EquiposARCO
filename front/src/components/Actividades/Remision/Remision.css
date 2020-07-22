@@ -1,10 +1,10 @@
-.devolucion-registrar-wrapper {
+.remision-registrar-wrapper {
   margin: auto;
   width: 100%;
   padding: 10px;
 }
 
-.devolucion-registrar-card {
+.remision-registrar-card {
   background-color: white;
   box-shadow: 0px 0px 20px 1px rgba(134, 118, 118, 0.12);
   font-family: "Nunito", "sans-serif";
@@ -41,4 +41,14 @@
   color: #495057;
   background-color: #e9ecef;
   border-color: #dee2e6;
+}
+
+.center {
+  text-align: center;
+}
+
+.button-crear {
+  /* margin: auto; */
+  width: 100%;
+  text-align: center;
 }

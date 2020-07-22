@@ -80,7 +80,7 @@ function OrdenDetail(props) {
     //console.log("llegaOrdenes");
     let res = await fetch(`/ordenes/${idOr}`);
     const ordenA = await res.json();
-    console.log("orden", ordenA);
+    //console.log("orden", ordenA);
     setOrden(ordenA);
   };
 
@@ -90,6 +90,10 @@ function OrdenDetail(props) {
 
   const crearDevolucion = () => {
     history.push(`${orden._id}/devoluciones/create`);
+  };
+
+  const verActividad = () => {
+    history.push(`${orden._id}/actividad`);
   };
 
   return (
@@ -140,7 +144,7 @@ function OrdenDetail(props) {
         </Col>
       </Row>
       <Row>
-        <Col xs={8}>
+        <Col xs={9}>
           <div className="mgl-10">
             <Row>
               <Col>
@@ -170,7 +174,7 @@ function OrdenDetail(props) {
                   <h4 className="page-title-orden">Actividad reciente</h4>
                 </Col>
                 <Col md="auto">
-                  <button className="button-icon">
+                  <button className="button-icon" onClick={verActividad}>
                     <FaEllipsisV></FaEllipsisV>
                   </button>
                 </Col>

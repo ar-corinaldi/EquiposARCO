@@ -4,9 +4,9 @@ import "./Devolucion.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EquiposDevolucion from "./EquiposDevolucion";
-import formatoFechas from "../utils/FormatoFechas";
-import { formatoHora } from "../utils/FormatoFechas";
-import formatoPrecios from "../utils/FormatoPrecios";
+import formatoFechas from "../../utils/FormatoFechas";
+import { formatoHora } from "../../utils/FormatoFechas";
+import formatoPrecios from "../../utils/FormatoPrecios";
 
 function DevolucionDetail(props) {
   const { id, idB, idOr, idD } = useParams();

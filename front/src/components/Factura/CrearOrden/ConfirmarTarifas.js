@@ -15,7 +15,8 @@ function ConfirmarTarifas(props) {
     //Estados propios
     const [tarifasFinales, setTarifasFinales] = useState([]);
     const [camposCorrectos, setCamposCorrectos] = useState(false);
-    let [toastRender, setToastRender] = useState({tiempo: new Date().getTime(), mensajePrevio: ""});
+    let [toastRender, setToastRender] = useState({ tiempo: new Date().getTime(), mensajePrevio: "" });
+    const [editando, setEditando] = useState(0);
 
     //variables
 
@@ -96,6 +97,7 @@ function ConfirmarTarifas(props) {
                 setCamposCorrectos(true);
             }
             else {
+                console.log('falta inventario muchote');
                 setCamposCorrectos(false);
                 mostrarError(inventarioFaltante);
             }
@@ -115,15 +117,14 @@ function ConfirmarTarifas(props) {
         //Solo renderiza el Toast si han pasado más de 150ms desde el último render
         let now = new Date().getTime();
         const diff = now - toastRender.tiempo;
-        if ( diff > 150 && primerEstado === "complete") {
+        if (diff > 150 && primerEstado === "complete") {
             if (inventarioFaltante.length > 0) {
                 let errores = "";
                 let erroresSobrantes = 0;
                 console.log('====================================');
                 console.log(inventarioFaltante);
                 console.log('====================================');
-                inventarioFaltante.forEach((equipoFaltante, index) => 
-                {
+                inventarioFaltante.forEach((equipoFaltante, index) => {
                     if (index < 3) {
                         let error = ("Falta " + (equipoFaltante.requerido - equipoFaltante.disponible) + " existencias de "
                             + equipoFaltante.equipo + " en inventario." + "\n");
@@ -136,14 +137,14 @@ function ConfirmarTarifas(props) {
                 if (erroresSobrantes) {
                     errores += ("Hay otros" + erroresSobrantes + " equipos en esta orden con errores." + "\n")
                 }
-                if((errores != toastRender.mensajePrevio) || (errores === toastRender.mensajePrevio && diff > 2000)){
+                if ((errores != toastRender.mensajePrevio) || (errores === toastRender.mensajePrevio && diff > 2000)) {
                     //Renderiza solo si el mensaje es distinto o si es igual y ha pasado más de dos segundos desde el último render
-                    console.log("previo: "+ toastRender.mensajePrevio);
-                    console.log("actual: "+ errores);
+                    console.log("previo: " + toastRender.mensajePrevio);
+                    console.log("actual: " + errores);
                     Toast([errores], 5000, 500);
                 }
-                setToastRender({tiempo: new Date().getTime(), mensajePrevio: errores});
-                console.log("previo ahora: "+ toastRender.mensajePrevio);
+                setToastRender({ tiempo: new Date().getTime(), mensajePrevio: errores });
+                console.log("previo ahora: " + toastRender.mensajePrevio);
             }
         }
 
@@ -155,36 +156,40 @@ function ConfirmarTarifas(props) {
      * @param {*} props 
      */
     async function guardarOrden(props) {
-        if (bodegaSeleccionada && bodegaSeleccionada.direccionBodega) {
-            let orden = {};
-            orden.bodega = bodegaSeleccionada;
-            if (tarifasFinales && tarifasFinales.length > 0) {
-                orden.tarifasDefinitivas = tarifasFinales;
-                orden.cotizacion = cotizacionSeleccionada._id;
-                console.log('orden crear orden');
-                console.log(orden); 
-                await fetch("/bodegas/" + orden.bodega._id + "/ordenes", {
-                    method: "POST",
-                    body: JSON.stringify(orden),
-                    headers: { "Content-type": "application/json; charset=UTF-8" }
-                })
-                    .then(response => response.json())
-                    .then(response => {
-                        console.log(response)
-                        document.location.href = "/terceros/" + response.bodega.duenio
-                            + "/bodegas/" + response.bodega._id + "/ordenes/"
-                            + response._id;
+        if (!editando) {
+            if (bodegaSeleccionada && bodegaSeleccionada.direccionBodega) {
+                let orden = {};
+                orden.bodega = bodegaSeleccionada;
+                if (tarifasFinales && tarifasFinales.length > 0) {
+                    orden.tarifasDefinitivas = tarifasFinales;
+                    orden.cotizacion = cotizacionSeleccionada._id;
+                    console.log('orden crear orden');
+                    console.log(orden);
+                    await fetch("/bodegas/" + orden.bodega._id + "/ordenes", {
+                        method: "POST",
+                        body: JSON.stringify(orden),
+                        headers: { "Content-type": "application/json; charset=UTF-8" }
                     })
+                        .then(response => response.json())
+                        .then(response => {
+                            console.log(response)
+                            document.location.href = "/terceros/" + response.bodega.duenio
+                                + "/bodegas/" + response.bodega._id + "/ordenes/"
+                                + response._id;
+                        })
+                }
+                else {
+                    Toast(["La orden está vacía"], 6000, 400);
+                }
             }
             else {
-                Toast(["La orden está vacía"], 6000, 400);
+                Toast(["Profavor, seleccione una bodega destino"], 7000, 500);
+
             }
         }
-        else {
-            Toast(["Profavor, seleccione una bodega destino"], 7000, 500);
-
+        else{
+            Toast(["Termine de editar los campos antes de continuar"], 5000, 500);
         }
-
     }
 
     //Effects
@@ -223,9 +228,9 @@ function ConfirmarTarifas(props) {
             {/* {!tarifasFinales ? "" : tarifasFinales.map((tarifa, index) => {
                 return <ConfirmarTarifaDetail tarifa={tarifa} cobro={{}} inventario={[inventario, setInventario]} />
             })} */}
-            <Table responsive className="mt-4"  >
+            <Table responsive className="mt-4 mb-4" borderless  >
                 <thead>
-                    <tr>
+                    <tr className="borderedRow">
                         <th className="sticky-col" >Nombre Equipo</th>
                         <th>Cantidad</th>
                         <th>Unidad de Cobro</th>
@@ -247,6 +252,7 @@ function ConfirmarTarifas(props) {
                         cobro={{}}
                         inventario={[inventario, setInventario]}
                         camposCorrectos={setCamposCorrectos}
+                        editando = {setEditando}
                     />
                 })}
             </Table>

@@ -19,10 +19,13 @@ import NotaInventarioCreate from "./components/NotaInventario/NotaInventarioCrea
 import NotaInventarioList from "./components/NotaInventario/NotaInventarioList";
 import BodegaCreate from "./components/Bodega/BodegaCreate";
 import CotizacionDetail from "./components/Cotizacion/CotizacionDetail";
-import RemisionCreate from "./components/Remision/RemisionCreate";
-import RemisionDetail from "./components/Remision/RemisionDetail";
-import DevolucionCreate from "./components/Devolucion/DevolucionCreate";
-import DevolucionDetail from "./components/Devolucion/DevolucionDetail";
+import RemisionCreate from "./components/Actividades/Remision/RemisionCreate";
+import RemisionDetail from "./components/Actividades/Remision/RemisionDetail";
+import DevolucionCreate from "./components/Actividades/Devolucion/DevolucionCreate";
+import DevolucionDetail from "./components/Actividades/Devolucion/DevolucionDetail";
+import ActividadList from "./components/Actividades/Actividad/ActividadList";
+import Cotizar from "./components/Factura/Cotizar/Cotizar";
+
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -105,6 +108,11 @@ function App() {
                   component={DevolucionDetail}
                 />
                 <Route
+                  path="/terceros/:id/bodegas/:idB/ordenes/:idOr/actividad"
+                  exact
+                  component={ActividadList}
+                />
+                <Route
                   path="/terceros/:id/cotizaciones/:idC"
                   exact
                   component={CotizacionDetail}
@@ -114,6 +122,7 @@ function App() {
                   component={CrearOrden}
                   exact
                 />
+                <Route path="/facturacion/cotizar" component={Cotizar} exact />
                 <Route
                   path="/facturacion/listar_facturas"
                   exact

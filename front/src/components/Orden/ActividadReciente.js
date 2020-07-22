@@ -64,7 +64,7 @@ function ActividadReciente(props) {
       newActividad.sort(compare);
       setActividad(newActividad);
     }
-    console.log("newActividad", newActividad);
+    //console.log("newActividad", newActividad);
   };
 
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import withFormHandling from "../withFormHandling";
+import withFormHandling from "../../withFormHandling";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useState, useEffect } from "react";
@@ -8,9 +8,9 @@ import EscogerEquipos from "./EscogerEquipos";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import "moment/locale/es";
-import Escoger from "../Escoger";
+import Escoger from "../../Escoger";
 import EquipoTable from "./EquipoTable";
-import formatoPrecios from "../utils/FormatoPrecios";
+import formatoPrecios from "../../utils/FormatoPrecios";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -56,9 +56,13 @@ function RemisionForm(props) {
     // console.log(typeof fields.fechaLlegada);
     fields.asumidoTercero = asumidoTercero;
     handleEquiposRemision();
-    console.log(fields);
-    handleSubmitPOST(e).then((value) => setRemision(value));
-    manejarInventario();
+    //console.log(fields);
+    handleSubmitPOST(e)
+      .then((value) => {
+        setRemision(value);
+        manejarInventario();
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const handleRadio = (event) => {
@@ -237,7 +241,7 @@ function RemisionForm(props) {
             />
           </div>,
         ]}
-        <div id="button-wrapper">
+        <div className="button-crear ">
           <button type="submit" className="buttonTercero">
             Crear
           </button>

@@ -1,0 +1,52 @@
+.cotizarWrapper {
+  width: 100%;
+  margin: 15px;
+  padding: 10px;
+  font-family: "Nunito", "sans-serif";
+  color: #6c757d;
+  position: relative;
+}
+
+.buscarEquiposWrapper {
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  border-radius: 7px;
+  box-shadow: 0px 0px 15px 3px rgba(134, 118, 118, 0.12);
+  display: flex;
+}
+
+.basicLogo {
+  padding: 4px;
+  width: 33px;
+  height: auto;
+  border-radius: 5px;
+}
+.basicLogo:hover {
+  background-color: rgba(180, 179, 179, 0.486);
+}
+
+.basicLogo:active, .basicLogo:focus {
+    outline: 1px dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+
+.filtersWrapper {
+  position: relative;
+  width: fit-content;
+  float: left;
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
+.escogerWrapper {
+  position: relative;
+  float: left;
+  width: 70%;
+}
+
+.no-border-active:focus{
+    border: none !important;
+    border-color: transparent !important;
+    outline: none;
+}

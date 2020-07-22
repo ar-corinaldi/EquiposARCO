@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import RemisionForm from "./RemisionForm";
 import "./Remision.css";
-import { calcularDisponiblesRemision } from "./CalcularEquipos";
+import { calcularDisponiblesRemision } from "./../CalcularEquipos";
 
 function RemisionCreate(props) {
   const { id, idB, idOr } = useParams();

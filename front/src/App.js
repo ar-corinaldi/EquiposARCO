@@ -24,6 +24,7 @@ import RemisionDetail from "./components/Remision/RemisionDetail";
 import DevolucionCreate from "./components/Devolucion/DevolucionCreate";
 import DevolucionDetail from "./components/Devolucion/DevolucionDetail";
 import ActividadList from "./components/Actividad/ActividadList";
+import Cotizar from "./components/Factura/Cotizar/Cotizar";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -118,6 +119,11 @@ function App() {
                 <Route
                   path="/facturacion/crear_orden"
                   component={CrearOrden}
+                  exact
+                />
+                <Route
+                  path="/facturacion/cotizar"
+                  component={Cotizar}
                   exact
                 />
                 <Route

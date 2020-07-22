@@ -90,6 +90,11 @@ function Sidebar(props) {
       name: "Ordenes",
       ref: "/crear_orden",
     },
+    {
+      type: "Link",
+      name: "Cotizar",
+      ref: "/cotizar"
+    }
   ];
 
   //Definicion del menú home: Cuando la ruta es '/'.

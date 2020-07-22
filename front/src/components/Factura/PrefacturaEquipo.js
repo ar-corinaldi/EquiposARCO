@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import formatoPrecios from "../utils/FormatoPrecios";
 import { formatoCategoria, formatoTiempo } from "../utils/FormatoInfoPrecios";
+import { calcularTarifaDiaHabil } from "../utils/CacularTarifas";
 
 function PrefacturaEquipo(props) {
   const {
@@ -38,7 +39,20 @@ function PrefacturaEquipo(props) {
               i + 1
             }/${mes}/${anio}`;
 
-            const facturado = i + 1 - (prevDay + 1) + 1;
+            let facturado = i + 1 - (prevDay + 1) + 1;
+            facturado = Math.max(equipo.tiempoMinimo, facturado);
+            console.log("categoria", equipo.categoria);
+            if (equipo.categoria === "dia habil") {
+              const fechaA = new Date(2020, mes, prevDay + 1);
+              const fechaB = new Date(2020, mes, listaMes.length);
+              let { diasTotales, festivosEnMedio } = calcularTarifaDiaHabil(
+                null,
+                facturado,
+                fechaA,
+                fechaB
+              );
+              facturado = diasTotales - festivosEnMedio;
+            }
             const cantidad = prev;
             const total = equipo.precio * facturado * cantidad;
             newPrecioTotal += total;
@@ -66,7 +80,19 @@ function PrefacturaEquipo(props) {
       const date = `${prevDay + 1}/${mes}/${anio} - ${
         listaMes.length
       }/${mes}/${anio}`;
-      const facturado = listaMes.length - (prevDay + 1) + 1;
+      let facturado = listaMes.length - (prevDay + 1) + 1;
+      facturado = Math.max(equipo.tiempoMinimo, facturado);
+      if (equipo.categoria === "dia habil") {
+        const fechaA = new Date(2020, mes, prevDay + 1);
+        const fechaB = new Date(2020, mes, listaMes.length);
+        let { diasTotales, festivosEnMedio } = calcularTarifaDiaHabil(
+          null,
+          facturado,
+          fechaA,
+          fechaB
+        );
+        facturado = diasTotales - festivosEnMedio;
+      }
       if (prev !== 0) {
         const total = equipo.precio * facturado * cantidad;
         newPrecioTotal += total;
@@ -82,10 +108,6 @@ function PrefacturaEquipo(props) {
         );
       }
     }
-    // const prevPrecio = precioTotal;
-    console.log(newPrecioTotal, equipo && equipo.nombreEquipo);
-    // setPreciosMes((prev) => [...prev, newPrecioTotal]);
-
     setPrecioTotal((prevAcum) => prevAcum + newPrecioTotal);
     console.log("precio total set");
     return newRender;

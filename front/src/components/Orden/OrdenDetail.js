@@ -9,6 +9,7 @@ import ActividadReciente from "./ActividadReciente";
 import formatoFechas from "../utils/FormatoFechas";
 import { useHistory } from "react-router-dom";
 import { FaEllipsisV } from "react-icons/fa";
+import { calcularPorEnviarPorDevolver } from "../Actividades/CalcularEquipos";
 
 function OrdenDetail(props) {
   const history = useHistory();
@@ -19,6 +20,7 @@ function OrdenDetail(props) {
   const [statusOr, setStatus] = useState("");
   const [tercero, setTercero] = useState({});
   const [bodega, setBodega] = useState({});
+  const [equipos, setEquipos] = useState([]);
 
   useEffect(() => {
     fetchInfo();
@@ -82,6 +84,8 @@ function OrdenDetail(props) {
     const ordenA = await res.json();
     //console.log("orden", ordenA);
     setOrden(ordenA);
+    const equipoA = calcularPorEnviarPorDevolver(ordenA);
+    setEquipos(equipoA);
   };
 
   const crearRemision = () => {
@@ -162,7 +166,10 @@ function OrdenDetail(props) {
           <Row>
             <div className="orden-wrapper" id="orden-equipos-wrapper">
               <h4 className="page-title-orden">Equipos</h4>
-              <EquiposTable tarifas={orden.tarifasDefinitivas}></EquiposTable>
+              <EquiposTable
+                equipos={equipos}
+                tarifas={orden.tarifasDefinitivas}
+              ></EquiposTable>
             </div>
           </Row>
         </Col>

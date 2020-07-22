@@ -33,54 +33,64 @@ function EquipoRow(props) {
     setOpen(!open);
   };
 
-  const tarifasEquipo = props.tarifasPorEquipo;
-  //console.log("tarifasPorEquipo", tarifasEquipo);
+  // const tarifasEquipo = props.tarifasPorEquipo;
+  // //console.log("tarifasPorEquipo", tarifasEquipo);
+  // tarifasEquipo.sort(recientePrimero);
+  // const tarifaM = tarifasEquipo[0];
+  // const otrasTarifas = Array.from(tarifasEquipo);
+  // otrasTarifas.shift();
+
   const index = props.index + 1;
-  tarifasEquipo.sort(recientePrimero);
-  const tarifaM = tarifasEquipo[0];
-  const otrasTarifas = Array.from(tarifasEquipo);
-  otrasTarifas.shift();
+
+  const equipo = props.equipo;
 
   return (
     <React.Fragment>
       <tr className="capitalize">
         <td>
           {index}
-          <br />
+          {/* <br />
           <button className="button-icon green" onClick={toggle}>
             <FaPlusCircle></FaPlusCircle>
-          </button>
+          </button> */}
         </td>
         <td>
-          <Link to={`/inventario/equipos/${tarifaM.equipo._id}`}>
-            <b>{tarifaM && tarifaM.equipo.nombreEquipo}</b>
+          <Link to={`/inventario/equipos/${equipo._id}`}>
+            <b>{equipo.nombreEquipo}</b>
             <br />
-            {tarifaM && tarifaM.equipo.nombreGrupo}
+            {equipo.nombreGrupo}
           </Link>
         </td>
-        <td>{tarifaM.cantidad}</td>
-        <td>{tarifaM.cantidad}</td>
-        <td>{tarifaM.cantidad}</td>
+        <td>{equipo.cantidadOr}</td>
+        <td>{equipo.enviado}</td>
+        <td>{equipo.devuelto}</td>
 
-        <td>{formatoPrecios(tarifaM.valorTarifa)}</td>
+        <td>{equipo.porEnviar}</td>
+        <td>{equipo.porDevolver}</td>
+
+        <td>{formatoPrecios(equipo.equipoTarifa.valorTarifa)}</td>
         <td>
           <span
             className={
-              (tarifaM.precioReferencia.categoria.includes("metro")
+              (equipo.equipoTarifa.precioReferencia.categoria.includes("metro")
                 ? "not-"
                 : "") + "capitalize"
             }
           >
-            {formatoCategoriaHTML(tarifaM.precioReferencia.categoria, false)}
+            {formatoCategoriaHTML(
+              equipo.equipoTarifa.precioReferencia.categoria,
+              false
+            )}
           </span>{" "}
-          / {formatoTiempo(tarifaM.precioReferencia.tiempo, false)}
+          / {formatoTiempo(equipo.equipoTarifa.precioReferencia.tiempo, false)}
         </td>
         <td>
-          {formatoFechas(tarifaM.fechaInicio)}-{formatoFechas(tarifaM.fechaFin)}
+          {formatoFechas(equipo.equipoTarifa.fechaInicio)}-
+          {formatoFechas(equipo.equipoTarifa.fechaFin)}
         </td>
       </tr>
       {/* Se muestran las otras tarifas del equipo */}
-      {otrasTarifas &&
+      {/* {otrasTarifas &&
         otrasTarifas.map((tarifa2, index2) => (
           <tr
             key={tarifa2._id}
@@ -118,8 +128,8 @@ function EquipoRow(props) {
               {formatoFechas(tarifa2.fechaInicio)}-
               {formatoFechas(tarifa2.fechaFin)}
             </td>
-          </tr>
-        ))}
+          </tr> 
+        ))}*/}
     </React.Fragment>
   );
 }

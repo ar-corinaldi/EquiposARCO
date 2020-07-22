@@ -4,9 +4,9 @@ import "./Remision.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import EquiposRemision from "./EquiposRemision";
-import formatoFechas from "../utils/FormatoFechas";
-import { formatoHora } from "../utils/FormatoFechas";
-import formatoPrecios from "../utils/FormatoPrecios";
+import formatoFechas from "../../utils/FormatoFechas";
+import { formatoHora } from "../../utils/FormatoFechas";
+import formatoPrecios from "../../utils/FormatoPrecios";
 
 function RemisionDetail(props) {
   const { id, idB, idOr, idR } = useParams();

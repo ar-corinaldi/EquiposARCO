@@ -144,7 +144,7 @@ function OrdenDetail(props) {
         </Col>
       </Row>
       <Row>
-        <Col xs={8}>
+        <Col xs={9}>
           <div className="mgl-10">
             <Row>
               <Col>

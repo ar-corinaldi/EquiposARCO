@@ -4,6 +4,7 @@ import CloseIcon from "@material-ui/icons/Close";
 function EquipoDetail(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
   const equipoRender = props.equipoRender;
+  //console.log(equipoRender);
   const [cantidad, setCantidad] = useState(equipoRender.cantidad);
   let peso = 0;
 
@@ -43,6 +44,7 @@ function EquipoDetail(props) {
           <input
             type="number"
             min="1"
+            max={equipoRender.equipoID.porDevolver}
             value={equipoRender.cantidad}
             className="form-control w90"
             placeholder="cant."

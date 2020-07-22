@@ -14,10 +14,11 @@ function EquiposTable(props) {
             <th>#</th>
             <th>Item</th>
             <th>Cantidad</th>
+            <th>Remitidos</th>
+            <th>Devueltos</th>
             <th>Valor</th>
             <th>Tipo de Cobro</th>
             <th>Periodo Cobro</th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>

@@ -59,6 +59,9 @@ function EquipoRow(props) {
           </Link>
         </td>
         <td>{tarifaM.cantidad}</td>
+        <td>{tarifaM.cantidad}</td>
+        <td>{tarifaM.cantidad}</td>
+
         <td>{formatoPrecios(tarifaM.valorTarifa)}</td>
         <td>
           <span
@@ -75,7 +78,6 @@ function EquipoRow(props) {
         <td>
           {formatoFechas(tarifaM.fechaInicio)}-{formatoFechas(tarifaM.fechaFin)}
         </td>
-        <td>Falta </td>
       </tr>
       {/* Se muestran las otras tarifas del equipo */}
       {otrasTarifas &&
@@ -93,6 +95,9 @@ function EquipoRow(props) {
               </Link>
             </td>
             <td>{tarifa2.cantidad}</td>
+            <td>{tarifa2.cantidad}</td>
+            <td>{tarifa2.cantidad}</td>
+
             <td>{formatoPrecios(tarifa2.valorTarifa)}</td>
             <td>
               <span
@@ -113,7 +118,6 @@ function EquipoRow(props) {
               {formatoFechas(tarifa2.fechaInicio)}-
               {formatoFechas(tarifa2.fechaFin)}
             </td>
-            <td>Falta </td>
           </tr>
         ))}
     </React.Fragment>

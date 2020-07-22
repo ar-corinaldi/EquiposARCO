@@ -52,18 +52,18 @@ export default function calcularTarifaCotizacion(tarifas) {
                 const tiempoMinimo = tarifa.precioReferencia.tiempoMinimo;
                 const medidaTiempo = tarifa.precioReferencia.tiempo;
                 if(medidaTiempo != "dia habil"){
-                    let [precioTotal, tiempoTotal] = calcularTarifa(tarifa, medidaTiempo, tiempoMinimo);
-                    informaciónCobroTarifa.cobroTotal = precioTotal;
-                    informaciónCobroTarifa.tiempoTotal = tiempoTotal;
-                    cobroCompleto += precioTotal;
+                    const calculo= calcularTarifa(tarifa, medidaTiempo, tiempoMinimo);
+                    informaciónCobroTarifa.cobroTotal = calculo.precioTotal;
+                    informaciónCobroTarifa.tiempoTotal = calculo.tiempoTotal;
+                    cobroCompleto += calculo.precioTotal;
 
                 }
                 else{
-                    let [precioTotal, tiempoTotal, festivosEnMedio] = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
-                    informaciónCobroTarifa.cobroTotal = precioTotal;
-                    informaciónCobroTarifa.tiempoTotal = tiempoTotal;
-                    informaciónCobroTarifa.festivos = festivosEnMedio;
-                    cobroCompleto += precioTotal;
+                    const calculo = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
+                    informaciónCobroTarifa.cobroTotal = calculo.precioTotal;
+                    informaciónCobroTarifa.tiempoTotal = calculo.diasTotales;
+                    informaciónCobroTarifa.festivos = calculo.festivosEnMedio;
+                    cobroCompleto += calculo.precioTotal;
                 }
             }
             respuesta[tarifa._id] = informaciónCobroTarifa;
@@ -122,7 +122,7 @@ function calcularTarifaDiaHabil(tarifa, tiempoMinimo) {
         })
         const diasTotales = Math.max(dias, tiempoMinimo);
         const precioTotal = diasTotales * tarifa.valorTarifa * tarifa.cantidad;
-        return [precioTotal, diasTotales, festivosEnMedio];
+        return {precioTotal: precioTotal, diasTotales: diasTotales, festivosEnMedio: festivosEnMedio};
     }
 
 
@@ -147,6 +147,6 @@ function calcularTarifa(tarifa, medidaTiempo, tiempoMinimo) {
         
         
         
-        return [precioTotal, tiempoTotal];
+        return {precioTotal: precioTotal, tiempoTotal: tiempoTotal};
     }
 }

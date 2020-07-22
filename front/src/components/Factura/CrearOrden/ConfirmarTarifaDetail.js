@@ -163,7 +163,7 @@ function ConfirmarTarifaDetail(props) {
                       showTodayButton
                       cancelLabel="Cancelar"
                       todayLabel="Hoy"
-                      minDate={new Date("01/01/2000")}
+                      minDate={fechaInicial.toDate()}
                       labelFunc={labelDates}
                     ></DateTimePicker>
                   </MuiPickersUtilsProvider>

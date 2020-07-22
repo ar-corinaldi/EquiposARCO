@@ -209,6 +209,7 @@ export function calcularPorEnviarPorDevolver(orden) {
       remision.equiposEnRemision.forEach((equipoRemision) => {
         if (equipoRemision.cantidadNoRegistrada === 0) return;
         if (equipo.componentes && equipo.componentes.length > 0) {
+          console.log("compuesto");
           equipo.componentes.forEach((componente) => {
             if (componente.equipoID.porEnviar === 0) return;
             if (componente.equipoID._id === equipoRemision.equipoID._id) {
@@ -216,10 +217,10 @@ export function calcularPorEnviarPorDevolver(orden) {
                 componente.equipoID.porEnviar <
                 equipoRemision.cantidadNoRegistrada
               ) {
-                componente.equipoID.porEnviar = 0;
                 equipoRemision.cantidadNoRegistrada =
                   equipoRemision.cantidadNoRegistrada -
                   componente.equipoID.porEnviar;
+                componente.equipoID.porEnviar = 0;
               }
               if (
                 componente.equipoID.porEnviar >
@@ -240,13 +241,17 @@ export function calcularPorEnviarPorDevolver(orden) {
             }
           });
         } else {
+          console.log("normi");
+
           if (equipo.porEnviar === 0) return;
 
           if (equipo._id === equipoRemision.equipoID._id) {
             if (equipo.porEnviar < equipoRemision.cantidadNoRegistrada) {
-              equipo.porEnviar = 0;
               equipoRemision.cantidadNoRegistrada =
                 equipoRemision.cantidadNoRegistrada - equipo.porEnviar;
+              equipo.porEnviar = 0;
+              console.log("entra");
+              console.log(equipoRemision.cantidadNoRegistrada);
             }
             if (equipo.porEnviar > equipoRemision.cantidadNoRegistrada) {
               equipo.porEnviar =
@@ -266,6 +271,12 @@ export function calcularPorEnviarPorDevolver(orden) {
   // Se parte de que los equipos por devolver son igual a los equipos enviados
   equipos.forEach((equipo) => {
     equipo.porDevolver = equipo.cantidadOr - equipo.porEnviar;
+    if (equipo.componentes && equipo.componentes.length > 0) {
+      equipo.componentes.forEach((componente) => {
+        componente.equipoID.porDevolver =
+          componente.equipoID.cantidadOr - componente.equipoID.porEnviar;
+      });
+    }
   });
 
   orden.devoluciones.forEach((remision) => {
@@ -287,10 +298,10 @@ export function calcularPorEnviarPorDevolver(orden) {
                 componente.equipoID.porDevolver <
                 equipoDevolucion.cantidadNoRegistrada
               ) {
-                componente.equipoID.porDevolver = 0;
                 equipoDevolucion.cantidadNoRegistrada =
                   equipoDevolucion.cantidadNoRegistrada -
-                  componente.equipoID.porEnviar;
+                  componente.equipoID.porDevolver;
+                componente.equipoID.porDevolver = 0;
               }
               if (
                 componente.equipoID.porDevolver >
@@ -314,9 +325,9 @@ export function calcularPorEnviarPorDevolver(orden) {
           if (equipo.porDevolver === 0) return;
           if (equipo._id === equipoDevolucion.equipoID._id) {
             if (equipo.porDevolver < equipoDevolucion.cantidadNoRegistrada) {
-              equipo.porDevolver = 0;
               equipoDevolucion.cantidadNoRegistrada =
                 equipoDevolucion.cantidadNoRegistrada - equipo.porDevolver;
+              equipo.porDevolver = 0;
             }
             if (equipo.porDevolver > equipoDevolucion.cantidadNoRegistrada) {
               equipo.porDevolver =

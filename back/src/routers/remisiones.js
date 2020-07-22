@@ -34,7 +34,7 @@ router.post("/ordenes/:idOr/remisiones", async (req, res) => {
   } catch (e) {
     console.log("Hubo un error");
     if (newRemision !== undefined) {
-      console.log("Elimina la remision");
+      console.log("Elimina la bodega");
       // Manejo en caso de que no se agregue la bodega
       Remision.findByIdAndDelete(newRemision._id);
       const i = orden.remisiones.indexOf(newRemision._id);
@@ -42,8 +42,8 @@ router.post("/ordenes/:idOr/remisiones", async (req, res) => {
         orden.remisiones.splice(i, 1);
       }
     }
-    res.status(400).send(e);
-    console.error(e);
+    res.status(400).send("No se pudo agregar la remision a la orden " + e);
+    console.error("error", e);
   }
 });
 

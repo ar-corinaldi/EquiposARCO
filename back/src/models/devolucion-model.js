@@ -49,19 +49,27 @@ const devolucionSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Empleado",
   },
-  equiposEnDevolucion: [
-    {
-      cantidad: {
-        type: Number,
-        required: false,
-        default: 1,
+  equiposEnDevolucion: {
+    type: [
+      {
+        cantidad: {
+          type: Number,
+          required: false,
+          default: 1,
+        },
+        equipoID: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Equipo",
+        },
       },
-      equipoID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Equipo",
-      },
+    ],
+    validate(v) {
+      const isValid = Array.isArray(v) && v.length > 0;
+      if (!isValid) {
+        throw new Error(`Debe tener al menos un equipo`);
+      }
     },
-  ],
+  },
   codigo: {
     type: String,
     required: true,

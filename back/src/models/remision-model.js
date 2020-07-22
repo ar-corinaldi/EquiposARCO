@@ -31,7 +31,7 @@ const remisionSchema = new Schema({
           this.costoTransporte > 0;
         if (!isValid) {
           throw new Error(
-            `El trasporte lo asume el EquiposARCO, debe tener vehiculo, conductor y costo.`
+            `El trasporte lo asume EquiposARCO, debe tener vehiculo, conductor y costo.`
           );
         }
       }
@@ -49,19 +49,27 @@ const remisionSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Empleado",
   },
-  equiposEnRemision: [
-    {
-      cantidad: {
-        type: Number,
-        required: false,
-        default: 1,
+  equiposEnRemision: {
+    type: [
+      {
+        cantidad: {
+          type: Number,
+          required: false,
+          default: 1,
+        },
+        equipoID: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Equipo",
+        },
       },
-      equipoID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Equipo",
-      },
+    ],
+    validate(v) {
+      const isValid = Array.isArray(v) && v.length > 0;
+      if (!isValid) {
+        throw new Error(`Debe tener al menos un equipo`);
+      }
     },
-  ],
+  },
   codigo: {
     type: String,
     required: true,

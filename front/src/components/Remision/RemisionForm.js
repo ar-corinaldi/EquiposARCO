@@ -56,9 +56,13 @@ function RemisionForm(props) {
     // console.log(typeof fields.fechaLlegada);
     fields.asumidoTercero = asumidoTercero;
     handleEquiposRemision();
-    console.log(fields);
-    handleSubmitPOST(e).then((value) => setRemision(value));
-    manejarInventario();
+    //console.log(fields);
+    handleSubmitPOST(e)
+      .then((value) => {
+        setRemision(value);
+        manejarInventario();
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const handleRadio = (event) => {

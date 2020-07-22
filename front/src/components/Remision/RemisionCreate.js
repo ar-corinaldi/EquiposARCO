@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import RemisionForm from "./RemisionForm";
 import "./Remision.css";
+import { calcularDisponiblesRemision } from "./CalcularEquipos";
 
 function RemisionCreate(props) {
   const { id, idB, idOr } = useParams();
@@ -18,7 +19,7 @@ function RemisionCreate(props) {
   }, []);
 
   const fetchOrden = async () => {
-    let res = await fetch(`/ordenes/${idOr}/tarifasPobladas`);
+    let res = await fetch(`/ordenes/${idOr}`);
     const ordenA = await res.json();
     //console.log("orden", ordenA);
     setOrden(ordenA);
@@ -26,11 +27,12 @@ function RemisionCreate(props) {
   };
 
   const equiposOrden = (orden) => {
-    const equiposO = [];
-    orden.tarifasDefinitivas.forEach((tarifa) => {
-      const equipo = tarifa.tarifasPorEquipo[0].equipo;
-      equiposO.push(equipo);
-    });
+    // const equiposO = [];
+    // orden.tarifasDefinitivas.forEach((tarifa) => {
+    //   const equipo = tarifa.tarifasPorEquipo[0].equipo;
+    //   equiposO.push(equipo);
+    // });
+    const equiposO = calcularDisponiblesRemision(orden);
     setEquipos(equiposO);
     //console.log("equipos", equiposO);
   };

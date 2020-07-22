@@ -15,20 +15,50 @@ function FacturaDetail() {
   );
   const [factura, setFactura] = useState(resource);
   const [fechaCorte, setFechaCorte] = useState(new Date());
+  const [fechaEmision, setFechaEmision] = useState(new Date(2020, 5, 1));
   const [fechaInicial, setFechaInicial] = useState(new Date(2020, 5, 1));
   const [precioTotal, setPrecioTotal] = useState(0);
+  const [renderPrefacturas, setRenderPrefacturas] = useState(null);
   const refFechaCorte = useRef();
-  const refFechaInicial = useRef();
+  const refFechaEmision = useRef();
 
   useEffect(() => {
     setFactura(resource);
+    fechaInicialDeOrdenes();
   }, [resource]);
 
-  const cambioFechaInicial = (e) => {
+  useEffect(() => {
+    setPrecioTotal(0);
+    setRenderPrefacturas(
+      <Prefacturas
+        key={factura._id}
+        fechaInicial={fechaInicial}
+        fechaCorte={fechaCorte}
+        fechaEmision={fechaEmision}
+        ordenes={factura.ordenes || []}
+        setPrecioTotal={setPrecioTotal}
+      />
+    );
+    console.log("Render prefactura");
+  }, [factura, fechaEmision, fechaCorte]);
+  const fechaInicialDeOrdenes = () => {
+    const ordenes = factura.ordenes || [];
+    ordenes.sort((a, b) => {
+      const fechaA = new Date(a.fechaInicio);
+      const fechaB = new Date(b.fechaInicio);
+      return fechaA.getTime() - fechaB.getTime();
+    });
+    console.log("No entra a ordenes hay", ordenes.length, "ordenes");
+    if (ordenes.length > 0) {
+      setFechaInicial(new Date(ordenes[0].fechaInicio));
+    }
+  };
+
+  const cambioFechaEmision = (e) => {
     e.preventDefault();
-    const val = refFechaInicial.current.value;
+    const val = refFechaEmision.current.value;
     const newFecha = new Date(val);
-    setFechaInicial(newFecha);
+    setFechaEmision(newFecha);
   };
 
   const cambioFechaCorte = (e) => {
@@ -80,20 +110,20 @@ function FacturaDetail() {
               ? factura.ordenes[0].bodega
               : null
           }
-          fechaInicial={fechaInicial}
+          fechaEmision={fechaEmision}
           fechaCorte={fechaCorte}
         />
       </Row>
       <Row>
         <Col>
-          <label htmlFor="fechaInicial">Fecha Inicial</label>
+          <label htmlFor="fechaInicial">Fecha de Emision</label>
           <input
             name="fechaInicial"
-            defaultValue={parseDate(fechaInicial)}
+            defaultValue={parseDate(fechaEmision)}
             type="date"
-            ref={refFechaInicial}
+            ref={refFechaEmision}
           />
-          <button onClick={cambioFechaInicial}>Cambiar Fecha Inicial</button>
+          <button onClick={cambioFechaEmision}>Cambiar Fecha de Emision</button>
           <label htmlFor="fechaCorte">Fecha Corte</label>
           <input
             name="fechaCorte"
@@ -102,17 +132,7 @@ function FacturaDetail() {
             ref={refFechaCorte}
           />
           <button onClick={cambioFechaCorte}>Cambiar Fecha Corte</button>
-          {factura.ordenes ? (
-            <Prefacturas
-              key={factura._id}
-              fechaInicial={fechaInicial}
-              fechaCorte={fechaCorte}
-              ordenes={factura.ordenes || []}
-              setPrecioTotal={setPrecioTotal}
-            />
-          ) : (
-            loading
-          )}
+          {renderPrefacturas}
         </Col>
       </Row>
       <Col>

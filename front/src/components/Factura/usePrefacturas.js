@@ -89,10 +89,15 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     // Para que en la siguiente prefactura se añadan a la remision
     const idEquipos = Object.keys(prefactura);
     idEquipos.forEach((idEquipo) => {
-      const equipo = prefactura[idEquipo].equipo;
-      const cantidad = prefactura[idEquipo].listaMes[daysOfMonth - 1];
-      if (cantidad > 0) {
-        equiposMesPasadosSinDevolver.push({ equipo, cantidad });
+      if (idEquipo !== "transportes") {
+        const equipo = prefactura[idEquipo].equipo;
+        const cantidad = prefactura[idEquipo].listaMes[daysOfMonth - 1];
+        if (cantidad > 0) {
+          equiposMesPasadosSinDevolver.push({
+            equipo,
+            cantidad,
+          });
+        }
       }
     });
 
@@ -122,6 +127,16 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     );
 
     for (const remision of filterRemByDay) {
+      if (
+        remision.asumidoTercero === false ||
+        (remision.costoTransporte && remision.costoTransporte > 0)
+      ) {
+        if (!prefacturaMes.transportes) prefacturaMes.transportes = [];
+        prefacturaMes.transportes.push({
+          costo: remision.costoTransporte,
+          fecha: new Date(remision.fechaLlegada),
+        });
+      }
       for (const equipo of remision.equiposEnRemision) {
         const { equipoID, cantidad } = equipo;
 

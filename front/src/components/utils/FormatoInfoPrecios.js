@@ -72,7 +72,7 @@ export function formatoCategoria(categoriaString, plural = true) {
  * @param {boolean} plural. Indica si el valor a retornar está en plural. Por defecto es true
  */
 export function formatoCategoriaHTML(categoriaString, plural = true) {
-  console.log(categoriaString);
+  //console.log(categoriaString);
   if (!categoriaString) {
     return "";
   } else {

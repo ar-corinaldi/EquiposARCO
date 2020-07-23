@@ -25,12 +25,10 @@ function EquiposTable(props) {
             <th>Periodo Cobro</th>
           </tr>
         </thead>
-        <tbody>
-          {equipos &&
-            equipos.map((equipo, index) => (
-              <EquipoRow key={index} equipo={equipo} index={index} />
-            ))}
-        </tbody>
+        {equipos &&
+          equipos.map((equipo, index) => (
+            <EquipoRow key={index} equipo={equipo} index={index} />
+          ))}
         {/* <tbody>
           {tarifas &&
             tarifas.map((tarifaAgrupada, index) => (

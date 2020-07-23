@@ -250,8 +250,6 @@ export function calcularPorEnviarPorDevolver(orden) {
               equipoRemision.cantidadNoRegistrada =
                 equipoRemision.cantidadNoRegistrada - equipo.porEnviar;
               equipo.porEnviar = 0;
-              console.log("entra");
-              console.log(equipoRemision.cantidadNoRegistrada);
             }
             if (equipo.porEnviar > equipoRemision.cantidadNoRegistrada) {
               equipo.porEnviar =
@@ -354,6 +352,28 @@ export function calcularPorEnviarPorDevolver(orden) {
         componente.equipoID.devuelto =
           componente.equipoID.enviado - componente.equipoID.porDevolver;
       });
+    }
+  });
+
+  /**
+   * Calcular el porcentaje de los equipos compuestos
+   */
+  equipos.forEach((equipo) => {
+    if (equipo.componentes && equipo.componentes.length > 0) {
+      equipo.cantidadComponentes = 0;
+      equipo.componentes.forEach((componente) => {
+        equipo.cantidadComponentes += componente.cantidad;
+      });
+      equipo.componentes.forEach((componente) => {
+        const porcentaje = componente.cantidad / equipo.cantidadComponentes;
+        const porcentajePropio = 1 / componente.cantidad;
+        equipo.enviado +=
+          porcentaje * componente.equipoID.enviado * porcentajePropio;
+        equipo.devuelto +=
+          porcentaje * componente.equipoID.devuelto * porcentajePropio;
+      });
+      equipo.porEnviar = equipo.cantidadOr - equipo.enviado;
+      equipo.porDevolver = equipo.enviado - equipo.devuelto;
     }
   });
 

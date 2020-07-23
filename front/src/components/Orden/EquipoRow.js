@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import formatoFechas from "../utils/FormatoFechas";
 import formatoPrecios from "../utils/FormatoPrecios";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
+import { FaChevronUp } from "react-icons/fa";
 import {
   formatoCategoriaHTML,
   formatoTiempo,
@@ -46,89 +47,87 @@ function EquipoRow(props) {
 
   return (
     <React.Fragment>
-      <tr className="capitalize">
-        <td>
-          {index}
-          {/* <br />
-          <button className="button-icon green" onClick={toggle}>
-            <FaPlusCircle></FaPlusCircle>
-          </button> */}
-        </td>
-        <td>
-          <Link to={`/inventario/equipos/${equipo._id}`}>
-            <b>{equipo.nombreEquipo}</b>
+      <tbody className="vert-center">
+        <tr className="capitalize">
+          <td>
+            {index}
             <br />
-            {equipo.nombreGrupo}
-          </Link>
-        </td>
-        <td>{equipo.cantidadOr}</td>
-        <td>{equipo.enviado}</td>
-        <td>{equipo.devuelto}</td>
-        <td>{equipo.porEnviar}</td>
-        <td>{equipo.porDevolver}</td>
-
-        <td>{formatoPrecios(equipo.equipoTarifa.valorTarifa)}</td>
-        <td>
-          <span
-            className={
-              (equipo.equipoTarifa.precioReferencia.categoria.includes("metro")
-                ? "not-"
-                : "") + "capitalize"
-            }
-          >
-            {formatoCategoriaHTML(
-              equipo.equipoTarifa.precioReferencia.categoria,
-              false
-            )}
-          </span>{" "}
-          / {formatoTiempo(equipo.equipoTarifa.precioReferencia.tiempo, false)}
-        </td>
-        <td>
-          {formatoFechas(equipo.equipoTarifa.fechaInicio)}-
-          {formatoFechas(equipo.equipoTarifa.fechaFin)}
-        </td>
-      </tr>
-      {/* Se muestran las otras tarifas del equipo */}
-      {/* {otrasTarifas &&
-        otrasTarifas.map((tarifa2, index2) => (
-          <tr
-            key={tarifa2._id}
-            className={"capitalize collapse" + (open ? " in" : "")}
-          >
-            <td>{""}</td>
-            <td>
-              <Link to={`/inventario/equipos/${tarifa2.equipo._id}`}>
-                <b>{tarifa2 && tarifa2.equipo.nombreEquipo}</b>
-                <br />
-                {tarifa2 && tarifa2.equipo.nombreGrupo}
-              </Link>
-            </td>
-            <td>{tarifa2.cantidad}</td>
-            <td>{tarifa2.cantidad}</td>
-            <td>{tarifa2.cantidad}</td>
-
-            <td>{formatoPrecios(tarifa2.valorTarifa)}</td>
-            <td>
-              <span
-                className={
-                  (tarifa2.precioReferencia.categoria.includes("metro")
-                    ? "not-"
-                    : "") + "capitalize"
-                }
-              >
-                {formatoCategoriaHTML(
-                  tarifa2.precioReferencia.categoria,
-                  false
+            {equipo.componentes && equipo.componentes.length > 0 ? (
+              <button className="button-icon" onClick={toggle}>
+                {open ? (
+                  <FaChevronUp className="icono" />
+                ) : (
+                  <FaChevronDown className="icono" />
                 )}
-              </span>{" "}
-              / {formatoTiempo(tarifa2.precioReferencia.tiempo, false)}{" "}
-            </td>
-            <td>
-              {formatoFechas(tarifa2.fechaInicio)}-
-              {formatoFechas(tarifa2.fechaFin)}
-            </td>
-          </tr> 
-        ))}*/}
+              </button>
+            ) : (
+              <></>
+            )}
+          </td>
+          <td>
+            <Link to={`/inventario/equipos/${equipo._id}`}>
+              <b>{equipo.nombreEquipo}</b>
+              {/* <br />
+            {equipo.nombreGrupo} */}
+            </Link>
+          </td>
+          <td className="text-center">{equipo.cantidadOr}</td>
+          <td className="text-center">{equipo.enviado}</td>
+          <td className="text-center">{equipo.devuelto}</td>
+          <td className="text-center">{equipo.porEnviar}</td>
+          <td className="text-center">{equipo.porDevolver}</td>
+
+          <td>{formatoPrecios(equipo.equipoTarifa.valorTarifa)}</td>
+          <td>
+            <span
+              className={
+                (equipo.equipoTarifa.precioReferencia.categoria.includes(
+                  "metro"
+                )
+                  ? "not-"
+                  : "") + "capitalize"
+              }
+            >
+              {formatoCategoriaHTML(
+                equipo.equipoTarifa.precioReferencia.categoria,
+                false
+              )}
+            </span>{" "}
+            /{" "}
+            {formatoTiempo(equipo.equipoTarifa.precioReferencia.tiempo, false)}
+          </td>
+          <td>
+            {formatoFechas(equipo.equipoTarifa.fechaInicio)}-
+            {formatoFechas(equipo.equipoTarifa.fechaFin)}
+          </td>
+        </tr>
+        {/* Se muestran los equipos compuestos del equipo */}
+        {equipo.componentes &&
+          equipo.componentes.map((componente, index2) => (
+            <tr
+              key={componente.equipoID._id}
+              className={"capitalize collapse" + (open ? " in" : "")}
+            >
+              <td>{+index2 + 1}</td>
+              <td>
+                <Link to={`/inventario/equipos/${componente.equipoID._id}`}>
+                  <b>{componente.equipoID.nombreEquipo}</b>
+                  {/* <br />
+                {componente.equipoID.nombreGrupo} */}
+                </Link>
+              </td>
+              <td className="text-center">{componente.equipoID.cantidadOr}</td>
+              <td className="text-center">{componente.equipoID.enviado}</td>
+              <td className="text-center">{componente.equipoID.devuelto}</td>
+              <td className="text-center">{componente.equipoID.porEnviar}</td>
+              <td className="text-center">{componente.equipoID.porDevolver}</td>
+
+              <td> - </td>
+              <td> - </td>
+              <td> - </td>
+            </tr>
+          ))}
+      </tbody>
     </React.Fragment>
   );
 }

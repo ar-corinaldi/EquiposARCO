@@ -127,8 +127,11 @@ export function calcularTarifaDiaHabil(
     return null;
   } else {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
-    let dias = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
+    const diff = timeDifference / (1000 * 3600 * 24)
+    let dias = Math.ceil(diff);
+    if(dias !== 0  && (Math.ceil(diff) === Math.floor(diff)) ){
+      dias += 1;
+    }
     const semanas = Math.floor(dias / 7);
     //Quita dos días por cada semana (Sábado y Domingo)
     dias -= semanas * 2;
@@ -153,7 +156,7 @@ export function calcularTarifaDiaHabil(
     let festivosEnMedio = [];
     holidays.forEach((dia) => {
       const festivo = new Date(dia.date);
-      if (festivo >= fechaInicial && festivo <= fechaFinal) {
+      if (festivo >= fechaInicial && festivo <= fechaFinal && dias !== 0) {
         //Si el festivo no es ni Sábado (6) ni Domingo (0)
         if (festivo.getDay() % 6 != 0) {
           dias--;
@@ -244,8 +247,11 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
   }
   else {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
-    let dias = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
+    const diff = timeDifference / (1000 * 3600 * 24)
+    let dias = Math.ceil(diff);
+    if(dias !== 0  && (Math.ceil(diff) === Math.floor(diff)) ){
+      dias += 1;
+    }
     const semanas = Math.floor(dias / 7);
     //Quita dos días por cada semana (Sábado y Domingo)
     dias -= semanas * 2;
@@ -266,14 +272,12 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
     if (diaFinal == 6 && diaInicial != 0) {
       dias--;
     }
-    let festivosEnMedio = [];
     holidays.forEach((dia) => {
       const festivo = new Date(dia.date);
-      if (festivo >= fechaInicial && festivo <= fechaFinal) {
+      if (festivo >= fechaInicial && festivo <= fechaFinal && dias !== 0) {
         //Si el festivo no es ni Sábado (6) ni Domingo (0)
         if (festivo.getDay() % 6 != 0) {
           dias--;
-          festivosEnMedio.push(dia);
         }
       }
     });

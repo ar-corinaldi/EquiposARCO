@@ -4,8 +4,8 @@ import {calcularFechaFinalDiaHabil, calcularDiasHabilesEntreFechas} from './util
 //Componente para probar código, úsenlo si necesitan probar alguna función rápidamente y de forma aislada
 const Prueba = () => {
 
-    const fechaInicial = new Date("01/01/2020");
-    const fechaFinal = new Date("02/28/2020");
+    const fechaInicial = new Date("05/01/2020");
+    const fechaFinal = new Date("05/27/2020");
     const diasFisrt = calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal);
 
     const fechaDada = calcularFechaFinalDiaHabil(fechaInicial, diasFisrt);
@@ -21,6 +21,16 @@ const Prueba = () => {
     console.log(diasFisrt);
     console.log(fechaDada);
     console.log(diasSecond);
+    console.log('====================================');
+
+    // console.log('===================Dates=================');
+    // console.log(new Date("05/01/2020 23:59:59:999").getTime());
+    // console.log(new Date("05/02/2020").getTime());
+    // console.log(new Date("05/02/2020 0:00:00:001").getTime());
+    // console.log('====================================');
+    console.log('===================Dates=================');
+    console.log(new Date("05/01/2020").getTime());
+    console.log(new Date("05/21/2020").getTime());
     console.log('====================================');
     return (
         <div>

@@ -209,6 +209,14 @@ export function calcularTarifa(
   }
 }
 
+/**
+ * Calcula la fecha final necesaria para que entre las dos fechas haya una cantidad de tiempo específica, medida con la unidad
+ * que entra por parámetro
+ * @param {Date} fechaInicio.
+ * @param {String} medidaTiempo. Una entre  "hora", "dia cal", "semana", "mes", "anio". 
+ * @param {Number} cantidad 
+ * Usar el método calcularFechaFinalDiaHabil si la unidad de medida es en dia habil
+ */
 export function calcularFechaFinal(fechaInicio, medidaTiempo, cantidad) {
   if (!fechaInicio || !medidaTiempo || (cantidad !== 0 && !cantidad) || !conversion[medidaTiempo]) {
     return null;
@@ -222,9 +230,17 @@ export function calcularFechaFinal(fechaInicio, medidaTiempo, cantidad) {
   }
 }
 
+/**
+ * Calcula el número de días hábiles entre dos fechas
+ * @param {Date} fechaInicial.
+ * @param {Date} fechaFinal.
+ */
 export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
   if (!fechaInicial || !fechaFinal) {
     return null;
+  }
+  else if(fechaFinal < fechaInicial){
+    return null
   }
   else {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
@@ -267,6 +283,11 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
 
 }
 
+/**
+ * Calcula la fecha final requerida para que haya cierta cantidad de días hábiles entre fechaFinal y fechaInicial
+ * @param {Date} fechaInicio.
+ * @param {Number} cantidad.
+ */
 export function calcularFechaFinalDiaHabil(fechaInicio, cantidad) {
   if (!fechaInicio || (cantidad !== 0 && !cantidad)) {
     return null;

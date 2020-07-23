@@ -18,7 +18,7 @@ const tarifaValida = (tarifa) => {
  * @param {} a
  * @param {*} b
  */
-function compareTarifas(tarfiaDefA, tarfiaDefB) {
+function tarifasCompuestaFinal(tarfiaDefA, tarfiaDefB) {
   const tarifaPorEquipoA = tarfiaDefA.tarifasPorEquipo[0];
   const tarifaPorEquipoB = tarfiaDefB.tarifasPorEquipo[0];
 
@@ -49,13 +49,13 @@ function tarifasCompuestaPrimero(tarfiaDefA, tarfiaDefB) {
     tarifaPorEquipoA.equipo.componentes &&
     tarifaPorEquipoA.equipo.componentes.length > 0
   )
-    return 1;
+    return -1;
 
   if (
     tarifaPorEquipoB.equipo.componentes &&
     tarifaPorEquipoB.equipo.componentes.length > 0
   )
-    return -1;
+    return 1;
   else return 0;
 }
 
@@ -65,7 +65,7 @@ export function calcularDisponiblesRemision(orden) {
   let equipo;
   console.log("orden", orden);
   // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
-  orden.tarifasDefinitivas.sort(compareTarifas);
+  orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
   // Revisar las cantidades originales de acuerdo con la tarifa valida
   orden.tarifasDefinitivas.forEach((tarifa) => {
     tarifa.tarifasPorEquipo.forEach((tarifaEquipo) => {
@@ -170,7 +170,7 @@ export function calcularPorEnviarPorDevolver(orden) {
   let equipo;
   console.log("orden", orden);
   // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
-  orden.tarifasDefinitivas.sort(tarifasCompuestaPrimero);
+  orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
 
   orden.tarifasDefinitivas.forEach((tarifa) => {
     tarifa.tarifasPorEquipo.forEach((tarifaEquipo) => {

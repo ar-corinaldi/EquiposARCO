@@ -5,7 +5,7 @@ import CellTableCotizazcion from './CellTablaCotizacion';
 import Table from 'react-bootstrap/Table';
 
 const Cotizar = () => {
-    const [equiposSeleccionados, setEquiposSeleccionados] = useState([]);
+    let [equiposSeleccionados, setEquiposSeleccionados] = useState([]);
     const [tarifas, setTarifas] = useState({});
 
     //funciones
@@ -22,40 +22,39 @@ const Cotizar = () => {
                         <th>Tipo de Cobro</th>
                         <th>Tiempo a cobrar</th>
                         <th>Valor a cobrar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>)
+        }
+        else {
+            return <p className="mt-0 mb-0 pt-0 pb-0">No ha seleccionado ningún equipo</p >
         }
     }
     //Funciones
 
-    function tableBody() {
-        if (equiposSeleccionados.length > 0) {
-            let response = equiposSeleccionados.map((equipo, index) => {
-                return <CellTableCotizazcion key={index} equipo={equipo} />
-            })
-            return response;
-        }
-    }
 
     //Effects
     useEffect((props) => {
-        for (let equipo of equiposSeleccionados) {
-            if (!tarifas[equipo.equipoID._id] || !tarifas[equipo.equipoID._id].cantidad) {//Si se agrega un nuevo equipo
-                const fechaActual = new Date();
-                let newTarifa = {
-                    fechaInicio: fechaActual,
-                    fechaFin: fechaActual,
-                    valorTarifa: 0,
-                    valorReposicion: 0,
-                    cantidad: 0
+        if (equiposSeleccionados) {
+            for (let equipo of equiposSeleccionados) {
+                if (!tarifas[equipo.equipoID._id] || Object.keys(tarifas[equipo.equipoID._id]).length === 0) {//Si se agrega un nuevo equipo 
+                    const fechaActual = new Date();
+                    let newTarifa = {
+                        fechaInicio: fechaActual,
+                        fechaFin: fechaActual,
+                        valorTarifa: 0,
+                        valorReposicion: 0,
+                        cantidad: 0,
+                        equipo: equipo.equipoID._id
+                    }
+                    tarifas[equipo.equipoID._id] = newTarifa;
                 }
-                tarifas[equipo.equipoID._id] = newTarifa;
             }
+            console.log('=========Tarifas===========================');
+            console.log(tarifas);
+            console.log('====================================');
+            setTarifas(Object.assign({}, tarifas));
         }
-        console.log('=========Tarifas===========================');
-        console.log(tarifas);
-        console.log('====================================');
-        setTarifas(Object.assign({}, tarifas));
 
     }, [equiposSeleccionados]);
 
@@ -64,7 +63,7 @@ const Cotizar = () => {
             <h3>
                 Cotizar
             </h3>
-            <div className="buscarEquiposWrapper" >
+            <div className="buscarEquiposWrapper stickyRow" >
                 <BuscarEquiposCotizados
                     className='align-self-center vertical-center'
                     equiposSeleccionados={[equiposSeleccionados, setEquiposSeleccionados]}
@@ -76,17 +75,15 @@ const Cotizar = () => {
             <div className="tabla-cotizarWrapper">
                 <Table responsive>
                     {tableHead()}
-                    {equiposSeleccionados.map((equipo, index) => {
-                        return (
-                            <CellTableCotizazcion
-                                key={index} equipo={equipo} tarifas={[tarifas, setTarifas]} index={index}
-                            />)
-                    })}
+                    {equiposSeleccionados && equiposSeleccionados.map((equipo, index) => (
+                        <CellTableCotizazcion
+                            key={index} equipo={equipo} tarifas={[tarifas, setTarifas]} index={index}
+                            seleccionados={[equiposSeleccionados, setEquiposSeleccionados]}
+                        />)
+                    )}
+                    {/* {tableBody()} */}
                 </Table>
             </div>
-            {/* {equiposSeleccionados.map((equipo, index) => {
-                return <h2 key={index} >{equipo.equipoID._id}</h2>
-            })} */}
         </div>
     );
 };

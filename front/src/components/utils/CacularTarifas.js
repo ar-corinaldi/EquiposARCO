@@ -28,14 +28,58 @@ export default function calcularTarifaCotizacion(tarifas) {
   let respuesta = {};
   let cobroCompleto = 0;
   if (!tarifas) {
-    console.log("dates");
-    console.log(hd.getHolidays("2020"));
-    const hd1 = holidays[0];
-    console.log(hd1.date);
-    console.log(new Date("2020-07-04T05:00:00.000+00:00").getDay());
-    console.log(0 % 6);
+    return respuesta;
+    // console.log("dates");
+    // console.log(hd.getHolidays("2020"));
+    // const hd1 = holidays[0];
+    // console.log(hd1.date);
+    // console.log(new Date("2020-07-04T05:00:00.000+00:00").getDay());
+    // console.log(0 % 6);
   } else {
     tarifas.map((tarifa) => {
+      let informaciónCobroTarifa = {};
+      if (!tarifa.precioReferencia || !tarifa.precioReferencia.tiempo) {
+        return null;
+      } else {
+        const tiempoMinimo = tarifa.precioReferencia.tiempoMinimo;
+        const medidaTiempo = tarifa.precioReferencia.tiempo;
+        if (medidaTiempo != "dia habil") {
+          const calculo = calcularTarifa(tarifa, medidaTiempo, tiempoMinimo);
+          informaciónCobroTarifa.cobroTotal = calculo.precioTotal;
+          informaciónCobroTarifa.tiempoTotal = calculo.tiempoTotal;
+          cobroCompleto += calculo.precioTotal;
+        } else {
+          const calculo = calcularTarifaDiaHabil(tarifa, tiempoMinimo);
+          informaciónCobroTarifa.cobroTotal = calculo.precioTotal;
+          informaciónCobroTarifa.tiempoTotal = calculo.diasTotales;
+          informaciónCobroTarifa.festivos = calculo.festivosEnMedio;
+          cobroCompleto += calculo.precioTotal;
+        }
+      }
+      respuesta[tarifa._id] = informaciónCobroTarifa;
+    });
+    respuesta.cobroCompleto = cobroCompleto;
+    return respuesta;
+  }
+}
+
+/**
+ * Función que calcula el total a cobrar por las tarifas asociadas a una cotizacion.
+ * Devuelve un objeto con el valor total por cada tarifa de cada equipo y el valor total de toda la cotización. Cada ID de cada tarifa
+ * es un campo en la respuesta, donde los valores de ese campo son el total a cobrar por esa tarifa, el tiempo total y los festivos encontrados
+ * en caso de que la tarifa sea por día hábil.
+ * Este último es la suma de los primeros.
+ * @param {Object} tarifa. Este es un OBJETO donde en cada propiedad tiene una tarifa. Ej: {propiedad1: tarifa1, ... propiedadN: tarifaN};
+ */
+export function calcularTarifaObjeto(tarifas) {
+  let respuesta = {};
+  let cobroCompleto = 0;
+  if (!tarifas) {
+    return respuesta;
+  }
+  else {
+    Object.keys(tarifas).map((key) => {
+      let tarifa = tarifas[key];
       let informaciónCobroTarifa = {};
       if (!tarifa.precioReferencia || !tarifa.precioReferencia.tiempo) {
         return null;
@@ -109,7 +153,7 @@ export function calcularTarifaDiaHabil(
     let festivosEnMedio = [];
     holidays.forEach((dia) => {
       const festivo = new Date(dia.date);
-      if (festivo >= diaInicial && festivo <= diaFinal) {
+      if (festivo >= fechaInicial && festivo <= fechaFinal) {
         //Si el festivo no es ni Sábado (6) ni Domingo (0)
         if (festivo.getDay() % 6 != 0) {
           dias--;
@@ -136,7 +180,7 @@ export function calcularTarifaDiaHabil(
  * @param {Date} fechaFin. Fecha fin del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
  * @param {Number}} cantidad. Cantidad de equipos para los cuales sacar el cobro total, si no se pasa se usa la de tarifa.
  */
-function calcularTarifa(
+export function calcularTarifa(
   tarifa,
   medidaTiempo,
   tiempoMinimo = 0,
@@ -163,4 +207,81 @@ function calcularTarifa(
     const precioTotal = tiempoTotal * tarifa.valorTarifa * cantidadUsada;
     return { precioTotal: precioTotal, tiempoTotal: tiempoTotal };
   }
+}
+
+export function calcularFechaFinal(fechaInicio, medidaTiempo, cantidad) {
+  if (!fechaInicio || !medidaTiempo || (cantidad !== 0 && !cantidad) || !conversion[medidaTiempo]) {
+    return null;
+  }
+  else {
+    const factorConversion = conversion[medidaTiempo];
+    const diff = medidaTiempo * factorConversion;
+    const newDate = new Date(fechaInicio.getTime() + diff);
+    return newDate;
+
+  }
+}
+
+export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
+  if (!fechaInicial || !fechaFinal) {
+    return null;
+  }
+  else {
+    const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
+    let dias = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+    const semanas = Math.floor(dias / 7);
+    //Quita dos días por cada semana (Sábado y Domingo)
+    dias -= semanas * 2;
+
+    //Manejo de casos especiales
+    const diaInicial = fechaInicial.getDay();
+    const diaFinal = fechaFinal.getDay();
+
+    //Quita días que faltaron
+    if (diaInicial - diaFinal > 1) {
+      dias -= 2;
+    }
+    //Remueve día inicial si los días empezaron en Domingo pero terminaron antes de Sábado
+    if (diaInicial == 0 && diaFinal != 6) {
+      dias--;
+    }
+    //Remueve día final si los días terminan un Sábado pero empiezan después del Domingo
+    if (diaFinal == 6 && diaInicial != 0) {
+      dias--;
+    }
+    let festivosEnMedio = [];
+    holidays.forEach((dia) => {
+      const festivo = new Date(dia.date);
+      if (festivo >= fechaInicial && festivo <= fechaFinal) {
+        //Si el festivo no es ni Sábado (6) ni Domingo (0)
+        if (festivo.getDay() % 6 != 0) {
+          dias--;
+          festivosEnMedio.push(dia);
+        }
+      }
+    });
+    return dias;
+
+  }
+
+}
+
+export function calcularFechaFinalDiaHabil(fechaInicio, cantidad) {
+  if (!fechaInicio || (cantidad !== 0 && !cantidad)) {
+    return null;
+  }
+  else {
+    const factorConversion = (1000 * 3600 * 24); //Nro milisegundos en un día
+    let fechaMili = fechaInicio.getTime() + cantidad * factorConversion;
+    let fechaFin = new Date(fechaMili);
+    let diff = cantidad;
+    while(diff > 0){
+      diff = cantidad - calcularDiasHabilesEntreFechas(fechaInicio, fechaFin);
+      fechaMili = fechaFin.getTime() + (diff*factorConversion);
+      fechaFin = new Date(fechaMili);
+    }
+    return fechaFin;
+  }
+
 }

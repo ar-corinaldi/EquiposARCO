@@ -40,7 +40,7 @@ const Cotizar = () => {
         if (equiposSeleccionados) {
             for (let equipo of equiposSeleccionados) {
                 if (!tarifas[equipo.equipoID._id] || Object.keys(tarifas[equipo.equipoID._id]).length === 0) {//Si se agrega un nuevo equipo 
-                    const fechaActual = new Date();
+                    const fechaActual = new Date("05/1/2020");
                     let newTarifa = {
                         fechaInicio: fechaActual,
                         fechaFin: fechaActual,

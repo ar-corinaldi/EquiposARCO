@@ -17,13 +17,14 @@
 .confirmarTarifaDetailWrapper col{
     display: flexbox;
 }
-/* 
+
 .sticky-col {
     position: sticky;
     position: -webkit-sticky;
     background-color: white;
     left: 0px;
-  } */
+    z-index: 1;
+  }
 
 .editando{
     box-shadow: 0px 4px 3px 0px #5c5f7d1f;
@@ -53,6 +54,7 @@
 
 input.inputRoot{
     text-align: center;
+    /* position: static; */
 }
 
 input.inputRoot:enabled{

@@ -110,9 +110,9 @@ function BodegaDetail(props) {
           </p>
         ))}
 
-        {/* <p>
+        <p>
           <button className="btn bodega-collapse" onClick={toggleOrAct}>
-            <strong> Órdenes en curso : </strong>
+            <strong> Obras : </strong>
             {openOrAct ? (
               <FaChevronUp className="icono" />
             ) : (
@@ -121,28 +121,23 @@ function BodegaDetail(props) {
           </button>
         </p>
         <Row className={"pdl-15 collapse" + (openOrAct ? " in" : "")}>
-          {bodega.ordenesActuales.length > 0 ? (
-            bodega.ordenesActuales.map((orden) => (
-              <p key={orden._id}>
-                <Link
-                  to={
-                    "/terceros/" +
-                    tercero._id +
-                    "/bodegas/" +
-                    bodega._id +
-                    "/ordenes/" +
-                    orden._id
-                  }
-                >
-                  {orden.codigo}
-                </Link>
+          {obras && obras.length > 0 ? (
+            obras.map((obra) => (
+              <p key={obra._id}>
+                {obra._id + ": "}
+                {obra.ordenes.map((orden, index) => (
+                  <span key={index}>
+                    {orden.codigo +
+                      (index === obra.ordenes.length - 1 ? "" : ", ")}
+                  </span>
+                ))}
               </p>
             ))
           ) : (
             <p>No hay ordenes en curso</p>
           )}
         </Row>
-        <p>
+        {/* <p>
           <button className="btn bodega-collapse" onClick={toggleOrPas}>
             <strong> Órdenes finalizadas : </strong>{" "}
             {openOrPas ? (

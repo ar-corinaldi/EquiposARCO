@@ -9,18 +9,16 @@ function PrefacturaEquipo(props) {
     listaMes,
     mes,
     anio,
-    setPrecioMeses,
-    precioMeses,
-    fechaEmision,
-    setAcumEquipos,
+    fechaInicial,
     setPrecioTotal,
+    fechaCorte,
   } = props;
 
   const [rows, setRows] = new useState([]);
 
   useEffect(() => {
     setRows(equipoPrefactura());
-  }, [fechaEmision]);
+  }, [fechaInicial, mes, anio, fechaCorte, equipo, listaMes]);
 
   const equipoPrefactura = () => {
     let prev = 0,
@@ -30,7 +28,7 @@ function PrefacturaEquipo(props) {
 
     if (equipo) {
       let initialDay =
-        (fechaEmision.getMonth() + 1 == mes && fechaEmision.getDate() - 1) || 0;
+        (fechaInicial.getMonth() + 1 == mes && fechaInicial.getDate() - 1) || 0;
       for (let i = initialDay; i < listaMes.length; i++) {
         let current = listaMes[i];
         if (prev !== current) {

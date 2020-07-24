@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PrefacturaEquipo from "./PrefacturaEquipo";
 import PrefacturaTransporte from "./PrefacturaTransporte";
 function PrefacturaContenido(props) {
@@ -7,23 +7,10 @@ function PrefacturaContenido(props) {
     prefactura,
     mes,
     anio,
-    setPrecioMeses,
-    precioMeses,
     setPrecioTotal,
-    fechaEmision,
-    fechaCorte,
+    fechaInicial,
     transportes,
   } = props;
-
-  const [acumEquipos, setAcumEquipos] = new useState(0);
-
-  // useEffect(() => {
-  //   setPrecioMeses((prevMes) => {
-  //     console.log(`acumEquipos precio`, acumEquipos);
-  //     console.log(`mes precio ${mes}`, prevMes);
-  //     return prevMes + acumEquipos;
-  //   });
-  // }, [acumEquipos]);
 
   return (
     <React.Fragment>
@@ -33,7 +20,7 @@ function PrefacturaContenido(props) {
             key={transporte.fecha}
             transporte={transporte}
             setPrecioTotal={setPrecioTotal}
-            fechaEmision={fechaEmision}
+            fechaInicial={fechaInicial}
           />
         ))}
       </React.Fragment>
@@ -45,10 +32,7 @@ function PrefacturaContenido(props) {
             listaMes={prefactura[idEquipo].listaMes || []}
             mes={mes}
             anio={anio}
-            fechaEmision={fechaEmision}
-            setAcumEquipos={setAcumEquipos}
-            precioMeses={precioMeses}
-            setPrecioMeses={setPrecioMeses}
+            fechaInicial={fechaInicial}
             setPrecioTotal={setPrecioTotal}
           />
         ))}

@@ -197,6 +197,64 @@ router.get("/bodegas/:idB/ordenesPasadas", async (req, res, next) => {
 /**
  *  Orden
  */
+router.get("/ordenes/groupBy/:idObra", async (req, res) => {
+  try {
+    const codigoObra = req.params.idObra;
+    const ordenesAgrupadas = await Orden.find({ codigoObra })
+      .populate({
+        path: "bodega",
+        populate: { path: "duenio ordenesActuales ordenesPasadas" },
+      })
+      .populate({
+        path: "tarifasDefinitivas",
+        populate: {
+          path: "tarifasPorEquipo",
+          populate: {
+            path: "equipo precioReferencia",
+            populate: {
+              path: "componentes",
+              populate: {
+                path: "equipoID",
+                populate: { path: "precios" },
+              },
+            },
+          },
+        },
+      })
+      .populate({
+        path: "remisiones",
+        populate: {
+          path: "equiposEnRemision",
+          populate: {
+            path: "equipoID",
+            populate: { path: "precios" },
+          },
+        },
+      })
+      .populate({
+        path: "devoluciones",
+        populate: {
+          path: "equiposEnDevolucion",
+          populate: {
+            path: "equipoID",
+            populate: {
+              path: "precios",
+            },
+          },
+        },
+      })
+      .populate("cotizacion")
+      .sort({ fechaInicio: 1 });
+    let fechaInicio = null;
+    if (ordenesAgrupadas && ordenesAgrupadas.length > 0) {
+      fechaInicio = ordenesAgrupadas[0].fechaInicio;
+    }
+    res.send({ ordenes: ordenesAgrupadas, fecha: fechaInicio });
+  } catch (e) {
+    console.log(e);
+    res.status(404).send("No se pudieron agrupar las obras");
+  }
+});
 
 /**
  * Cantidad de documentos que hay en Orden

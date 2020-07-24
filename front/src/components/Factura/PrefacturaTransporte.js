@@ -3,13 +3,15 @@ import formatoPrecios from "../utils/FormatoPrecios";
 import { useEffect } from "react";
 
 function PrefacturaTransporte(props) {
-  const { transporte, setPrecioTotal, fechaEmision } = props;
+  const { transporte, setPrecioTotal, fechaInicial, fechaCorte } = props;
   const { costo, fecha } = transporte;
 
   useEffect(() => {
-    setPrecioTotal((prevPrecio) => prevPrecio + costo);
-  }, [fechaEmision]);
-  return (
+    if (fecha.getDate() >= fechaInicial.getDate()) {
+      setPrecioTotal((prevPrecio) => prevPrecio + costo);
+    }
+  }, [fechaInicial, fechaCorte]);
+  return fecha.getDate() >= fechaInicial.getDate() ? (
     <tr>
       <td>Servicio Transporte</td>
       <td>N/A</td>
@@ -18,7 +20,7 @@ function PrefacturaTransporte(props) {
       <td>{formatoPrecios(costo)}</td>
       <td>{formatoPrecios(costo)}</td>
     </tr>
-  );
+  ) : null;
 }
 
 export default PrefacturaTransporte;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import { FaChevronDown } from "react-icons/fa";
@@ -7,9 +7,14 @@ import { FaChevronUp } from "react-icons/fa";
 function BodegaDetail(props) {
   const bodega = props.bodega;
   const tercero = props.tercero;
+  const [obras, setObras] = useState([]);
   const [open, setOpen] = useState(false);
   const [openOrAct, setOpenOrAct] = useState(false);
   const [openOrPas, setOpenOrPas] = useState(false);
+
+  useEffect(() => {
+    fetchOrdenes();
+  }, [bodega]);
 
   const toggle = () => {
     //console.log(open);
@@ -50,6 +55,13 @@ function BodegaDetail(props) {
       match.toUpperCase()
     );
 
+  const fetchOrdenes = async () => {
+    const res = await fetch(`/bodegas/${bodega._id}/obras/ordenes`);
+    const obrasAct = await res.json();
+    console.log("obrasAct", obrasAct);
+    setObras(obrasAct);
+  };
+
   return (
     <div className="bodega-cliente">
       <Row>
@@ -84,6 +96,21 @@ function BodegaDetail(props) {
           {bodega.telefono}
         </p>
         <p>
+          <strong> Obras : </strong>
+        </p>
+
+        {obras.map((obra) => (
+          <p key={obra._id}>
+            {obra._id + ": "}
+            {obra.ordenes.map((orden, index) => (
+              <span key={index}>
+                {orden.codigo + (index === obra.ordenes.length - 1 ? "" : ", ")}
+              </span>
+            ))}
+          </p>
+        ))}
+
+        {/* <p>
           <button className="btn bodega-collapse" onClick={toggleOrAct}>
             <strong> Órdenes en curso : </strong>
             {openOrAct ? (
@@ -146,7 +173,7 @@ function BodegaDetail(props) {
           ) : (
             <p>No hay ordenes finalizadas</p>
           )}
-        </Row>
+        </Row> */}
         <Row className="pdl-15">
           <button onClick={eliminarBodega} className="eliminarBodega">
             Eliminar Bodega

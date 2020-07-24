@@ -166,12 +166,20 @@ const equipoSchema = new Schema({
     default: 0,
     required: false,
   },
-  precios: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Precio",
+  precios: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Precio",
+      },
+    ],
+    validate(v) {
+      const isValid = Array.isArray(v) && v.length > 0;
+      if (!isValid) {
+        throw new Error(`Debe tener al menos un precuio`);
+      }
     },
-  ],
+  },
   componentes: [
     {
       cantidad: {

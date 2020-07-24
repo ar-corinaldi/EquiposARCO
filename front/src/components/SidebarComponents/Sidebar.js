@@ -94,6 +94,11 @@ function Sidebar(props) {
       type: "Link",
       name: "Cotizar",
       ref: "/cotizar"
+    },
+    {
+      type: "Link",
+      name: "Prueba",
+      ref: "/prueba"
     }
   ];
 

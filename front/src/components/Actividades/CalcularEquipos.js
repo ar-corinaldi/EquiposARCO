@@ -183,6 +183,8 @@ export function calcularPorEnviarPorDevolver(orden) {
         equipos.push(equipo);
         equipo.porDevolver = 0;
         equipo.equipoTarifa = tarifaEquipo;
+        equipo.equipoTarifa.equipo = "";
+
         if (equipo.componentes && equipo.componentes.length > 0) {
           equipo.componentes.forEach((componente) => {
             componente.equipoID.porEnviar =

@@ -95,20 +95,6 @@ function BodegaDetail(props) {
           <strong> Teléfono : </strong>
           {bodega.telefono}
         </p>
-        <p>
-          <strong> Obras : </strong>
-        </p>
-
-        {obras.map((obra) => (
-          <p key={obra._id}>
-            {obra._id + ": "}
-            {obra.ordenes.map((orden, index) => (
-              <span key={index}>
-                {orden.codigo + (index === obra.ordenes.length - 1 ? "" : ", ")}
-              </span>
-            ))}
-          </p>
-        ))}
 
         <p>
           <button className="btn bodega-collapse" onClick={toggleOrAct}>
@@ -124,11 +110,36 @@ function BodegaDetail(props) {
           {obras && obras.length > 0 ? (
             obras.map((obra) => (
               <p key={obra._id}>
-                {obra._id + ": "}
+                <b>
+                  <Link
+                    to={
+                      "/terceros/" +
+                      tercero._id +
+                      "/bodegas/" +
+                      bodega._id +
+                      "/obras/" +
+                      obras._id
+                    }
+                  >
+                    {obra._id}{" "}
+                  </Link>
+                </b>
+                {" : "}
                 {obra.ordenes.map((orden, index) => (
                   <span key={index}>
-                    {orden.codigo +
-                      (index === obra.ordenes.length - 1 ? "" : ", ")}
+                    <Link
+                      to={
+                        "/terceros/" +
+                        tercero._id +
+                        "/bodegas/" +
+                        bodega._id +
+                        "/ordenes/" +
+                        orden._id
+                      }
+                    >
+                      {orden.codigo}
+                    </Link>
+                    {index === obra.ordenes.length - 1 ? "" : ", "}
                   </span>
                 ))}
               </p>

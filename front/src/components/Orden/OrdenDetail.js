@@ -116,7 +116,12 @@ function OrdenDetail(props) {
                   <b>Bodega : </b> {bodega.nombreBodega}
                 </p>
                 <p className="capitalize">
-                  <b>Obra : </b> {orden.codigoObra}
+                  <b>Obra : </b>
+                  <Link
+                    to={`/terceros/${tercero._id}/bodegas/${bodega._id}/obras/${orden.codigoObra}`}
+                  >
+                    {orden.codigoObra}
+                  </Link>
                 </p>
                 <p>
                   <b>Fecha Inicial :</b> {formatoFechas(orden.fechaInicio)}

@@ -118,7 +118,7 @@ function BodegaDetail(props) {
                       "/bodegas/" +
                       bodega._id +
                       "/obras/" +
-                      obras._id
+                      obra._id
                     }
                   >
                     {obra._id}{" "}

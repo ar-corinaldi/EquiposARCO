@@ -3,10 +3,12 @@ import './Cotizar.css';
 import BuscarEquiposCotizados from './BuscarEquiposCotizados';
 import CellTableCotizazcion from './CellTablaCotizacion';
 import Table from 'react-bootstrap/Table';
+import { calcularTarifaObjeto } from '../../utils/CacularTarifas';
 
 const Cotizar = () => {
     let [equiposSeleccionados, setEquiposSeleccionados] = useState([]);
     const [tarifas, setTarifas] = useState({});
+    const [cobro, setCobro] = useState({});
 
     //funciones
 
@@ -14,13 +16,13 @@ const Cotizar = () => {
         if (equiposSeleccionados.length > 0) {
             return (
                 <thead>
-                    <tr>
+                    <tr className='center'>
                         <th>Nombre Equipo</th>
-                        <th>Unidad de Cobro</th>
+                        <th>Cantidad Cotizada</th>
+                        <th>Cobro por</th>
                         <th>Precio x Unidad</th>
-                        <th>Cantidad</th>
-                        <th>Tipo de Cobro</th>
-                        <th>Tiempo a cobrar</th>
+                        <th>Tiempo en</th>
+                        <th>Tiempo cotizado</th>
                         <th>Valor a cobrar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -45,7 +47,13 @@ const Cotizar = () => {
                         valorTarifa: 0,
                         valorReposicion: 0,
                         cantidad: 0,
-                        equipo: equipo.equipoID._id
+                        equipo: equipo.equipoID._id,
+                        precioReferencia: {
+                            categoria: "unidad",
+                            tiempo: "dia habil",
+                            tiempoMinimo: 0,
+                            valorAlquiler: 0,
+                        }
                     }
                     tarifas[equipo.equipoID._id] = newTarifa;
                 }
@@ -57,6 +65,16 @@ const Cotizar = () => {
         }
 
     }, [equiposSeleccionados]);
+
+    useEffect(() => {
+        console.log('=================COBROOOO===================');
+        console.log(tarifas);
+        console.log(cobro);
+        let cobroNuevo = calcularTarifaObjeto(tarifas);
+        console.log(cobroNuevo);
+        console.log('====================================');
+        setCobro(cobroNuevo);
+    }, [tarifas]);
 
     return (
         <div className="cotizarWrapper">
@@ -79,6 +97,7 @@ const Cotizar = () => {
                         <CellTableCotizazcion
                             key={index} equipo={equipo} tarifas={[tarifas, setTarifas]} index={index}
                             seleccionados={[equiposSeleccionados, setEquiposSeleccionados]}
+                            cobro={[cobro, setCobro]}
                         />)
                     )}
                     {/* {tableBody()} */}

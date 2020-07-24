@@ -15,6 +15,15 @@ const conversion = {
   anio: 1000 * 3600 * 24 * 365,
 }; //Tasa de conversión de milisengundos a cada unidad de medida
 
+//
+//------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------> FUNCIONES
+//------------------------------------------------------------------------------------------------------------------------------------------------------------
+//
+//
+
+
+
 /**
  * Función que calcula el total a cobrar por las tarifas asociadas a una cotizacion.
  * Devuelve un objeto con el valor total por cada tarifa de cada equipo y el valor total de toda la cotización. Cada ID de cada tarifa
@@ -63,13 +72,17 @@ export default function calcularTarifaCotizacion(tarifas) {
   }
 }
 
+
+
+
 /**
  * Función que calcula el total a cobrar por las tarifas asociadas a una cotizacion.
- * Devuelve un objeto con el valor total por cada tarifa de cada equipo y el valor total de toda la cotización. Cada ID de cada tarifa
+ * Devuelve un objeto con el valor total por cada tarifa de cada equipo y el valor total de toda la cotización. Cada ID del equipo de cada tarifa
  * es un campo en la respuesta, donde los valores de ese campo son el total a cobrar por esa tarifa, el tiempo total y los festivos encontrados
  * en caso de que la tarifa sea por día hábil.
  * Este último es la suma de los primeros.
  * @param {Object} tarifa. Este es un OBJETO donde en cada propiedad tiene una tarifa. Ej: {propiedad1: tarifa1, ... propiedadN: tarifaN};
+ * Solo debe haber UNA tarifa por cada equipo, está pensado para usarse en cotizaciones donde este es el caso
  */
 export function calcularTarifaObjeto(tarifas) {
   let respuesta = {};
@@ -99,12 +112,15 @@ export function calcularTarifaObjeto(tarifas) {
           cobroCompleto += calculo.precioTotal;
         }
       }
-      respuesta[tarifa._id] = informaciónCobroTarifa;
+      respuesta[(tarifa.equipo._id || tarifa.equipo)] = informaciónCobroTarifa;
     });
     respuesta.cobroCompleto = cobroCompleto;
     return respuesta;
   }
 }
+
+
+
 
 /**
  * @param {Object} tarifa. Único campo requerido, si los otros faltan, los campos de tarifa serán los usados por defecto
@@ -129,8 +145,10 @@ export function calcularTarifaDiaHabil(
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
     const diff = timeDifference / (1000 * 3600 * 24)
     let dias = Math.ceil(diff);
-    if(dias !== 0  && (Math.ceil(diff) === Math.floor(diff)) ){
-      dias += 1;
+
+    //Si la diferencia de tiempo es un multiplo exacto de un día, se agrega uno más. A menos que la diferencia sea Cero.
+    if(dias !== 0 && dias !== 1  && (Math.ceil(diff) === Math.floor(diff)) ){
+      dias += 1; 
     }
     const semanas = Math.floor(dias / 7);
     //Quita dos días por cada semana (Sábado y Domingo)
@@ -174,6 +192,9 @@ export function calcularTarifaDiaHabil(
   }
 }
 
+
+
+
 /**
  *
  * @param {Object} tarifa. Campo requerido, a excepción de medidaTiempo, si los otros faltan, los campos de tarifa serán los usados por defecto.
@@ -181,7 +202,7 @@ export function calcularTarifaDiaHabil(
  * @param {Number} tiempoMinimo. Tiempo mínimo para calcular el valor da cobrar, por defecto es 0.
  * @param {Date} fechaInicio. Fecha de inicio del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
  * @param {Date} fechaFin. Fecha fin del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
- * @param {Number}} cantidad. Cantidad de equipos para los cuales sacar el cobro total, si no se pasa se usa la de tarifa.
+ * @param {Number} cantidad. Cantidad de equipos para los cuales sacar el cobro total, si no se pasa se usa la de tarifa.
  */
 export function calcularTarifa(
   tarifa,
@@ -200,7 +221,7 @@ export function calcularTarifa(
     !conversion[medidaTiempo] ||
     (cantidadUsada !== 0 && !cantidadUsada)
   ) {
-    return [null, -1];
+    return { precioTotal: null, tiempoTotal: null};
   } else {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
     const tiempoConvertido = Math.ceil(
@@ -211,6 +232,8 @@ export function calcularTarifa(
     return { precioTotal: precioTotal, tiempoTotal: tiempoTotal };
   }
 }
+
+
 
 /**
  * Calcula la fecha final necesaria para que entre las dos fechas haya una cantidad de tiempo específica, medida con la unidad
@@ -226,12 +249,14 @@ export function calcularFechaFinal(fechaInicio, medidaTiempo, cantidad) {
   }
   else {
     const factorConversion = conversion[medidaTiempo];
-    const diff = medidaTiempo * factorConversion;
+    const diff = cantidad * factorConversion;
     const newDate = new Date(fechaInicio.getTime() + diff);
     return newDate;
 
   }
 }
+
+
 
 /**
  * Calcula el número de días hábiles entre dos fechas
@@ -249,7 +274,7 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
     const diff = timeDifference / (1000 * 3600 * 24)
     let dias = Math.ceil(diff);
-    if(dias !== 0  && (Math.ceil(diff) === Math.floor(diff)) ){
+    if(dias !== 0 && dias !== 1 && (Math.ceil(diff) === Math.floor(diff)) ){
       dias += 1;
     }
     const semanas = Math.floor(dias / 7);
@@ -287,6 +312,8 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
 
 }
 
+
+
 /**
  * Calcula la fecha final requerida para que haya cierta cantidad de días hábiles entre fechaFinal y fechaInicial
  * @param {Date} fechaInicio.
@@ -301,6 +328,8 @@ export function calcularFechaFinalDiaHabil(fechaInicio, cantidad) {
     let fechaMili = fechaInicio.getTime() + cantidad * factorConversion;
     let fechaFin = new Date(fechaMili);
     let diff = cantidad;
+    //Por prueba y error va agregando un número de días igual a la diferencia que le quede para 
+    //llegar a la cantidad parámetro. Esto funciona porque el número de días hábiles entre dos fechas es <=  número de días.
     while(diff > 0){
       diff = cantidad - calcularDiasHabilesEntreFechas(fechaInicio, fechaFin);
       fechaMili = fechaFin.getTime() + (diff*factorConversion);

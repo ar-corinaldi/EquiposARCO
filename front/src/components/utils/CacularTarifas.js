@@ -251,11 +251,6 @@ export function calcularFechaFinal(fechaInicio, medidaTiempo, cantidad) {
     const factorConversion = conversion[medidaTiempo];
     const diff = cantidad * factorConversion;
     const newDate = new Date(fechaInicio.getTime() + diff);
-    console.log('================FECHA PUTEADA====================');
-    console.log(newDate);
-    console.log(factorConversion);
-    console.log(diff);
-    console.log('====================================');
     return newDate;
 
   }

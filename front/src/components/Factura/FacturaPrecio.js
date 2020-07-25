@@ -2,15 +2,21 @@ import React from "react";
 import formatoPrecios from "../utils/FormatoPrecios";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { useEffect } from "react";
 function FacturaPrecio(props) {
+  const { precioTotal, facturar } = props;
+  const [iva, setIva] = props.iva;
+  const [canFacturar, setCanFacturar] = props.canFacturar;
+
+  useEffect(() => {
+    setCanFacturar(iva >= 0 && precioTotal >= 0);
+  }, [iva, precioTotal]);
+
   const handleChange = (e) => {
     e.preventDefault();
     const { value } = e.target;
     setIva(value);
   };
-
-  const { precioTotal, facturar } = props;
-  const [iva, setIva] = props.iva;
 
   return (
     <Row>
@@ -35,6 +41,7 @@ function FacturaPrecio(props) {
                 <input
                   placeholder={19}
                   value={iva}
+                  disabled
                   onChange={handleChange}
                   style={{ width: "30px" }}
                 />
@@ -53,7 +60,11 @@ function FacturaPrecio(props) {
             </p>
           </Col>
         </Row>
-        <button className="buttonEquipo" onClick={facturar}>
+        <button
+          className="buttonAction"
+          onClick={facturar}
+          disabled={!canFacturar}
+        >
           Facturar
         </button>
       </div>

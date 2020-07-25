@@ -61,7 +61,7 @@ function NotaInventarioList(props) {
           <div id="equipo-wrapper">
             <Row className="mb-4">
               <Link
-                className="buttonEquipo"
+                className="buttonAction"
                 to={"/inventario/crearNotaInventario"}
               >
                 Agregar una nota de inventario

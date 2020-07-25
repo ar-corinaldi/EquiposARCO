@@ -10,6 +10,7 @@ import TerceroDetail from "./components/Tercero/TerceroDetail";
 import TerceroCreate from "./components/Tercero/TerceroCreate";
 import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
+import ObraDetail from "./components/Orden/ObraDetail";
 import CrearOrden from "./components/Factura/CrearOrden/CrearOrden";
 import FacturaList from "./components/Factura/FacturaList";
 import FacturaDetail from "./components/Factura/FacturaDetail";
@@ -87,6 +88,11 @@ function App() {
                   path="/terceros/:id/bodegas/:idB/ordenes/:idOr"
                   exact
                   component={OrdenDetail}
+                />
+                <Route
+                  path="/terceros/:id/bodegas/:idB/obras/:idObra"
+                  exact
+                  component={ObraDetail}
                 />
                 <Route
                   path="/terceros/:id/bodegas/:idB/ordenes/:idOr/remisiones/create"

@@ -327,10 +327,13 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     }
 
     if (precio === 0) {
-      precio =
-        equipoID.precios &&
-        equipoID.precios.length > 0 &&
-        equipoID.precios[0].valorAlquiler;
+      const newPrecio =
+        equipoID.precios && equipoID.precios.length > 0 && equipoID.precios[0];
+      precio = newPrecio && newPrecio.valorAlquiler;
+      categoria = newPrecio && newPrecio.categoria;
+      tiempo = newPrecio && newPrecio.tiempo;
+      // @ts-check ponerlo siempre!!
+      // tiempoMinimo = newPrecio && newPrecio.tiempoMinimo;
     }
 
     if (precio === 0) {

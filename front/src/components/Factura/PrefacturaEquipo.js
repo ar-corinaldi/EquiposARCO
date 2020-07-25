@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import formatoPrecios from "../utils/FormatoPrecios";
 import { formatoCategoria, formatoTiempo } from "../utils/FormatoInfoPrecios";
-import { calcularTarifaDiaHabil } from "../utils/CacularTarifas";
+import { calcularDiasHabilesEntreFechas } from "../utils/CacularTarifas";
 
 function PrefacturaEquipo(props) {
   const {
@@ -9,18 +9,16 @@ function PrefacturaEquipo(props) {
     listaMes,
     mes,
     anio,
-    setPrecioMeses,
-    precioMeses,
-    fechaEmision,
-    setAcumEquipos,
+    fechaInicial,
     setPrecioTotal,
+    fechaCorte,
   } = props;
 
   const [rows, setRows] = new useState([]);
 
   useEffect(() => {
     setRows(equipoPrefactura());
-  }, [fechaEmision]);
+  }, [fechaInicial, mes, anio, fechaCorte, equipo, listaMes]);
 
   const equipoPrefactura = () => {
     let prev = 0,
@@ -30,7 +28,7 @@ function PrefacturaEquipo(props) {
 
     if (equipo) {
       let initialDay =
-        (fechaEmision.getMonth() + 1 == mes && fechaEmision.getDate() - 1) || 0;
+        (fechaInicial.getMonth() + 1 == mes && fechaInicial.getDate() - 1) || 0;
       for (let i = initialDay; i < listaMes.length; i++) {
         let current = listaMes[i];
         if (prev !== current) {
@@ -41,17 +39,11 @@ function PrefacturaEquipo(props) {
 
             let facturado = i + 1 - (prevDay + 1) + 1;
             facturado = Math.max(equipo.tiempoMinimo, facturado);
-            console.log("categoria", equipo.categoria);
-            if (equipo.categoria === "dia habil") {
+
+            if (equipo.tiempo === "dia habil") {
               const fechaA = new Date(2020, mes, prevDay + 1);
               const fechaB = new Date(2020, mes, listaMes.length);
-              let { diasTotales, festivosEnMedio } = calcularTarifaDiaHabil(
-                null,
-                facturado,
-                fechaA,
-                fechaB
-              );
-              facturado = diasTotales - festivosEnMedio;
+              facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
             }
             const cantidad = prev;
             const total = equipo.precio * facturado * cantidad;
@@ -82,17 +74,12 @@ function PrefacturaEquipo(props) {
       }/${mes}/${anio}`;
       let facturado = listaMes.length - (prevDay + 1) + 1;
       facturado = Math.max(equipo.tiempoMinimo, facturado);
-      if (equipo.categoria === "dia habil") {
+      if (equipo.tiempo === "dia habil") {
         const fechaA = new Date(2020, mes, prevDay + 1);
         const fechaB = new Date(2020, mes, listaMes.length);
-        let { diasTotales, festivosEnMedio } = calcularTarifaDiaHabil(
-          null,
-          facturado,
-          fechaA,
-          fechaB
-        );
-        facturado = diasTotales - festivosEnMedio;
+        facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
       }
+
       if (prev !== 0) {
         const total = equipo.precio * facturado * cantidad;
         newPrecioTotal += total;
@@ -109,7 +96,6 @@ function PrefacturaEquipo(props) {
       }
     }
     setPrecioTotal((prevAcum) => prevAcum + newPrecioTotal);
-    console.log("precio total set");
     return newRender;
   };
 

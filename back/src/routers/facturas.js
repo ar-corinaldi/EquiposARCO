@@ -45,15 +45,31 @@ router.get("/facturas/:page/:elementsPerPage", async (req, res) => {
 });
 
 /**
+ * Facturas de una obra
+ */
+router.get("/obras/:idObra/facturas", async (req, res) => {
+  const idObra = req.params.idObra;
+  try {
+    const fact = await Factura.find({ codigoObra: idObra }).sort({
+      fechaCorte: -1,
+    });
+    res.send(fact);
+  } catch (e) {
+    res.status(404).send([`No se puede dar las facturas de la obra ${idObra}`]);
+  }
+});
+
+/**
  *  Post de factura
  */
 router.post("/facturas", async (req, res) => {
-  const factura = new Factura(req.body);
   try {
+    const factura = new Factura(req.body);
     await factura.save();
     res.status(201).send(factura);
   } catch (e) {
-    res.status(400).send(e);
+    console.log(e);
+    res.status(400).send(["No se pudo crear la factura"]);
   }
 });
 

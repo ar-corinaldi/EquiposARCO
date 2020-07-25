@@ -189,17 +189,11 @@ export function calcularTarifaDiaHabil(
       }
     });
     const diasTotales = Math.max(dias, tiempoMinimo);
-    const precioTotal = diasTotales * tarifa.valorTarifa * cantidadUsada;
-    return {
-      precioTotal: precioTotal,
-      diasTotales: diasTotales,
-      festivosEnMedio: festivosEnMedio,
-    };
+    const valorTarifa = (tarifa && tarifa.valorTarifa) || 0;
+    const precioTotal = diasTotales * valorTarifa * cantidadUsada;
+    return { precioTotal, diasTotales, festivosEnMedio };
   }
 }
-
-
-
 
 /**
  *
@@ -272,13 +266,11 @@ export function calcularFechaFinal(fechaInicio, medidaTiempo, cantidad) {
 export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
   if (!fechaInicial || !fechaFinal) {
     return null;
-  }
-  else if (fechaFinal < fechaInicial) {
-    return null
-  }
-  else {
+  } else if (fechaFinal < fechaInicial) {
+    return null;
+  } else {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
-    const diff = timeDifference / (1000 * 3600 * 24)
+    const diff = timeDifference / (1000 * 3600 * 24);
     let dias = Math.ceil(diff);
     // if(dias !== 0 && dias !== 1 && (Math.ceil(diff) === Math.floor(diff)) ){
     //   dias += 1;

@@ -15,12 +15,14 @@ function FacturaDetail() {
   );
   const [factura, setFactura] = useState(resource);
   const [fechaCorte, setFechaCorte] = useState(new Date());
-  const [fechaEmision, setFechaEmision] = useState(new Date(2020, 5, 1));
   const [fechaInicial, setFechaInicial] = useState(new Date(2020, 5, 1));
+  const [fechaPrimeraOrden, setFechaPrimeraOrden] = useState(
+    new Date(2020, 5, 1)
+  );
   const [precioTotal, setPrecioTotal] = useState(0);
   const [renderPrefacturas, setRenderPrefacturas] = useState(null);
   const refFechaCorte = useRef();
-  const refFechaEmision = useRef();
+  const refFechaInicial = useRef();
 
   useEffect(() => {
     setFactura(resource);
@@ -32,15 +34,15 @@ function FacturaDetail() {
     setRenderPrefacturas(
       <Prefacturas
         key={factura._id}
-        fechaInicial={fechaInicial}
+        fechaPrimeraOrden={fechaPrimeraOrden}
         fechaCorte={fechaCorte}
-        fechaEmision={fechaEmision}
+        fechaInicial={fechaInicial}
         ordenes={factura.ordenes || []}
         setPrecioTotal={setPrecioTotal}
       />
     );
     console.log("Render prefactura");
-  }, [factura, fechaEmision, fechaCorte]);
+  }, [factura, fechaInicial, fechaCorte]);
   const fechaInicialDeOrdenes = () => {
     const ordenes = factura.ordenes || [];
     ordenes.sort((a, b) => {
@@ -54,11 +56,11 @@ function FacturaDetail() {
     }
   };
 
-  const cambioFechaEmision = (e) => {
+  const cambioFechaInicial = (e) => {
     e.preventDefault();
-    const val = refFechaEmision.current.value;
+    const val = refFechaInicial.current.value;
     const newFecha = new Date(val);
-    setFechaEmision(newFecha);
+    setFechaInicial(newFecha);
   };
 
   const cambioFechaCorte = (e) => {
@@ -110,20 +112,21 @@ function FacturaDetail() {
               ? factura.ordenes[0].bodega
               : null
           }
-          fechaEmision={fechaEmision}
+          fechaInicial={fechaInicial}
           fechaCorte={fechaCorte}
         />
       </Row>
       <Row>
         <Col>
-          <label htmlFor="fechaInicial">Fecha de Emision</label>
+          <label htmlFor="fechaInicial">Fecha de Inicial</label>
           <input
             name="fechaInicial"
-            defaultValue={parseDate(fechaEmision)}
+            defaultValue={parseDate(fechaInicial)}
             type="date"
-            ref={refFechaEmision}
+            disabled
+            ref={refFechaInicial}
           />
-          <button onClick={cambioFechaEmision}>Cambiar Fecha de Emision</button>
+          <button onClick={cambioFechaInicial}>Cambiar Fecha de Inicial</button>
           <label htmlFor="fechaCorte">Fecha Corte</label>
           <input
             name="fechaCorte"

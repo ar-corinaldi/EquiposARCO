@@ -146,7 +146,7 @@ router.get("/equipos", async (req, res) => {
  */
 router.get("/equipos/precios-exists", async (req, res) => {
   try {
-    const equipos = await Equipo.find({ precios: {$not: { $size: 0 }} });
+    const equipos = await Equipo.find({ $and: [{precios: {$exists: true}}, { precios: {$not: { $size: 0 }} }] });
     res.send(equipos);
   } catch (e) {
     res.status(500).send([]);

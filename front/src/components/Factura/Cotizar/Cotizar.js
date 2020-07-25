@@ -38,7 +38,7 @@ const Cotizar = () => {
     }
     //Funciones
 
-    function guardarCotizacion() {
+    async function guardarCotizacion() {
         // if (equiposSeleccionados && tarifas && Object.keys(tarifas) > 0 && Object.keys(terceroSeleccionado) > 0) {
         let cotizacion = {};
 
@@ -47,20 +47,45 @@ const Cotizar = () => {
         console.log(terceroSeleccionado);
         console.log(cobro);
         console.log("-----------------------------------");
-        console.log(Object.keys(tarifas));
-        console.log(Object.keys(terceroSeleccionado));
-        console.log(Object.keys(cobro));
 
-        if(Object.keys(tarifas).length && Object.keys(cobro).length && Object.keys(terceroSeleccionado).length ){
+        if (Object.keys(tarifas).length && Object.keys(cobro).length && Object.keys(terceroSeleccionado).length) {
+            console.log(Object.keys(tarifas));
+            console.log(Object.keys(terceroSeleccionado));
+            console.log(Object.keys(cobro));
+
+
             cotizacion.precioTotal = cobro.cobroCompleto;
             cotizacion.tercero = terceroSeleccionado._id;
             cotizacion.tarifasCotizadas = [];
             console.log('=============COTIZANDO ANDO=======================');
             console.log(cotizacion);
             console.log('====================================');
-            for(let tarifa of Object.keys(tarifas)){
-                
+            const headers = { "Content-type": "application/json; charset=UTF-8" };
+            for (let tarifa of Object.keys(tarifas)) {
+                console.log(JSON.stringify(tarifa));
+                tarifa = tarifas[tarifa];
+                console.log(tarifa);
+                await fetch("/tarifas/", {
+                    method: "POST", headers: headers,
+                    body: JSON.stringify(tarifa)
+                }).then(response => response.json())
+                    .then(response => {
+                        console.log(response)
+                        cotizacion.tarifasCotizadas.push(response._id);
+                    })
             }
+            console.log('=============COTIZACION CON TARIFITAS=======================');
+            console.log(cotizacion);
+
+            await fetch("/cotizaciones", {
+                method: "POST", headers: headers,
+                body: JSON.stringify(cotizacion)
+            }).then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                    document.location.href = "/terceros/" + response.tercero
+                        + "/cotizaciones/" + response._id;
+                })
         }
 
 
@@ -91,11 +116,11 @@ const Cotizar = () => {
                         }
                     }
                     tarifas[equipo.equipoID._id] = newTarifa;
-                    if(equipo.nombreEquipo == 'prueba nota inventario'){
+                    if (equipo.nombreEquipo == 'prueba nota inventario') {
                         console.log('=================EQQUIPO JODON===================');
                         console.log(equipo);
                         console.log('====================================');
-                      }
+                    }
                 }
             }
             console.log('=========Tarifas===========================');
@@ -153,7 +178,7 @@ const Cotizar = () => {
                         <tr>
                             <th>Total</th>
                             <th></th><th></th><th></th><th></th>
-                            <th className ='center'>{cobro && formatoPrecios(cobro.cobroCompleto)}</th>
+                            <th className='center'>{cobro && formatoPrecios(cobro.cobroCompleto)}</th>
                             <th></th>
                         </tr>
 

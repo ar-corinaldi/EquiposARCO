@@ -7,7 +7,7 @@ import InfoFactura from "../Factura/InfoFactura";
 import FacturaObraList from "../Factura/FacturaObraList";
 import FacturaFechas from "../Factura/FacturaFechas";
 
-function ObraDetail(props) {
+function ObraDetail() {
   const { idObra } = useParams();
   const { resource, loading, notFound } = useFetchAPI(
     `/ordenes/groupBy/${idObra}`
@@ -27,9 +27,10 @@ function ObraDetail(props) {
   }, [resource]);
 
   useEffect(() => {
-    console.log("Inicial", fechaInicial);
-    console.log("Corte", fechaCorte);
-  }, [fechaInicial, fechaCorte]);
+    const newFechaCorte = new Date(fechaInicial);
+    newFechaCorte.setMonth(newFechaCorte.getMonth() + 1);
+    setFechaCorte(newFechaCorte);
+  }, [fechaInicial]);
 
   ordenes = (ordenes && ordenes.length > 0 && ordenes) || [];
   const bodega = ordenes.length > 0 && ordenes[0].bodega;
@@ -48,7 +49,8 @@ function ObraDetail(props) {
       <FacturaObraList
         idObra={idObra}
         fechaInicial={[fechaInicial, setFechaInicial]}
-        fechaCorte={[fechaCorte, setFechaCorte]}
+        setFechaCorte={setFechaCorte}
+        fechaCorte={fechaCorte}
       />
       <FacturaFechas
         fechaCorte={[fechaCorte, setFechaCorte]}

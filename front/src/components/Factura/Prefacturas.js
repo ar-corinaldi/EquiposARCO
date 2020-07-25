@@ -3,6 +3,7 @@ import PrefacturaContenido from "./PrefacturaContenido";
 import usePrefacturas from "./usePrefacturas";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { useEffect } from "react";
 
 const nombreMeses = [
   "Enero",
@@ -28,15 +29,13 @@ function Prefacturas(props) {
     setPrecioTotal,
   } = props;
   let { prefacturas } = usePrefacturas(fechaPrimeraOrden, fechaCorte, ordenes);
-  console.log("Renderiza todo", fechaInicial);
+
   return (
     <React.Fragment>
       {prefacturas.map(({ mes, prefacturaMes, anio }) =>
         Object.keys(prefacturaMes).length > 0 &&
-        mes >= fechaInicial.getMonth() &&
-        anio >= fechaInicial.getFullYear() &&
-        mes <= fechaCorte.getMonth() &&
-        anio <= fechaCorte.getFullYear() ? (
+        new Date(anio, mes + 1).getTime() >= fechaInicial.getTime() &&
+        new Date(anio, mes).getTime() <= fechaCorte.getTime() ? (
           <Row key={`${anio}-${mes}`} id="info-wrapper">
             <Row>
               <Col>

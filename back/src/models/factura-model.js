@@ -57,6 +57,30 @@ const facturaSchema = new Schema({
   },
 });
 
+//Valido fechas inicial, final y precio
+facturaSchema.pre("validate", async function (next) {
+  const factura = this;
+  try {
+    const { fechaInicial, fechaCorte, fechaPago } = factura;
+    let cond = fechaCorte.getTime() - fechaInicial.getTime() >= 0;
+    // Fecha corte < fecha inicial
+    if (!cond) {
+      return next(["La fecha corte no es mayor o igual que la fecha inicial"]);
+    }
+    cond =
+      fechaPago.getTime() - fechaCorte.getTime() >= 0 ||
+      fechaPago.getTime() - fechaInicial.getTime() >= 0;
+    // FechaPago > (fechaCorte & fechaInicial)
+    if (!cond) {
+      return next(["La fecha pago no es valida"]);
+    }
+    // No problem
+    next();
+  } catch (e) {
+    next(["Hubo un error en el sistema con las facturas"]);
+  }
+});
+
 facturaSchema.pre("validate", async function (next) {
   // Nombre en singular de la collection y en minuscula
   const factura = this;

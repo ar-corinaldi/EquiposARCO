@@ -10,15 +10,28 @@ function BuscarEquiposCotizados(props) {
     setEquiposSeleccionados,
   ] = props.equiposSeleccionados;
 
+  const [equipos, setEquipos] = props.equipos;
+
   //Estados propios
-  const [equipos, setEquipos] = useState([]);
+
 
   //Effects
 
   useEffect(() => {
     async function fetchEquipos() {
-      const equiposBack = await (await fetch("/equipos")).json();
-      console.log("====================================");
+      let equiposBack = await (await fetch("/equipos/precios-exists")).json();
+      console.log("================BAAAAAACK====================");
+      console.log(equiposBack);
+    
+      for(let i = 0; i < equiposBack.length; i++){
+        let equipo = equiposBack[i];
+        console.log(equipo);
+        if(equipo.precios.length === 0 || !equipo.precios || !equipo.precios[0]){
+          console.log("- "+ i);
+          // equiposBack.splice(i,i);
+          equiposBack = equiposBack.filter((prev, index) => i !== index)
+        }
+      }
       console.log(equiposBack);
       console.log("====================================");
       setEquipos(equiposBack);

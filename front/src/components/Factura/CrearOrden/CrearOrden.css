@@ -81,6 +81,13 @@
   z-index: 1;
 }
 
+.stickyRow-Bottom{
+  position: sticky;
+  position: -webkit-sticky;
+  bottom: 0px;
+  z-index: 1;
+}
+
 @media(max-width: 768px){
   #create-order-wrapper {
     margin: 2px 15px 0px 35px;

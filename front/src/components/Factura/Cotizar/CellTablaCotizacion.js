@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import CloseIcon from "@material-ui/icons/Close";
 import formatoPrecio from "../../utils/FormatoPrecios";
-import { formatoCategoriaHTML, formatoTiempo } from "../../utils/FormatoInfoPrecios";
+import { formatoCategoriaHTML, formatoTiempo, formatoCategoria } from "../../utils/FormatoInfoPrecios";
 import { calcularFechaFinalDiaHabil, calcularFechaFinal } from '../../utils/CacularTarifas';
 import InputBase from "@material-ui/core/InputBase";
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import formatoPrecios from '../../utils/FormatoPrecios';
 import Cleave from 'cleave.js/react';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 function CellTablaCotizacion(props) {
     //Estados globales
@@ -22,6 +28,7 @@ function CellTablaCotizacion(props) {
     //Estados propios
     let [tarifa, setTarifa] = useState(tarifas[equipo.equipoID._id]);
     const [equipoDetail, setEquipoDetail] = useState({});
+    const [indexPrecio, setIndexPrecio] = useState(0);
 
 
     //Buscar precio referencia
@@ -31,48 +38,71 @@ function CellTablaCotizacion(props) {
         console.log('==============miTarifa======================');
         console.log(tarifa);
         console.log('====================================');
-        if (tarifa && Object.keys(tarifa).length > 0) {
+        if (tarifa && Object.keys(tarifa).length > 0 && equipoDetail.precios) {
             console.log('entró');
             return (
                 <tr className='center'>
                     <th className="capitalize">{equipo.equipoID.nombreEquipo}</th>
                     <th>
-                        {/* <InputBase
-                            defaultValue={tarifa.cantidad}
-                            inputComponent={InputPrecio}
-                            classes={{
-                                input: "inputRoot",
-                            }}
-                            onChange={handleChangeCantidad}
-                        ></InputBase> */}
-                        <Cleave
-                            options={{
-                                numeral: true,
-                                //  prefix: '$', 
-                                //  rawValueTrimPrefix: true
-                            }}
-                            onChange={handleChangeCantidad}
-                            value={tarifa.cantidad}
-
-                        >
-                        </Cleave>
+                        <div>
+                            <FormControl>
+                                {/* <InputLabel id="demo-simple-select-label">Info</InputLabel> */}
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={indexPrecio}
+                                    onChange={(e) => {
+                                        console.log(e.target.value);
+                                        setIndexPrecio(e.target.value);
+                                    }}
+                                    renderValue={(value) => {
+                                        const precio = equipoDetail.precios[value];
+                                        if(precio){
+                                        return precio.categoria + " -  " + precio.tiempo}
+                                    }}
+                                >
+                                    {equipoDetail.precios && equipoDetail.precios.map((precio, index) => {
+                                        return (
+                                            <MenuItem value={index} key={index}>
+                                                <div>{precio.categoria + " - " + precio.tiempo}</div>
+                                                <div>{" .Tiempo mínimo: " + precio.tiempoMinimo}</div>
+                                            </MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </div>
                     </th>
-                    <th className="capitalize text-center">
-                        {tarifa.precioReferencia &&
-                            formatoCategoriaHTML(tarifa.precioReferencia.categoria, true)}
+                    <th>
+                        <Row>
+                            <Col>
+                                <Cleave
+                                    options={{
+                                        numeral: true,
+                                        // prefix: " " + formatoCategoria(tarifa.precioReferencia.categoria, true),
+                                        // rawValueTrimPrefix: true,
+                                        // tailPrefix: true
+                                    }}
+                                    onChange={handleChangeCantidad}
+                                    value={tarifa.cantidad}
+                                    className = 'float-center'
+                                >
+                                </Cleave>
+                                <span className='float-center'>
+                                    {formatoCategoriaHTML(tarifa.precioReferencia.categoria, true)}
+                                </span>
+                            </Col>
+                        </Row>
                     </th>
                     <th>
                         <Cleave
                             value={tarifa.valorTarifa}
-                            options={{numeral: true, prefix: '$', rawValueTrimPrefix: true}}
+                            options={{ numeral: true, prefix: '$', rawValueTrimPrefix: true }}
                             onChange={handleChangePrecio}
                         ></Cleave>
                         {/* {formatoPrecio(tarifa.valorTarifa).replace(" ", "\xa0")} */}
                     </th>
-                    <th>{tarifa.precioReferencia &&
-                        formatoTiempo(tarifa.precioReferencia.tiempo, true)}
-                    </th>
-                    <th>
+                    <th className='float-center'>
                         {/* <InputBase
                             defaultValue={0}
                             classes={{
@@ -80,21 +110,29 @@ function CellTablaCotizacion(props) {
                             }}
                             onChange={handleChangeTiempoCotizado}
                         ></InputBase> */}
-                        <Cleave
-                            options={{ numeral: true }}
-                            onChange={handleChangeTiempoCotizado}
-                            value={0}
+                        <form>
+                            <input
+                                // options={{ numeral: true }}
+                                type='number'
+                                onChange={handleChangeTiempoCotizado}
+                                // onInit={onInitCantidad}
+                                // value={(tarifa && tarifa.precioReferencia) && (tarifa.precioReferencia.tiempoMinimo || 0)}
 
-                        >
-                        </Cleave>
+                                min={(tarifa && tarifa.precioReferencia) && (tarifa.precioReferencia.tiempoMinimo || 0)}
+                                required
+
+                            >
+                            </input>
+                            <span>{formatoTiempo(tarifa.precioReferencia.tiempo, true)}</span>
+                        </form>
                     </th>
-                    <th>{cobro && cobro[tarifa.equipo] && formatoPrecios(cobro[tarifa.equipo].cobroTotal).replace(" ","\xa0")}</th>
+                    <th>{cobro && cobro[tarifa.equipo] && formatoPrecios(cobro[tarifa.equipo].cobroTotal).replace(" ", "\xa0")}</th>
                     <th>
                         <CloseIcon className=" iconSelected"
                             onClick={handleRemoveEquipo}
                         />
                     </th>
-                </tr>
+                </tr >
             )
         }
     }
@@ -122,11 +160,18 @@ function CellTablaCotizacion(props) {
     }
 
     function handleChangeTiempoCotizado(e) {
-        e.persist();
+        // e.persist();
+        e.preventDefault();
         console.log("anda entrando");
-        console.log(e.target.rawValue);
+        console.log(e.target.value);
         if (tarifa && tarifa.precioReferencia && tarifa.fechaInicio) {//Los que no tienen precio ref pailas?
-            let newCantidad = e.target.rawValue;
+            let newCantidad = e.target.value;
+            // if (newCantidad < (newCantidad && tarifa.precioReferencia) && (tarifa.precioReferencia.tiempoMinimo || 0)) {
+            //     newCantidad = tarifa.precioReferencia.tiempoMinimo;
+            //     if (newCantidad != cleave.cantidadCleave.getRawValue()) {
+            //         cleave.cantidadCleave.setRawValue(newCantidad);
+            //     }
+            //}
             const medidaTiempo = tarifa.precioReferencia.tiempo;
             let newFecha = null;
             if (medidaTiempo !== "dia habil") {
@@ -196,8 +241,8 @@ function CellTablaCotizacion(props) {
         console.log(equipoDetail);
         console.log('====================================');
         if (equipoDetail.precios && equipoDetail.precios[0]) {
-            tarifa.valorTarifa = equipoDetail.precios[0].valorAlquiler;
-            tarifa.precioReferencia = equipoDetail.precios[0];
+            tarifa.valorTarifa = equipoDetail.precios[indexPrecio].valorAlquiler;
+            tarifa.precioReferencia = equipoDetail.precios[indexPrecio];
             setTarifa(Object.assign({}, tarifa));
             console.log('===============Entrooooo=====================');
             console.log("");
@@ -207,6 +252,14 @@ function CellTablaCotizacion(props) {
         console.log(tarifas);
         console.log('====================================');
     }, [equipoDetail]);
+
+    useEffect(() => {
+        if (equipoDetail.precios) {
+            tarifa.valorTarifa = equipoDetail.precios[indexPrecio].valorAlquiler;
+            tarifa.precioReferencia = equipoDetail.precios[indexPrecio];
+            setTarifa(Object.assign({}, tarifa));
+        }
+    }, [indexPrecio])
 
     return (
         <>

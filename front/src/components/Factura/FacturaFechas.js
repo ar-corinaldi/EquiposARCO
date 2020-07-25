@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Toast from "../Toast";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+// import Col from "react-bootstrap/Row";
 
 function FacturaFechas(props) {
   const [fechaInicial, setFechaInicial] = props.fechaInicial;
@@ -53,26 +56,28 @@ function FacturaFechas(props) {
   };
 
   return (
-    <React.Fragment>
-      <label htmlFor="fechaInicial">Fecha de Inicial</label>
-      <input
-        required
-        disabled
-        name="fechaInicial"
-        value={renderInicial}
-        type="date"
-        onChange={handleChange}
-      />
-      <button disabled>Cambiar Fecha de Inicial</button>
-      <label htmlFor="fechaCorte">Fecha Corte</label>
-      <input
-        name="fechaCorte"
-        value={renderCorte}
-        type="date"
-        onChange={handleChange}
-      />
-      <button>Cambiar Fecha Corte</button>
-    </React.Fragment>
+    <Row>
+      <Col className="ml-3">
+        <label htmlFor="fechaInicial">Fecha de Inicial</label>
+        <input
+          required
+          disabled
+          name="fechaInicial"
+          value={renderInicial}
+          type="date"
+          onChange={handleChange}
+        />
+      </Col>
+      <Col>
+        <label htmlFor="fechaCorte">Fecha Corte</label>
+        <input
+          name="fechaCorte"
+          value={renderCorte}
+          type="date"
+          onChange={handleChange}
+        />
+      </Col>
+    </Row>
   );
 }
 

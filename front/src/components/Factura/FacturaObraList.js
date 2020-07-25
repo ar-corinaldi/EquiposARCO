@@ -3,6 +3,7 @@ import useFetchAPI from "../../hooks/useFetchAPI";
 import Row from "react-bootstrap/Row";
 import formatoFechas from "../utils/FormatoFechas";
 import formatoPrecios from "../utils/FormatoPrecios";
+import { Link } from "react-router-dom";
 function FacturaObraList(props) {
   const { idObra, setFechaCorte, fechaCorte } = props;
   const [fechaInicial, setFechaInicial] = props.fechaInicial;
@@ -42,19 +43,19 @@ function FacturaObraList(props) {
         facturas.length > 0 &&
         facturas.map((fact) => (
           <Row key={fact._id}>
-            <p className="mr-2 mb-0">
+            <p className="mr-2 mb-1">
               <strong>Factura : </strong>
-              {fact.codigo}
+              <Link to={`/facturacion/${fact.codigo}`}>{fact.codigo}</Link>
             </p>
-            <p className="mr-2 mb-0">
+            <p className="mr-2 mb-1">
               <strong>Fecha Inicial : </strong>
               {formatoFechas(fact.fechaInicial)}
             </p>
-            <p className="mr-2 mb-0">
+            <p className="mr-2 mb-1">
               <strong>Factura Corte: </strong>
               {formatoFechas(fact.fechaCorte)}
             </p>
-            <p className="mr-2 mb-0">
+            <p className="mr-2 mb-1">
               <strong>Costo: </strong>
               {formatoPrecios(fact.precioTotal)}
             </p>

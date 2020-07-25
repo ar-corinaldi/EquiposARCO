@@ -91,7 +91,9 @@ function InfoFactura(props) {
           <div className="d-inline">
             <p>
               <strong> Órdenes finalizadas : </strong>
-              {bodega.ordenesPasadas.length > 0 ? (
+              {bodega &&
+              bodega.ordenesPasadas &&
+              bodega.ordenesPasadas.length > 0 ? (
                 bodega.ordenesPasadas.map((orden, index) => (
                   <Link
                     to={

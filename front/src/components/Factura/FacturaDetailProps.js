@@ -51,6 +51,7 @@ function FacturaDetail(props) {
       fechaInicial,
       fechaPago,
       tercero,
+      fechaPrimeraOrden,
       precioTotal: precioTotal * (1 + iva / 100),
       subTotal: precioTotal,
       iva,

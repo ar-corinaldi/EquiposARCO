@@ -19,10 +19,14 @@ const facturaSchema = new Schema({
     type: Date,
     required: true,
   },
+  fechaPrimeraOrden: {
+    type: Date,
+    required: true,
+  },
   ordenes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "factura",
+      ref: "Orden",
     },
   ],
   iva: {
@@ -54,6 +58,7 @@ const facturaSchema = new Schema({
   codigo: {
     type: String,
     required: true,
+    unique: true,
   },
 });
 

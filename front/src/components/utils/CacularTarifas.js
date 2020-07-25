@@ -146,10 +146,17 @@ export function calcularTarifaDiaHabil(
     const diff = timeDifference / (1000 * 3600 * 24)
     let dias = Math.ceil(diff);
 
-    //Si la diferencia de tiempo es un multiplo exacto de un día, se agrega uno más. A menos que la diferencia sea Cero.
-    if(dias !== 0 && dias !== 1  && (Math.ceil(diff) === Math.floor(diff)) ){
-      dias += 1; 
+    // //Si la diferencia de tiempo es un multiplo exacto de un día, se agrega uno más. A menos que la diferencia sea Cero.
+    // if(dias !== 0 && dias !== 1  && (Math.ceil(diff) === Math.floor(diff)) ){
+    //   dias += 1; 
+    // }
+
+    if ((Math.ceil(diff) === Math.floor(diff))
+      && (dias !== Math.ceil((timeDifference + 1) / (1000 * 3600 * 24)))
+      && timeDifference !== 0) {
+      dias += 1;
     }
+
     const semanas = Math.floor(dias / 7);
     //Quita dos días por cada semana (Sábado y Domingo)
     dias -= semanas * 2;
@@ -170,11 +177,10 @@ export function calcularTarifaDiaHabil(
     if (diaFinal == 6 && diaInicial != 0) {
       dias--;
     }
-
     let festivosEnMedio = [];
     holidays.forEach((dia) => {
       const festivo = new Date(dia.date);
-      if (festivo >= fechaInicial && festivo <= fechaFinal && dias !== 0) {
+      if (festivo >= fechaInicial && festivo <= fechaFinal && dias != 0) {
         //Si el festivo no es ni Sábado (6) ni Domingo (0)
         if (festivo.getDay() % 6 != 0) {
           dias--;
@@ -215,7 +221,7 @@ export function calcularTarifa(
     !conversion[medidaTiempo] ||
     (cantidadUsada !== 0 && !cantidadUsada)
   ) {
-    return { precioTotal: null, tiempoTotal: null};
+    return { precioTotal: null, tiempoTotal: null };
   } else {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
     const tiempoConvertido = Math.ceil(
@@ -266,7 +272,10 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
     const diff = timeDifference / (1000 * 3600 * 24);
     let dias = Math.ceil(diff);
-    if (dias !== 0 && dias !== 1 && Math.ceil(diff) === Math.floor(diff)) {
+    // if(dias !== 0 && dias !== 1 && (Math.ceil(diff) === Math.floor(diff)) ){
+    //   dias += 1;
+    // }
+    if ((Math.ceil(diff) === Math.floor(diff)) && (dias !== Math.ceil((timeDifference + 1) / (1000 * 3600 * 24))) && timeDifference !== 0) {
       dias += 1;
     }
     const semanas = Math.floor(dias / 7);
@@ -276,6 +285,14 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
     //Manejo de casos especiales
     const diaInicial = fechaInicial.getDay();
     const diaFinal = fechaFinal.getDay();
+
+    // console.log('===================METODOO=================');
+    // console.log(fechaFinal);
+    // console.log(Math.ceil(diff));
+    // console.log(dias);
+    // console.log(semanas);
+
+
 
     //Quita días que faltaron
     if (diaInicial - diaFinal > 1) {
@@ -289,9 +306,12 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
     if (diaFinal == 6 && diaInicial != 0) {
       dias--;
     }
+    // console.log(dias);
+    // console.log('====================================');
+
     holidays.forEach((dia) => {
       const festivo = new Date(dia.date);
-      if (festivo >= fechaInicial && festivo <= fechaFinal && dias !== 0) {
+      if (festivo >= fechaInicial && festivo <= fechaFinal && dias != 0) {
         //Si el festivo no es ni Sábado (6) ni Domingo (0)
         if (festivo.getDay() % 6 != 0) {
           dias--;
@@ -322,9 +342,9 @@ export function calcularFechaFinalDiaHabil(fechaInicio, cantidad) {
     let diff = cantidad;
     //Por prueba y error va agregando un número de días igual a la diferencia que le quede para 
     //llegar a la cantidad parámetro. Esto funciona porque el número de días hábiles entre dos fechas es <=  número de días.
-    while(diff > 0){
+    while (diff > 0) {
       diff = cantidad - calcularDiasHabilesEntreFechas(fechaInicio, fechaFin);
-      fechaMili = fechaFin.getTime() + (diff*factorConversion);
+      fechaMili = fechaFin.getTime() + (diff * factorConversion);
       fechaFin = new Date(fechaMili);
     }
     return fechaFin;

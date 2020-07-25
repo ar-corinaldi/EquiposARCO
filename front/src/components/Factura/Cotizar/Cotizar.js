@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './Cotizar.css';
 import BuscarEquiposCotizados from './BuscarEquiposCotizados';
+import Escoger from '../../Escoger';
 import CellTableCotizazcion from './CellTablaCotizacion';
 import Table from 'react-bootstrap/Table';
 import { calcularTarifaObjeto } from '../../utils/CacularTarifas';
+import formatoPrecios from '../../utils/FormatoPrecios';
 
 const Cotizar = () => {
     let [equiposSeleccionados, setEquiposSeleccionados] = useState([]);
     const [tarifas, setTarifas] = useState({});
     const [cobro, setCobro] = useState({});
+    const [terceros, setTercereos] = useState([]);
+    const [terceroSeleccionado, setTerceroSeleccionado] = useState({});
+    const [equipos, setEquipos] = useState([]);
 
     //funciones
 
@@ -18,10 +23,9 @@ const Cotizar = () => {
                 <thead>
                     <tr className='center'>
                         <th>Nombre Equipo</th>
+                        <th>Base</th>
                         <th>Cantidad Cotizada</th>
-                        <th>Cobro por</th>
                         <th>Precio x Unidad</th>
-                        <th>Tiempo en</th>
                         <th>Tiempo cotizado</th>
                         <th>Valor a cobrar</th>
                         <th>Eliminar</th>
@@ -33,6 +37,62 @@ const Cotizar = () => {
         }
     }
     //Funciones
+
+    async function guardarCotizacion() {
+        // if (equiposSeleccionados && tarifas && Object.keys(tarifas) > 0 && Object.keys(terceroSeleccionado) > 0) {
+        let cotizacion = {};
+
+        console.log("Guardaaaar cotization-----------------------------------");
+        console.log(tarifas);
+        console.log(terceroSeleccionado);
+        console.log(cobro);
+        console.log("-----------------------------------");
+
+        if (Object.keys(tarifas).length && Object.keys(cobro).length && Object.keys(terceroSeleccionado).length) {
+            console.log(Object.keys(tarifas));
+            console.log(Object.keys(terceroSeleccionado));
+            console.log(Object.keys(cobro));
+
+
+            cotizacion.precioTotal = cobro.cobroCompleto;
+            cotizacion.tercero = terceroSeleccionado._id;
+            cotizacion.tarifasCotizadas = [];
+            console.log('=============COTIZANDO ANDO=======================');
+            console.log(cotizacion);
+            console.log('====================================');
+            const headers = { "Content-type": "application/json; charset=UTF-8" };
+            for (let tarifa of Object.keys(tarifas)) {
+                console.log(JSON.stringify(tarifa));
+                tarifa = tarifas[tarifa];
+                console.log(tarifa);
+                await fetch("/tarifas/", {
+                    method: "POST", headers: headers,
+                    body: JSON.stringify(tarifa)
+                }).then(response => response.json())
+                    .then(response => {
+                        console.log(response)
+                        cotizacion.tarifasCotizadas.push(response._id);
+                    })
+            }
+            console.log('=============COTIZACION CON TARIFITAS=======================');
+            console.log(cotizacion);
+
+            await fetch("/cotizaciones", {
+                method: "POST", headers: headers,
+                body: JSON.stringify(cotizacion)
+            }).then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                    document.location.href = "/terceros/" + response.tercero
+                        + "/cotizaciones/" + response._id;
+                })
+        }
+
+
+
+        // }
+
+    }
 
 
     //Effects
@@ -56,6 +116,11 @@ const Cotizar = () => {
                         }
                     }
                     tarifas[equipo.equipoID._id] = newTarifa;
+                    if (equipo.nombreEquipo == 'prueba nota inventario') {
+                        console.log('=================EQQUIPO JODON===================');
+                        console.log(equipo);
+                        console.log('====================================');
+                    }
                 }
             }
             console.log('=========Tarifas===========================');
@@ -76,6 +141,14 @@ const Cotizar = () => {
         setCobro(cobroNuevo);
     }, [tarifas]);
 
+    useEffect(() => {
+        async function tercerosBack() {
+            const terceros = await (await (await fetch("/terceros")).json());
+            setTercereos(terceros);
+        }
+        tercerosBack();
+    }, []);
+
     return (
         <div className="cotizarWrapper">
             <h3>
@@ -85,6 +158,7 @@ const Cotizar = () => {
                 <BuscarEquiposCotizados
                     className='align-self-center vertical-center'
                     equiposSeleccionados={[equiposSeleccionados, setEquiposSeleccionados]}
+                    equipos={[equipos, setEquipos]}
                 />
             </div>
             <div className="cotizar-tarifas-wrapper">
@@ -100,9 +174,33 @@ const Cotizar = () => {
                             cobro={[cobro, setCobro]}
                         />)
                     )}
-                    {/* {tableBody()} */}
+                    <tbody>
+                        <tr>
+                            <th>Total</th>
+                            <th></th><th></th><th></th><th></th>
+                            <th className='center'>{cobro && formatoPrecios(cobro.cobroCompleto)}</th>
+                            <th></th>
+                        </tr>
+
+                    </tbody>
                 </Table>
             </div>
+            <div className="buscarEquiposWrapper" >
+                <div className="width100">
+                    <Escoger
+                        elementos={terceros}
+                        elementoSelected={[terceroSeleccionado, setTerceroSeleccionado]}
+                        nombre="tercero"
+                        nombrePlural="terceros"
+                        campos={["nombre"]}
+                        camposBuscar={["nombre", "tipoDocumento", "numeroDocumento", "direccion", "ciudad", "numeroIdentificacionTributario",
+                            "telefono", "celular", "email"]}
+                    />
+                </div>
+            </div>
+            <button type="button" className="buttonEnabled" onClick={guardarCotizacion}>
+                Confirmar y Crear Cotización
+            </button>
         </div>
     );
 };

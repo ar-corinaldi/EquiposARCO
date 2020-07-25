@@ -58,6 +58,9 @@ const Cotizar = () => {
             console.log('=============COTIZANDO ANDO=======================');
             console.log(cotizacion);
             console.log('====================================');
+            for(let tarifa of Object.keys(tarifas)){
+                
+            }
         }
 
 

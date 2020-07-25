@@ -19,7 +19,7 @@ const facturaSchema = new Schema({
     type: Date,
     required: true,
   },
-  facturaes: [
+  ordenes: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "factura",

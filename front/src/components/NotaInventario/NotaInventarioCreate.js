@@ -1,30 +1,30 @@
 import React, { useState } from "react";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
-import Modal from "../Modal";
-import EquipoList from "../Equipo/EquipoList/EquipoList";
 import NotaInventarioForm from "./NotaInventarioForm";
 import Toast from "../Toast";
-import withEquipoList from "../Equipo/EquipoList/withEquipoList";
+import Escoger from "../Escoger";
 import { useHistory } from "react-router-dom";
+import useFetchAPI from "../../hooks/useFetchAPI";
 
 function NotaInventarioCreate(props) {
-  const [showEquipo, setShowEquipo] = useState(false);
-  const [showOrden, setShowOrden] = useState(false);
+  const [canSubmit, setCanSubmit] = useState(true);
   const [errors, setErrors] = useState([]);
   const [notaInventario, setNotaInventario] = useState({
     descripcion: "",
     cantidad: "",
     categoria: "",
-    proveedor: undefined,
+    proveedor: null,
   });
   const [equipo, setEquipo] = useState({});
   const [orden, setOrden] = useState({});
   const history = useHistory();
 
+  const objEquipo = useFetchAPI("/equipos/darNoCompuestos");
+  const objOrden = useFetchAPI("/ordenes");
+
   const submit = async (e) => {
     e.preventDefault();
+    setCanSubmit(false);
     const newNotaInventario = notaInventario;
     newNotaInventario.equipo = equipo._id;
     newNotaInventario.order = orden._id;
@@ -48,92 +48,47 @@ function NotaInventarioCreate(props) {
     }
   };
 
-  const handleClickEquipo = (e) => {
-    e.preventDefault();
-    setShowEquipo(true);
-  };
-
-  const handleClickOrden = (e) => {
-    e.preventDefault();
-    setShowOrden(true);
-  };
-
-  const handleRemoveEquipo = (e) => {
-    e.preventDefault();
-    setEquipo({});
-  };
-
-  const handleRemoveOrden = (e) => {
-    e.preventDefault();
-    setOrden({});
-  };
-
   return (
-    <Col>
-      NotaInventario
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <form onSubmit={submit}>
-                <NotaInventarioForm
-                  fields={notaInventario}
-                  setFields={setNotaInventario}
-                />
-                <Row>
-                  <div className="group-form">
-                    <Modal
-                      title={"Equipo a añadir nota de inventario"}
-                      body={withEquipoList(
-                        EquipoList,
-                        setEquipo,
-                        "inventario",
-                        true
-                      )}
-                      show={showEquipo}
-                      setShow={setShowEquipo}
-                      estado={equipo}
-                      header
-                    />
-                    <Col>
-                      <button onClick={handleClickEquipo}>
-                        Agregar Equipo
-                      </button>
-                      <input
-                        disabled
-                        defaultValue={equipo.nombreEquipo}
-                        required
-                      />
-                      <button onClick={handleRemoveEquipo}>-</button>
-                    </Col>
-                  </div>
-                </Row>
-                <Row>
-                  <div className="group-form">
-                    <Modal
-                      title={"Orden a añadir nota de inventario"}
-                      body={() => <div>Orden</div>}
-                      show={showOrden}
-                      setShow={setShowOrden}
-                      estado={equipo}
-                      header
-                    />
-                    <Col>
-                      <button onClick={handleClickOrden}>Agregar Orden</button>
-                      <input disabled required />
-                      <button onClick={handleRemoveOrden}>-</button>
-                    </Col>
-                  </div>
-                </Row>
-                <Row>
-                  <button type="submit">Agregar Nota de Inventario</button>
-                </Row>
-              </form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Col>
+    <div id="tercero-registrar-wrapper">
+      <div id="tercero-registrar-card">
+        <form onSubmit={submit}>
+          <h4 id="tercero-registrar-titulo">Registrar Nota Inventario</h4>
+          <NotaInventarioForm
+            fields={notaInventario}
+            setFields={setNotaInventario}
+          />
+          <div className="group-form mt-3">
+            <strong>Buscar Equipo</strong>
+            <Escoger
+              nombre={"Mezcladora de concreto... "}
+              camposBuscar={["nombreEquipo"]}
+              campos={["nombreEquipo"]}
+              elementoSelected={[equipo, setEquipo]}
+              elementos={objEquipo.resource}
+            />
+          </div>
+          <div className="group-form mt-3">
+            <strong>Buscar Orden</strong>
+            <Escoger
+              nombre={"OR3... "}
+              camposBuscar={["codigo", "codigoObra"]}
+              campos={["codigo", "codigoObra"]}
+              elementoSelected={[orden, setOrden]}
+              elementos={objOrden.resource}
+            />
+          </div>
+          <div id="button-wrapper">
+            <button
+              className="buttonAction"
+              disabled={!canSubmit}
+              type="submit"
+            >
+              Crear
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 

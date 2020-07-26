@@ -35,19 +35,56 @@ router.get("/equipos/cantidad", async (req, res) => {
   }
 });
 
-router.get("/equipos/:id/cantidadBodega", async (req, res)=>{
+router.get("/equipos/:id/cantidadBodega", async (req, res) => {
   try {
-    const ans = await Equipo.findById(req.params.id).select('+cantidadBodega').lean();
-    if(!ans){
+    const ans = await Equipo.findById(req.params.id)
+      .select("+cantidadBodega")
+      .lean();
+    if (!ans) {
       res.json(0);
     }
     res.json(ans.cantidadBodega);
-
   } catch (e) {
     res.status(500).send();
   }
 });
 
+/**
+ * Dar la lista de equipos no compuestos
+ */
+router.get("/equipos/darNoCompuestos", async (req, res) => {
+  let equiposNoCompuestos = null;
+  try {
+    equiposNoCompuestos = await Equipo.find({
+      componentes: { $size: 0 },
+    });
+    res.send(equiposNoCompuestos);
+  } catch (e) {
+    res
+      .status(500)
+      .send([
+        "No se puede listar los equipos no compuestos, hubo un error en el sistema",
+      ]);
+  }
+});
+
+/**
+ * Obtiene los componentes de un equipo.
+ * Envia el equipo completo con sus componentes.
+ */
+router.get("/equipos/:id/componentes", async (req, res) => {
+  try {
+    const ans = await Equipo.findById(req.params.id).populate({
+      path: "componentes",
+      populate: {
+        path: "equipoID",
+      },
+    });
+    res.send(ans);
+  } catch (e) {
+    res.status(400).send("No se pudo agregar el componente al equipo " + e);
+  }
+});
 
 /**
  * Dar la lista de equipos no compuestos
@@ -142,11 +179,16 @@ router.get("/equipos", async (req, res) => {
 });
 
 /**
- *  Get de equipos con precio 
+ *  Get de equipos con precio
  */
 router.get("/equipos/precios-exists", async (req, res) => {
   try {
-    const equipos = await Equipo.find({ $and: [{precios: {$exists: true}}, { precios: {$not: { $size: 0 }} }] });
+    const equipos = await Equipo.find({
+      $and: [
+        { precios: { $exists: true } },
+        { precios: { $not: { $size: 0 } } },
+      ],
+    });
     res.send(equipos);
   } catch (e) {
     res.status(500).send([]);
@@ -263,24 +305,6 @@ router.patch("/equipos/:id/componentes/:idC/:cant", async (req, res) => {
       return res.status(404).send();
     }
     res.status(201).send(equipoN);
-  } catch (e) {
-    res.status(400).send("No se pudo agregar el componente al equipo " + e);
-  }
-});
-
-/**
- * Obtiene los componentes de un equipo.
- * Envia el equipo completo con sus componentes.
- */
-router.get("/equipos/:id/componentes", async (req, res) => {
-  try {
-    const ans = await Equipo.findById(req.params.id).populate({
-      path: "componentes",
-      populate: {
-        path: "equipoID",
-      },
-    });
-    res.send(ans);
   } catch (e) {
     res.status(400).send("No se pudo agregar el componente al equipo " + e);
   }

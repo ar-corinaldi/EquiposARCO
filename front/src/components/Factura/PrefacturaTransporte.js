@@ -8,7 +8,7 @@ function PrefacturaTransporte(props) {
 
   useEffect(() => {
     if (fecha.getDate() >= fechaInicial.getDate()) {
-      setPrecioTotal((prevPrecio) => prevPrecio + costo);
+      setPrecioTotal && setPrecioTotal((prevPrecio) => prevPrecio + costo);
     }
   }, [fechaInicial, fechaCorte]);
   return fecha.getDate() >= fechaInicial.getDate() ? (

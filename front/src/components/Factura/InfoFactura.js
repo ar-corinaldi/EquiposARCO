@@ -1,5 +1,4 @@
 import React from "react";
-import formatoFechas from "../utils/FormatoFechas";
 import { Link } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -85,14 +84,16 @@ function InfoFactura(props) {
                   </Link>
                 ))
               ) : (
-                <p>No hay ordenes en curso</p>
+                <span className="d-inline">No hay ordenes en curso</span>
               )}
             </p>
           </div>
           <div className="d-inline">
             <p>
               <strong> Órdenes finalizadas : </strong>
-              {bodega.ordenesPasadas.length > 0 ? (
+              {bodega &&
+              bodega.ordenesPasadas &&
+              bodega.ordenesPasadas.length > 0 ? (
                 bodega.ordenesPasadas.map((orden, index) => (
                   <Link
                     to={
@@ -109,7 +110,7 @@ function InfoFactura(props) {
                   </Link>
                 ))
               ) : (
-                <p className="d-inline">No hay ordenes finalizadas</p>
+                <span className="d-inline">No hay ordenes finalizadas</span>
               )}
             </p>
           </div>

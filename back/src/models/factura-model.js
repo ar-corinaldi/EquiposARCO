@@ -19,10 +19,14 @@ const facturaSchema = new Schema({
     type: Date,
     required: true,
   },
+  fechaPrimeraOrden: {
+    type: Date,
+    required: true,
+  },
   ordenes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "factura",
+      ref: "Orden",
     },
   ],
   iva: {
@@ -54,7 +58,32 @@ const facturaSchema = new Schema({
   codigo: {
     type: String,
     required: true,
+    unique: true,
   },
+});
+
+//Valido fechas inicial, final y precio
+facturaSchema.pre("validate", async function (next) {
+  const factura = this;
+  try {
+    const { fechaInicial, fechaCorte, fechaPago } = factura;
+    let cond = fechaCorte.getTime() - fechaInicial.getTime() >= 0;
+    // Fecha corte < fecha inicial
+    if (!cond) {
+      return next(["La fecha corte no es mayor o igual que la fecha inicial"]);
+    }
+    cond =
+      fechaPago.getTime() - fechaCorte.getTime() >= 0 ||
+      fechaPago.getTime() - fechaInicial.getTime() >= 0;
+    // FechaPago > (fechaCorte & fechaInicial)
+    if (!cond) {
+      return next(["La fecha pago no es valida"]);
+    }
+    // No problem
+    next();
+  } catch (e) {
+    next(["Hubo un error en el sistema con las facturas"]);
+  }
 });
 
 facturaSchema.pre("validate", async function (next) {

@@ -92,7 +92,9 @@ function EquipoNoCompuestoForm(props) {
         </Row>
         <Row>
           <Col>
-            <button type="submit">Crear</button>
+            <button className="buttonAction" type="submit">
+              Crear
+            </button>
             {error}
           </Col>
         </Row>

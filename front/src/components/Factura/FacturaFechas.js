@@ -1,53 +1,23 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Toast from "../Toast";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+// import Col from "react-bootstrap/Row";
 
 function FacturaFechas(props) {
   const [fechaInicial, setFechaInicial] = props.fechaInicial;
   const [fechaCorte, setFechaCorte] = props.fechaCorte;
   const [renderInicial, setRenderInicial] = useState("");
   const [renderCorte, setRenderCorte] = useState("");
-  const refFechaCorte = useRef();
-  const refFechaInicial = useRef();
 
   useEffect(() => {
     setRenderInicial(parseDate(fechaInicial));
   }, [fechaInicial]);
 
   useEffect(() => {
+    console.log("renderiza la fecha corte", fechaCorte.toLocaleDateString());
     setRenderCorte(parseDate(fechaCorte));
   }, [fechaCorte]);
-
-  const cambioFechaInicial = (e) => {
-    e.preventDefault();
-    const val = refFechaInicial.current.value;
-    const [anio, mes, dia] = val.split("-");
-    const newFecha = new Date(anio, mes - 1, dia);
-    if (!fechasValida(fechaCorte, newFecha)) {
-      return Toast(
-        ["No se puede facturar una fecha final antes de la fecha inicial"],
-        true,
-        500
-      );
-    } else {
-      setFechaInicial(newFecha);
-    }
-  };
-
-  const cambioFechaCorte = (e) => {
-    e.preventDefault();
-    const val = refFechaCorte.current.value;
-    const [anio, mes, dia] = val.split("-");
-    const newFecha = new Date(anio, mes - 1, dia);
-    if (!fechasValida(newFecha, fechaInicial)) {
-      return Toast(
-        ["No se puede facturar una fecha final antes de la fecha inicial"],
-        true,
-        500
-      );
-    } else {
-      setFechaCorte(newFecha);
-    }
-  };
 
   const parseDate = (date) => {
     let mes = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -57,31 +27,57 @@ function FacturaFechas(props) {
   };
 
   const fechasValida = (fechaMayor, fechaMenor) =>
-    fechaMayor.getTime() > fechaMenor.getTime();
+    fechaMayor.getTime() >= fechaMenor.getTime();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const [anio, mes, dia] = value.split("-");
+    const newFecha = new Date(anio, mes - 1, dia, 1);
+    if (name === "fechaCorte") {
+      console.log(newFecha);
+      if (!fechasValida(newFecha, fechaInicial)) {
+        return Toast(
+          ["No se puede facturar una fecha final antes de la fecha inicial"],
+          true,
+          500
+        );
+      }
+      setFechaCorte(newFecha);
+    } else if (name === "fechaInicial") {
+      if (!fechasValida(fechaCorte, newFecha)) {
+        return Toast(
+          ["No se puede facturar una fecha final antes de la fecha inicial"],
+          true,
+          500
+        );
+      }
+      setFechaInicial(newFecha);
+    }
+  };
 
   return (
-    <React.Fragment>
-      <label htmlFor="fechaInicial">Fecha de Inicial</label>
-      <input
-        required
-        disabled
-        name="fechaInicial"
-        defaultValue={renderInicial}
-        type="date"
-        ref={refFechaInicial}
-      />
-      <button disabled onClick={cambioFechaInicial}>
-        Cambiar Fecha de Inicial
-      </button>
-      <label htmlFor="fechaCorte">Fecha Corte</label>
-      <input
-        name="fechaCorte"
-        defaultValue={renderCorte}
-        type="date"
-        ref={refFechaCorte}
-      />
-      <button onClick={cambioFechaCorte}>Cambiar Fecha Corte</button>
-    </React.Fragment>
+    <Row>
+      <Col className="ml-3">
+        <label htmlFor="fechaInicial">Fecha de Inicial</label>
+        <input
+          required
+          disabled
+          name="fechaInicial"
+          value={renderInicial}
+          type="date"
+          onChange={handleChange}
+        />
+      </Col>
+      <Col>
+        <label htmlFor="fechaCorte">Fecha Corte</label>
+        <input
+          name="fechaCorte"
+          value={renderCorte}
+          type="date"
+          onChange={handleChange}
+        />
+      </Col>
+    </Row>
   );
 }
 

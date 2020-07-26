@@ -44,25 +44,30 @@ export default function Escoger(props) {
     matchFrom: "any",
     limit: 15,
     stringify: (option) => {
-      let filtOp;
-      camposBuscar.forEach((campo) => {
-        filtOp += option[campo];
+      let filtOp = "";
+      camposBuscar.forEach((campo, i) => {
+        if (option[campo]) {
+          filtOp += option[campo];
+          filtOp += " - ";
+        }
       });
-      return filtOp;
+      if (filtOp.length >= 3) {
+      }
+      return filtOp.length >= 3
+        ? filtOp.substring(0, filtOp.length - 3)
+        : filtOp;
     },
   });
 
   const nombreElemento = (option) => {
     let nombre = "";
-    campos.forEach((campo) => {
-      if (nombre.length != 0) {
-        nombre += " - ";
-      }
+    campos.forEach((campo, i) => {
       if (option[campo]) {
         nombre += option[campo];
+        nombre += " - ";
       }
     });
-    return nombre;
+    return nombre.length >= 3 ? nombre.substring(0, nombre.length - 3) : nombre;
   };
 
   return (

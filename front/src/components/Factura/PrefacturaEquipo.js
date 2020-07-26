@@ -95,7 +95,7 @@ function PrefacturaEquipo(props) {
         );
       }
     }
-    setPrecioTotal((prevAcum) => prevAcum + newPrecioTotal);
+    setPrecioTotal && setPrecioTotal((prevAcum) => prevAcum + newPrecioTotal);
     return newRender;
   };
 

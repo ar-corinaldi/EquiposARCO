@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useAPIDetail from "../../hooks/useFetchAPI";
 import Prefacturas from "./Prefacturas";
@@ -10,71 +10,63 @@ import formatoPrecios from "../utils/FormatoPrecios";
 
 function FacturaDetail() {
   let { idFactura } = useParams();
-  const { resource, loading, notFound } = useAPIDetail(
-    `/facturas/${idFactura}`
-  );
-  const [factura, setFactura] = useState(resource);
-  const [fechaCorte, setFechaCorte] = useState(new Date());
-  const [fechaInicial, setFechaInicial] = useState(new Date(2020, 5, 1));
-  const [fechaPrimeraOrden, setFechaPrimeraOrden] = useState(
-    new Date(2020, 5, 1)
-  );
-  const [precioTotal, setPrecioTotal] = useState(0);
-  const [renderPrefacturas, setRenderPrefacturas] = useState(null);
-  const refFechaCorte = useRef();
-  const refFechaInicial = useRef();
+
+  const [factura, setFactura] = useState({});
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setFactura(resource);
-    fechaInicialDeOrdenes();
-  }, [resource]);
+    setLoading(true);
+    fetching();
+    setLoading(false);
+  }, []);
 
-  useEffect(() => {
-    setPrecioTotal(0);
-    setRenderPrefacturas(
-      <Prefacturas
-        key={factura._id}
-        fechaPrimeraOrden={fechaPrimeraOrden}
-        fechaCorte={fechaCorte}
-        fechaInicial={fechaInicial}
-        ordenes={factura.ordenes || []}
-        setPrecioTotal={setPrecioTotal}
-      />
-    );
-    console.log("Render prefactura");
-  }, [factura, fechaInicial, fechaCorte]);
-  const fechaInicialDeOrdenes = () => {
-    const ordenes = factura.ordenes || [];
-    ordenes.sort((a, b) => {
-      const fechaA = new Date(a.fechaInicio);
-      const fechaB = new Date(b.fechaInicio);
-      return fechaA.getTime() - fechaB.getTime();
-    });
-    console.log("No entra a ordenes hay", ordenes.length, "ordenes");
-    if (ordenes.length > 0) {
-      setFechaInicial(new Date(ordenes[0].fechaInicio));
+  const fetching = async () => {
+    try {
+      const res = await fetch(`/facturas/${idFactura}`);
+      const data = await res.json();
+      const {
+        fechaPago,
+        fechaCorte,
+        fechaInicial,
+        fechaPrimeraOrden,
+        fechaEmision,
+      } = factura;
+      data.fechaPago = new Date(fechaPago);
+      data.fechaCorte = new Date(fechaCorte);
+      data.fechaInicial = new Date(fechaInicial);
+      if (fechaPrimeraOrden) {
+        data.fechaPrimeraOrden = new Date(fechaPrimeraOrden);
+      }
+      data.fechaEmision = new Date(fechaEmision);
+      setFactura(data);
+    } catch (e) {
+      console.log(e);
     }
   };
 
-  const cambioFechaInicial = (e) => {
-    e.preventDefault();
-    const val = refFechaInicial.current.value;
-    const newFecha = new Date(val);
-    setFechaInicial(newFecha);
-  };
+  const [renderPrefacturas, setRenderPrefacturas] = useState(null);
 
-  const cambioFechaCorte = (e) => {
-    e.preventDefault();
-    const val = refFechaCorte.current.value;
-    const newFecha = new Date(val);
-    setFechaCorte(newFecha);
-  };
-
-  const parseDate = (date) => {
-    let mes = ("0" + (date.getMonth() + 1)).slice(-2);
-    let dia = ("0" + date.getDate()).slice(-2);
-    return [date.getFullYear(), mes, dia].join("-");
-  };
+  useEffect(() => {
+    setRenderPrefacturas(
+      <Prefacturas
+        fechaPrimeraOrden={
+          factura.fechaPrimeraOrden ||
+          new Date(
+            factura.fechaInicial && factura.fechaInicial.getFullYear(),
+            0,
+            1,
+            1
+          ) ||
+          new Date()
+        }
+        fechaCorte={factura.fechaCorte || new Date()}
+        fechaInicial={factura.fechaInicial || new Date()}
+        ordenes={factura.ordenes || []}
+        setPrecioTotal={null}
+      />
+    );
+  }, [factura]);
 
   if (loading) {
     return (
@@ -83,67 +75,27 @@ function FacturaDetail() {
       </div>
     );
   }
-  if (!factura) {
-    return notFound("La factura no fue encontrada");
-  }
-
-  if (!factura.ordenes || factura.ordenes.length === 0) {
-    return <div>No se encontraron ordenes asociadas a la factura</div>;
-  }
 
   return (
     <Container fluid>
       <Row>
         <InfoFactura
           tercero={
-            factura &&
-            factura.ordenes &&
-            factura.ordenes.length > 0 &&
-            factura.ordenes[0].bodega &&
-            factura.ordenes[0].bodega.duenio
-              ? factura.ordenes[0].bodega.duenio
-              : null
+            factura.bodega && factura.bodega.duenio ? factura.bodega.duenio : {}
           }
-          bodega={
-            factura &&
-            factura.ordenes &&
-            factura.ordenes.length > 0 &&
-            factura.ordenes[0].bodega
-              ? factura.ordenes[0].bodega
-              : null
-          }
-          fechaInicial={fechaInicial}
-          fechaCorte={fechaCorte}
+          bodega={factura.bodega || {}}
+          ordenes={factura.ordenes || []}
         />
       </Row>
       <Row>
-        <Col>
-          <label htmlFor="fechaInicial">Fecha de Inicial</label>
-          <input
-            name="fechaInicial"
-            defaultValue={parseDate(fechaInicial)}
-            type="date"
-            disabled
-            ref={refFechaInicial}
-          />
-          <button onClick={cambioFechaInicial}>Cambiar Fecha de Inicial</button>
-          <label htmlFor="fechaCorte">Fecha Corte</label>
-          <input
-            name="fechaCorte"
-            defaultValue={parseDate(fechaCorte)}
-            type="date"
-            ref={refFechaCorte}
-          />
-          <button onClick={cambioFechaCorte}>Cambiar Fecha Corte</button>
-          {renderPrefacturas}
-        </Col>
+        <Col>{renderPrefacturas}</Col>
       </Row>
       <Col>
         <Row>
           <div id="info-wrapper">
             <h4 id="titulos">Total</h4>
             <p>
-              <strong>{formatoPrecios(precioTotal)}</strong>
+              <strong>{formatoPrecios(factura.precioTotal)}</strong>
             </p>
           </div>
         </Row>

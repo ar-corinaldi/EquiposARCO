@@ -44,7 +44,7 @@ function Equipo(props) {
         <Col>
           <div id="equipo-wrapper">
             <Row className="mb-4">
-              <Link className="buttonEquipo" to={"/inventario/crearEquipo"}>
+              <Link className="buttonAction" to={"/inventario/crearEquipo"}>
                 Agregar un equipo
               </Link>
             </Row>

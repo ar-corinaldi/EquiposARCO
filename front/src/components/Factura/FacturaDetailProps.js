@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import Prefacturas from "./Prefacturas";
-import FacturaObraList from "./FacturaObraList";
 import Toast from "../Toast";
 import FacturaPrecio from "./FacturaPrecio";
 import Col from "react-bootstrap/Col";
@@ -11,7 +10,7 @@ function FacturaDetail(props) {
   const [fechaPago, setFechaPago] = props.fechaPago;
   const [fechaInicial, setFechaInicial] = props.fechaInicial;
   const [fechaCorte, setFechaCorte] = props.fechaCorte;
-
+  const [canFacturar, setCanFacturar] = useState(true);
   const [precioTotal, setPrecioTotal] = useState(0);
   const [iva, setIva] = useState(19);
   const [renderPrefacturas, setRenderPrefacturas] = useState(null);
@@ -20,11 +19,12 @@ function FacturaDetail(props) {
 
   useEffect(() => {
     if (fechasValida(fechaCorte, fechaInicial)) {
+      setCanFacturar(true);
       setPrecioTotal(0);
       setRenderPrefacturas(
         <Prefacturas
           fechaPrimeraOrden={
-            new Date(fechaCorte.getFullYear(), 0, 1) || fechaPrimeraOrden
+            fechaPrimeraOrden || new Date(fechaInicial.getFullYear(), 0, 1, 1)
           }
           fechaCorte={fechaCorte}
           fechaInicial={fechaInicial}
@@ -32,23 +32,26 @@ function FacturaDetail(props) {
           setPrecioTotal={setPrecioTotal}
         />
       );
+    } else {
+      setCanFacturar(false);
     }
   }, [ordenes, fechaInicial, fechaCorte]);
 
   useEffect(() => {
     let newFechaPago = new Date(fechaCorte);
-    // Revisar que no se lleve la referencia
     newFechaPago.setDate(newFechaPago.getDate() + 5);
     setFechaPago(newFechaPago);
   }, [fechaCorte]);
 
   const facturar = async () => {
+    setCanFacturar(false);
     const factura = {
       ordenes,
       fechaCorte,
       fechaInicial,
       fechaPago,
       tercero,
+      fechaPrimeraOrden,
       precioTotal: precioTotal * (1 + iva / 100),
       subTotal: precioTotal,
       iva,
@@ -71,6 +74,7 @@ function FacturaDetail(props) {
         Toast(["Factura creada correctamente"], true, res.status);
         let fecha = new Date(factura.fechaCorte);
         setFechaInicial(new Date(fecha));
+        console.log("Cambio fecha incial");
         //  history.push("/facturas/${factura._id}");
       }
     } catch (e) {
@@ -79,7 +83,7 @@ function FacturaDetail(props) {
   };
 
   const fechasValida = (fechaMayor, fechaMenor) =>
-    fechaMayor.getTime() > fechaMenor.getTime();
+    fechaMayor.getTime() >= fechaMenor.getTime();
 
   return (
     <React.Fragment>
@@ -90,6 +94,7 @@ function FacturaDetail(props) {
         precioTotal={precioTotal}
         iva={[iva, setIva]}
         facturar={facturar}
+        canFacturar={[canFacturar, setCanFacturar]}
       />
     </React.Fragment>
   );

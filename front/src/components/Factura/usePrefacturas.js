@@ -300,6 +300,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     let tiempo = "dia cal";
     let tiempoMinimo = 0;
     const len = equipoTarifas && equipoTarifas.length;
+
     if (len && len > 0) {
       let fechaFinTarifa = new Date(equipoTarifas[len - 1].fechaFin);
       const fechaRemision = new Date(remision.fechaLlegada);
@@ -332,8 +333,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
       precio = newPrecio && newPrecio.valorAlquiler;
       categoria = newPrecio && newPrecio.categoria;
       tiempo = newPrecio && newPrecio.tiempo;
-      // @ts-check ponerlo siempre!!
-      // tiempoMinimo = newPrecio && newPrecio.tiempoMinimo;
+      tiempoMinimo = newPrecio && newPrecio.tiempoMinimo;
     }
 
     if (precio === 0) {

@@ -15,7 +15,9 @@ function PrefacturaTransporte(props) {
     <tr>
       <td>Servicio Transporte</td>
       <td>N/A</td>
-      <td>{`${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`}</td>
+      <td>{`${fecha.getDate()}/${
+        fecha.getMonth() + 1
+      }/${fecha.getFullYear()}`}</td>
       <td>N/A</td>
       <td>{formatoPrecios(costo)}</td>
       <td>{formatoPrecios(costo)}</td>

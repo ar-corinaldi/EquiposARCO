@@ -15,7 +15,6 @@ function FacturaFechas(props) {
   }, [fechaInicial]);
 
   useEffect(() => {
-    console.log("renderiza la fecha corte", fechaCorte.toLocaleDateString());
     setRenderCorte(parseDate(fechaCorte));
   }, [fechaCorte]);
 

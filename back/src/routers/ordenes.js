@@ -197,6 +197,10 @@ router.get("/bodegas/:idB/ordenesPasadas", async (req, res, next) => {
 /**
  *  Orden
  */
+
+/**
+ * Fakta compentario
+ */
 router.get("/ordenes/groupBy/:idObra", async (req, res) => {
   try {
     const codigoObra = req.params.idObra;
@@ -266,9 +270,16 @@ router.get("/ordenes/:page/:elementsPerPage", async (req, res) => {
     const elementsPerPage = parseInt(req.params.elementsPerPage);
     let ordenes = null;
     if (elementsPerPage === -1) {
-      ordenes = await Orden.find({});
+      ordenes = await Orden.find({}).populate({
+        path: "bodega",
+        populate: { path: "duenio" },
+      });
     } else {
       ordenes = await Orden.find({})
+        .populate({
+          path: "bodega",
+          populate: { path: "duenio" },
+        })
         .limit(elementsPerPage)
         .skip((page - 1) * elementsPerPage);
     }

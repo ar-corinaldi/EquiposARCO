@@ -46,7 +46,7 @@ function OrdenList(props) {
             <Row className="mb-4">
               <label>
                 Mostrar{" "}
-                <select value={ordenessPerPage} onChange={cambiarDisplay}>
+                <select value={ordenesPerPage} onChange={cambiarDisplay}>
                   <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="20">20</option>

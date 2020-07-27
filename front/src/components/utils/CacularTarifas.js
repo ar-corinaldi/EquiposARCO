@@ -242,7 +242,8 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal, conFest
     const diff = timeDifference / (1000 * 3600 * 24);
     let dias = Math.ceil(diff);
 
-    //If para que se cuente un nuevo día a penas pasen 86400 segundos. Sin esto el nuevo día se marca a los 86400.001 seg
+    //If para que se cuente un nuevo día apenas pasen 86400 segundos del anterior. 
+    //Sin esto el nuevo día se marcaría a los 86400.001 seg
     if ((Math.ceil(diff) === Math.floor(diff)) && (dias !== Math.ceil((timeDifference + 1) / (1000 * 3600 * 24))) && timeDifference !== 0) {
       dias += 1;
     }
@@ -293,8 +294,9 @@ export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal, conFest
  * Calcula la fecha final requerida para que haya cierta cantidad de días hábiles entre fechaFinal y fechaInicial
  * @param {Date} fechaInicio.
  * @param {Number} cantidad.
+ * @param {Boolean} sabado. Si se quiere contar al sábado como día hábil o no. Por defecto es true
  */
-export function calcularFechaFinalDiaHabil(fechaInicio, cantidad) {
+export function calcularFechaFinalDiaHabil(fechaInicio, cantidad, sabado = true) {
   if (!fechaInicio || (cantidad !== 0 && !cantidad)) {
     return null;
   }
@@ -306,7 +308,7 @@ export function calcularFechaFinalDiaHabil(fechaInicio, cantidad) {
     //Por prueba y error va agregando un número de días igual a la diferencia que le quede para 
     //llegar a la cantidad parámetro. Esto funciona porque el número de días hábiles entre dos fechas es <=  número de días.
     while (diff > 0) {
-      diff = cantidad - calcularDiasHabilesEntreFechas(fechaInicio, fechaFin);
+      diff = cantidad - calcularDiasHabilesEntreFechas(fechaInicio, fechaFin, false, sabado);
       fechaMili = fechaFin.getTime() + (diff * factorConversion);
       fechaFin = new Date(fechaMili);
     }

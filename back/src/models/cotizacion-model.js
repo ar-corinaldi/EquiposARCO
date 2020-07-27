@@ -14,6 +14,10 @@ const cotizacionSchema = new Schema({
     trim: true,
     required: true,
   },
+  fecha: {
+    type: Date,
+
+  },
   tarifasCotizadas: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -25,8 +29,8 @@ const cotizacionSchema = new Schema({
     ref: "Orden",
   },
   tercero: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Tercero",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tercero",
   },
 });
 

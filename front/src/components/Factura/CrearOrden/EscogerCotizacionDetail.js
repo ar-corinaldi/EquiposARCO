@@ -31,7 +31,7 @@ function EscogerCotizacionDetail(props) {
         if (reason === "toggleInput") {
             return;
         }
-        setCotizacionSeleccionada(pendingValue);
+        setCotizacionSeleccionada(Object.assign({},pendingValue));
         setPendingValue({});
         setOpen(false);
     };
@@ -40,7 +40,7 @@ function EscogerCotizacionDetail(props) {
         matchFrom: "any",
         stringify: (option) =>{
             
-            return toString(option.numeroContrato)}
+            return option.codigo}
     });
 
     return (
@@ -85,11 +85,11 @@ function EscogerCotizacionDetail(props) {
                             setPendingValue(newValue);
                         }}
                         getOptionLabel={(option) => {
-                            if (option && option.numeroContrato) {
+                            if (option && option.codigo) {
                                 // console.log('=====================dfdfdfdffdf===============');
                                 // console.log(option.numeroContrato);
                                 // console.log('====================================');
-                                return "" + option.numeroContrato;
+                                return "" + option.codigo;
                             }
                             else {
                                 return "";
@@ -109,13 +109,13 @@ function EscogerCotizacionDetail(props) {
                             // console.log('====================================');
                             return (
                             <React.Fragment>
-                                <Accordion defaultActiveKey="0" className="full-width">
+                                {/* <Accordion defaultActiveKey="0" className="full-width"> */}
                                     <Card className="full-width border-0 bg-transparent" >
                                         <Card.Header className="option-cotizacion-header bg-transparent" >
-                                            <Accordion.Toggle as={Button} variant="link" eventKey="1" className="float-right" >
+                                            {/* <Accordion.Toggle as={Button} variant="link" eventKey="1" className="float-right" >
                                                 <ExpandMoreIcon  >
                                                 </ExpandMoreIcon>
-                                            </Accordion.Toggle>
+                                            </Accordion.Toggle> */}
                                             <DoneIcon
                                                 className="iconSelected float-left icon-margin-left"
                                                 style={{ visibility: selected ? "visible" : "hidden" }}
@@ -131,9 +131,9 @@ function EscogerCotizacionDetail(props) {
                                                 className="iconSelected float-left icon-margin-right"
                                                 style={{ visibility: selected ? "visible" : "hidden" }}
                                             />
-                                            <span>{"Cotización con número de contrato: " + option.numeroContrato}</span>
+                                            <span>{"Cotización con código: " + option.codigo}</span>
                                         </Card.Header>
-                                        <Accordion.Collapse eventKey="1" >
+                                        {/* <Accordion.Collapse eventKey="1" >
                                             <Card.Body className="bg-white ">
                                                 <ul>
                                                     {option.tarifasCotizadas.map((item, index) => {
@@ -145,9 +145,9 @@ function EscogerCotizacionDetail(props) {
                                                     })}
                                                 </ul>
                                             </Card.Body>
-                                        </Accordion.Collapse>
+                                        </Accordion.Collapse> */}
                                     </Card>
-                                </Accordion>
+                                {/* </Accordion> */}
                             </React.Fragment>
                         )}}
                         renderInput={(params) => {

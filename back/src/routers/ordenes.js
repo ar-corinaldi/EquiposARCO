@@ -257,6 +257,31 @@ router.get("/ordenes/groupBy/:idObra", async (req, res) => {
 });
 
 /**
+ *  Get de equipos paginacion
+ */
+router.get("/ordenes/:page/:elementsPerPage", async (req, res) => {
+  try {
+    console.log("paginacion");
+    const page = parseInt(req.params.page);
+    const elementsPerPage = parseInt(req.params.elementsPerPage);
+    let ordenes = null;
+    if (elementsPerPage === -1) {
+      ordenes = await Orden.find({});
+    } else {
+      ordenes = await Orden.find({})
+        .limit(elementsPerPage)
+        .skip((page - 1) * elementsPerPage);
+    }
+    res.send(ordenes);
+  } catch (e) {
+    res
+      .status(500)
+      .send(["No se pueden listar las ordenes, hubo un error en el sistema"]);
+    console.error("error", e);
+  }
+});
+
+/**
  * Cantidad de documentos que hay en Orden
  */
 router.get("/ordenes/cantidad", async (req, res) => {

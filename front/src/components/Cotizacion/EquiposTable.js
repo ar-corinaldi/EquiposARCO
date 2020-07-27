@@ -47,10 +47,7 @@ function EquiposTable(props) {
             <td></td>
             <td></td>
             <td></td>
-            <td className="center">
-              {cotizacion && formatoPrecios(cotizacion.precioTotal)}
-              {" || "}
-              <br></br>
+            <td>
               {calculosTarifas && formatoPrecios(calculosTarifas.cobroCompleto)}
             </td>
           </tr>

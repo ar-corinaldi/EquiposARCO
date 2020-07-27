@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
+import formatoFechas, { formatoHora } from "../../utils/FormatoFechas";
 
 function ActividadRow(props) {
   const { id, idB, idOr } = useParams();
@@ -40,8 +41,16 @@ function ActividadRow(props) {
             </Link>
           )}
         </td>
-        <td>{actividad.fechaSalida}</td>
-        <td>{actividad.fechaLlegada}</td>
+        <td>
+          {formatoFechas(actividad.fechaSalida) +
+            " " +
+            formatoHora(actividad.fechaSalida)}
+        </td>
+        <td>
+          {formatoFechas(actividad.fechaLlegada) +
+            " " +
+            formatoHora(actividad.fechaLlegada)}
+        </td>
         <td>{calcularCantidad(actividad)}</td>
         <td>{actividad.asumidoTercero ? "Tercero" : "EquiposARCO"}</td>
       </tr>

@@ -61,7 +61,7 @@ function CotizacionDetail(props) {
               <Col>
                 <p className="capitalize">
                   <b>Tercero : </b>
-                  <Link to={`terceros/${tercero._id}`}>{tercero.nombre}</Link>
+                  <Link to={`/terceros/${tercero._id}`}>{tercero.nombre}</Link>
                 </p>
               </Col>
               <Col>

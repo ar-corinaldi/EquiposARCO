@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import { FaChevronDown } from "react-icons/fa";
 import { FaChevronUp } from "react-icons/fa";
 
 function BodegaDetail(props) {
+  const history = useHistory();
+
   const bodega = props.bodega;
   const tercero = props.tercero;
   const [obras, setObras] = useState([]);
@@ -60,6 +62,14 @@ function BodegaDetail(props) {
     const obrasAct = await res.json();
     console.log("obrasAct", obrasAct);
     setObras(obrasAct);
+  };
+
+  const crearCotizacion = () => {
+    history.push(`/facturacion/cotizar`);
+  };
+
+  const crearOrden = () => {
+    history.push(`/facturacion/crear_orden`);
   };
 
   return (
@@ -181,8 +191,11 @@ function BodegaDetail(props) {
           )}
         </Row> */}
         <Row className="pdl-15">
-          <button onClick={eliminarBodega} className="eliminarBodega">
-            Eliminar Bodega
+          <button onClick={crearCotizacion} className="eliminarBodega">
+            Crear cotizacion
+          </button>
+          <button onClick={crearOrden} className="eliminarBodega">
+            Crear orden
           </button>
         </Row>
       </Row>

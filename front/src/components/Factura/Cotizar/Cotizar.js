@@ -76,7 +76,7 @@ const Cotizar = () => {
             }
             console.log('=============COTIZACION CON TARIFITAS=======================');
             console.log(cotizacion);
-
+            cotizacion.fecha = new Date();
             await fetch("/cotizaciones", {
                 method: "POST", headers: headers,
                 body: JSON.stringify(cotizacion)

@@ -123,18 +123,24 @@ export function calcularTarifaObjeto(tarifas) {
 
 
 /**
+ * Calcula el precio total de una tarifa, los días hábiles totales encontrados entre fechaInicio y fechaFin y, opcionalmente,
+ * todos los días festivos que se encontraron entre las dos fechas (puede ser útil para clarificar el cálculo de un cobro).
  * @param {Object} tarifa. Único campo requerido, si los otros faltan, los campos de tarifa serán los usados por defecto
  * @param {Number} tiempoMinimo. Tiempo mínimo para calcular el valor da cobrar, por defecto es 0.
  * @param {Date} fechaInicio. Fecha de inicio del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
  * @param {Date} fechaFin. Fecha fin del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
- * @param {Number}} cantidad. Cantidad de equipos para los cuales sacar el cobro total, si no se pasa se usa la de tarifa.
+ * @param {Number} cantidad. Cantidad de equipos para los cuales sacar el cobro total, si no se pasa se usa la de tarifa.
+ * @param {Boolean} conFestivos. Si se quiere la respuesta con un arreglo de festivos entre las dos fechas o sin él. Por defecto es true
+ * @param {Boolean} sabado. Si se quiere contar al sábado como día hábil o no. Por defecto es true
  */
 export function calcularTarifaDiaHabil(
   tarifa,
   tiempoMinimo = 0,
   fechaInicio,
   fechaFin,
-  cantidad
+  cantidad,
+  conFestivos = true,
+  sabado = true
 ) {
   const fechaInicial = fechaInicio || (tarifa && new Date(tarifa.fechaInicio));
   const fechaFinal = fechaFin || (tarifa && new Date(tarifa.fechaFin));
@@ -142,61 +148,22 @@ export function calcularTarifaDiaHabil(
   if (!fechaFinal || !fechaInicial || (cantidadUsada !== 0 && !cantidadUsada)) {
     return null;
   } else {
-    const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
-    const diff = timeDifference / (1000 * 3600 * 24)
-    let dias = Math.ceil(diff);
 
-    // //Si la diferencia de tiempo es un multiplo exacto de un día, se agrega uno más. A menos que la diferencia sea Cero.
-    // if(dias !== 0 && dias !== 1  && (Math.ceil(diff) === Math.floor(diff)) ){
-    //   dias += 1; 
-    // }
-
-    if ((Math.ceil(diff) === Math.floor(diff))
-      && (dias !== Math.ceil((timeDifference + 1) / (1000 * 3600 * 24)))
-      && timeDifference !== 0) {
-      dias += 1;
-    }
-
-    const semanas = Math.floor(dias / 7);
-    //Quita dos días por cada semana (Sábado y Domingo)
-    dias -= semanas * 2;
-
-    //Manejo de casos especiales
-    const diaInicial = fechaInicial.getDay();
-    const diaFinal = fechaFinal.getDay();
-
-    //Quita días que faltaron
-    if (diaInicial - diaFinal > 1) {
-      dias -= 2;
-    }
-    //Remueve día inicial si los días empezaron en Domingo pero terminaron antes de Sábado
-    if (diaInicial == 0 && diaFinal != 6) {
-      dias--;
-    }
-    //Remueve día final si los días terminan un Sábado pero empiezan después del Domingo
-    if (diaFinal == 6 && diaInicial != 0) {
-      dias--;
-    }
     let festivosEnMedio = [];
-    holidays.forEach((dia) => {
-      const festivo = new Date(dia.date);
-      if (festivo >= fechaInicial && festivo <= fechaFinal && dias != 0) {
-        //Si el festivo no es ni Sábado (6) ni Domingo (0)
-        if (festivo.getDay() % 6 != 0) {
-          dias--;
-          festivosEnMedio.push(dia);
-        }
-      }
-    });
+    let dias = 0;
+    const calculo = calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal, conFestivos, sabado);
+    dias = conFestivos ? calculo.dias : calculo;
+    festivosEnMedio = conFestivos ? calculo.festivosEnMedio : [];
     const diasTotales = Math.max(dias, tiempoMinimo);
     const valorTarifa = (tarifa && tarifa.valorTarifa) || 0;
     const precioTotal = diasTotales * valorTarifa * cantidadUsada;
-    return { precioTotal, diasTotales, festivosEnMedio };
+    return conFestivos ? { precioTotal, diasTotales, festivosEnMedio } : { precioTotal, diasTotales };
   }
 }
 
 /**
- *
+ * Calcula el precio a cobrar por una tárifa y la cantidad de tiempo encontrada entre fechaInicio y fechaFin.
+ * No soporta calculo de tarifa por días hábiles, para esto use calcularTarifaDiaHabil
  * @param {Object} tarifa. Campo requerido, a excepción de medidaTiempo, si los otros faltan, los campos de tarifa serán los usados por defecto.
  * @param {String} medidaTiempo. Campo requerido, Un string entre: "hora", "dia cal", "dia habil", "semana", "mes", "anio.
  * @param {Number} tiempoMinimo. Tiempo mínimo para calcular el valor da cobrar, por defecto es 0.
@@ -260,78 +227,76 @@ export function calcularFechaFinal(fechaInicio, medidaTiempo, cantidad) {
 
 /**
  * Calcula el número de días hábiles entre dos fechas
- * @param {Date} fechaInicial.
- * @param {Date} fechaFinal.
+ * @param {Date} fechaInicial. Fecha Inicial
+ * @param {Date} fechaFinal. Fecha Final
+ * @param {Boolean} conFestivos. Si se quiere la respuesta con un arreglo de festivos entre las dos fechas o sin él. Por defecto es false
+ * @param {Boolean} sabado. Si se quiere contar al sábado como día hábil o no. Por defecto es true
  */
-export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal) {
+export function calcularDiasHabilesEntreFechas(fechaInicial, fechaFinal, conFestivos = false, sabado = true) {
   if (!fechaInicial || !fechaFinal) {
     return null;
   } else if (fechaFinal < fechaInicial) {
-    return null;
+    return conFestivos ? { dias: 0, festivosEnMedio: [] } : 0;
   } else {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
     const diff = timeDifference / (1000 * 3600 * 24);
     let dias = Math.ceil(diff);
-    // if(dias !== 0 && dias !== 1 && (Math.ceil(diff) === Math.floor(diff)) ){
-    //   dias += 1;
-    // }
+
+    //If para que se cuente un nuevo día apenas pasen 86400 segundos del anterior. 
+    //Sin esto el nuevo día se marcaría a los 86400.001 seg
     if ((Math.ceil(diff) === Math.floor(diff)) && (dias !== Math.ceil((timeDifference + 1) / (1000 * 3600 * 24))) && timeDifference !== 0) {
       dias += 1;
     }
     const semanas = Math.floor(dias / 7);
-    //Quita dos días por cada semana (Sábado y Domingo)
-    dias -= semanas * 2;
+
+    //Quita uno o dos días por cada semana: Sábado y Domingo, o solo Domingo. 
+    dias -= semanas * (sabado ? 1 : 2);
 
     //Manejo de casos especiales
     const diaInicial = fechaInicial.getDay();
     const diaFinal = fechaFinal.getDay();
 
-    // console.log('===================METODOO=================');
-    // console.log(fechaFinal);
-    // console.log(Math.ceil(diff));
-    // console.log(dias);
-    // console.log(semanas);
-
-
 
     //Quita días que faltaron
     if (diaInicial - diaFinal > 1) {
-      dias -= 2;
+      dias -= (sabado ? 1 : 2);
     }
     //Remueve día inicial si los días empezaron en Domingo pero terminaron antes de Sábado
     if (diaInicial == 0 && diaFinal != 6) {
       dias--;
     }
-    //Remueve día final si los días terminan un Sábado pero empiezan después del Domingo
-    if (diaFinal == 6 && diaInicial != 0) {
+    //Caso solo si sabado NO se cuenta como día habil
+    //Remueve día final si los días terminan un Sábado pero empiezan después del Domingo. 
+    if (!sabado && diaFinal == 6 && diaInicial != 0) {
       dias--;
     }
-    // console.log(dias);
-    // console.log('====================================');
+
+    let festivosEnMedio = [];
 
     holidays.forEach((dia) => {
       const festivo = new Date(dia.date);
       if (festivo >= fechaInicial && festivo <= fechaFinal && dias != 0) {
-        //Si el festivo no es ni Sábado (6) ni Domingo (0)
-        if (festivo.getDay() % 6 != 0) {
+        //Si el festivo no es Domingo (0) o sábado (6) si este NO se cuenta como día hábil
+        if (festivo.getDay() % (sabado ? 7 : 6) != 0) {
           dias--;
+          festivosEnMedio.push(festivo);
         }
       }
     });
-    return dias;
+    return conFestivos ? { dias: dias, festivosEnMedio: festivosEnMedio } : dias;
 
   }
 
 }
 
 
-
 /**
  * Calcula la fecha final requerida para que haya cierta cantidad de días hábiles entre fechaFinal y fechaInicial
  * @param {Date} fechaInicio.
  * @param {Number} cantidad.
+ * @param {Boolean} sabado. Si se quiere contar al sábado como día hábil o no. Por defecto es true
  */
-export function calcularFechaFinalDiaHabil(fechaInicio, cantidad) {
+export function calcularFechaFinalDiaHabil(fechaInicio, cantidad, sabado = true) {
   if (!fechaInicio || (cantidad !== 0 && !cantidad)) {
     return null;
   }
@@ -343,7 +308,7 @@ export function calcularFechaFinalDiaHabil(fechaInicio, cantidad) {
     //Por prueba y error va agregando un número de días igual a la diferencia que le quede para 
     //llegar a la cantidad parámetro. Esto funciona porque el número de días hábiles entre dos fechas es <=  número de días.
     while (diff > 0) {
-      diff = cantidad - calcularDiasHabilesEntreFechas(fechaInicio, fechaFin);
+      diff = cantidad - calcularDiasHabilesEntreFechas(fechaInicio, fechaFin, false, sabado);
       fechaMili = fechaFin.getTime() + (diff * factorConversion);
       fechaFin = new Date(fechaMili);
     }

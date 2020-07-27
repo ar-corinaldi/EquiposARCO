@@ -58,7 +58,7 @@ function ActividadList(props) {
                   <option value="20">20</option>
                   <option value="-1">Todos</option>
                 </select>{" "}
-                remisiones
+                registros
               </label>
             </Row>
             <Row>

@@ -82,7 +82,7 @@ function CotizacionDetail(props) {
         <Col>
           <div className="orden-wrapper">
             <h4 className="page-title-orden">Equipos</h4>
-            <EquiposTable tarifas={cotizacion.tarifasCotizadas}></EquiposTable>
+            <EquiposTable cotizacion={cotizacion}></EquiposTable>
           </div>
         </Col>
       </Row>

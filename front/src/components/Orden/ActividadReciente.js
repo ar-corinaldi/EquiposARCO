@@ -60,7 +60,9 @@ function ActividadReciente(props) {
         const activity = { devolucion: devolucion };
         newDevoluciones.push(activity);
       });
-      newActividad = actividad.concat(newRemisiones, newDevoluciones);
+      //console.log(remisiones);
+      //console.log(devoluciones);
+      newActividad = newRemisiones.concat(newDevoluciones);
       newActividad.sort(compare);
       setActividad(newActividad);
     }
@@ -69,7 +71,7 @@ function ActividadReciente(props) {
 
   return (
     <div className="timeline-alt pb-0">
-      {actividad &&
+      {actividad && actividad.length > 0 ? (
         actividad.map((actividad, index) => {
           return actividad.remision ? (
             <div className="timeline-item" key={index} id="item">
@@ -159,7 +161,10 @@ function ActividadReciente(props) {
               </div>
             </div>
           );
-        })}
+        })
+      ) : (
+        <p>No se han registrado remisiones ni devoluciones</p>
+      )}
     </div>
   );
 }

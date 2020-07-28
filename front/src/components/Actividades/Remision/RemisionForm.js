@@ -11,6 +11,7 @@ import "moment/locale/es";
 import Escoger from "../../Escoger";
 import EquipoTable from "./EquipoTable";
 import formatoPrecios from "../../utils/FormatoPrecios";
+import Toast from "../../Toast";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -48,12 +49,19 @@ function RemisionForm(props) {
     }
   };
 
-  const handleSubit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     fields.fechaSalida = fechaSalida;
-    // console.log(typeof fields.fechaSalida);
     fields.fechaLlegada = fechaLlegada;
-    // console.log(typeof fields.fechaLlegada);
+    if (!fechasValidas(new Date(fechaLlegada), new Date(fechaSalida))) {
+      return Toast(
+        [
+          "No se puede escoger una fecha de llegada anterior a la fecha de salida",
+        ],
+        true,
+        500
+      );
+    }
     fields.asumidoTercero = asumidoTercero;
     handleEquiposRemision();
     //console.log(fields);
@@ -79,6 +87,9 @@ function RemisionForm(props) {
   const handleChangeConductor = () => {
     fields.conductor = conductorSelected._id;
   };
+
+  const fechasValidas = (fechaMayor, fechaMenor) =>
+    fechaMayor.getTime() >= fechaMenor.getTime();
 
   const handleEquiposRemision = () => {
     const equiposEnRemision = [];
@@ -114,13 +125,13 @@ function RemisionForm(props) {
     const formAction = `/equipos/${equipoR.equipoID._id}`;
     const res = await fetch(formAction, options);
     const objeto = await res.json();
-    console.log(objeto);
+    //console.log(objeto);
     return objeto;
   };
 
   return (
     <div className="remision-registrar-card">
-      <form onSubmit={handleSubit}>
+      <form onSubmit={handleSubmit}>
         <h4 className="titulo">Registrar una remisión</h4>
         <Row>
           <Col>

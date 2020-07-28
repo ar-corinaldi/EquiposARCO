@@ -14,21 +14,6 @@ export default function EscogerBodega(props) {
   const [pendingValue, setPendingValue] = React.useState({});
   const [open, setOpen] = useState(false);
 
-  // console.log('====================================');
-  // console.log(terceros  );
-  // console.log('====================================');
-  // let bodegasPrueba = [];
-
-  // terceros.map((tercero) => {
-  //   tercero.bodegas.map((bodega) => {
-  //     bodega.duenio = { bodegas, ...tercero };
-  //     bodegasPrueba.push(bodega);
-  //   });
-  // });
-  // console.log("Bodegas");
-
-  // console.log(bodegasPrueba);
-
   const handleClose = (event, reason) => {
     if (reason === "toggleInput") {
       return;
@@ -40,7 +25,7 @@ export default function EscogerBodega(props) {
 
   const filterOptions = createFilterOptions({
     matchFrom: "any",
-    limit: 15,
+    limit: 30,
     stringify: (option) =>
       option.nombreBodega +
       option.direccionBodega +
@@ -109,14 +94,6 @@ export default function EscogerBodega(props) {
               })}
             renderOption={(option, { selected }) => (
               <React.Fragment>
-                {/* <DoneIcon
-                  className="iconSelected"
-                  style={{ visibility: selected ? "visible" : "hidden" }}
-                  onClick={() => {
-                    handleClose();
-                    setOpen(false);
-                  }}
-                /> */}
                 <div className="nombreBodega">
                   <span>{(option.duenio? option.duenio.nombre + " - ": "")+ option.nombreBodega}</span>
                   <br />
@@ -149,7 +126,6 @@ export default function EscogerBodega(props) {
               <InputBase
                 ref={params.InputProps.ref}
                 inputProps={params.inputProps}
-                // autoFocus
                 className="inputBodega"
                 placeholder="Buscar bodega"
               />

@@ -29,8 +29,8 @@ function ConfirmarTarifaDetail(props) {
 
   //Estados propios
   const [tarifa, setTarifa] = useState(miTarifa);
-  const [fechaInicial, setFechaInicial] = useState(moment(tarifa.fechaInicio));
-  let [fechaFinal, setFechaFinal] = useState(moment("01/01/1980", "MM/DD/YYYY"));
+  // const [fechaInicial, setFechaInicial] = useState(moment(tarifa.fechaInicio));
+  // let [fechaFinal, setFechaFinal] = useState(moment("01/01/1980", "MM/DD/YYYY"));
   let [checked, setChecked] = useState(false);
   const [editando, setEditando] = useState(false);
 
@@ -40,6 +40,11 @@ function ConfirmarTarifaDetail(props) {
   // console.log('Tarifas finales 1----------');
 
   // console.log([...tarifasFinales]);
+
+  console.log('==================Mi tarifa==================');
+  console.log(miTarifa);
+  console.log(tarifa);
+  console.log('====================================');
 
   //Funciones
   function labelDates(date) {
@@ -51,16 +56,17 @@ function ConfirmarTarifaDetail(props) {
 
   function handleChecked(event) {
     checked = event.target.checked;
-    // console.log(event.target.checked);
-    // console.log(checked);
     setChecked(checked);
-    // console.log(checked);
-    fechaFinal = (checked ? moment() : moment("01/01/1980", "MM/DD/YYYY"));
-    setFechaFinal(fechaFinal);
-    // console.log('=================evento up===================');
-    // console.log(fechaFinal);
-    // console.log('====================================');
-
+    if (checked) {
+      let fecha = moment();
+      let newTarifa = Object.assign({}, tarifa);
+      newTarifa.fechaFin = fecha;
+      setTarifa(newTarifa);
+    } else {
+      let newTarifa = Object.assign({}, tarifa);
+      delete newTarifa.fechaFin;
+      setTarifa(newTarifa);
+    }
   }
 
 
@@ -72,6 +78,8 @@ function ConfirmarTarifaDetail(props) {
   useEffect(() => {
     tarifasFinales[index].tarifasPorEquipo[0] = tarifa;
     setTarifasFinales([...tarifasFinales]);
+    // setFechaInicial(tarifa.fechaInicio)
+    // setFechaFinal(tarifa.fechaFin)
     console.log('Tarifas finales');
 
     console.log(tarifasFinales);
@@ -79,40 +87,37 @@ function ConfirmarTarifaDetail(props) {
   }, [tarifa]);
 
   useEffect(() => {
-    let updateTarifa = Object.assign({}, tarifa)
-    updateTarifa.fechaInicio = fechaInicial;
-    if (fechaFinal >= moment("01/01/2000")) {
-      updateTarifa.fechaFin = fechaFinal;
-    }
-    else {
-      delete updateTarifa.fechaFin;
-    }
-    setTarifa(updateTarifa);
-    console.log('==================tarifa==================');
-    console.log(updateTarifa);
-    console.log('====================================');
+    let miTarifa = tarifasFinales[props.index].tarifasPorEquipo[0];
+    setTarifa(miTarifa);
+  }, [tarifasFinales])
 
-  }, [fechaInicial, fechaFinal])
+  // useEffect(() => {
+  //   let updateTarifa = Object.assign({}, tarifa)
+  //   updateTarifa.fechaInicio = fechaInicial;
+  //   if (fechaFinal >= moment("01/01/2000")) {
+  //     updateTarifa.fechaFin = fechaFinal;
+  //   }
+  //   else {
+  //     delete updateTarifa.fechaFin;
+  //   }
+  //   if (tarifa.fechaInicio != fechaInicial || tarifa.fechaFin != fechaFinal) {
+  //     setTarifa(updateTarifa);
+  //     console.log('==================tarifa==================');
+  //     console.log(updateTarifa);
+  //     console.log('====================================');
+  //   }
+
+  // }, [fechaInicial, fechaFinal])
 
   return (
     <>
-      {/* <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
-                  <DateTimePicker
-                    value={selectedDate}
-                    disablePast
-                    onChange={handleDateChange}
-                    label="With Today Button"
-                    showTodayButton
-                    cancelLabel="Cancelar"
-                    todayLabel="Hoy"
-                  ></DateTimePicker>
-                </MuiPickersUtilsProvider>*/}
-      <tbody className={"cotizacion-table"+ (editando? " editando": "")}>
+      <tbody className={"cotizacion-table" + (editando ? " editando" : "")}>
         <tr className="borderedRow">
           <th className="sticky-col">{tarifa.equipo.nombreEquipo}</th>
           <th>
             <InputBase
               defaultValue={tarifa.cantidad}
+              value={tarifa.cantidad}
               disabled={!editando}
               classes={{
                 input: "inputRoot",
@@ -135,14 +140,18 @@ function ConfirmarTarifaDetail(props) {
           </th>
           <th>{formatoPrecio(tarifa.valorTarifa).replace(" ", "\xa0")}</th>
           <th>{formatoTiempo(tarifa.precioReferencia.tiempo)}</th>
-          <th className={(checked?"pb-0": "")}>
+          <th className={(checked ? "pb-0" : "")}>
             <Row>
               <Col>
                 <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
                   <DateTimePicker
                     disabled={!editando}
-                    value={fechaInicial}
-                    onChange={setFechaInicial}
+                    value={tarifa.fechaInicio}
+                    onChange={date => setTarifa((prev) => {
+                      let newTarifa = Object.assign({}, tarifa);
+                      newTarifa.fechaInicio = date;
+                      return newTarifa;
+                    })}
                     label="Desde"
                     showTodayButton
                     cancelLabel="Cancelar"
@@ -157,14 +166,18 @@ function ConfirmarTarifaDetail(props) {
                   <MuiPickersUtilsProvider locale="es" utils={MomentUtils}>
                     <DateTimePicker
                       disabled={!editando}
-                      value={fechaFinal}
-                      onChange={setFechaFinal}
+                      value={tarifa.fechaFin}
                       label="Hasta"
                       showTodayButton
                       cancelLabel="Cancelar"
                       todayLabel="Hoy"
-                      minDate={fechaInicial.toDate()}
+                      minDate={tarifa.fechaInicio}
                       labelFunc={labelDates}
+                      onChange={date => setTarifa((prev) => {
+                        let newTarifa = Object.assign({}, tarifa);
+                        newTarifa.fechaFin = date;
+                        return newTarifa;
+                      })}
                     ></DateTimePicker>
                   </MuiPickersUtilsProvider>
                 </Row>
@@ -188,20 +201,18 @@ function ConfirmarTarifaDetail(props) {
                 </Row>
               </Col>
             </Row>
-            {/* <p>{"Desde: " + formatoFechas(fechaInicial).toString()}</p>
-            <p>{"  Hasta: " + (tarifa.fechaFin ? formatoFechas(tarifa.fechaFin).toString() : "Sin límite. ")}</p> */}
           </th>
           <th>
             <EditIcon className={(!editando ? "show" : "hide") + " iconSelected"}
               onClick={() => {
                 setEditando(true)
-                setEnEdicion((prevState)=> prevState + 1)
+                setEnEdicion((prevState) => prevState + 1)
               }}
             ></EditIcon>
             <DoneIcon className={(editando ? "show" : "hide") + " iconSelected"}
               onClick={() => {
                 setEditando(false)
-                setEnEdicion((prevState)=> prevState - 1)
+                setEnEdicion((prevState) => prevState - 1)
               }}
             ></DoneIcon>
           </th>

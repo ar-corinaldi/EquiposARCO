@@ -208,6 +208,9 @@ function ConfirmarTarifas(props) {
     useEffect(() => {
         if (cotizacionSeleccionada && cotizacionSeleccionada.tarifasCotizadas) {
             // setTarifasFinales(cotizacionSeleccionada.tarifasCotizadas);
+            console.log('==============COTIZACION SELECT======================');
+            console.log(cotizacionSeleccionada);
+            console.log('====================================');
             let tarifasAgrupadas = []
             cotizacionSeleccionada.tarifasCotizadas.forEach((tarifa) => {
                 let grupo = []
@@ -215,6 +218,8 @@ function ConfirmarTarifas(props) {
                 const object = { tarifasPorEquipo: grupo }
                 tarifasAgrupadas.push(object);
             })
+            console.log(tarifasAgrupadas);
+            console.log('============AGRUPADAS | ========================');
             setTarifasFinales(tarifasAgrupadas);
         }
         else {
@@ -244,7 +249,8 @@ function ConfirmarTarifas(props) {
                         {/*Total */}
                     </tr>
                 </thead>
-                {!tarifasFinales ? "" : tarifasFinales.map((tarifa, index) => {
+                {tarifasFinales && tarifasFinales.map((tarifa, index) => {
+                    console.log(`Reaciendo el map. Index: ${index}. Cantidad: ${tarifa.tarifasPorEquipo[0].cantidad}`);
                     return <ConfirmarTarifaDetail
                         key={index}
                         index={index}

@@ -33,14 +33,6 @@ function EscogerCotizacionDetail(props) {
         setOpen(false);
     };
 
-    const filterOptions = createFilterOptions({
-        matchFrom: "any",
-        limit: 30,
-        stringify: (option) => {
-            return option.codigo
-        }
-    });
-
     return (
         <>
             <div className='rootBodega' >
@@ -53,7 +45,6 @@ function EscogerCotizacionDetail(props) {
                         disablePortal
                         open={open}
                         value={pendingValue}
-                        filterOptions={filterOptions}
                         noOptionsText="No hay cotizaciones"
                         classes={{
                             paper: "paper",

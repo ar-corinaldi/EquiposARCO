@@ -157,11 +157,8 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
           cantidadAObra = lastElement + cantidad;
         }
 
-        const equipoTarifas = tarifasMes.find((tarifasPorEquipo) => {
-          const equipoT = tarifasPorEquipo.equipoTarifa;
-          const idEquipoTarifa = equipoT._id;
-          return idEquipoTarifa === equipoID._id;
-        });
+        const equipoTarifas = tarifasMes[equipoID._id];
+
         //length equipoTarifa, en caso de que sea nullo, sera false y no entra al if
         let { precio, categoria, tiempo, tiempoMinimo } = calcularPrecioEquipo(
           equipoTarifas,
@@ -275,20 +272,23 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
 
       devolucionesMes = devolucionesMes.concat(devolucionesMesOrden);
 
+      let newTarifas = {};
       let tarifasDefinitivas = orden.tarifasDefinitivas || [];
       tarifasDefinitivas.forEach((tarifa) => {
         const tarifasPorEquipo = tarifa.tarifasPorEquipo;
         if (tarifasPorEquipo && tarifasPorEquipo.length > 0) {
           let equipoTarifa = tarifasPorEquipo[0].equipo;
-          tarifasPorEquipo.equipoTarifa = equipoTarifa;
+
           tarifasPorEquipo.sort((a, b) => {
             let fechaA = new Date(a.fechaInicio);
             let fechaB = new Date(b.fechaInicio);
             return fechaB.getTime() - fechaA.getTime();
           });
-          tarifasMes.push(tarifasPorEquipo);
+
+          newTarifas[equipoTarifa._id] = tarifasPorEquipo;
         }
       });
+      tarifasMes = newTarifas;
     }
 
     return { remisionesMes, devolucionesMes, tarifasMes };
@@ -302,31 +302,34 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     const len = equipoTarifas && equipoTarifas.length;
 
     if (len && len > 0) {
-      let fechaFinTarifa = new Date(equipoTarifas[len - 1].fechaFin);
+      let fechaFinTar = equipoTarifas[len - 1].fechaFin;
+      let fechaFinTarifa = (fechaFinTar && new Date(fechaFinTar)) || false;
       const fechaRemision = new Date(remision.fechaLlegada);
       while (
+        fechaFinTarifa &&
         fechaFinTarifa.getTime() < fechaRemision.getTime() &&
         equipoTarifas.length > 0
       ) {
         equipoTarifas.pop();
-
         if (equipoTarifas.length > 0) {
           const cur = equipoTarifas[equipoTarifas.length - 1];
-          fechaFinTarifa = new Date(cur.fechaFin);
+          fechaFinTarifa = (cur.fechaFin && new Date(cur.fechaFin)) || false;
         }
       }
+
       precio =
         (equipoTarifas.length > 0 &&
           equipoTarifas[equipoTarifas.length - 1].valorTarifa) ||
         0;
-      const precioRef = equipoTarifas.precioReferencia;
+      const precioRef =
+        equipoTarifas[equipoTarifas.length - 1].precioReferencia;
+
       if (precioRef) {
         categoria = precioRef.categoria;
         tiempo = precioRef.tiempo;
         tiempoMinimo = precioRef.tiempoMinimo;
       }
     }
-
     if (precio === 0) {
       const newPrecio =
         equipoID.precios && equipoID.precios.length > 0 && equipoID.precios[0];

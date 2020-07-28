@@ -6,7 +6,7 @@ import InfoFactura from "./InfoFactura";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import formatoPrecios from "../utils/FormatoPrecios";
+import FacturaPrecio from "./FacturaPrecio";
 
 function FacturaDetail() {
   let { idFactura } = useParams();
@@ -16,13 +16,13 @@ function FacturaDetail() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     fetching();
-    setLoading(false);
   }, []);
 
   const fetching = async () => {
     try {
+      setLoading(true);
+
       const res = await fetch(`/facturas/${idFactura}`);
       const data = await res.json();
       const {
@@ -31,42 +31,51 @@ function FacturaDetail() {
         fechaInicial,
         fechaPrimeraOrden,
         fechaEmision,
-      } = factura;
+      } = data;
       data.fechaPago = new Date(fechaPago);
       data.fechaCorte = new Date(fechaCorte);
       data.fechaInicial = new Date(fechaInicial);
-      if (fechaPrimeraOrden) {
-        data.fechaPrimeraOrden = new Date(fechaPrimeraOrden);
-      }
+      data.fechaPrimeraOrden = new Date(fechaPrimeraOrden);
+      console.log(data.fechaPrimeraOrden);
       data.fechaEmision = new Date(fechaEmision);
+      let ordenes = factura.ordenes || [];
+      factura.ordenes = ordenes.map((orden) => {
+        orden.fechaInicio = orden.fechaInicio
+          ? new Date(orden.fechaInicio)
+          : undefined;
+        orden.fechaFin = orden.fechaFin ? new Date(orden.fechaFin) : undefined;
+
+        let remisiones = orden.remisiones || [];
+        orden.remisiones = remisiones.map((rem) => {
+          rem.fechaSalida = rem.fechaSalida
+            ? new Date(rem.fechaSalida)
+            : undefined;
+          rem.fechaLlegada = rem.fechaLlegada
+            ? new Date(rem.fechaLlegada)
+            : undefined;
+          return rem;
+        });
+
+        let devoluciones = orden.devoluciones || [];
+        orden.devoluciones = devoluciones.map((dev) => {
+          dev.fecahSalida = dev.fechaSalida
+            ? new Date(dev.fechaSalida)
+            : undefined;
+          dev.fechaLlegada = dev.fechaLlegada
+            ? new Date(dev.fechaLlegada)
+            : undefined;
+
+          return devoluciones;
+        });
+
+        return orden;
+      });
       setFactura(data);
     } catch (e) {
       console.log(e);
     }
+    setLoading(false);
   };
-
-  const [renderPrefacturas, setRenderPrefacturas] = useState(null);
-
-  useEffect(() => {
-    setRenderPrefacturas(
-      <Prefacturas
-        fechaPrimeraOrden={
-          factura.fechaPrimeraOrden ||
-          new Date(
-            factura.fechaInicial && factura.fechaInicial.getFullYear(),
-            0,
-            1,
-            1
-          ) ||
-          new Date()
-        }
-        fechaCorte={factura.fechaCorte || new Date()}
-        fechaInicial={factura.fechaInicial || new Date()}
-        ordenes={factura.ordenes || []}
-        setPrecioTotal={null}
-      />
-    );
-  }, [factura]);
 
   if (loading) {
     return (
@@ -88,17 +97,33 @@ function FacturaDetail() {
         />
       </Row>
       <Row>
-        <Col>{renderPrefacturas}</Col>
+        <Col>
+          <Prefacturas
+            fechaPrimeraOrden={
+              factura.fechaPrimeraOrden ||
+              new Date(
+                factura.fechaInicial && factura.fechaInicial.getFullYear(),
+                0,
+                1,
+                1
+              ) ||
+              new Date()
+            }
+            fechaCorte={factura.fechaCorte || new Date()}
+            fechaInicial={factura.fechaInicial || new Date()}
+            ordenes={factura.ordenes || []}
+            setPrecioTotal={null}
+            setCanFacturar={null}
+          />
+        </Col>
       </Row>
       <Col>
-        <Row>
-          <div id="info-wrapper">
-            <h4 id="titulos">Total</h4>
-            <p>
-              <strong>{formatoPrecios(factura.precioTotal)}</strong>
-            </p>
-          </div>
-        </Row>
+        <FacturaPrecio
+          precioTotal={factura.precioTotal}
+          iva={[factura.iva, null]}
+          facturar={null}
+          canFacturar={[true, null]}
+        />
       </Col>
     </Container>
   );

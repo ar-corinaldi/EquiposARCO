@@ -31,9 +31,8 @@ function FacturaFechas(props) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const [anio, mes, dia] = value.split("-");
-    const newFecha = new Date(anio, mes - 1, dia, 1);
     if (name === "fechaCorte") {
-      console.log(newFecha);
+      const newFecha = new Date(anio, mes - 1, dia, 23);
       if (!fechasValida(newFecha, fechaInicial)) {
         return Toast(
           ["No se puede facturar una fecha final antes de la fecha inicial"],
@@ -43,6 +42,7 @@ function FacturaFechas(props) {
       }
       setFechaCorte(newFecha);
     } else if (name === "fechaInicial") {
+      const newFecha = new Date(anio, mes - 1, dia, 1);
       if (!fechasValida(fechaCorte, newFecha)) {
         return Toast(
           ["No se puede facturar una fecha final antes de la fecha inicial"],

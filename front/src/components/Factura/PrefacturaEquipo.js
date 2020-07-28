@@ -38,26 +38,26 @@ function PrefacturaEquipo(props) {
             }/${mes}/${anio}`;
 
             let facturado = i + 1 - (prevDay + 1) + 1;
-            facturado = Math.max(equipo.tiempoMinimo, facturado);
-
             if (equipo.tiempo === "dia habil") {
-              const fechaA = new Date(2020, mes, prevDay + 1);
-              const fechaB = new Date(2020, mes, listaMes.length);
+              const fechaA = new Date(2020, mes, prevDay + 1, 1);
+              const fechaB = new Date(2020, mes, i + 1, 23);
               facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
             }
+            facturado = Math.max(equipo.tiempoMinimo, facturado);
+
             const cantidad = prev;
             const total = equipo.precio * facturado * cantidad;
             newPrecioTotal += total;
             newRender.push(
               <tr key={date}>
-                <td>{equipo && equipo.nombreEquipo}</td>
                 <td>{`${cantidad} ${formatoCategoria(equipo.categoria)}`}</td>
-                <td>{date}</td>
+                <td>{equipo && equipo.nombreEquipo}</td>
+                <td>{formatoPrecios(equipo.precio)}</td>
                 <td>{`${facturado} ${formatoTiempo(
                   equipo.tiempo,
                   facturado
                 )}`}</td>
-                <td>{formatoPrecios(equipo.precio)}</td>
+                <td>{date}</td>
                 <td>{formatoPrecios(total)}</td>
               </tr>
             );
@@ -73,23 +73,23 @@ function PrefacturaEquipo(props) {
         listaMes.length
       }/${mes}/${anio}`;
       let facturado = listaMes.length - (prevDay + 1) + 1;
-      facturado = Math.max(equipo.tiempoMinimo, facturado);
       if (equipo.tiempo === "dia habil") {
-        const fechaA = new Date(2020, mes, prevDay + 1);
-        const fechaB = new Date(2020, mes, listaMes.length);
+        const fechaA = new Date(2020, mes, prevDay + 1, 1);
+        const fechaB = new Date(2020, mes, listaMes.length, 23);
         facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
       }
+      facturado = Math.max(equipo.tiempoMinimo, facturado);
 
       if (prev !== 0) {
         const total = equipo.precio * facturado * cantidad;
         newPrecioTotal += total;
         newRender.push(
           <tr key={date}>
-            <td>{equipo && equipo.nombreEquipo}</td>
             <td>{`${cantidad} ${formatoCategoria(equipo.categoria)}`}</td>
-            <td>{date}</td>
-            <td>{`${facturado} ${formatoTiempo(equipo.tiempo, facturado)}`}</td>
+            <td>{equipo && equipo.nombreEquipo}</td>
             <td>{formatoPrecios(equipo.precio)}</td>
+            <td>{`${facturado} ${formatoTiempo(equipo.tiempo, facturado)}`}</td>
+            <td>{date}</td>
             <td>{formatoPrecios(total)}</td>
           </tr>
         );

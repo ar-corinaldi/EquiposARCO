@@ -35,43 +35,16 @@ function OrdenDetail(props) {
     //console.log("tercero", terceroA);
     setTercero(terceroA);
 
-    // res = await fetch("/bodegas/" + idB);
-    // const bodegaA = await res.json();
-    // console.log("bodega", bodegaA);
-    // setBodega(bodegaA);
-    // res = await fetch("/ordenes/" + idOr);
-    // const ordenA = await res.json();
-    // console.log("orden", ordenA);
-    // setOrden(ordenA);
-
-    let bodegaA;
-    terceroA.bodegas.forEach((bod) => {
-      if (bod._id.toString() === idB) {
-        bodegaA = bod;
-      }
-    });
-    //console.log("bodega", bodegaA);
+    res = await fetch("/bodegas/" + idB);
+    const bodegaA = await res.json();
+    console.log("bodega", bodegaA);
     setBodega(bodegaA);
-    let ordenA;
-    bodegaA.ordenesActuales.forEach((or) => {
-      if (or._id.toString() === idOr) {
-        fetchInfoOrden();
-        setStatus("En curso");
-        return;
-      }
-    });
-    if (!ordenA) {
-      bodegaA.ordenesPasadas.forEach((or) => {
-        if (or._id.toString() === idOr) {
-          fetchInfoOrden();
-          setStatus("Terminada");
-          return;
-        }
-      });
-    }
-    // console.log("orden", ordenA);
-    // console.log("status", statusOr);
-    // setOrden(ordenA);
+    res = await fetch("/ordenes/" + idOr);
+    const ordenA = await res.json();
+    console.log("orden", ordenA);
+    setOrden(ordenA);
+    orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
+    fetchInfoOrden();
   };
 
   /*

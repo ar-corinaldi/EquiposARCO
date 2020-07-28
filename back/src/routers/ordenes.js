@@ -197,6 +197,10 @@ router.get("/bodegas/:idB/ordenesPasadas", async (req, res, next) => {
 /**
  *  Orden
  */
+
+/**
+ * Fakta compentario
+ */
 router.get("/ordenes/groupBy/:idObra", async (req, res) => {
   try {
     const codigoObra = req.params.idObra;
@@ -253,6 +257,38 @@ router.get("/ordenes/groupBy/:idObra", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(404).send("No se pudieron agrupar las obras");
+  }
+});
+
+/**
+ *  Get de equipos paginacion
+ */
+router.get("/ordenes/:page/:elementsPerPage", async (req, res) => {
+  try {
+    console.log("paginacion");
+    const page = parseInt(req.params.page);
+    const elementsPerPage = parseInt(req.params.elementsPerPage);
+    let ordenes = null;
+    if (elementsPerPage === -1) {
+      ordenes = await Orden.find({}).populate({
+        path: "bodega",
+        populate: { path: "duenio" },
+      });
+    } else {
+      ordenes = await Orden.find({})
+        .populate({
+          path: "bodega",
+          populate: { path: "duenio" },
+        })
+        .limit(elementsPerPage)
+        .skip((page - 1) * elementsPerPage);
+    }
+    res.send(ordenes);
+  } catch (e) {
+    res
+      .status(500)
+      .send(["No se pueden listar las ordenes, hubo un error en el sistema"]);
+    console.error("error", e);
   }
 });
 

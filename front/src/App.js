@@ -8,6 +8,7 @@ import EquipoList from "./components/Equipo/EquipoList/EquipoList";
 import TerceroList from "./components/Tercero/TerceroList";
 import TerceroDetail from "./components/Tercero/TerceroDetail";
 import TerceroCreate from "./components/Tercero/TerceroCreate";
+import OrdenList from "./components/Orden/OrdenList/OrdenList";
 import Breadcrumb from "./components/Breadcrumb";
 import OrdenDetail from "./components/Orden/OrdenDetail";
 import ObraDetail from "./components/Orden/ObraDetail";
@@ -79,6 +80,11 @@ function App() {
                   component={TerceroCreate}
                 />
                 <Route
+                  path="/terceros/listar_ordenes"
+                  exact
+                  component={OrdenList}
+                />
+                <Route
                   path="/terceros/:id/bodegas/create"
                   exact
                   component={BodegaCreate}
@@ -129,11 +135,7 @@ function App() {
                   component={CrearOrden}
                   exact
                 />
-                <Route
-                  path="/facturacion/prueba"
-                  exact
-                  component={Prueba}
-                />
+                <Route path="/facturacion/prueba" exact component={Prueba} />
                 <Route path="/facturacion/cotizar" component={Cotizar} exact />
                 <Route
                   path="/facturacion/listar_facturas"

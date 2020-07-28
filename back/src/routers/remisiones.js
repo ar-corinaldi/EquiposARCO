@@ -43,7 +43,7 @@ router.post("/ordenes/:idOr/remisiones", async (req, res) => {
       }
     }
     res.status(400).send("No se pudo agregar la remision a la orden " + e);
-    console.error("error", e);
+    console.error(e.errors.asumidoTercero ? e.errors.asumidoTercero : e);
   }
 });
 

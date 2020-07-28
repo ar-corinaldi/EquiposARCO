@@ -40,7 +40,7 @@ router.post("/bodegas/:idB/cotizaciones/:idC/ordenes", async (req, res) => {
     console.log("orden guardada");
     cotizacion.orden = orden._id;
     await cotizacion.save();
-    bodega.ordenesActuales.push(orden._id);
+    bodega.ordenes.push(orden._id);
     await bodega.save();
     console.log("Orden aniadida a la bodega con exito");
     const ans = { bodega: bodega, orden: orden };
@@ -79,7 +79,7 @@ router.post("/bodegas/:idB/ordenes", async (req, res) => {
     console.log("La bodega existe");
     await orden.save();
     console.log("orden guardada");
-    bodega.ordenesActuales.push(orden._id);
+    bodega.ordenes.push(orden._id);
     await bodega.save();
     console.log("Orden aniadida a bodega con exito");
     orden = orden.toObject();
@@ -109,15 +109,11 @@ router.patch("/bodegas/:idB/ordenes/:idOr", async (req, res) => {
       return res.status(404).send("Ninguna bodega coincidio con ese id");
     }
     console.log("La bodega existe");
-    let indice = bodega.ordenesActuales.indexOf(orden._id);
+    let indice = bodega.ordenes.indexOf(orden._id);
     if (indice !== -1) {
-      return res.status(404).send("La orden es una orden actual de la bodega");
+      return res.status(404).send("La orden ya está agregada");
     }
-    indice = bodega.ordenesPasadas.indexOf(orden._id);
-    if (indice !== -1) {
-      return res.status(404).send("La orden es una orden pasada de la bodega");
-    }
-    bodega.ordenesActuales.push(orden._id);
+    bodega.ordenes.push(orden._id);
     await bodega.save();
     console.log("Bodega aniadida al tercero con exito");
     res.status(201).send(bodega);
@@ -128,28 +124,17 @@ router.patch("/bodegas/:idB/ordenes/:idOr", async (req, res) => {
 
 /**
  * Terminar una orden.
- * Pasarla de ordenesActuales a ordenesGuardadas
+ * Ponerle fecha fin
  */
-router.patch("/bodegas/:idB/ordenes/:idOr/terminar", async (req, res) => {
+router.patch("ordenes/:idOr/terminar", async (req, res) => {
   try {
-    const bodega = await Bodega.findById(req.params.idB);
-    if (!bodega) {
-      return res.status(404).send("Ninguna bodega coincidio con ese id");
-    }
-    console.log("La bodega existe");
     const orden = await Orden.findById(req.params.idOr);
     if (!orden) {
       return res.status(404).send("Ninguna orden coincidio con ese id");
     }
-    console.log("La orden existe");
-    const indice = bodega.ordenesActuales.indexOf(orden._id);
-    if (indice === -1) {
-      return res.status(404).send("La orden no pertenece a la bodega");
-    }
-    bodega.ordenesActuales.splice(indice, 1);
-    bodega.ordenesPasadas.push(orden._id);
-    await bodega.save();
-    console.log("Bodega aniadida al tercero con exito");
+    orden.fechaFin = new Date(req.fechaFin);
+    await orden.save();
+    console.log("Orden terminada con exito");
     res.status(201).send(bodega);
   } catch (e) {
     res.status(400).send("No se pudo agregar la bodega al tercero ");
@@ -157,37 +142,16 @@ router.patch("/bodegas/:idB/ordenes/:idOr/terminar", async (req, res) => {
 });
 
 /**
- * Obtener las ordenes actuales de una bodega
- * Return: las ordenes actuales
+ * Obtener las ordenes de una bodega
+ * Return: las ordenes
  */
-router.get("/bodegas/:idB/ordenesActuales", async (req, res, next) => {
+router.get("/bodegas/:idB/ordenes", async (req, res, next) => {
   try {
-    const bodega = await Bodega.findById(req.params.idB).populate(
-      "ordenesActuales"
-    );
+    const bodega = await Bodega.findById(req.params.idB).populate("ordenes");
     if (!bodega) {
       return res.send("La bodega no existe");
     }
-    res.send(bodega.ordenesActuales);
-    console.log("La bodega existe");
-  } catch (e) {
-    res.status(404).send("No se pudo hacer la solicitud ");
-  }
-});
-
-/**
- * Obtener las ordenes pasadas de una bodega
- * Return: las ordenes pasadas
- */
-router.get("/bodegas/:idB/ordenesPasadas", async (req, res, next) => {
-  try {
-    const bodega = await Bodega.findById(req.params.idB).populate(
-      "ordenesPasadas"
-    );
-    if (!bodega) {
-      return res.send("La bodega no existe");
-    }
-    res.send(bodega.ordenesPasadas);
+    res.send(bodega.ordenes);
     console.log("La bodega existe");
   } catch (e) {
     res.status(404).send("No se pudo hacer la solicitud ");
@@ -199,7 +163,7 @@ router.get("/bodegas/:idB/ordenesPasadas", async (req, res, next) => {
  */
 
 /**
- * Fakta compentario
+ * Da todas las ordenes pobladas de una obra
  */
 router.get("/ordenes/groupBy/:idObra", async (req, res) => {
   try {
@@ -207,7 +171,7 @@ router.get("/ordenes/groupBy/:idObra", async (req, res) => {
     const ordenesAgrupadas = await Orden.find({ codigoObra })
       .populate({
         path: "bodega",
-        populate: { path: "duenio ordenesActuales ordenesPasadas" },
+        populate: { path: "duenio ordenes" },
       })
       .populate({
         path: "tarifasDefinitivas",

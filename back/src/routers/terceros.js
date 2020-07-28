@@ -104,15 +104,10 @@ router.get("/terceros/:id", async (req, res) => {
       .populate({
         path: "bodegas",
         populate: {
-          path: "ordenesActuales",
+          path: "ordenes",
         },
       })
-      .populate({
-        path: "bodegas",
-        populate: {
-          path: "ordenesPasadas",
-        },
-      })
+
       .lean();
     if (!tercero) {
       return res.status(404).send("No hubo coincidencia");

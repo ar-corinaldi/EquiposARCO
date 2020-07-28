@@ -10,6 +10,7 @@ import formatoFechas from "../utils/FormatoFechas";
 import { useHistory } from "react-router-dom";
 import { FaEllipsisV } from "react-icons/fa";
 import { calcularPorEnviarPorDevolver } from "../Actividades/CalcularEquipos";
+import Toast from "../Toast";
 
 function OrdenDetail(props) {
   const history = useHistory();
@@ -37,14 +38,20 @@ function OrdenDetail(props) {
 
     res = await fetch("/bodegas/" + idB);
     const bodegaA = await res.json();
-    console.log("bodega", bodegaA);
+    //console.log("bodega", bodegaA);
     setBodega(bodegaA);
+
     res = await fetch("/ordenes/" + idOr);
-    const ordenA = await res.json();
+    let ordenA = await res.json();
+    if (!res.ok) {
+      Toast("No se encuentra la orden con id " + idOr, true, res.status);
+      ordenA = null;
+    } else {
+      orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
+      fetchInfoOrden();
+    }
     console.log("orden", ordenA);
     setOrden(ordenA);
-    orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
-    fetchInfoOrden();
   };
 
   /*
@@ -73,6 +80,9 @@ function OrdenDetail(props) {
     history.push(`${orden._id}/actividad`);
   };
 
+  if (!orden) {
+    return <p>La orden no está disponible</p>;
+  }
   return (
     <Container fluid>
       <Row>
@@ -118,7 +128,8 @@ function OrdenDetail(props) {
                   <br />
                 </p>
                 <p>
-                  <b>Fecha Final :</b> {formatoFechas(orden.fechaFin)}
+                  <b>Fecha Final :</b>{" "}
+                  {orden.fechaFin ? formatoFechas(orden.fechaFin) : "N/A"}
                 </p>
               </Col>
             </Row>

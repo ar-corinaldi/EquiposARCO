@@ -341,7 +341,7 @@ router.get("/ordenes/:id", async (req, res) => {
     res.send(orden);
     console.log("La orden existe");
   } catch (e) {
-    res.status(404).send("No se pudo hacer la solicitud " + e);
+    res.status(404).send(["No se pudo hacer la solicitud " + e]);
   }
 });
 

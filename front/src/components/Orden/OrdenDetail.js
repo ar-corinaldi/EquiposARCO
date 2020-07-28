@@ -50,7 +50,7 @@ function OrdenDetail(props) {
       orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
       fetchInfoOrden();
     }
-    console.log("orden", ordenA);
+    //console.log("orden", ordenA);
     setOrden(ordenA);
   };
 

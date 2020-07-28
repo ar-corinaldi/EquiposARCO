@@ -20,7 +20,7 @@ function TerceroDetail({ match }) {
   const fetchTercero = async () => {
     const res = await fetch("/terceros/" + params.id);
     const terceroActual = await res.json();
-    console.log("terceroActual", terceroActual);
+    //console.log("terceroActual", terceroActual);
     //console.log("coti", terceroActual.cotizaciones);
 
     setTercero(terceroActual);

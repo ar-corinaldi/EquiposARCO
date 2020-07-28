@@ -10,6 +10,10 @@ import {
 function EquipoRow(props) {
   const tarifa = props.tarifa;
   const index = props.index + 1;
+  const calculoTarifa = props.calculoTarifa;
+  console.log("tarifa", tarifa._id);
+  console.log("calculoTarifa", calculoTarifa);
+
   return (
     <tr className="capitalize">
       <td>{index}</td>
@@ -21,7 +25,6 @@ function EquipoRow(props) {
         </Link>
       </td>
       <td>{tarifa.cantidad}</td>
-      <td>{formatoPrecios(tarifa.valorTarifa)}</td>
       <td>
         <span
           className={
@@ -34,9 +37,18 @@ function EquipoRow(props) {
         </span>{" "}
         / {formatoTiempo(tarifa.precioReferencia.tiempo, false)}{" "}
       </td>
+      <td>{formatoPrecios(tarifa.valorTarifa)}</td>
+      <td className="not-capitalize">
+        {calculoTarifa
+          ? calculoTarifa.tiempoTotal +
+            " " +
+            formatoTiempo(tarifa.precioReferencia.tiempo, true)
+          : " "}
+      </td>
       <td>
         {formatoFechas(tarifa.fechaInicio)}-{formatoFechas(tarifa.fechaFin)}{" "}
       </td>
+      <td>{formatoPrecios(calculoTarifa && calculoTarifa.cobroTotal)}</td>
     </tr>
   );
 }

@@ -179,7 +179,6 @@ export function calcularPorEnviarPorDevolver(orden) {
       if (tarifaValida(tarifaEquipo)) {
         equipo = tarifaEquipo.equipo;
         equipo.cantidadOr = tarifaEquipo.cantidad;
-        equipo.porEnviar = tarifaEquipo.cantidad;
         equipos.push(equipo);
         equipo.porDevolver = 0;
         equipo.equipoTarifa = tarifaEquipo;
@@ -192,6 +191,10 @@ export function calcularPorEnviarPorDevolver(orden) {
             componente.equipoID.porDevolver = 0;
             componente.equipoID.cantidadOr = componente.equipoID.porEnviar;
           });
+          equipo.porEnviar = "-";
+          equipo.porDevolver = "-";
+        } else {
+          equipo.porEnviar = tarifaEquipo.cantidad;
         }
       }
     });
@@ -270,12 +273,13 @@ export function calcularPorEnviarPorDevolver(orden) {
 
   // Se parte de que los equipos por devolver son igual a los equipos enviados
   equipos.forEach((equipo) => {
-    equipo.porDevolver = equipo.cantidadOr - equipo.porEnviar;
     if (equipo.componentes && equipo.componentes.length > 0) {
       equipo.componentes.forEach((componente) => {
         componente.equipoID.porDevolver =
           componente.equipoID.cantidadOr - componente.equipoID.porEnviar;
       });
+    } else {
+      equipo.porDevolver = equipo.cantidadOr - equipo.porEnviar;
     }
   });
 
@@ -345,8 +349,6 @@ export function calcularPorEnviarPorDevolver(orden) {
   });
 
   equipos.forEach((equipo) => {
-    equipo.enviado = equipo.cantidadOr - equipo.porEnviar;
-    equipo.devuelto = equipo.enviado - equipo.porDevolver;
     if (equipo.componentes && equipo.componentes.length > 0) {
       equipo.componentes.forEach((componente) => {
         componente.equipoID.enviado =
@@ -354,30 +356,35 @@ export function calcularPorEnviarPorDevolver(orden) {
         componente.equipoID.devuelto =
           componente.equipoID.enviado - componente.equipoID.porDevolver;
       });
+      equipo.enviado = "-";
+      equipo.devuelto = "-";
+    } else {
+      equipo.enviado = equipo.cantidadOr - equipo.porEnviar;
+      equipo.devuelto = equipo.enviado - equipo.porDevolver;
     }
   });
 
-  /**
-   * Calcular el porcentaje de los equipos compuestos
-   */
-  equipos.forEach((equipo) => {
-    if (equipo.componentes && equipo.componentes.length > 0) {
-      equipo.cantidadComponentes = 0;
-      equipo.componentes.forEach((componente) => {
-        equipo.cantidadComponentes += componente.cantidad;
-      });
-      equipo.componentes.forEach((componente) => {
-        const porcentaje = componente.cantidad / equipo.cantidadComponentes;
-        const porcentajePropio = 1 / componente.cantidad;
-        equipo.enviado +=
-          porcentaje * componente.equipoID.enviado * porcentajePropio;
-        equipo.devuelto +=
-          porcentaje * componente.equipoID.devuelto * porcentajePropio;
-      });
-      equipo.porEnviar = equipo.cantidadOr - equipo.enviado;
-      equipo.porDevolver = equipo.enviado - equipo.devuelto;
-    }
-  });
+  // /**
+  //  * Calcular el porcentaje de los equipos compuestos
+  //  */
+  // equipos.forEach((equipo) => {
+  //   if (equipo.componentes && equipo.componentes.length > 0) {
+  //     equipo.cantidadComponentes = 0;
+  //     equipo.componentes.forEach((componente) => {
+  //       equipo.cantidadComponentes += componente.cantidad;
+  //     });
+  //     equipo.componentes.forEach((componente) => {
+  //       const porcentaje = componente.cantidad / equipo.cantidadComponentes;
+  //       const porcentajePropio = 1 / componente.cantidad;
+  //       equipo.enviado +=
+  //         porcentaje * componente.equipoID.enviado * porcentajePropio;
+  //       equipo.devuelto +=
+  //         porcentaje * componente.equipoID.devuelto * porcentajePropio;
+  //     });
+  //     equipo.porEnviar = equipo.cantidadOr - equipo.enviado;
+  //     equipo.porDevolver = equipo.enviado - equipo.devuelto;
+  //   }
+  // });
 
   console.log("equipos", equipos);
   return equipos;

@@ -69,6 +69,11 @@ function Sidebar(props) {
       name: "Crear tercero",
       ref: "/crear_tercero",
     },
+    {
+      type: "Link",
+      name: "Listar ordenes",
+      ref: "/listar_ordenes",
+    },
   ];
 
   const menu_facturación = [
@@ -93,13 +98,13 @@ function Sidebar(props) {
     {
       type: "Link",
       name: "Cotizar",
-      ref: "/cotizar"
+      ref: "/cotizar",
     },
     {
       type: "Link",
       name: "Prueba",
-      ref: "/prueba"
-    }
+      ref: "/prueba",
+    },
   ];
 
   //Definicion del menú home: Cuando la ruta es '/'.

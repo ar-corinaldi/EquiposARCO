@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Toast from "./Toast";
+
 const withFormHandling = (FormComponent) => (props) => {
   const [fields, setFields] = useState({ ...props.fields });
   const { formAction } = props;
@@ -34,9 +36,23 @@ const withFormHandling = (FormComponent) => (props) => {
         "Content-Type": "application/json",
       },
     };
-    const res = await fetch(formAction, options);
-    const objeto = await res.json();
-    return objeto;
+    try {
+      const res = await fetch(formAction, options);
+      const objeto = await res.json();
+      if (!res.ok) {
+        console.log("res", res);
+        Toast(objeto, false, res.status);
+        return objeto;
+      } else {
+        console.log("res", res);
+        const message = "Registro exitoso";
+        Toast(message, true, res.status);
+        return objeto;
+      }
+    } catch (e) {
+      Toast(["Error del sistema"], true, 500);
+      return undefined;
+    }
   };
 
   const handleSubmitGET = (e) => {

@@ -58,13 +58,7 @@ const bodegaSchema = new Schema({
     ref: "Tercero",
     required: true,
   },
-  ordenesActuales: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Orden",
-    },
-  ],
-  ordenesPasadas: [
+  ordenes: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Orden",

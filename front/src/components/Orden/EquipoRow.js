@@ -55,9 +55,9 @@ function EquipoRow(props) {
             {equipo.componentes && equipo.componentes.length > 0 ? (
               <button className="button-icon" onClick={toggle}>
                 {open ? (
-                  <FaChevronDown className="icono" />
-                ) : (
                   <FaChevronUp className="icono" />
+                ) : (
+                  <FaChevronDown className="icono" />
                 )}
               </button>
             ) : (

@@ -59,11 +59,15 @@ function tarifasCompuestaPrimero(tarfiaDefA, tarfiaDefB) {
   else return 0;
 }
 
+/**
+ * Calcula los equipos que se pueden enviar en una orden y su cantidad maxima
+ * @param {} orden
+ */
 export function calcularDisponiblesRemision(orden) {
   const equipos = [];
   if (!orden) return equipos;
   let equipo;
-  console.log("orden", orden);
+  //  console.log("orden", orden);
   // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
   orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
   // Revisar las cantidades originales de acuerdo con la tarifa valida
@@ -102,7 +106,7 @@ export function calcularDisponiblesRemision(orden) {
     remision.equiposEnRemision.forEach((equipoRemision) => {
       for (let index = 0; index < equipos.length; index++) {
         const equipo = equipos[index];
-        console.log("entra");
+        //       console.log("entra");
         if (equipo._id === equipoRemision.equipoID._id) {
           const newCant = equipo.porEnviar - equipoRemision.cantidad;
           if (newCant === 0) {
@@ -114,15 +118,19 @@ export function calcularDisponiblesRemision(orden) {
       }
     });
   });
-  console.log("equipos", equipos);
+  //  console.log("equipos", equipos);
   return equipos;
 }
 
+/**
+ * Calcula los equipos que se pueden devolver de una orden, y su cantidad maxima
+ * @param {} orden
+ */
 export function calcularDisponiblesDevolucion(orden) {
   const equipos = [];
   if (!orden) return equipos;
   let equipo;
-  console.log("orden", orden);
+  //  console.log("orden", orden);
 
   // Revisar los equipos y las cantidades de las remisiones realizadas
   orden.remisiones.forEach((remision) => {
@@ -160,15 +168,19 @@ export function calcularDisponiblesDevolucion(orden) {
       }
     });
   });
-  console.log("equipos", equipos);
+  //  console.log("equipos", equipos);
   return equipos;
 }
 
+/**
+ * Calcula para equipo de una orden, cuantos fueron enviados, devueltos, cuantos quedan por enviar y por devolver.
+ * @param {*} orden
+ */
 export function calcularPorEnviarPorDevolver(orden) {
   const equipos = [];
   if (!orden) return equipos;
   let equipo;
-  console.log("orden", orden);
+  //console.log("orden", orden);
   // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
   orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
 
@@ -214,7 +226,7 @@ export function calcularPorEnviarPorDevolver(orden) {
       remision.equiposEnRemision.forEach((equipoRemision) => {
         if (equipoRemision.cantidadNoRegistrada === 0) return;
         if (equipo.componentes && equipo.componentes.length > 0) {
-          console.log("compuesto");
+          //          console.log("compuesto");
           equipo.componentes.forEach((componente) => {
             if (componente.equipoID.porEnviar === 0) return;
             if (componente.equipoID._id === equipoRemision.equipoID._id) {
@@ -246,7 +258,7 @@ export function calcularPorEnviarPorDevolver(orden) {
             }
           });
         } else {
-          console.log("normi");
+          //          console.log("normi");
 
           if (equipo.porEnviar === 0) return;
 
@@ -386,6 +398,6 @@ export function calcularPorEnviarPorDevolver(orden) {
   //   }
   // });
 
-  console.log("equipos", equipos);
+  //  console.log("equipos", equipos);
   return equipos;
 }

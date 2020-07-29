@@ -11,6 +11,7 @@ import "moment/locale/es";
 import Escoger from "../../Escoger";
 import EquipoTable from "./EquipoTable";
 import formatoPrecios from "../../utils/FormatoPrecios";
+import Toast from "../../Toast";
 
 function DevolucionForm(props) {
   const [devolucion, setDevolucion] = useState(undefined);
@@ -48,18 +49,28 @@ function DevolucionForm(props) {
     }
   };
 
-  const handleSubit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     fields.fechaSalida = fechaSalida;
-    // console.log(typeof fields.fechaSalida);
     fields.fechaLlegada = fechaLlegada;
-    // console.log(typeof fields.fechaLlegada);
+    if (!fechasValidas(new Date(fechaLlegada), new Date(fechaSalida))) {
+      return Toast(
+        [
+          "No se puede escoger una fecha de llegada anterior a la fecha de salida",
+        ],
+        true,
+        500
+      );
+    }
     fields.asumidoTercero = asumidoTercero;
     handleEquiposDevolucion();
     console.log(fields);
     handleSubmitPOST(e).then((value) => setDevolucion(value));
     manejarInventario();
   };
+
+  const fechasValidas = (fechaMayor, fechaMenor) =>
+    fechaMayor.getTime() >= fechaMenor.getTime();
 
   const handleRadio = (event) => {
     const asumidoTerceroP = event.currentTarget.value === "true" ? true : false;
@@ -116,7 +127,7 @@ function DevolucionForm(props) {
 
   return (
     <div className="devolucion-registrar-card">
-      <form onSubmit={handleSubit}>
+      <form onSubmit={handleSubmit}>
         <h4 className="titulo">Registrar una devolución</h4>
         <Row>
           <Col>

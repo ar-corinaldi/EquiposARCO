@@ -104,13 +104,7 @@ router.get("/terceros/:id", async (req, res) => {
       .populate({
         path: "bodegas",
         populate: {
-          path: "ordenesActuales",
-        },
-      })
-      .populate({
-        path: "bodegas",
-        populate: {
-          path: "ordenesPasadas",
+          path: "ordenes",
         },
       })
       .lean();

@@ -214,6 +214,15 @@ const equipoSchema = new Schema({
       },
     },
   ],
+  peso: {
+    type: Number,
+    min: 0,
+    default: 0,
+  },
+  proveedor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Proveedor",
+  },
 });
 
 const Equipo = mongoose.model("Equipo", equipoSchema);

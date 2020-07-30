@@ -64,7 +64,7 @@ a.nav-link:focus {
 }
 
 .nav-tabs.nav-bordered li a.active {
-  border-bottom: 2px solid #727cf5;
+  border-bottom: 2px solid #007bff;
 }
 
 .d-md-none {

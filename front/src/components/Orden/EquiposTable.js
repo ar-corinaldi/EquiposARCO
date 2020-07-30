@@ -1,10 +1,13 @@
 import React from "react";
 import EquipoRow from "./EquipoRow";
 import "./EquiposTable.css";
+import { useState } from "react";
 
 function EquiposTable(props) {
   const tarifas = props.tarifas;
   const equipos = props.equipos;
+
+  const [opcion, setOpcion] = useState(2);
 
   // console.log("tarifas", tarifas);
   // console.log("tarifas[0]", tarifas && tarifas[0].tarifasPorEquipo);
@@ -13,13 +16,22 @@ function EquiposTable(props) {
     <div className="table-responsive">
       <ul className="nav nav-tabs nav-bordered box">
         <li className="nav-item">
-          <a className="nav-link px-3 py-2">
+          <a
+            className={
+              opcion === 1 ? "nav-link px-3 py-2 active" : "nav-link px-3 py-2"
+            }
+          >
             <i className="mdi mdi-pencil-box-multiple font-18 d-md-none d-block"></i>
             <span className="d-none d-md-block">Tarifas</span>
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link px-3 py-2 active">
+          <a
+            className={
+              opcion === 2 ? "nav-link px-3 py-2 active" : "nav-link px-3 py-2"
+            }
+          >
+            {" "}
             <i className="mdi mdi-image font-18 d-md-none d-block"></i>
             <span className="d-none d-md-block">Estado</span>
           </a>

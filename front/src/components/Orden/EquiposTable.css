@@ -28,8 +28,11 @@ a.nav-link:active,
 a.nav-link:focus {
   transition: 0;
   color: #000000 !important;
-  background-color: rgba(134, 118, 118, 0.06);
+  background-color: transparent;
+  border-radius: 0px;
+  font-size: 18px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .pl-3,

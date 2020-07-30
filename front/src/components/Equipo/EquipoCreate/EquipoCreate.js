@@ -12,8 +12,8 @@ function EquipoCreate(props) {
       <Row>
         <Col>
           <Container2Components
-            nombres={["Equipo Compuesto", "Equipo No Compuesto"]}
-            componentes={[EquipoCompuestoForm, EquipoNoCompuestoForm]}
+            nombres={["Equipo No Compuesto", "Equipo Compuesto"]}
+            componentes={[EquipoNoCompuestoForm, EquipoCompuestoForm]}
           />
         </Col>
       </Row>

@@ -12,6 +12,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
   const [prefacturas, setPrefacturas] = useState([]);
 
   let equiposMesPasadosSinDevolver = [];
+  let equiposDevueltosAlComienzoMes = [];
 
   useEffect(() => {
     setPrefacturas([]);
@@ -77,11 +78,10 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     addEquiposARemisionesDelMesAnterior(remMes, 1, inicioMes);
     for (let i = 1; i <= daysOfMonth; i++) {
       // Añade la cantidad de un equipo para la obra en el dia actual
-
       acumEquiposRemisionPorDia(remMes, i, finMes, prefactura, tarifasMes);
 
       // Quita la cantidad de un equipo en la obra con la respectiva devolucion
-      // En el dia
+      // Al dia siguiente
       acumEquiposDevolucionPorDia(devMes, i, finMes, prefactura, tarifasMes);
     }
 
@@ -90,8 +90,12 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     const idEquipos = Object.keys(prefactura);
     idEquipos.forEach((idEquipo) => {
       if (idEquipo !== "transportes") {
+        let restaDev = equiposDevueltosAlComienzoMes[idEquipo] || 0;
+
         const equipo = prefactura[idEquipo].equipo;
-        const cantidad = prefactura[idEquipo].listaMes[daysOfMonth - 1];
+        const cantidad =
+          prefactura[idEquipo].listaMes[daysOfMonth - 1] - restaDev;
+
         if (cantidad > 0) {
           equiposMesPasadosSinDevolver.push({
             equipo,
@@ -125,7 +129,6 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
       new Date(anio, mes, day),
       new Date(anio, mes, day, 23)
     );
-
     for (const remision of filterRemByDay) {
       if (
         remision.asumidoTercero === false ||
@@ -139,8 +142,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
       }
       for (const equipo of remision.equiposEnRemision) {
         const { equipoID, cantidad } = equipo;
-
-        const idEquipo = `_${equipoID._id}`;
+        const idEquipo = `${equipoID._id}`;
         let cantidadAObra = cantidad;
 
         if (day === 1 && equiposMesPasadosSinDevolver[idEquipo]) {
@@ -156,7 +158,6 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
             day !== 0 ? prefacturaMes[idEquipo].listaMes[day - 1] : 0;
           cantidadAObra = lastElement + cantidad;
         }
-
         const equipoTarifas = tarifasMes[equipoID._id];
 
         //length equipoTarifa, en caso de que sea nullo, sera false y no entra al if
@@ -165,12 +166,10 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
           remision,
           equipoID
         );
-
         prefacturaMes[idEquipo].equipo.precio = precio;
         prefacturaMes[idEquipo].equipo.categoria = categoria;
         prefacturaMes[idEquipo].equipo.tiempo = tiempo;
         prefacturaMes[idEquipo].equipo.tiempoMinimo = tiempoMinimo;
-
         prefacturaMes[idEquipo].listaMes.fill(
           cantidadAObra,
           day - 1,
@@ -210,16 +209,15 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
       }
       for (const equipo of devolucion.equiposEnDevolucion) {
         const { equipoID, cantidad } = equipo;
-        const idEquipo = `_${equipoID._id}`;
+        const idEquipo = `${equipoID._id}`;
         let cantidadAObra = cantidad;
-
         if (!prefacturaMes[idEquipo]) {
           prefacturaMes[idEquipo] = {};
           prefacturaMes[idEquipo].listaMes = new Array(daysOfMonth).fill(0);
           prefacturaMes[idEquipo].equipo = equipoID;
           Toast(
             [`No existe la remision del equipo ${equipoID.nombreEquipo}`],
-            false,
+            100,
             400
           );
         } else {
@@ -236,12 +234,24 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
             400
           );
         }
-
-        prefacturaMes[idEquipo].listaMes.fill(
-          cantidadAObra,
-          day - 1,
-          daysOfMonth
-        );
+        let lenListaMes =
+          prefacturaMes[idEquipo].listaMes &&
+          prefacturaMes[idEquipo].listaMes.length;
+        if (day !== lenListaMes) {
+          prefacturaMes[idEquipo].listaMes.fill(
+            cantidadAObra,
+            day,
+            daysOfMonth
+          );
+        } else {
+          console.log(
+            equipoID.nombreEquipo,
+            cantidadAObra,
+            prefacturaMes[idEquipo].listaMes[day - 1]
+          );
+          equiposDevueltosAlComienzoMes[idEquipo] = cantidadAObra;
+        }
+        console.log(day, prefacturaMes[idEquipo].listaMes);
       }
     }
   };
@@ -259,7 +269,12 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     equiposMesPasadosSinDevolver = [];
   };
 
-  // Carga todas las remisiones y devoluciones de un mes de todas las ordenes
+  /**
+   *
+   * @param {Object} ordenes, ordenes de una obra
+   * @param {Date} inicioMes, fecha inicial del mes 01/mes/2020, 1:00:00
+   * @param {Date} finMes, fecha final del mes ultimoDia/mes/2020, 23:00:00
+   */
   const loadRemisionesYDevoluciones = (ordenes, inicioMes, finMes) => {
     let remisionesMes = [];
     let devolucionesMes = [];
@@ -304,6 +319,12 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     return { remisionesMes, devolucionesMes, tarifasMes };
   };
 
+  /**
+   *
+   * @param {Object} equipoTarifas tarifa de un equipo
+   * @param {Object} remision Objeto remision
+   * @param {String} equipoID id de un equipo
+   */
   const calcularPrecioEquipo = (equipoTarifas, remision, equipoID) => {
     let precio = 0;
     let categoria = "unidad";
@@ -368,12 +389,13 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
    * Filtra una lista por fecha inicio y fin a partir de la propiedad fecha
    */
   const filtrarListaPorFecha = (lista, nombreFecha, inicio, fin) => {
-    return lista.filter((elemento) => {
+    let filteredList = lista.filter((elemento) => {
       const fecha = new Date(elemento[nombreFecha]);
       return (
         inicio.getTime() <= fecha.getTime() && fecha.getTime() <= fin.getTime()
       );
     });
+    return filteredList;
   };
 
   return { prefacturas };

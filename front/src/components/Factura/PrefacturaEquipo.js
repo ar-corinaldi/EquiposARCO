@@ -33,14 +33,12 @@ function PrefacturaEquipo(props) {
         let current = listaMes[i];
         if (prev !== current) {
           if (prev !== 0) {
-            const date = `${prevDay + 1}/${mes}/${anio} - ${
-              i + 1
-            }/${mes}/${anio}`;
+            const date = `${prevDay + 1}/${mes}/${anio} - ${i}/${mes}/${anio}`;
 
-            let facturado = i + 1 - (prevDay + 1) + 1;
+            let facturado = i - (prevDay + 1) + 1;
             if (equipo.tiempo === "dia habil") {
               const fechaA = new Date(2020, mes, prevDay + 1, 1);
-              const fechaB = new Date(2020, mes, i + 1, 23);
+              const fechaB = new Date(2020, mes, i, 23);
               facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
             }
             facturado = Math.max(equipo.tiempoMinimo, facturado);

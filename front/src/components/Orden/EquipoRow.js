@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import formatoFechas from "../utils/FormatoFechas";
 import formatoPrecios from "../utils/FormatoPrecios";
-import { FaChevronDown } from "react-icons/fa";
-import { FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaRegCheckCircle } from "react-icons/fa";
+import { RiErrorWarningLine } from "react-icons/ri";
 import {
   formatoCategoriaHTML,
   formatoTiempo,
@@ -76,8 +76,15 @@ function EquipoRow(props) {
           <td className="text-center">{equipo.devuelto}</td>
           <td className="text-center">{equipo.porEnviar}</td>
           <td className="text-center">{equipo.porDevolver}</td>
+          <td className="text-center">
+            {equipo.cantidadOr === equipo.devuelto ? (
+              <FaRegCheckCircle />
+            ) : (
+              <RiErrorWarningLine />
+            )}
+          </td>
 
-          <td>{formatoPrecios(equipo.equipoTarifa.valorTarifa)}</td>
+          {/* <td>{formatoPrecios(equipo.equipoTarifa.valorTarifa)}</td>
           <td>
             <span
               className={
@@ -99,7 +106,7 @@ function EquipoRow(props) {
           <td>
             {formatoFechas(equipo.equipoTarifa.fechaInicio)}-
             {formatoFechas(equipo.equipoTarifa.fechaFin)}
-          </td>
+          </td> */}
         </tr>
         {/* Se muestran los equipos compuestos del equipo */}
         {equipo.componentes &&
@@ -121,10 +128,18 @@ function EquipoRow(props) {
               <td className="text-center">{componente.equipoID.devuelto}</td>
               <td className="text-center">{componente.equipoID.porEnviar}</td>
               <td className="text-center">{componente.equipoID.porDevolver}</td>
+              <td className="text-center">
+                {componente.equipoID.cantidadOr ===
+                componente.equipoID.devuelto ? (
+                  <FaRegCheckCircle />
+                ) : (
+                  <RiErrorWarningLine />
+                )}
+              </td>
 
+              {/* <td> - </td>
               <td> - </td>
-              <td> - </td>
-              <td> - </td>
+              <td> - </td> */}
             </tr>
           ))}
       </tbody>

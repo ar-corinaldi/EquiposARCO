@@ -9,6 +9,10 @@ function EquiposTable(props) {
 
   const [opcion, setOpcion] = useState(2);
 
+  const toggle = (value) => {
+    setOpcion(value);
+  };
+
   // console.log("tarifas", tarifas);
   // console.log("tarifas[0]", tarifas && tarifas[0].tarifasPorEquipo);
   // console.log("tarifas[1]", tarifas && tarifas[1].tarifasPorEquipo);
@@ -20,6 +24,7 @@ function EquiposTable(props) {
             className={
               opcion === 1 ? "nav-link px-3 py-2 active" : "nav-link px-3 py-2"
             }
+            onClick={() => toggle(1)}
           >
             <i className="mdi mdi-pencil-box-multiple font-18 d-md-none d-block"></i>
             <span className="d-none d-md-block">Tarifas</span>
@@ -30,34 +35,57 @@ function EquiposTable(props) {
             className={
               opcion === 2 ? "nav-link px-3 py-2 active" : "nav-link px-3 py-2"
             }
+            onClick={() => toggle(2)}
           >
-            {" "}
             <i className="mdi mdi-image font-18 d-md-none d-block"></i>
-            <span className="d-none d-md-block">Estado</span>
+            <span className="d-none d-md-block">Estado actual</span>
           </a>
         </li>
       </ul>
       <br></br>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Item</th>
-            <th>Cantidad</th>
-            <th>Enviado</th>
-            <th>Devuelto</th>
-            <th>Por enviar</th>
-            <th>Por devolver</th>
-            <th>Valor</th>
-            <th>Tipo de Cobro</th>
-            <th>Periodo Cobro</th>
-          </tr>
-        </thead>
-        {equipos &&
-          equipos.map((equipo, index) => (
-            <EquipoRow key={index} equipo={equipo} index={index} />
-          ))}
-        {/* <tbody>
+      {opcion === 2 ? (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Item</th>
+              <th>Cantidad</th>
+              <th>Enviado</th>
+              <th>Devuelto</th>
+              <th>Por enviar</th>
+              <th>Por devolver</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          {equipos &&
+            equipos.map((equipo, index) => (
+              <EquipoRow key={index} equipo={equipo} index={index} />
+            ))}
+        </table>
+      ) : (
+        <></>
+      )}
+      {/* <table className="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Item</th>
+              <th>Cantidad</th>
+              <th>Enviado</th>
+              <th>Devuelto</th>
+              <th>Por enviar</th>
+              <th>Por devolver</th>
+              <th>Valor</th>
+              <th>Tipo de Cobro</th>
+              <th>Periodo Cobro</th>
+            </tr>
+          </thead>
+          {equipos &&
+            equipos.map((equipo, index) => (
+              <EquipoRow key={index} equipo={equipo} index={index} />
+            ))}
+        </table> */}
+      {/* <tbody>
           {tarifas &&
             tarifas.map((tarifaAgrupada, index) => (
               <EquipoRow
@@ -68,7 +96,6 @@ function EquiposTable(props) {
               />
             ))}
         </tbody> */}
-      </table>
     </div>
   );
 }

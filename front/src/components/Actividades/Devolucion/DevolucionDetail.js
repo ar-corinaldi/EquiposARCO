@@ -54,7 +54,7 @@ function DevolucionDetail(props) {
   return (
     <div className="devolucion-registrar-wrapper ">
       <div className="devolucion-registrar-card ">
-        <h4 className="titulo">Remisión No. {devolucion.codigo}</h4>
+        <h4 className="titulo">Devolucion No. {devolucion.codigo}</h4>
 
         <Row>
           <Col>

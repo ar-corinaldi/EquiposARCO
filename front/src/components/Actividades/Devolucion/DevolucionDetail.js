@@ -128,12 +128,11 @@ function DevolucionDetail(props) {
           </Row>
           <Row>
             <Col>
-              <EquiposDevolucion
-                equiposEnDevolucion={devolucion.equiposEnDevolucion}
-              ></EquiposDevolucion>
+              <EquiposDevolucion devolucion={devolucion}></EquiposDevolucion>
             </Col>
           </Row>
         </div>
+        <br></br>
         <div>
           <Row>
             <Col>

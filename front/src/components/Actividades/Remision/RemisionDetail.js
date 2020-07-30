@@ -127,9 +127,7 @@ function RemisionDetail(props) {
           </Row>
           <Row>
             <Col>
-              <EquiposRemision
-                equiposEnRemision={remision.equiposEnRemision}
-              ></EquiposRemision>
+              <EquiposRemision remision={remision}></EquiposRemision>
             </Col>
           </Row>
         </div>

@@ -37,3 +37,24 @@ export function calcularCantidadTotal(actividad) {
   }
   return cantTot;
 }
+
+export function calcularPrecioTransporte(pesoTot) {
+  if (1 <= pesoTot && pesoTot <= 380) {
+    return 20000;
+  }
+  if (381 <= pesoTot && pesoTot <= 760) {
+    return 32000;
+  }
+  if (761 <= pesoTot && pesoTot <= 1520) {
+    return 64000;
+  }
+  if (1521 <= pesoTot && pesoTot <= 2280) {
+    return 96000;
+  }
+  if (2281 <= pesoTot && pesoTot <= 3048) {
+    return 128000;
+  }
+  if (3049 <= pesoTot && pesoTot <= 3800) {
+    return 160000;
+  } else return 0;
+}

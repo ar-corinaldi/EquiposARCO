@@ -12,6 +12,7 @@ import Escoger from "../../Escoger";
 import EquipoTable from "./EquipoTable";
 import formatoPrecios from "../../utils/FormatoPrecios";
 import Toast from "../../Toast";
+import { calcularPrecioTransporte } from "../CalcularTransporte";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -26,6 +27,7 @@ function RemisionForm(props) {
   const [fechaLlegada, setFechaLlegada] = useState(new Date());
   const [pesoTotal, setPesoTotal] = useState(0);
   const [cantidadTotal, setCantidadTotal] = useState(0);
+  const [costoTransporte, setCostoTransporte] = useState(0);
 
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
   //console.log("equipos", equipos);
@@ -48,6 +50,10 @@ function RemisionForm(props) {
     calcularPesoTot();
     calcularCantTot();
   }, [equiposSels]);
+
+  useEffect(() => {
+    calcularTransporte();
+  }, [asumidoTercero]);
 
   const mostrarOrden = () => {
     //console.log("bodega", bodega);
@@ -154,6 +160,17 @@ function RemisionForm(props) {
     });
     console.log("cantTot", cantTot);
     setCantidadTotal(cantTot);
+  };
+
+  const calcularTransporte = () => {
+    console.log(pesoTotal);
+    if (!asumidoTercero) {
+      fields.costoTransporte = calcularPrecioTransporte(pesoTotal);
+      console.log(fields.costoTransporte);
+    } else {
+      fields.costoTransporte = 0;
+    }
+    setCostoTransporte(fields.costoTransporte);
   };
 
   return (
@@ -276,8 +293,8 @@ function RemisionForm(props) {
             <input
               name="costoTransporte"
               type="number"
-              value={fields.costoTransporte}
-              onChange={handleChange}
+              value={costoTransporte}
+              onChange={setCostoTransporte}
             />
           </div>,
         ]}

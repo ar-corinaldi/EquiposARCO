@@ -198,6 +198,16 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     );
 
     for (const devolucion of filterDevByDay) {
+      if (
+        devolucion.asumidoTercero === false ||
+        (devolucion.costoTransporte && devolucion.costoTransporte > 0)
+      ) {
+        if (!prefacturaMes.transportes) prefacturaMes.transportes = [];
+        prefacturaMes.transportes.push({
+          costo: devolucion.costoTransporte,
+          fecha: new Date(devolucion.fechaLlegada),
+        });
+      }
       for (const equipo of devolucion.equiposEnDevolucion) {
         const { equipoID, cantidad } = equipo;
         const idEquipo = `_${equipoID._id}`;
@@ -322,6 +332,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
           equipoTarifas[equipoTarifas.length - 1].valorTarifa) ||
         0;
       const precioRef =
+        equipoTarifas[equipoTarifas.length - 1] &&
         equipoTarifas[equipoTarifas.length - 1].precioReferencia;
 
       if (precioRef) {

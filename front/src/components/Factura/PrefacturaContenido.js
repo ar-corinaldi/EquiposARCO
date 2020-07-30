@@ -9,6 +9,7 @@ function PrefacturaContenido(props) {
     anio,
     setPrecioTotal,
     fechaInicial,
+    fechaCorte,
     transportes,
   } = props;
 
@@ -32,6 +33,7 @@ function PrefacturaContenido(props) {
             listaMes={prefactura[idEquipo].listaMes || []}
             mes={mes}
             anio={anio}
+            fechaCorte={fechaCorte}
             fechaInicial={fechaInicial}
             setPrecioTotal={setPrecioTotal}
           />

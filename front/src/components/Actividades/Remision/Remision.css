@@ -52,3 +52,7 @@
   width: 100%;
   text-align: center;
 }
+
+.borderUp {
+  border-top: 1px solid #80808063;
+}

@@ -1,0 +1,91 @@
+.nav-tabs.nav-bordered {
+  border-bottom: 2px solid rgba(152, 166, 173, 0.2);
+}
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.nav-tabs.nav-bordered .nav-item {
+  margin-bottom: -2px;
+}
+
+.nav-tabs.nav-bordered li a {
+  border: 0;
+  padding: 0.625rem 1.25rem;
+}
+
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+a.nav-link:hover,
+a.nav-link:active,
+a.nav-link:focus {
+  transition: 0;
+  color: #000000 !important;
+  background-color: transparent;
+  border-radius: 0px;
+  font-size: 18px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pl-3,
+.px-3 {
+  padding-left: 1.5rem !important;
+}
+
+.pr-3,
+.px-3 {
+  padding-right: 1.5rem !important;
+}
+
+.pb-2,
+.py-2 {
+  padding-bottom: 0.75rem !important;
+}
+
+.pt-2,
+.py-2 {
+  padding-top: 0.75rem !important;
+}
+.nav-link {
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
+.box {
+  box-sizing: border-box;
+}
+
+.nav-tabs.nav-bordered li a.active {
+  border-bottom: 2px solid #007bff;
+}
+
+.d-md-none {
+  display: none !important;
+}
+.d-block {
+  display: block !important;
+}
+
+.mdi-set,
+.mdi {
+  display: inline-block;
+
+  text-rendering: auto;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}

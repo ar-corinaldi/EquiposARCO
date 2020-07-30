@@ -32,7 +32,10 @@ const tarifaSchema = new Schema({
     type: Number,
     trim: true,
     required: true,
-    lowercase: true,
+  },
+  horasEnUso: {
+    type: Number,
+    trim: true,
   },
   precioReferencia: {
     type: mongoose.Schema.Types.ObjectId,

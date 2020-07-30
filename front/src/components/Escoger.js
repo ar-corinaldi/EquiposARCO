@@ -42,7 +42,7 @@ export default function Escoger(props) {
 
   const filterOptions = createFilterOptions({
     matchFrom: "any",
-    limit: 15,
+    //limit: 15,
     stringify: (option) => {
       let filtOp = "";
       camposBuscar.forEach((campo, i) => {
@@ -120,6 +120,12 @@ export default function Escoger(props) {
               }
             }}
             options={elementos}
+            //   .sort((a, b) => {
+            //   // Muestra la bodega seleccionada primero
+            //   let ai = a == elementoSeleceted || a == pendingValue;
+            //   let bi = b == elementoSeleceted || b == pendingValue;
+            //   return ai ? -1 : bi ? 1 : 0;
+            // })}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 <div className="nombreElemento">

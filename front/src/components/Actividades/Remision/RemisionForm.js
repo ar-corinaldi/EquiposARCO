@@ -24,6 +24,8 @@ function RemisionForm(props) {
   const [vehiculoSelected, setVehiculoSelected] = useState({});
   const [fechaSalida, setFechaSalida] = useState(new Date());
   const [fechaLlegada, setFechaLlegada] = useState(new Date());
+  const [pesoTotal, setPesoTotal] = useState(0);
+  const [cantidadTotal, setCantidadTotal] = useState(0);
 
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
   //console.log("equipos", equipos);
@@ -41,6 +43,11 @@ function RemisionForm(props) {
   useEffect(() => {
     handleChangeConductor();
   }, [conductorSelected]);
+
+  useEffect(() => {
+    calcularPesoTot();
+    calcularCantTot();
+  }, [equiposSels]);
 
   const mostrarOrden = () => {
     //console.log("bodega", bodega);
@@ -129,6 +136,26 @@ function RemisionForm(props) {
     return objeto;
   };
 
+  const calcularPesoTot = () => {
+    let pesoTot = 0;
+    console.log(equiposSels);
+    equiposSels.forEach((equipo) => {
+      pesoTot += equipo.equipoID.peso * equipo.cantidad;
+    });
+    console.log("pesoTot", pesoTot);
+    setPesoTotal(pesoTot);
+  };
+
+  const calcularCantTot = () => {
+    let cantTot = 0;
+    console.log(equiposSels);
+    equiposSels.forEach((equipo) => {
+      cantTot += +equipo.cantidad;
+    });
+    console.log("cantTot", cantTot);
+    setCantidadTotal(cantTot);
+  };
+
   return (
     <div className="remision-registrar-card">
       <form onSubmit={handleSubmit}>
@@ -176,6 +203,8 @@ function RemisionForm(props) {
             <Col>
               <EquipoTable
                 equiposSels={[equiposSels, setEquiposSels]}
+                pesoTotal={[pesoTotal, setPesoTotal]}
+                cantidadTotal={[cantidadTotal, setCantidadTotal]}
               ></EquipoTable>
             </Col>
           </Row>

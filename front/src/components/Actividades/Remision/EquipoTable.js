@@ -3,6 +3,8 @@ import EquipoDetail from "./EquipoDetail";
 
 function EquipoTable(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
+  const [pesoTotal, setPesoTotal] = props.pesoTotal;
+  const [cantidadTotal, setCantidadTotal] = props.cantidadTotal;
 
   return (
     <table className="table-width">
@@ -22,8 +24,18 @@ function EquipoTable(props) {
               key={index}
               equipoRender={equipoRender}
               equiposSels={[equiposSels, setEquiposSels]}
+              pesoTotal={[pesoTotal, setPesoTotal]}
+              cantidadTotal={[cantidadTotal, setCantidadTotal]}
             ></EquipoDetail>
           ))}
+      </tbody>
+      <tbody className="borderUp">
+        <tr>
+          <td>Total:</td>
+          <td></td>
+          <td>{pesoTotal}</td>
+          <td>{cantidadTotal}</td>
+        </tr>
       </tbody>
     </table>
   );

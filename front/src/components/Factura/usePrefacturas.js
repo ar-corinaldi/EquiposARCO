@@ -91,7 +91,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     idEquipos.forEach((idEquipo) => {
       if (idEquipo !== "transportes") {
         let restaDev = equiposDevueltosAlComienzoMes[idEquipo] || 0;
-
+        equiposDevueltosAlComienzoMes[idEquipo] = undefined;
         const equipo = prefactura[idEquipo].equipo;
         const cantidad =
           prefactura[idEquipo].listaMes[daysOfMonth - 1] - restaDev;
@@ -244,14 +244,8 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
             daysOfMonth
           );
         } else {
-          console.log(
-            equipoID.nombreEquipo,
-            cantidadAObra,
-            prefacturaMes[idEquipo].listaMes[day - 1]
-          );
           equiposDevueltosAlComienzoMes[idEquipo] = cantidadAObra;
         }
-        console.log(day, prefacturaMes[idEquipo].listaMes);
       }
     }
   };

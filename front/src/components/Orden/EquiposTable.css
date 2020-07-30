@@ -82,3 +82,10 @@ a.nav-link:focus {
   line-height: inherit;
   -webkit-font-smoothing: antialiased;
 }
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}

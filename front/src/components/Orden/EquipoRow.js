@@ -78,9 +78,9 @@ function EquipoRow(props) {
           <td className="text-center">{equipo.porDevolver}</td>
           <td className="text-center">
             {equipo.cantidadOr === equipo.devuelto ? (
-              <FaRegCheckCircle />
+              <FaRegCheckCircle className="green" />
             ) : (
-              <RiErrorWarningLine />
+              <RiErrorWarningLine className="red" />
             )}
           </td>
 

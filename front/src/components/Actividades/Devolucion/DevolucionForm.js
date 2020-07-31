@@ -83,11 +83,37 @@ function DevolucionForm(props) {
     }
     fields.asumidoTercero = asumidoTercero;
     fields.costoTransporte = costoTransporte;
-
     handleEquiposDevolucion();
-    console.log(fields);
-    handleSubmitPOST(e).then((value) => setDevolucion(value));
-    manejarInventario();
+    //   console.log(fields);
+    if (fields.equiposEnDevolucion.length === 0) {
+      return Toast(["Debe escogerse al menos un equipo"], true, 500);
+    }
+    if (!fields.asumidoTercero) {
+      if (!fields.vehiculoTransportador) {
+        return Toast(
+          [
+            "Si el transporte no lo asume el tercero, debe escogerse un vehiculo",
+          ],
+          true,
+          500
+        );
+      }
+      if (!fields.conductor) {
+        return Toast(
+          [
+            "Si el transporte no lo asume el tercero, debe escogerse un conductor",
+          ],
+          true,
+          500
+        );
+      }
+    }
+    handleSubmitPOST(e)
+      .then((value) => {
+        setDevolucion(value);
+        manejarInventario();
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const fechasValidas = (fechaMayor, fechaMenor) =>

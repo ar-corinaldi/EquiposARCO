@@ -41,7 +41,7 @@ export function calcularCantidadTotal(actividad) {
 export function calcularPrecioTransporte(tipo, pesoTot) {
   if (tipo === "moto") return 10000;
   if (tipo === "liviana") return 12000;
-  if (tipo === "pesada") return 20000;
+  if (tipo === "pesada") return 25000;
   if (tipo === "peso") {
     if (1 <= pesoTot && pesoTot <= 380) {
       return 20000;

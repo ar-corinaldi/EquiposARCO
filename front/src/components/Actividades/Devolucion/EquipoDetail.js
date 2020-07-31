@@ -3,14 +3,17 @@ import CloseIcon from "@material-ui/icons/Close";
 
 function EquipoDetail(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
+  const [pesoTotal, setPesoTotal] = props.pesoTotal;
+  const [cantidadTotal, setCantidadTotal] = props.cantidadTotal;
   const equipoRender = props.equipoRender;
-  //console.log(equipoRender);
   const [cantidad, setCantidad] = useState(equipoRender.cantidad);
 
   const handleCantidad = (e) => {
     const target = e.target;
     setCantidad(target.value);
     equipoRender.cantidad = target.value;
+    calcularPesoTot();
+    calcularCantTot();
   };
 
   const handleRemoveEquipo = (e, equipo) => {
@@ -21,6 +24,26 @@ function EquipoDetail(props) {
       prev.filter((prev, index) => currentIndex !== index)
     );
     //console.log("equiposSels", equiposSels);
+  };
+
+  const calcularPesoTot = () => {
+    let pesoTot = 0;
+    console.log(equiposSels);
+    equiposSels.forEach((equipo) => {
+      pesoTot += equipo.equipoID.peso * equipo.cantidad;
+    });
+    console.log("pesoTot", pesoTot);
+    setPesoTotal(pesoTot);
+  };
+
+  const calcularCantTot = () => {
+    let cantTot = 0;
+    console.log(equiposSels);
+    equiposSels.forEach((equipo) => {
+      cantTot += +equipo.cantidad;
+    });
+    console.log("cantTot", cantTot);
+    setCantidadTotal(cantTot);
   };
 
   return (
@@ -37,7 +60,7 @@ function EquipoDetail(props) {
           <input
             type="number"
             min="1"
-            max={equipoRender.equipoID.porDevolver}
+            max={equipoRender.equipoID.porEnviar}
             value={equipoRender.cantidad}
             className="form-control w90"
             placeholder="cant."
@@ -52,20 +75,6 @@ function EquipoDetail(props) {
         </td>
       </tr>
     </React.Fragment>
-    //   <div id="BodegaOrdenDetailWrapper">
-    //     <CloseIcon
-    //       className="closeIcon"
-    //       onClick={() => {
-    //         eliminarEquipoSelect(equipoRender);
-    //       }}
-    //     />
-    //     <div className="bodegaHeader">
-    //       <p>{equipoRender.nombreEquipo} </p>
-    //     </div>
-    //     <div className="descripcionBodega">
-    //       <p>{equipoRender.nombreGrupo}</p>
-    //     </div>
-    //   </div>
   );
 }
 

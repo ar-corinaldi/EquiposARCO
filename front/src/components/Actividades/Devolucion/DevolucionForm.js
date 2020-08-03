@@ -154,6 +154,10 @@ function DevolucionForm(props) {
     }
   };
 
+  /**
+   * Manejar la cantidad en inventario
+   * @param {} equipoR
+   */
   const editarCantidadBodega = async (equipoR) => {
     const cantidadPrev = equipoR.equipoID.cantidadBodega;
     const cantidadNew = +cantidadPrev + +equipoR.cantidad;

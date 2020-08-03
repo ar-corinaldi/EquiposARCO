@@ -49,25 +49,25 @@ function EquipoDetail(props) {
   return (
     <React.Fragment>
       <tr className="capitalize">
-        <td>
+        <td className="pt">
           <b>{equipoRender.equipoID.nombreEquipo}</b>
           <br />
           {equipoRender.equipoID.tipoEquipo}
         </td>
-        <td>{equipoRender.equipoID.nombreFamilia}</td>
-        <td>{equipoRender.equipoID.peso}</td>
-        <td>
+        <td className="pt">{equipoRender.equipoID.nombreFamilia}</td>
+        <td className="pt">{equipoRender.equipoID.peso}</td>
+        <td className="pt">
           <input
             type="number"
             min="1"
             max={equipoRender.equipoID.porEnviar}
             value={equipoRender.cantidad}
-            className="form-control w90"
+            className="form-control w90 ml0"
             placeholder="cant."
             onChange={handleCantidad}
           ></input>
         </td>
-        <td>
+        <td className="pt">
           <CloseIcon
             className="closeIcon"
             onClick={(e) => handleRemoveEquipo(e, equipoRender)}

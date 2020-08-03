@@ -10,8 +10,6 @@ import useFetchAPI from "../../hooks/useFetchAPI";
 function CotizacionDetail(props) {
   const { id, idC } = useParams();
 
-  //const [cotizacion, setCotizacion] = useState({});
-  //const [tercero, setTercero] = useState({});
   const [orden, setOrden] = useState({});
 
   const terceroAPI = useFetchAPI(`/terceros/${id}`, []);

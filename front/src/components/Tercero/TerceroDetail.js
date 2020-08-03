@@ -6,25 +6,14 @@ import "./Tercero.css";
 import BodegaDetail from "./BodegaDetail";
 import { Link, useHistory } from "react-router-dom";
 import formatoFechas from "../utils/FormatoFechas";
+import useFetchAPI from "../../hooks/useFetchAPI";
 
 function TerceroDetail({ match }) {
   const params = match.params;
   const history = useHistory();
-  const [tercero, setTercero] = useState({});
-  const [bodegas, setBodegas] = useState([]);
 
-  useEffect(() => {
-    fetchTercero();
-  }, [bodegas]);
-
-  const fetchTercero = async () => {
-    const res = await fetch("/terceros/" + params.id);
-    const terceroActual = await res.json();
-    //console.log("terceroActual", terceroActual);
-    //console.log("coti", terceroActual.cotizaciones);
-
-    setTercero(terceroActual);
-  };
+  const terceroAPI = useFetchAPI(`/terceros/${params.id}`, []);
+  const tercero = terceroAPI.resource;
 
   const capitalize = (str, lower = false) =>
     (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
@@ -35,6 +24,16 @@ function TerceroDetail({ match }) {
     history.push(`${tercero._id}/bodegas/create`);
   };
 
+  if (terceroAPI.loading) {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+  if (!tercero) {
+    return terceroAPI.notFound("No se encontro tercero con este id");
+  }
   return (
     <Container fluid>
       <Row>
@@ -66,7 +65,6 @@ function TerceroDetail({ match }) {
                 <React.Fragment key={bodega._id}>
                   <div>
                     <BodegaDetail
-                      setBodegas={setBodegas}
                       bodega={bodega}
                       tercero={tercero}
                     ></BodegaDetail>

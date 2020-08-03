@@ -68,3 +68,8 @@
 .ml0 {
   margin-left: 0px !important;
 }
+
+.accion-style {
+  text-align: right;
+  padding-right: 10px !important;
+}

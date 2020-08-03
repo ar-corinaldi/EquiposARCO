@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CloseIcon from "@material-ui/icons/Close";
+import { FaTrash, FaRegStickyNote } from "react-icons/fa";
 
 function EquipoDetail(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
@@ -24,6 +25,10 @@ function EquipoDetail(props) {
       prev.filter((prev, index) => currentIndex !== index)
     );
     //console.log("equiposSels", equiposSels);
+  };
+
+  const handleNotaInventario = (e, equipo) => {
+    e.preventDefault();
   };
 
   const calcularPesoTot = () => {
@@ -68,9 +73,13 @@ function EquipoDetail(props) {
           ></input>
         </td>
         <td className="pt">
-          <CloseIcon
-            className="closeIcon"
+          <FaTrash
+            className="icono"
             onClick={(e) => handleRemoveEquipo(e, equipoRender)}
+          />
+          <FaRegStickyNote
+            className="icono"
+            onClick={(e) => handleNotaInventario(e, equipoRender)}
           />
         </td>
       </tr>

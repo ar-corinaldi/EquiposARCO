@@ -5,50 +5,45 @@ import Col from "react-bootstrap/Col";
 import "./Cotizacion.css";
 import { useParams, Link } from "react-router-dom";
 import EquiposTable from "./EquiposTable";
+import useFetchAPI from "../../hooks/useFetchAPI";
 
 function CotizacionDetail(props) {
   const { id, idC } = useParams();
 
-  const [cotizacion, setCotizacion] = useState({});
-  const [tercero, setTercero] = useState({});
+  //const [cotizacion, setCotizacion] = useState({});
+  //const [tercero, setTercero] = useState({});
   const [orden, setOrden] = useState({});
 
+  const terceroAPI = useFetchAPI(`/terceros/${id}`, []);
+  const tercero = terceroAPI.resource;
+
+  const cotizacionAPI = useFetchAPI(`/cotizaciones/${idC}/tarifasPobladas`, []);
+  const cotizacion = cotizacionAPI.resource;
+
   useEffect(() => {
-    fetchInfo();
-  }, []);
+    fetchOrden();
+  }, [cotizacion]);
 
-  /*
-   * Obtener el tercero, la bodega y la cotizacion
-   */
-  const fetchInfo = async () => {
-    let res = await fetch("/terceros/" + id);
-    const terceroA = await res.json();
-    //console.log("tercero", terceroA);
-    setTercero(terceroA);
-    fetchInfoCotizacion();
-  };
-
-  /*
-   * Obtener la cotizacion con las tarifas pobladas
-   */
-
-  const fetchInfoCotizacion = async () => {
-    //console.log("llegaCotizaciones");
-    let res = await fetch(`/cotizaciones/${idC}/tarifasPobladas`);
-    const coti = await res.json();
-    //console.log("cotizacion", coti);
-    setCotizacion(coti);
-    fetchInfoOrden(coti);
-  };
-
-  const fetchInfoOrden = async (coti) => {
-    //console.log(`/ordenes/${coti.orden}`);
-    let res = await fetch(`/ordenes/${coti.orden}`);
+  const fetchOrden = async () => {
+    let res = await fetch(`/ordenes/${cotizacion.orden}`);
     const ord = await res.json();
     //console.log("cotizacion", coti);
     setOrden(ord);
   };
 
+  if (terceroAPI.loading || cotizacionAPI.loading) {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+  if (!tercero) {
+    return terceroAPI.notFound("No se encontro tercero con este id");
+  }
+  if (!cotizacion) {
+    return cotizacionAPI.notFound("No se encontro cotizacion con este id");
+  }
   return (
     <Container fluid>
       <Row>

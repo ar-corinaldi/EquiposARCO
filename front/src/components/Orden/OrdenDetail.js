@@ -10,7 +10,6 @@ import formatoFechas from "../utils/FormatoFechas";
 import { useHistory } from "react-router-dom";
 import { FaEllipsisV } from "react-icons/fa";
 import { calcularPorEnviarPorDevolver } from "../Actividades/CalcularEquipos";
-import Toast from "../Toast";
 import useFetchAPI from "../../hooks/useFetchAPI";
 
 function OrdenDetail(props) {

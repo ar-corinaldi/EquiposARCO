@@ -18,10 +18,7 @@ function OrdenDetail(props) {
 
   const { id, idB, idOr } = useParams();
 
-  //const [orden, setOrden] = useState({});
   const [statusOr, setStatus] = useState("");
-  // const [tercero, setTercero] = useState({});
-  // const [bodega, setBodega] = useState({});
   const [equipos, setEquipos] = useState([]);
 
   const terceroAPI = useFetchAPI(`/terceros/${id}`, []);
@@ -39,45 +36,6 @@ function OrdenDetail(props) {
     setEquipos(equiposN);
     orden && orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
   }, [orden]);
-
-  // /*
-  //  * Obtener el tercero, la bodega y la orden
-  //  */
-  // const fetchInfo = async () => {
-  //   let res = await fetch("/terceros/" + id);
-  //   const terceroA = await res.json();
-  //   //console.log("tercero", terceroA);
-  //   setTercero(terceroA);
-
-  //   res = await fetch("/bodegas/" + idB);
-  //   const bodegaA = await res.json();
-  //   //console.log("bodega", bodegaA);
-  //   setBodega(bodegaA);
-
-  //   res = await fetch("/ordenes/" + idOr);
-  //   let ordenA = await res.json();
-  //   if (!res.ok) {
-  //     Toast("No se encuentra la orden con id " + idOr, true, res.status);
-  //     ordenA = null;
-  //   } else {
-  //     orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
-  //     fetchInfoOrden();
-  //   }
-  // };
-
-  // /*
-  //  * Obtener la orden con las tarifas pobladas
-  //  */
-
-  // const fetchInfoOrden = async () => {
-  //   //console.log("llegaOrdenes");
-  //   let res = await fetch(`/ordenes/${idOr}`);
-  //   const ordenA = await res.json();
-  //   //console.log("orden", ordenA);
-  //   setOrden(ordenA);
-  //   const equipoA = calcularPorEnviarPorDevolver(ordenA);
-  //   setEquipos(equipoA);
-  // };
 
   const crearRemision = () => {
     history.push(`${orden._id}/remisiones/create`);

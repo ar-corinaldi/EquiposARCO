@@ -11,60 +11,73 @@ import { useHistory } from "react-router-dom";
 import { FaEllipsisV } from "react-icons/fa";
 import { calcularPorEnviarPorDevolver } from "../Actividades/CalcularEquipos";
 import Toast from "../Toast";
+import useFetchAPI from "../../hooks/useFetchAPI";
 
 function OrdenDetail(props) {
   const history = useHistory();
 
   const { id, idB, idOr } = useParams();
 
-  const [orden, setOrden] = useState({});
+  //const [orden, setOrden] = useState({});
   const [statusOr, setStatus] = useState("");
-  const [tercero, setTercero] = useState({});
-  const [bodega, setBodega] = useState({});
+  // const [tercero, setTercero] = useState({});
+  // const [bodega, setBodega] = useState({});
   const [equipos, setEquipos] = useState([]);
 
+  const terceroAPI = useFetchAPI(`/terceros/${id}`, []);
+  const tercero = terceroAPI.resource;
+
+  const bodegaAPI = useFetchAPI(`/bodegas/${idB}`, []);
+  const bodega = bodegaAPI.resource;
+
+  const ordenAPI = useFetchAPI(`/ordenes/${idOr}`, []);
+  const orden = ordenAPI.resource;
+  console.log("orden", orden);
+
   useEffect(() => {
-    fetchInfo();
-  }, []);
+    const equiposN = calcularPorEnviarPorDevolver(orden);
+    setEquipos(equiposN);
+    orden && orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
+  }, [orden]);
 
-  /*
-   * Obtener el tercero, la bodega y la orden
-   */
-  const fetchInfo = async () => {
-    let res = await fetch("/terceros/" + id);
-    const terceroA = await res.json();
-    //console.log("tercero", terceroA);
-    setTercero(terceroA);
+  // /*
+  //  * Obtener el tercero, la bodega y la orden
+  //  */
+  // const fetchInfo = async () => {
+  //   let res = await fetch("/terceros/" + id);
+  //   const terceroA = await res.json();
+  //   //console.log("tercero", terceroA);
+  //   setTercero(terceroA);
 
-    res = await fetch("/bodegas/" + idB);
-    const bodegaA = await res.json();
-    //console.log("bodega", bodegaA);
-    setBodega(bodegaA);
+  //   res = await fetch("/bodegas/" + idB);
+  //   const bodegaA = await res.json();
+  //   //console.log("bodega", bodegaA);
+  //   setBodega(bodegaA);
 
-    res = await fetch("/ordenes/" + idOr);
-    let ordenA = await res.json();
-    if (!res.ok) {
-      Toast("No se encuentra la orden con id " + idOr, true, res.status);
-      ordenA = null;
-    } else {
-      orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
-      fetchInfoOrden();
-    }
-  };
+  //   res = await fetch("/ordenes/" + idOr);
+  //   let ordenA = await res.json();
+  //   if (!res.ok) {
+  //     Toast("No se encuentra la orden con id " + idOr, true, res.status);
+  //     ordenA = null;
+  //   } else {
+  //     orden.fechaFin ? setStatus("Finalizada") : setStatus("En curso");
+  //     fetchInfoOrden();
+  //   }
+  // };
 
-  /*
-   * Obtener la orden con las tarifas pobladas
-   */
+  // /*
+  //  * Obtener la orden con las tarifas pobladas
+  //  */
 
-  const fetchInfoOrden = async () => {
-    //console.log("llegaOrdenes");
-    let res = await fetch(`/ordenes/${idOr}`);
-    const ordenA = await res.json();
-    //console.log("orden", ordenA);
-    setOrden(ordenA);
-    const equipoA = calcularPorEnviarPorDevolver(ordenA);
-    setEquipos(equipoA);
-  };
+  // const fetchInfoOrden = async () => {
+  //   //console.log("llegaOrdenes");
+  //   let res = await fetch(`/ordenes/${idOr}`);
+  //   const ordenA = await res.json();
+  //   //console.log("orden", ordenA);
+  //   setOrden(ordenA);
+  //   const equipoA = calcularPorEnviarPorDevolver(ordenA);
+  //   setEquipos(equipoA);
+  // };
 
   const crearRemision = () => {
     history.push(`${orden._id}/remisiones/create`);
@@ -78,8 +91,21 @@ function OrdenDetail(props) {
     history.push(`${orden._id}/actividad`);
   };
 
+  if (terceroAPI.loading || bodegaAPI.loading || ordenAPI.loading) {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+  if (!tercero) {
+    return terceroAPI.notFound("No se encontro tercero con este id");
+  }
+  if (!bodega) {
+    return bodegaAPI.notFound("No se encontro bodega con este id");
+  }
   if (!orden) {
-    return <p>La orden no está disponible</p>;
+    return ordenAPI.notFound("No se encontro orden con este id");
   }
   return (
     <Container fluid>

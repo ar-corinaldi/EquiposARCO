@@ -178,7 +178,7 @@ export function calcularDisponiblesDevolucion(orden) {
  */
 export function calcularPorEnviarPorDevolver(orden) {
   const equipos = [];
-  if (!orden) return equipos;
+  if (!orden || isEmpty(orden)) return equipos;
   let equipo;
   //console.log("orden", orden);
   // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
@@ -525,4 +525,11 @@ export function calcularPorEnviarPorDevolverVIEJO(orden) {
 
   //  console.log("equipos", equipos);
   return equipos;
+}
+
+function isEmpty(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) return false;
+  }
+  return true;
 }

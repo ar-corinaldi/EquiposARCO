@@ -7,50 +7,47 @@ import EquiposDevolucion from "./EquiposDevolucion";
 import formatoFechas from "../../utils/FormatoFechas";
 import { formatoHora } from "../../utils/FormatoFechas";
 import formatoPrecios from "../../utils/FormatoPrecios";
+import useFetchAPI from "../../../hooks/useFetchAPI";
 
 function DevolucionDetail(props) {
   const { id, idB, idOr, idD } = useParams();
-  const [devolucion, setDevolucion] = useState({});
 
-  const [orden, setOrden] = useState({});
-  const [bodega, setBodega] = useState({});
-  const [tercero, setTercero] = useState({});
+  const terceroAPI = useFetchAPI(`/terceros/${id}`, []);
+  const tercero = terceroAPI.resource;
 
-  useEffect(() => {
-    fetchDevolucion();
-    fetchOrden();
-    fetchBodega();
-    fetchTercero();
-  }, []);
+  const bodegaAPI = useFetchAPI(`/bodegas/${idB}`, []);
+  const bodega = bodegaAPI.resource;
 
-  const fetchDevolucion = async () => {
-    let res = await fetch(`/devoluciones/${idD}`);
-    const newDevolucion = await res.json();
-    console.log("newDevolucion", newDevolucion);
-    setDevolucion(newDevolucion);
-  };
+  const ordenAPI = useFetchAPI(`/ordenes/${idOr}`, []);
+  const orden = ordenAPI.resource;
 
-  const fetchOrden = async () => {
-    let res = await fetch(`/ordenes/${idOr}`);
-    const newOrden = await res.json();
-    //console.log("newOrden", newOrden);
-    setOrden(newOrden);
-  };
+  const devolucionAPI = useFetchAPI(`/devoluciones/${idD}`, []);
+  const devolucion = devolucionAPI.resource;
 
-  const fetchBodega = async () => {
-    let res = await fetch(`/bodegas/${idB}`);
-    const newBodega = await res.json();
-    //console.log("newBodega", newBodega);
-    setBodega(newBodega);
-  };
-
-  const fetchTercero = async () => {
-    let res = await fetch(`/terceros/${id}`);
-    const newTercero = await res.json();
-    //console.log("newTercero", newTercero);
-    setTercero(newTercero);
-  };
-
+  if (
+    terceroAPI.loading ||
+    bodegaAPI.loading ||
+    ordenAPI.loading ||
+    devolucionAPI.loading
+  ) {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+  if (!tercero) {
+    return terceroAPI.notFound("No se encontro tercero con este id");
+  }
+  if (!bodega) {
+    return bodegaAPI.notFound("No se encontro bodega con este id");
+  }
+  if (!orden) {
+    return ordenAPI.notFound("No se encontro orden con este id");
+  }
+  if (!devolucion) {
+    return ordenAPI.notFound("No se encontro devolucion con este id");
+  }
   return (
     <div className="devolucion-registrar-wrapper ">
       <div className="devolucion-registrar-card ">

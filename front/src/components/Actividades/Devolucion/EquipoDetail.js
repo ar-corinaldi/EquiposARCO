@@ -74,11 +74,11 @@ function EquipoDetail(props) {
         </td>
         <td className="pt">
           <FaTrash
-            className="icono"
+            className="icono pointer"
             onClick={(e) => handleRemoveEquipo(e, equipoRender)}
           />
           <FaRegStickyNote
-            className="icono"
+            className="icono pointer"
             onClick={(e) => handleNotaInventario(e, equipoRender)}
           />
         </td>

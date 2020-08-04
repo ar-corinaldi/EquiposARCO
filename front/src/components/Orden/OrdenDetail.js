@@ -28,7 +28,7 @@ function OrdenDetail(props) {
 
   const ordenAPI = useFetchAPI(`/ordenes/${idOr}`, []);
   const orden = ordenAPI.resource;
-  console.log("orden", orden);
+  //console.log("orden", orden);
 
   useEffect(() => {
     const equiposN = calcularPorEnviarPorDevolver(orden);

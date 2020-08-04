@@ -73,3 +73,7 @@
   text-align: right;
   padding-right: 10px !important;
 }
+
+.pointer {
+  cursor: pointer;
+}

@@ -202,7 +202,7 @@ export function calcularPorEnviarPorDevolver(orden) {
               }
             }
             if (!yaEsta) {
-              equipo.push(componente.equipoID);
+              equipos.push(componente.equipoID);
               componente.equipoID.porEnviar =
                 tarifaEquipo.cantidad * componente.cantidad;
               componente.equipoID.porDevolver = 0;

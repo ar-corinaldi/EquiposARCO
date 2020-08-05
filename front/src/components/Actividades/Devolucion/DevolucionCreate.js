@@ -4,6 +4,7 @@ import DevolucionForm from "./DevolucionForm";
 import "./Devolucion.css";
 import { calcularDisponiblesDevolucion } from "../CalcularEquipos";
 import Modal from "./Modal";
+import CrearNotaInventario from "./CrearNotaInventario";
 
 function DevolucionCreate(props) {
   const { id, idB, idOr } = useParams();
@@ -89,7 +90,9 @@ function DevolucionCreate(props) {
         equipoNota={[equipoNota, setEquipoNota]}
         fields={fieldsNota}
         formAction={formActionNota}
-      ></Modal>
+      >
+        <CrearNotaInventario></CrearNotaInventario>
+      </Modal>
       <DevolucionForm
         equipos={[equipos, setEquipos]}
         conductores={[conductores, setConductores]}

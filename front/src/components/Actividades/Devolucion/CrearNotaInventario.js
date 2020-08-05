@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function CrearNotaInventario(props) {
+  const [equipoNota, setEquipoNota] = props.equipoNota;
+  const orden = props.orden;
+  const { fields, handleChange, handleSubmitPOST } = props;
+  //console.log(equipo);
+  useEffect(() => {
+    console.log("cambio");
+    console.log("equipoNota", equipoNota);
+    fields.equipo = equipoNota._id;
+  }, [equipoNota]);
+
+  const handleNotaInventario = () => {};
+
   return (
     <div>
       <h4 className="center"> Registrar un daño al equipo </h4>
@@ -24,7 +36,11 @@ function CrearNotaInventario(props) {
             onChange={handleChange}
           />
         </span>
-        <button type="submit" className="buttonTercero" onClick={handleClose}>
+        <button
+          type="submit"
+          className="buttonTercero"
+          onClick={handleNotaInventario}
+        >
           Registrar
         </button>
       </form>

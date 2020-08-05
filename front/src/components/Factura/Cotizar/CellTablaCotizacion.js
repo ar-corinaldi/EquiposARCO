@@ -58,7 +58,7 @@ function CellTablaCotizacion(props) {
                                     renderValue={(value) => {
                                         const precio = equipoDetail.precios[value];
                                         if(precio){
-                                        return precio.categoria + " -  " + precio.tiempo}
+                                        return precio.categoria + " - " + precio.tiempo}
                                     }}
                                 >
                                     {equipoDetail.precios && equipoDetail.precios.map((precio, index) => {

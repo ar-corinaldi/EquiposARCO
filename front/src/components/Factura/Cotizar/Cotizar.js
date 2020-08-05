@@ -154,6 +154,19 @@ const Cotizar = () => {
             <h3>
                 Cotizar
             </h3>
+            <div className="buscarEquiposWrapper" >
+                <div className="width100">
+                    <Escoger
+                        elementos={terceros}
+                        elementoSelected={[terceroSeleccionado, setTerceroSeleccionado]}
+                        nombre="tercero"
+                        nombrePlural="terceros"
+                        campos={["nombre"]}
+                        camposBuscar={["nombre", "tipoDocumento", "numeroDocumento", "direccion", "ciudad", "numeroIdentificacionTributario",
+                            "telefono", "celular", "email"]}
+                    />
+                </div>
+            </div>
             <div className="buscarEquiposWrapper stickyRow" >
                 <BuscarEquiposCotizados
                     className='align-self-center vertical-center'
@@ -184,19 +197,6 @@ const Cotizar = () => {
 
                     </tbody>
                 </Table>
-            </div>
-            <div className="buscarEquiposWrapper" >
-                <div className="width100">
-                    <Escoger
-                        elementos={terceros}
-                        elementoSelected={[terceroSeleccionado, setTerceroSeleccionado]}
-                        nombre="tercero"
-                        nombrePlural="terceros"
-                        campos={["nombre"]}
-                        camposBuscar={["nombre", "tipoDocumento", "numeroDocumento", "direccion", "ciudad", "numeroIdentificacionTributario",
-                            "telefono", "celular", "email"]}
-                    />
-                </div>
             </div>
             <button type="button" className="buttonEnabled" onClick={guardarCotizacion}>
                 Confirmar y Crear Cotización

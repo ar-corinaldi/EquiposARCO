@@ -35,7 +35,7 @@ export default function EscogerEquipos(props) {
 
   const filterOptions = createFilterOptions({
     matchFrom: "any",
-    limit: 15,
+    limit: 40,
     stringify: (option) =>
       option.nombreEquipo +
       option.nombreGrupo +

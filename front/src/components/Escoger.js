@@ -42,7 +42,7 @@ export default function Escoger(props) {
 
   const filterOptions = createFilterOptions({
     matchFrom: "any",
-    limit: 15,
+    limit: 40,
     stringify: (option) => {
       let filtOp = "";
       camposBuscar.forEach((campo, i) => {
@@ -104,7 +104,7 @@ export default function Escoger(props) {
             }}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                open ? handleClose() : (() => {})();
+                open ? handleClose() : (() => { })();
                 setOpen(!open);
               }
             }}
@@ -119,7 +119,11 @@ export default function Escoger(props) {
                 return "";
               }
             }}
-            options={elementos}
+            options={[...elementos].sort((a, b) => {
+              let ai = (a == elementoSeleceted) ;
+              let bi = (b == elementoSeleceted) ;
+              return ai ? -1 : bi ? 1 : 0;
+            })}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 <div className="nombreElemento">

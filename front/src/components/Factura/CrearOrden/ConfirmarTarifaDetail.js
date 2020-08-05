@@ -28,7 +28,10 @@ function ConfirmarTarifaDetail(props) {
   const setEnEdicion = props.editando;
 
   //Estados propios
-  const [tarifa, setTarifa] = useState(miTarifa);
+  const [tarifa, setTarifa] = useState(() => {
+    delete miTarifa.fechaFin;
+    return miTarifa;
+  });
   // const [fechaInicial, setFechaInicial] = useState(moment(tarifa.fechaInicio));
   // let [fechaFinal, setFechaFinal] = useState(moment("01/01/1980", "MM/DD/YYYY"));
   let [checked, setChecked] = useState(false);
@@ -68,6 +71,7 @@ function ConfirmarTarifaDetail(props) {
       setTarifa(newTarifa);
     }
   }
+
 
 
   //Effects

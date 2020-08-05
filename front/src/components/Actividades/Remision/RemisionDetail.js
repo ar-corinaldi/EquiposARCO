@@ -7,49 +7,47 @@ import EquiposRemision from "./EquiposRemision";
 import formatoFechas from "../../utils/FormatoFechas";
 import { formatoHora } from "../../utils/FormatoFechas";
 import formatoPrecios from "../../utils/FormatoPrecios";
+import useFetchAPI from "../../../hooks/useFetchAPI";
 
 function RemisionDetail(props) {
   const { id, idB, idOr, idR } = useParams();
-  const [remision, setRemision] = useState({});
-  const [orden, setOrden] = useState({});
-  const [bodega, setBodega] = useState({});
-  const [tercero, setTercero] = useState({});
 
-  useEffect(() => {
-    fetchRemision();
-    fetchOrden();
-    fetchBodega();
-    fetchTercero();
-  }, []);
+  const terceroAPI = useFetchAPI(`/terceros/${id}`, []);
+  const tercero = terceroAPI.resource;
 
-  const fetchRemision = async () => {
-    let res = await fetch(`/remisiones/${idR}`);
-    const newRemision = await res.json();
-    //console.log("newRemision", newRemision);
-    setRemision(newRemision);
-  };
+  const bodegaAPI = useFetchAPI(`/bodegas/${idB}`, []);
+  const bodega = bodegaAPI.resource;
 
-  const fetchOrden = async () => {
-    let res = await fetch(`/ordenes/${idOr}`);
-    const newOrden = await res.json();
-    //console.log("newOrden", newOrden);
-    setOrden(newOrden);
-  };
+  const ordenAPI = useFetchAPI(`/ordenes/${idOr}`, []);
+  const orden = ordenAPI.resource;
 
-  const fetchBodega = async () => {
-    let res = await fetch(`/bodegas/${idB}`);
-    const newBodega = await res.json();
-    //console.log("newBodega", newBodega);
-    setBodega(newBodega);
-  };
+  const remisionAPI = useFetchAPI(`/remisiones/${idR}`, []);
+  const remision = remisionAPI.resource;
 
-  const fetchTercero = async () => {
-    let res = await fetch(`/terceros/${id}`);
-    const newTercero = await res.json();
-    //console.log("newTercero", newTercero);
-    setTercero(newTercero);
-  };
-
+  if (
+    terceroAPI.loading ||
+    bodegaAPI.loading ||
+    ordenAPI.loading ||
+    remisionAPI.loading
+  ) {
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+  }
+  if (!tercero) {
+    return terceroAPI.notFound("No se encontro tercero con este id");
+  }
+  if (!bodega) {
+    return bodegaAPI.notFound("No se encontro bodega con este id");
+  }
+  if (!orden) {
+    return ordenAPI.notFound("No se encontro orden con este id");
+  }
+  if (!remision) {
+    return ordenAPI.notFound("No se encontro remision con este id");
+  }
   return (
     <div className="remision-registrar-wrapper ">
       <div className="remision-registrar-card ">
@@ -127,9 +125,7 @@ function RemisionDetail(props) {
           </Row>
           <Row>
             <Col>
-              <EquiposRemision
-                equiposEnRemision={remision.equiposEnRemision}
-              ></EquiposRemision>
+              <EquiposRemision remision={remision}></EquiposRemision>
             </Col>
           </Row>
         </div>

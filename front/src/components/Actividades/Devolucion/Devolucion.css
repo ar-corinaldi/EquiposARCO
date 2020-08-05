@@ -48,3 +48,32 @@
   width: 100%;
   text-align: center;
 }
+
+.borderUp {
+  border-top: 1px solid #80808063;
+}
+
+.pt {
+  padding: 3px 3px 3px 3px !important;
+}
+
+.fixed {
+  table-layout: fixed;
+}
+
+.w10 {
+  width: 10%;
+}
+
+.ml0 {
+  margin-left: 0px !important;
+}
+
+.accion-style {
+  text-align: right;
+  padding-right: 10px !important;
+}
+
+.pointer {
+  cursor: pointer;
+}

@@ -59,11 +59,15 @@ function tarifasCompuestaPrimero(tarfiaDefA, tarfiaDefB) {
   else return 0;
 }
 
+/**
+ * Calcula los equipos que se pueden enviar en una orden y su cantidad maxima
+ * @param {} orden
+ */
 export function calcularDisponiblesRemision(orden) {
   const equipos = [];
   if (!orden) return equipos;
   let equipo;
-  console.log("orden", orden);
+  //  console.log("orden", orden);
   // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
   orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
   // Revisar las cantidades originales de acuerdo con la tarifa valida
@@ -102,7 +106,7 @@ export function calcularDisponiblesRemision(orden) {
     remision.equiposEnRemision.forEach((equipoRemision) => {
       for (let index = 0; index < equipos.length; index++) {
         const equipo = equipos[index];
-        console.log("entra");
+        //       console.log("entra");
         if (equipo._id === equipoRemision.equipoID._id) {
           const newCant = equipo.porEnviar - equipoRemision.cantidad;
           if (newCant === 0) {
@@ -114,15 +118,19 @@ export function calcularDisponiblesRemision(orden) {
       }
     });
   });
-  console.log("equipos", equipos);
+  //  console.log("equipos", equipos);
   return equipos;
 }
 
+/**
+ * Calcula los equipos que se pueden devolver de una orden, y su cantidad maxima
+ * @param {} orden
+ */
 export function calcularDisponiblesDevolucion(orden) {
   const equipos = [];
   if (!orden) return equipos;
   let equipo;
-  console.log("orden", orden);
+  //  console.log("orden", orden);
 
   // Revisar los equipos y las cantidades de las remisiones realizadas
   orden.remisiones.forEach((remision) => {
@@ -160,15 +168,144 @@ export function calcularDisponiblesDevolucion(orden) {
       }
     });
   });
-  console.log("equipos", equipos);
+  //  console.log("equipos", equipos);
   return equipos;
 }
 
+/**
+ * Calcula para equipo de una orden, cuantos fueron enviados, devueltos, cuantos quedan por enviar y por devolver.
+ * @param {*} orden
+ */
 export function calcularPorEnviarPorDevolver(orden) {
+  const equipos = [];
+  if (!orden || isEmpty(orden)) return equipos;
+  let equipo;
+  //console.log("orden", orden);
+  // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
+  orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
+
+  orden.tarifasDefinitivas.forEach((tarifa) => {
+    tarifa.tarifasPorEquipo.forEach((tarifaEquipo) => {
+      if (tarifaValida(tarifaEquipo)) {
+        equipo = tarifaEquipo.equipo;
+        if (equipo.componentes && equipo.componentes.length > 0) {
+          equipo.componentes.forEach((componente) => {
+            let yaEsta = false;
+            for (let i = 0; i < equipos.length; i++) {
+              if (componente.equipoID._id === equipos[i]._id) {
+                equipos[i].porEnviar +=
+                  tarifaEquipo.cantidad * componente.cantidad;
+                equipos[i].cantidadOr +=
+                  tarifaEquipo.cantidad * componente.cantidad;
+                yaEsta = true;
+                return;
+              }
+            }
+            if (!yaEsta) {
+              equipos.push(componente.equipoID);
+              componente.equipoID.porEnviar =
+                tarifaEquipo.cantidad * componente.cantidad;
+              componente.equipoID.porDevolver = 0;
+              componente.equipoID.cantidadOr = componente.equipoID.porEnviar;
+            }
+          });
+        } else {
+          equipos.push(equipo);
+          equipo.cantidadOr = tarifaEquipo.cantidad;
+          equipo.porDevolver = 0;
+          equipo.porEnviar = tarifaEquipo.cantidad;
+        }
+      }
+    });
+  });
+
+  // Distinguir que remisiones ya se usaron y cuales no
+
+  orden.remisiones.forEach((remision) => {
+    remision.equiposEnRemision.forEach((equipoRemision) => {
+      equipoRemision.cantidadNoRegistrada = equipoRemision.cantidad;
+    });
+  });
+
+  // Restar las cantidades de las remisiones realizadas. Si se hace remision y devolucion y depués se hace una nueva remision se daña en el mismo equipo
+  equipos.forEach((equipo) => {
+    orden.remisiones.forEach((remision) => {
+      remision.equiposEnRemision.forEach((equipoRemision) => {
+        if (equipoRemision.cantidadNoRegistrada === 0) return;
+        if (equipo.porEnviar === 0) return;
+        if (equipo._id === equipoRemision.equipoID._id) {
+          if (equipo.porEnviar < equipoRemision.cantidadNoRegistrada) {
+            equipoRemision.cantidadNoRegistrada =
+              equipoRemision.cantidadNoRegistrada - equipo.porEnviar;
+            equipo.porEnviar = 0;
+          }
+          if (equipo.porEnviar > equipoRemision.cantidadNoRegistrada) {
+            equipo.porEnviar =
+              equipo.porEnviar - equipoRemision.cantidadNoRegistrada;
+            equipoRemision.cantidadNoRegistrada = 0;
+          }
+          if (equipo.porEnviar === equipoRemision.cantidadNoRegistrada) {
+            equipo.porEnviar = 0;
+            equipoRemision.cantidadNoRegistrada = 0;
+          }
+        }
+      });
+    });
+  });
+
+  // Se parte de que los equipos por devolver son igual a los equipos enviados
+  equipos.forEach((equipo) => {
+    equipo.porDevolver = equipo.cantidadOr - equipo.porEnviar;
+  });
+
+  // LLevar la cuenta de las devoluciones que ya fueron tenidas en cuenta
+  orden.devoluciones.forEach((remision) => {
+    remision.equiposEnDevolucion.forEach((equipoDevolucion) => {
+      equipoDevolucion.cantidadNoRegistrada = equipoDevolucion.cantidad;
+    });
+  });
+
+  // Se restan las remisiones hechas
+  equipos.forEach((equipo) => {
+    orden.devoluciones.forEach((remision) => {
+      remision.equiposEnDevolucion.forEach((equipoDevolucion) => {
+        if (equipoDevolucion.cantidadNoRegistrada === 0) return;
+        if (equipo.porDevolver === 0) return;
+        if (equipo._id === equipoDevolucion.equipoID._id) {
+          if (equipo.porDevolver < equipoDevolucion.cantidadNoRegistrada) {
+            equipoDevolucion.cantidadNoRegistrada =
+              equipoDevolucion.cantidadNoRegistrada - equipo.porDevolver;
+            equipo.porDevolver = 0;
+          }
+          if (equipo.porDevolver > equipoDevolucion.cantidadNoRegistrada) {
+            equipo.porDevolver =
+              equipo.porDevolver - equipoDevolucion.cantidadNoRegistrada;
+            equipoDevolucion.cantidadNoRegistrada = 0;
+          }
+          if (equipo.porDevolver === equipoDevolucion.cantidadNoRegistrada) {
+            equipo.porDevolver = 0;
+            equipoDevolucion.cantidadNoRegistrada = 0;
+          }
+        }
+      });
+    });
+  });
+
+  // Se calculan las cantidades enviadas y devueltas
+  equipos.forEach((equipo) => {
+    equipo.enviado = equipo.cantidadOr - equipo.porEnviar;
+    equipo.devuelto = equipo.enviado - equipo.porDevolver;
+  });
+
+  //console.log("equipos", equipos);
+  return equipos;
+}
+
+export function calcularPorEnviarPorDevolverVIEJO(orden) {
   const equipos = [];
   if (!orden) return equipos;
   let equipo;
-  console.log("orden", orden);
+  //console.log("orden", orden);
   // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
   orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
 
@@ -214,7 +351,7 @@ export function calcularPorEnviarPorDevolver(orden) {
       remision.equiposEnRemision.forEach((equipoRemision) => {
         if (equipoRemision.cantidadNoRegistrada === 0) return;
         if (equipo.componentes && equipo.componentes.length > 0) {
-          console.log("compuesto");
+          //          console.log("compuesto");
           equipo.componentes.forEach((componente) => {
             if (componente.equipoID.porEnviar === 0) return;
             if (componente.equipoID._id === equipoRemision.equipoID._id) {
@@ -246,7 +383,7 @@ export function calcularPorEnviarPorDevolver(orden) {
             }
           });
         } else {
-          console.log("normi");
+          //          console.log("normi");
 
           if (equipo.porEnviar === 0) return;
 
@@ -386,6 +523,13 @@ export function calcularPorEnviarPorDevolver(orden) {
   //   }
   // });
 
-  console.log("equipos", equipos);
+  //  console.log("equipos", equipos);
   return equipos;
+}
+
+function isEmpty(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) return false;
+  }
+  return true;
 }

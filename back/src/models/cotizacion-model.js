@@ -7,7 +7,6 @@ const cotizacionSchema = new Schema({
     type: String,
     trim: true,
     required: true,
-    lowercase: true,
   },
   precioTotal: {
     type: Number,
@@ -16,7 +15,6 @@ const cotizacionSchema = new Schema({
   },
   fecha: {
     type: Date,
-
   },
   tarifasCotizadas: [
     {

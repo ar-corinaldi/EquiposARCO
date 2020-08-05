@@ -7,8 +7,6 @@ const ordenesRouter = require("../routers/ordenes");
 const { ObjectId } = require("mongodb").ObjectId;
 const router = new express.Router();
 
-
-
 /**
  *  Relacion Tercero -> Bodega
  */
@@ -33,7 +31,7 @@ router.post("/terceros/:id/bodegas", async (req, res) => {
     if (!tercero) {
       return res.status(404).send("Ninguna tercero coincidio con ese id");
     }
-    newBodega.set({ duenio: tercero._id })
+    newBodega.set({ duenio: tercero._id });
     await newBodega.save();
     console.log("Agrega bodega");
     tercero.bodegas.push(newBodega._id);
@@ -92,19 +90,12 @@ router.patch("/terceros/:id/bodegas/:idB", async (req, res) => {
  */
 router.get("/terceros/:id/bodegas", async (req, res) => {
   try {
-    const tercero = await Tercero.findById(req.params.id)
-      .populate({
-        path: "bodegas",
-        populate: {
-          path: "ordenesActuales",
-        },
-      })
-      .populate({
-        path: "bodegas",
-        populate: {
-          path: "ordenesPasadas",
-        },
-      });
+    const tercero = await Tercero.findById(req.params.id).populate({
+      path: "bodegas",
+      populate: {
+        path: "ordenes",
+      },
+    });
     if (!tercero) {
       return res.status(404).send("No se encontro el tercero");
     }

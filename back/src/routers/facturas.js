@@ -133,7 +133,7 @@ router.get("/facturas/:id", async (req, res) => {
       .populate({
         path: "bodega",
         populate: {
-          path: "ordenesPasadas duenio ordenesActuales",
+          path: "duenio ordenes",
         },
       });
     if (!factura) {

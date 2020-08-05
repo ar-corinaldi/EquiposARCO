@@ -36,22 +36,23 @@ const withFormHandling = (FormComponent) => (props) => {
         "Content-Type": "application/json",
       },
     };
+    let message = "Error del sistema";
+    let status = 500;
+    let autoClose = true;
+    let objeto = undefined;
     try {
       const res = await fetch(formAction, options);
-      const objeto = await res.json();
+      objeto = await res.json();
       if (!res.ok) {
-        console.log("res", res);
-        Toast(objeto, false, res.status);
-        return objeto;
+        autoClose = false;
+        message = "Registro no exitoso";
       } else {
-        console.log("res", res);
-        const message = "Registro exitoso";
-        Toast(message, true, res.status);
-        return objeto;
+        message = "Registro exitoso";
       }
-    } catch (e) {
-      Toast(["Error del sistema"], true, 500);
-      return undefined;
+      status = res.status;
+    } finally {
+      Toast([message], autoClose, status);
+      return objeto;
     }
   };
 

@@ -1,18 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {
+  calcularPesoTotal,
+  calcularCantidadTotal,
+} from "../CalcularTransporte";
 
 function EquiposRemision(props) {
-  const equiposEnRemision = props.equiposEnRemision;
-
-  const calcularPeso = (equipo) => {
-    let peso;
-    equipo.equipoID.propiedades.forEach((propiedad) => {
-      if (propiedad.nombre === "peso") {
-        peso = propiedad.valor;
-      }
-    });
-    return peso;
-  };
+  const remision = props.remision;
+  const equiposEnRemision = remision && remision.equiposEnRemision;
+  const pesoTotal = calcularPesoTotal(remision);
+  const cantidadTotal = calcularCantidadTotal(remision);
 
   return (
     <table className="table-width">
@@ -36,10 +33,18 @@ function EquiposRemision(props) {
                 </Link>
               </td>
               <td>{equipo.equipoID.nombreFamilia}</td>
-              <td>{calcularPeso(equipo)}</td>
+              <td>{equipo.equipoID.peso}</td>
               <td>{equipo.cantidad}</td>
             </tr>
           ))}
+      </tbody>
+      <tbody className="borderUp">
+        <tr>
+          <td>Total:</td>
+          <td></td>
+          <td>{pesoTotal}</td>
+          <td>{cantidadTotal}</td>
+        </tr>
       </tbody>
     </table>
   );

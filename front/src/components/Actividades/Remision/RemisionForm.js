@@ -11,6 +11,8 @@ import "moment/locale/es";
 import Escoger from "../../Escoger";
 import EquipoTable from "./EquipoTable";
 import formatoPrecios from "../../utils/FormatoPrecios";
+import Toast from "../../Toast";
+import { calcularPrecioTransporte } from "../CalcularTransporte";
 
 function RemisionForm(props) {
   const [remision, setRemision] = useState(undefined);
@@ -23,6 +25,11 @@ function RemisionForm(props) {
   const [vehiculoSelected, setVehiculoSelected] = useState({});
   const [fechaSalida, setFechaSalida] = useState(new Date());
   const [fechaLlegada, setFechaLlegada] = useState(new Date());
+  const [pesoTotal, setPesoTotal] = useState(0);
+  const [cantidadTotal, setCantidadTotal] = useState(0);
+  const [costoTransporte, setCostoTransporte] = useState(0);
+  const [costoEstimado, setCostoEstimado] = useState(0);
+  const [calculoTransp, setCalculoTransp] = useState("peso");
 
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
   //console.log("equipos", equipos);
@@ -41,6 +48,19 @@ function RemisionForm(props) {
     handleChangeConductor();
   }, [conductorSelected]);
 
+  useEffect(() => {
+    calcularPesoTot();
+    calcularCantTot();
+  }, [equiposSels]);
+
+  useEffect(() => {
+    calcularTransporte();
+  }, [asumidoTercero]);
+
+  useEffect(() => {
+    estimarTrasnporte();
+  }, [pesoTotal]);
+
   const mostrarOrden = () => {
     //console.log("bodega", bodega);
     if (remision) {
@@ -48,15 +68,46 @@ function RemisionForm(props) {
     }
   };
 
-  const handleSubit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     fields.fechaSalida = fechaSalida;
-    // console.log(typeof fields.fechaSalida);
     fields.fechaLlegada = fechaLlegada;
-    // console.log(typeof fields.fechaLlegada);
+    if (!fechasValidas(new Date(fechaLlegada), new Date(fechaSalida))) {
+      return Toast(
+        [
+          "No se puede escoger una fecha de llegada anterior a la fecha de salida",
+        ],
+        true,
+        500
+      );
+    }
     fields.asumidoTercero = asumidoTercero;
+    fields.costoTransporte = costoTransporte;
     handleEquiposRemision();
     //console.log(fields);
+    if (fields.equiposEnRemision.length === 0) {
+      return Toast(["Debe escogerse al menos un equipo"], true, 500);
+    }
+    if (!fields.asumidoTercero) {
+      if (!fields.vehiculoTransportador) {
+        return Toast(
+          [
+            "Si el transporte no lo asume el tercero, debe escogerse un vehiculo",
+          ],
+          true,
+          500
+        );
+      }
+      if (!fields.conductor) {
+        return Toast(
+          [
+            "Si el transporte no lo asume el tercero, debe escogerse un conductor",
+          ],
+          true,
+          500
+        );
+      }
+    }
     handleSubmitPOST(e)
       .then((value) => {
         setRemision(value);
@@ -79,6 +130,9 @@ function RemisionForm(props) {
   const handleChangeConductor = () => {
     fields.conductor = conductorSelected._id;
   };
+
+  const fechasValidas = (fechaMayor, fechaMenor) =>
+    fechaMayor.getTime() >= fechaMenor.getTime();
 
   const handleEquiposRemision = () => {
     const equiposEnRemision = [];
@@ -114,13 +168,83 @@ function RemisionForm(props) {
     const formAction = `/equipos/${equipoR.equipoID._id}`;
     const res = await fetch(formAction, options);
     const objeto = await res.json();
-    console.log(objeto);
+    //console.log(objeto);
     return objeto;
+  };
+
+  const calcularPesoTot = () => {
+    let pesoTot = 0;
+    // console.log(equiposSels);
+    equiposSels.forEach((equipo) => {
+      pesoTot += equipo.equipoID.peso * equipo.cantidad;
+    });
+    // console.log("pesoTot", pesoTot);
+    setPesoTotal(pesoTot);
+    return pesoTot;
+  };
+
+  const calcularCantTot = () => {
+    let cantTot = 0;
+    // console.log(equiposSels);
+    equiposSels.forEach((equipo) => {
+      cantTot += +equipo.cantidad;
+    });
+    // console.log("cantTot", cantTot);
+    setCantidadTotal(cantTot);
+  };
+
+  /**
+   * Sugerir un valor cuando se quiere cobrar el transporte
+   */
+  const calcularTransporte = () => {
+    if (!asumidoTercero) {
+      fields.costoTransporte = calcularPrecioTransporte("peso", pesoTotal);
+    } else {
+      fields.costoTransporte = 0;
+    }
+    setCostoTransporte(fields.costoTransporte);
+  };
+
+  /**
+   * Manejar el cambio del campo costo trasnporte
+   * @param {} e
+   */
+  const handleCostoTrasnporte = (e) => {
+    const newCosto = e.target.value;
+    setCostoTransporte(newCosto);
+    fields.costoTransporte = newCosto;
+    //console.log(newCosto);
+  };
+
+  /**
+   * Tomar el tipo de transporte que se quiere mostrar
+   * @param {} e
+   */
+  const handleCalculoTrasnporte = (e) => {
+    const categoria = e.target.value;
+    setCalculoTransp(categoria);
+    setCostoEstimado(calcularPrecioTransporte(categoria, pesoTotal));
+  };
+
+  /**
+   * Calcular el trasporte estiamdo y mostrarrlo
+   */
+  const estimarTrasnporte = () => {
+    const newPrecio = calcularPrecioTransporte(calculoTransp, pesoTotal);
+    //console.log(newPrecio);
+    setCostoEstimado(newPrecio);
+  };
+
+  /**
+   * Confirmar el costo estimado
+   */
+  const confirmarCosto = () => {
+    setCostoTransporte(costoEstimado);
   };
 
   return (
     <div className="remision-registrar-card">
-      <form onSubmit={handleSubit}>
+      <form onSubmit={handleSubmit}>
         <h4 className="titulo">Registrar una remisión</h4>
         <Row>
           <Col>
@@ -165,6 +289,8 @@ function RemisionForm(props) {
             <Col>
               <EquipoTable
                 equiposSels={[equiposSels, setEquiposSels]}
+                pesoTotal={[pesoTotal, setPesoTotal]}
+                cantidadTotal={[cantidadTotal, setCantidadTotal]}
               ></EquipoTable>
             </Col>
           </Row>
@@ -197,48 +323,140 @@ function RemisionForm(props) {
           </label>
         </div>
         {!asumidoTercero && [
-          <div key="1" className="form-group">
+          <div key="1">
             <Row>
-              <Col md="auto" className="vertical-center">
-                <label htmlFor="vehiculoTransportador"> Vehiculo : </label>
+              <Col xs={7}>
+                <div className="form-group precio">
+                  <Row className="titulo">
+                    <b>COSTO TRANSPORTE</b>
+                  </Row>
+                  <div className="estimado">
+                    <p className="mb-2">
+                      <b>Estimar</b>
+                    </p>
+                    <Row className="margin0">
+                      <p>Tipo: </p>
+                      <label htmlFor="calculo">
+                        <input
+                          type="radio"
+                          id="moto"
+                          name="calculo"
+                          onChange={handleCalculoTrasnporte}
+                          checked={calculoTransp === "moto"}
+                          value="moto"
+                        />{" "}
+                        Moto carga
+                      </label>
+                      <label htmlFor="calculo">
+                        <input
+                          type="radio"
+                          id="liviana"
+                          name="calculo"
+                          onChange={handleCalculoTrasnporte}
+                          checked={calculoTransp === "liviana"}
+                          value="liviana"
+                        />{" "}
+                        Maquinaria Liviana
+                      </label>
+                      <label htmlFor="calculo">
+                        <input
+                          type="radio"
+                          id="pesada"
+                          name="calculo"
+                          onChange={handleCalculoTrasnporte}
+                          checked={calculoTransp === "pesada"}
+                          value="pesada"
+                        />{" "}
+                        Maquinaria Pesada
+                      </label>
+                      <label htmlFor="calculo">
+                        <input
+                          type="radio"
+                          id="peso"
+                          name="calculo"
+                          onChange={handleCalculoTrasnporte}
+                          checked={calculoTransp === "peso"}
+                          value="peso"
+                        />{" "}
+                        Por peso
+                      </label>
+                    </Row>
+                    <Row className="vert-center">
+                      <Col>
+                        <p>Costo estimado: {formatoPrecios(costoEstimado)}</p>
+                      </Col>
+                      <Col md="auto">
+                        <button
+                          type="button"
+                          className="buttonPrecio"
+                          onClick={confirmarCosto}
+                        >
+                          Confirmar costo
+                        </button>
+                      </Col>
+                    </Row>
+                  </div>
+                  <div className="mt-3 mb-2">
+                    <label htmlFor="costoTransporte">Costo definitivo :</label>
+                    <input
+                      name="costoTransporte"
+                      type="number"
+                      value={costoTransporte}
+                      onChange={handleCostoTrasnporte}
+                    />
+                  </div>
+                </div>
               </Col>
               <Col>
-                <Escoger
-                  nombre={"Vehículo"}
-                  nombre_plural={"vehículos"}
-                  camposBuscar={["placa", "marca", "modelo", "color"]}
-                  campos={["marca", "modelo", "placa"]}
-                  elementoSelected={[vehiculoSelected, setVehiculoSelected]}
-                  elementos={vehiculos}
-                ></Escoger>
+                <div className="form-group">
+                  <Row>
+                    <Col md="auto" className="vertical-center">
+                      <label htmlFor="vehiculoTransportador">
+                        {" "}
+                        Vehiculo :{" "}
+                      </label>
+                    </Col>
+                    <Col>
+                      <Escoger
+                        nombre={"Vehículo"}
+                        nombre_plural={"vehículos"}
+                        camposBuscar={["placa", "marca", "modelo", "color"]}
+                        campos={["marca", "modelo", "placa"]}
+                        elementoSelected={[
+                          vehiculoSelected,
+                          setVehiculoSelected,
+                        ]}
+                        elementos={vehiculos}
+                      ></Escoger>
+                    </Col>
+                  </Row>
+                </div>
+                <div className="form-group">
+                  <Row>
+                    <Col md="auto" className="vertical-center">
+                      <label htmlFor="conductor"> Conductor : </label>
+                    </Col>
+                    <Col>
+                      <Escoger
+                        nombre={"Conductor"}
+                        nombre_plural={"conductores"}
+                        camposBuscar={[
+                          "nombres",
+                          "apellidos",
+                          "numeroDocumento",
+                        ]}
+                        campos={["nombres", "apellidos", "numeroDocumento"]}
+                        elementoSelected={[
+                          conductorSelected,
+                          setConductorSelected,
+                        ]}
+                        elementos={conductores}
+                      ></Escoger>
+                    </Col>
+                  </Row>
+                </div>
               </Col>
             </Row>
-          </div>,
-          <div key="2" className="form-group">
-            <Row>
-              <Col md="auto" className="vertical-center">
-                <label htmlFor="conductor"> Conductor : </label>
-              </Col>
-              <Col>
-                <Escoger
-                  nombre={"Conductor"}
-                  nombre_plural={"conductores"}
-                  camposBuscar={["nombres", "apellidos", "numeroDocumento"]}
-                  campos={["nombres", "apellidos", "numeroDocumento"]}
-                  elementoSelected={[conductorSelected, setConductorSelected]}
-                  elementos={conductores}
-                ></Escoger>
-              </Col>
-            </Row>
-          </div>,
-          <div key="3" className="form-group">
-            <label htmlFor="costoTransporte"> Costo : </label>
-            <input
-              name="costoTransporte"
-              type="number"
-              value={fields.costoTransporte}
-              onChange={handleChange}
-            />
           </div>,
         ]}
         <div className="button-crear ">

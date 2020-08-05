@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import formatoPrecios from "../utils/FormatoPrecios";
 import { formatoCategoria, formatoTiempo } from "../utils/FormatoInfoPrecios";
-import { calcularDiasHabilesEntreFechas } from "../utils/CacularTarifas";
+import {
+  calcularDiasHabilesEntreFechas,
+  calcularTarifa,
+} from "../utils/CacularTarifas";
 
 function PrefacturaEquipo(props) {
   const {
@@ -33,31 +36,29 @@ function PrefacturaEquipo(props) {
         let current = listaMes[i];
         if (prev !== current) {
           if (prev !== 0) {
-            const date = `${prevDay + 1}/${mes}/${anio} - ${
-              i + 1
-            }/${mes}/${anio}`;
+            const fechaA = new Date(2020, mes, prevDay + 1, 1);
+            const fechaB = new Date(2020, mes, i, 23);
+            const date = `${prevDay + 1}/${mes}/${anio} - ${i}/${mes}/${anio}`;
 
-            let facturado = i + 1 - (prevDay + 1) + 1;
-            facturado = Math.max(equipo.tiempoMinimo, facturado);
-
+            let facturado = i - (prevDay + 1) + 1;
             if (equipo.tiempo === "dia habil") {
-              const fechaA = new Date(2020, mes, prevDay + 1);
-              const fechaB = new Date(2020, mes, listaMes.length);
               facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
             }
+            facturado = Math.max(equipo.tiempoMinimo, facturado);
+
             const cantidad = prev;
             const total = equipo.precio * facturado * cantidad;
             newPrecioTotal += total;
             newRender.push(
               <tr key={date}>
-                <td>{equipo && equipo.nombreEquipo}</td>
                 <td>{`${cantidad} ${formatoCategoria(equipo.categoria)}`}</td>
-                <td>{date}</td>
+                <td>{equipo && equipo.nombreEquipo}</td>
+                <td>{formatoPrecios(equipo.precio)}</td>
                 <td>{`${facturado} ${formatoTiempo(
                   equipo.tiempo,
                   facturado
                 )}`}</td>
-                <td>{formatoPrecios(equipo.precio)}</td>
+                <td>{date}</td>
                 <td>{formatoPrecios(total)}</td>
               </tr>
             );
@@ -67,29 +68,41 @@ function PrefacturaEquipo(props) {
 
         prev = current;
       }
+      const fechaA = new Date(2020, mes - 1, prevDay + 1, 1);
+      const fechaB = new Date(2020, mes - 1, listaMes.length, 23);
       const lastIndex = listaMes.length;
       const cantidad = listaMes[lastIndex - 1];
       const date = `${prevDay + 1}/${mes}/${anio} - ${
         listaMes.length
       }/${mes}/${anio}`;
       let facturado = listaMes.length - (prevDay + 1) + 1;
-      facturado = Math.max(equipo.tiempoMinimo, facturado);
       if (equipo.tiempo === "dia habil") {
-        const fechaA = new Date(2020, mes, prevDay + 1);
-        const fechaB = new Date(2020, mes, listaMes.length);
         facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
       }
+      let { tiempoTotal } = calcularTarifa(
+        null,
+        equipo.tiempo,
+        equipo.tiempoMinimo,
+        fechaA,
+        fechaCorte,
+        0
+      );
+      let tiempoMinimo = equipo.tiempoMinimo;
+      if (tiempoTotal > equipo.tiempoMinimo) {
+        tiempoMinimo = 0;
+      }
+      facturado = Math.max(tiempoMinimo, facturado);
 
       if (prev !== 0) {
         const total = equipo.precio * facturado * cantidad;
         newPrecioTotal += total;
         newRender.push(
           <tr key={date}>
-            <td>{equipo && equipo.nombreEquipo}</td>
             <td>{`${cantidad} ${formatoCategoria(equipo.categoria)}`}</td>
-            <td>{date}</td>
-            <td>{`${facturado} ${formatoTiempo(equipo.tiempo, facturado)}`}</td>
+            <td>{equipo && equipo.nombreEquipo}</td>
             <td>{formatoPrecios(equipo.precio)}</td>
+            <td>{`${facturado} ${formatoTiempo(equipo.tiempo, facturado)}`}</td>
+            <td>{date}</td>
             <td>{formatoPrecios(total)}</td>
           </tr>
         );

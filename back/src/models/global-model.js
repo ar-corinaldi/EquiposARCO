@@ -1,29 +1,19 @@
 const mongoose = require("mongoose");
 
-const Tercero = require("./tercero-model");
-
 let Schema = mongoose.Schema;
 
-const anticipoSchema = new Schema({
-  fecha: {
-    type: Date,
+const globalSchema = new Schema({
+  nombre: {
+    type: String,
     trim: true,
     required: true,
-    lowercase: true,
   },
   valor: {
-    type: Number,
-    trim: true,
-    required: true,
-    lowercase: true,
-  },
-  tercero: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: Tercero,
+    type: Schema.Types.Mixed,
   },
 });
 
-const Anticipo = mongoose.model("Anticipo", anticipoSchema);
+const Global = mongoose.model("Global", globalSchema);
 
 // Arreglo de los campos que no queremos modificar
 const noUpdatable = ["__v"];
@@ -33,7 +23,7 @@ const noUpdatable = ["__v"];
  * @returns retorna true si todos los campos que se actualizan se pueden,
  *  retorna false en caso contrario.
  */
-Anticipo.fieldsNotAllowedUpdates = (body) => {
+Global.fieldsNotAllowedUpdates = (body) => {
   const updates = Object.keys(body);
 
   // Sirve para obtener los campos del modelo
@@ -48,4 +38,4 @@ Anticipo.fieldsNotAllowedUpdates = (body) => {
   return isValidOp;
 };
 
-module.exports = Anticipo;
+module.exports = Global;

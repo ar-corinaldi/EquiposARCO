@@ -13,29 +13,8 @@ function FacturaDetail(props) {
   const [canFacturar, setCanFacturar] = useState(true);
   const [precioTotal, setPrecioTotal] = useState(0);
   const [iva, setIva] = useState(19);
-  const [renderPrefacturas, setRenderPrefacturas] = useState(null);
 
   const history = useHistory();
-
-  useEffect(() => {
-    if (fechasValida(fechaCorte, fechaInicial)) {
-      setCanFacturar(true);
-      setPrecioTotal(0);
-      setRenderPrefacturas(
-        <Prefacturas
-          fechaPrimeraOrden={
-            fechaPrimeraOrden || new Date(fechaInicial.getFullYear(), 0, 1, 1)
-          }
-          fechaCorte={fechaCorte}
-          fechaInicial={fechaInicial}
-          ordenes={ordenes || []}
-          setPrecioTotal={setPrecioTotal}
-        />
-      );
-    } else {
-      setCanFacturar(false);
-    }
-  }, [ordenes, fechaInicial, fechaCorte]);
 
   useEffect(() => {
     let newFechaPago = new Date(fechaCorte);
@@ -71,10 +50,13 @@ function FacturaDetail(props) {
       if (!res.ok) {
         return Toast(["No se pudo crear la factura"], true, res.status);
       } else {
-        Toast(["Factura creada correctamente"], true, res.status);
+        Toast(
+          [`Factura ${factura.codigo} creada correctamente`],
+          true,
+          res.status
+        );
         let fecha = new Date(factura.fechaCorte);
         setFechaInicial(new Date(fecha));
-        console.log("Cambio fecha incial");
         //  history.push("/facturas/${factura._id}");
       }
     } catch (e) {
@@ -88,7 +70,19 @@ function FacturaDetail(props) {
   return (
     <React.Fragment>
       <Row>
-        <Col>{renderPrefacturas}</Col>
+        <Col>
+          <Prefacturas
+            fechaPrimeraOrden={
+              fechaPrimeraOrden || new Date(fechaInicial.getFullYear(), 0, 1, 1)
+            }
+            fechaCorte={fechaCorte}
+            fechaInicial={fechaInicial}
+            ordenes={ordenes || []}
+            setPrecioTotal={setPrecioTotal}
+            fechasValida={fechasValida}
+            setCanFacturar={setCanFacturar}
+          />
+        </Col>
       </Row>
       <FacturaPrecio
         precioTotal={precioTotal}

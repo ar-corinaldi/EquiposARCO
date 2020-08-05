@@ -9,13 +9,13 @@ function FacturaPrecio(props) {
   const [canFacturar, setCanFacturar] = props.canFacturar;
 
   useEffect(() => {
-    setCanFacturar(iva >= 0 && precioTotal >= 0);
+    setCanFacturar && setCanFacturar(iva >= 0 && precioTotal >= 0);
   }, [iva, precioTotal]);
 
   const handleChange = (e) => {
     e.preventDefault();
     const { value } = e.target;
-    setIva(value);
+    setIva && setIva(value);
   };
 
   return (
@@ -60,13 +60,15 @@ function FacturaPrecio(props) {
             </p>
           </Col>
         </Row>
-        <button
-          className="buttonAction"
-          onClick={facturar}
-          disabled={!canFacturar}
-        >
-          Facturar
-        </button>
+        {facturar ? (
+          <button
+            className="buttonAction"
+            onClick={facturar}
+            disabled={!canFacturar}
+          >
+            Facturar
+          </button>
+        ) : null}
       </div>
     </Row>
   );

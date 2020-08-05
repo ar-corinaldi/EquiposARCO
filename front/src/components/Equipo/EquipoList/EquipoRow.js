@@ -19,8 +19,8 @@ function EquipoRow(props) {
             </Link>
           )}
         </td>
-        <td>{props.equipo.tipoEquipo}</td>
-        <td>{props.equipo.codigo}</td>
+        <td>{props.equipo.cantidadTotal}</td>
+        <td>{props.equipo.cantidadBodega}</td>
       </tr>
     </React.Fragment>
   );

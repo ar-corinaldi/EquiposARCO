@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import CloseIcon from "@material-ui/icons/Close";
+import { FaTrash } from "react-icons/fa";
 
 function EquipoDetail(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
+  const [pesoTotal, setPesoTotal] = props.pesoTotal;
+  const [cantidadTotal, setCantidadTotal] = props.cantidadTotal;
   const equipoRender = props.equipoRender;
   const [cantidad, setCantidad] = useState(equipoRender.cantidad);
-  let peso = 0;
-
-  equipoRender.equipoID.propiedades.forEach((propiedad) => {
-    if (propiedad.nombre === "peso") {
-      peso = propiedad.valor;
-    }
-  });
 
   const handleCantidad = (e) => {
     const target = e.target;
     setCantidad(target.value);
     equipoRender.cantidad = target.value;
+    calcularPesoTot();
+    calcularCantTot();
   };
 
   const handleRemoveEquipo = (e, equipo) => {
@@ -29,30 +27,50 @@ function EquipoDetail(props) {
     //console.log("equiposSels", equiposSels);
   };
 
+  const calcularPesoTot = () => {
+    let pesoTot = 0;
+    console.log(equiposSels);
+    equiposSels.forEach((equipo) => {
+      pesoTot += equipo.equipoID.peso * equipo.cantidad;
+    });
+    console.log("pesoTot", pesoTot);
+    setPesoTotal(pesoTot);
+  };
+
+  const calcularCantTot = () => {
+    let cantTot = 0;
+    console.log(equiposSels);
+    equiposSels.forEach((equipo) => {
+      cantTot += +equipo.cantidad;
+    });
+    console.log("cantTot", cantTot);
+    setCantidadTotal(cantTot);
+  };
+
   return (
     <React.Fragment>
       <tr className="capitalize">
-        <td>
+        <td className="pt">
           <b>{equipoRender.equipoID.nombreEquipo}</b>
           <br />
           {equipoRender.equipoID.tipoEquipo}
         </td>
-        <td>{equipoRender.equipoID.nombreFamilia}</td>
-        <td>{peso}</td>
-        <td>
+        <td className="pt">{equipoRender.equipoID.nombreFamilia}</td>
+        <td className="pt">{equipoRender.equipoID.peso}</td>
+        <td className="pt">
           <input
             type="number"
             min="1"
             max={equipoRender.equipoID.porEnviar}
             value={equipoRender.cantidad}
-            className="form-control w90"
+            className="form-control w90 ml0"
             placeholder="cant."
             onChange={handleCantidad}
           ></input>
         </td>
-        <td>
-          <CloseIcon
-            className="closeIcon"
+        <td className="pt">
+          <FaTrash
+            className="icono pointer"
             onClick={(e) => handleRemoveEquipo(e, equipoRender)}
           />
         </td>

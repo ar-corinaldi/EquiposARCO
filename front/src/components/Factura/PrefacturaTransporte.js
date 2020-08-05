@@ -10,14 +10,16 @@ function PrefacturaTransporte(props) {
     if (fecha.getDate() >= fechaInicial.getDate()) {
       setPrecioTotal && setPrecioTotal((prevPrecio) => prevPrecio + costo);
     }
-  }, [fechaInicial, fechaCorte]);
+  }, [fechaInicial, fechaCorte, transporte]);
   return fecha.getDate() >= fechaInicial.getDate() ? (
     <tr>
+      <td>N/A</td>
       <td>Servicio Transporte</td>
-      <td>N/A</td>
-      <td>{`${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`}</td>
-      <td>N/A</td>
       <td>{formatoPrecios(costo)}</td>
+      <td>N/A</td>
+      <td>{`${fecha.getDate()}/${
+        fecha.getMonth() + 1
+      }/${fecha.getFullYear()}`}</td>
       <td>{formatoPrecios(costo)}</td>
     </tr>
   ) : null;

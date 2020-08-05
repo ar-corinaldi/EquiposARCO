@@ -16,8 +16,8 @@ function EquipoTable(props) {
       <thead>
         <tr>
           <td>Nombre</td>
-          <td>Tipo Equipo</td>
-          <td>Codigo</td>
+          <td>Cantidad Total</td>
+          <td>Cantidad en Bodega</td>
         </tr>
       </thead>
       <tbody>

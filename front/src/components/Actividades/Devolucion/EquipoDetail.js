@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import { FaTrash, FaRegStickyNote } from "react-icons/fa";
-import Modal from "./Modal";
 
 function EquipoDetail(props) {
   const orden = props.orden;
@@ -10,15 +9,14 @@ function EquipoDetail(props) {
   const [cantidadTotal, setCantidadTotal] = props.cantidadTotal;
   const equipoRender = props.equipoRender;
   const [cantidad, setCantidad] = useState(equipoRender.cantidad);
+  const [show, setShow] = props.show;
 
-  const [show, setShow] = useState(false);
+  const [equipoNota, setEquipoNota] = props.equipoNota;
 
   const showModal = () => {
+    console.log(equipoRender.equipoID);
+    setEquipoNota(equipoRender.equipoID);
     setShow(true);
-  };
-
-  const hideModal = () => {
-    setShow(false);
   };
 
   const handleCantidad = (e) => {
@@ -62,27 +60,10 @@ function EquipoDetail(props) {
     console.log("cantTot", cantTot);
     setCantidadTotal(cantTot);
   };
-  console.log("orden", orden);
-  const fields = {
-    categoria: "daño",
-    descripcion: "",
-    cantidad: 0,
-    equipo: equipoRender.equipoID._id,
-    orden: orden,
-  };
-
-  const formAction = `/notasInventario`;
+  //  console.log("orden", orden);
 
   return (
     <React.Fragment>
-      <Modal
-        orden={orden}
-        show={show}
-        handleClose={hideModal}
-        equipo={equipoRender.equipoID}
-        fields={fields}
-        formAction={formAction}
-      ></Modal>
       <tr className="capitalize">
         <td className="pt">
           <b>{equipoRender.equipoID.nombreEquipo}</b>

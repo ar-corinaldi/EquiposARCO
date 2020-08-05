@@ -32,6 +32,9 @@ function DevolucionForm(props) {
   const [costoEstimado, setCostoEstimado] = useState(0);
   const [calculoTransp, setCalculoTransp] = useState("peso");
 
+  const [show, setShow] = props.show;
+  const [equipoNota, setEquipoNota] = props.equipoNota;
+
   const { fields, handleChange, handleSubmitPOST, idT, idB, idOr } = props;
   //console.log("equipos", equipos);
 
@@ -293,7 +296,8 @@ function DevolucionForm(props) {
           <Row>
             <Col>
               <EquipoTable
-                orden={orden}
+                equipoNota={[equipoNota, setEquipoNota]}
+                show={[show, setShow]}
                 equiposSels={[equiposSels, setEquiposSels]}
                 pesoTotal={[pesoTotal, setPesoTotal]}
                 cantidadTotal={[cantidadTotal, setCantidadTotal]}

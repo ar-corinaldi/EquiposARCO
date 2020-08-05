@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import DevolucionForm from "./DevolucionForm";
 import "./Devolucion.css";
 import { calcularDisponiblesDevolucion } from "../CalcularEquipos";
+import Modal from "./Modal";
 
 function DevolucionCreate(props) {
   const { id, idB, idOr } = useParams();
@@ -11,6 +12,8 @@ function DevolucionCreate(props) {
   const [equipos, setEquipos] = useState([]);
   const [vehiculos, setVehiculos] = useState({});
   const [conductores, setConductores] = useState({});
+  const [show, setShow] = useState(false);
+  const [equipoNota, setEquipoNota] = useState({});
 
   useEffect(() => {
     fetchOrden();
@@ -64,8 +67,29 @@ function DevolucionCreate(props) {
     equiposEnDevolucion: [],
   };
 
+  const formActionNota = `/notasInventario`;
+
+  const fieldsNota = {
+    categoria: "daño",
+    descripcion: "",
+    cantidad: 0,
+    equipo: equipoNota._id,
+    orden: idOr,
+  };
+  const hideModal = () => {
+    setShow(false);
+  };
+
   return (
     <div className="remision-registrar-wrapper">
+      <Modal
+        orden={orden}
+        show={[show, setShow]}
+        handleClose={hideModal}
+        equipoNota={[equipoNota, setEquipoNota]}
+        fields={fieldsNota}
+        formAction={formActionNota}
+      ></Modal>
       <DevolucionForm
         equipos={[equipos, setEquipos]}
         conductores={[conductores, setConductores]}
@@ -75,6 +99,8 @@ function DevolucionCreate(props) {
         idT={id}
         idB={idB}
         idOr={idOr}
+        show={[show, setShow]}
+        equipoNota={[equipoNota, setEquipoNota]}
       ></DevolucionForm>
     </div>
   );

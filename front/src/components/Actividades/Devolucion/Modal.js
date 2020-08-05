@@ -1,21 +1,28 @@
 import React from "react";
 import "./Modal.css";
 import withFormHandling from "../../withFormHandling";
+import { useEffect } from "react";
 
 function Modal(props) {
-  const show = props.show;
+  const [show, setShow] = props.show;
   //console.log("show", show);
   const handleClose = props.handleClose;
-  const equipo = props.equipo;
+  const [equipoNota, setEquipoNota] = props.equipoNota;
   const orden = props.orden;
   const { fields, handleChange, handleSubmitPOST } = props;
   //console.log(equipo);
   const showHideClassName = show ? "modal display-block" : "modal display-none";
 
+  useEffect(() => {
+    console.log("cambio");
+    console.log("equipoNota", equipoNota);
+    fields.equipo = equipoNota._id;
+  }, [equipoNota]);
+
   return (
     <span className={showHideClassName}>
       <section className="modal-main">
-        <span className="borde">
+        <span>
           <h4 className="center"> Registrar un daño al equipo </h4>
           <form onSubmit={handleSubmitPOST}>
             <span className="mt-3 mb-2">
@@ -23,7 +30,7 @@ function Modal(props) {
               <input
                 name="equipo"
                 type="text"
-                value={equipo.nombreEquipo}
+                value={equipoNota.nombreEquipo}
                 // onChange={handleCostoTrasnporte}
               />
             </span>
@@ -45,7 +52,11 @@ function Modal(props) {
                 onChange={handleChange}
               />
             </span>
-            <button type="submit" className="buttonTercero">
+            <button
+              type="submit"
+              className="buttonTercero"
+              onClick={handleClose}
+            >
               Registrar
             </button>
           </form>

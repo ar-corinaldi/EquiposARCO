@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import { FaTrash, FaRegStickyNote } from "react-icons/fa";
+import Modal from "./Modal";
 
 function EquipoDetail(props) {
+  const orden = props.orden;
   const [equiposSels, setEquiposSels] = props.equiposSels;
   const [pesoTotal, setPesoTotal] = props.pesoTotal;
   const [cantidadTotal, setCantidadTotal] = props.cantidadTotal;
   const equipoRender = props.equipoRender;
   const [cantidad, setCantidad] = useState(equipoRender.cantidad);
+
+  const [show, setShow] = useState(false);
+
+  const showModal = () => {
+    setShow(true);
+  };
+
+  const hideModal = () => {
+    setShow(false);
+  };
 
   const handleCantidad = (e) => {
     const target = e.target;
@@ -27,9 +39,9 @@ function EquipoDetail(props) {
     //console.log("equiposSels", equiposSels);
   };
 
-  const handleNotaInventario = (e, equipo) => {
-    e.preventDefault();
-  };
+  // const handleNotaInventario = (e, equipo) => {
+  //   e.preventDefault();
+  // };
 
   const calcularPesoTot = () => {
     let pesoTot = 0;
@@ -50,9 +62,27 @@ function EquipoDetail(props) {
     console.log("cantTot", cantTot);
     setCantidadTotal(cantTot);
   };
+  console.log("orden", orden);
+  const fields = {
+    categoria: "daño",
+    descripcion: "",
+    cantidad: 0,
+    equipo: equipoRender.equipoID._id,
+    orden: orden,
+  };
+
+  const formAction = `/notasInventario`;
 
   return (
     <React.Fragment>
+      <Modal
+        orden={orden}
+        show={show}
+        handleClose={hideModal}
+        equipo={equipoRender.equipoID}
+        fields={fields}
+        formAction={formAction}
+      ></Modal>
       <tr className="capitalize">
         <td className="pt">
           <b>{equipoRender.equipoID.nombreEquipo}</b>
@@ -77,10 +107,7 @@ function EquipoDetail(props) {
             className="icono pointer"
             onClick={(e) => handleRemoveEquipo(e, equipoRender)}
           />
-          <FaRegStickyNote
-            className="icono pointer"
-            onClick={(e) => handleNotaInventario(e, equipoRender)}
-          />
+          <FaRegStickyNote className="icono pointer" onClick={showModal} />
         </td>
       </tr>
     </React.Fragment>

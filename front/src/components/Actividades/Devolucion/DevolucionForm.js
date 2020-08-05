@@ -15,6 +15,7 @@ import Toast from "../../Toast";
 import { calcularPrecioTransporte } from "../CalcularTransporte";
 
 function DevolucionForm(props) {
+  const orden = props.idOr;
   const [devolucion, setDevolucion] = useState(undefined);
   const [asumidoTercero, setAsumidoTercero] = useState(true);
   const [equipos, setEquipos] = props.equipos;
@@ -292,6 +293,7 @@ function DevolucionForm(props) {
           <Row>
             <Col>
               <EquipoTable
+                orden={orden}
                 equiposSels={[equiposSels, setEquiposSels]}
                 pesoTotal={[pesoTotal, setPesoTotal]}
                 cantidadTotal={[cantidadTotal, setCantidadTotal]}

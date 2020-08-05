@@ -5,6 +5,7 @@ function EquipoTable(props) {
   const [equiposSels, setEquiposSels] = props.equiposSels;
   const [pesoTotal, setPesoTotal] = props.pesoTotal;
   const [cantidadTotal, setCantidadTotal] = props.cantidadTotal;
+  const orden = props.orden;
 
   return (
     <div className="table-responsive">
@@ -23,6 +24,7 @@ function EquipoTable(props) {
             equiposSels.map((equipoRender, index) => (
               <EquipoDetail
                 key={index}
+                orden={orden}
                 equipoRender={equipoRender}
                 equiposSels={[equiposSels, setEquiposSels]}
                 pesoTotal={[pesoTotal, setPesoTotal]}

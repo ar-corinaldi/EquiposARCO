@@ -2,6 +2,7 @@ import React from "react";
 import "./Modal.css";
 import withFormHandling from "../../withFormHandling";
 import { useEffect } from "react";
+import CrearNotaInventario from "./CrearNotaInventario";
 
 function Modal(props) {
   const [show, setShow] = props.show;
@@ -22,45 +23,7 @@ function Modal(props) {
   return (
     <span className={showHideClassName}>
       <section className="modal-main">
-        <span>
-          <h4 className="center"> Registrar un daño al equipo </h4>
-          <form onSubmit={handleSubmitPOST}>
-            <span className="mt-3 mb-2">
-              <label htmlFor="equipo">Equipo :</label>
-              <input
-                name="equipo"
-                type="text"
-                value={equipoNota.nombreEquipo}
-                // onChange={handleCostoTrasnporte}
-              />
-            </span>
-            <span className="mt-3 mb-2">
-              <label htmlFor="cantidad">Cantidad :</label>
-              <input
-                name="cantidad"
-                type="number"
-                value={fields.cantidad}
-                onChange={handleChange}
-              />
-            </span>
-            <span className="mt-3 mb-2">
-              <label htmlFor="descripcion">Descripcion :</label>
-              <input
-                name="descripcion"
-                type="text"
-                value={fields.descripcion}
-                onChange={handleChange}
-              />
-            </span>
-            <button
-              type="submit"
-              className="buttonTercero"
-              onClick={handleClose}
-            >
-              Registrar
-            </button>
-          </form>
-        </span>
+        <CrearNotaInventario></CrearNotaInventario>
       </section>
     </span>
   );

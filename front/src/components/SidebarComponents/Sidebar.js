@@ -107,6 +107,47 @@ function Sidebar(props) {
     },
   ];
 
+  const menu_imprimir = [
+    {
+      type: "Header",
+      name: "Imprimir",
+    },
+    {
+      type: "Title",
+      name: "Opciones",
+    },
+    {
+      type: "Link",
+      name: "Inventario por orden",
+      ref: "/inventarioPorOrden",
+    },
+    {
+      type: "Link",
+      name: "Inventario por tercero",
+      ref: "/inventarioPorTercero",
+    },
+    {
+      type: "Link",
+      name: "Inventario por equipo",
+      ref: "/inventarioPorEquipo",
+    },
+    {
+      type: "Link",
+      name: "Movimiento por Orden",
+      ref: "/movimientoPorOrden",
+    },
+    {
+      type: "Link",
+      name: "Movimiento por Contrato",
+      ref: "/movimientoPorContrato",
+    },
+    {
+      type: "Link",
+      name: "Resumen de Trasporte",
+      ref: "/resumenDeTransporte",
+    },
+  ];
+
   //Definicion del menú home: Cuando la ruta es '/'.
   const home_menu = [];
 
@@ -116,6 +157,7 @@ function Sidebar(props) {
     "/": home_menu,
     "/terceros": menu_terceros,
     "/facturacion": menu_facturación,
+    "/imprimir": menu_imprimir,
   };
 
   return (

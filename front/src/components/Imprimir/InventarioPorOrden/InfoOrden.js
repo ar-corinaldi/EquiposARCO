@@ -4,6 +4,28 @@ import TarifaRow from "./TarifaRow";
 function InfoOrden(props) {
   const orden = props.orden;
   const tarifas = orden && orden.tarifasDefinitivas;
+
+  function getPDF() {
+    return fetch(`/your-pdf-endpoint`, {
+      responseType: "arraybuffer",
+      headers: {
+        Accept: "application/pdf",
+      },
+    });
+  }
+
+  const savePDF = () => {
+    return getPDF() // API call
+      .then((response) => {
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `your-file-name.pdf`;
+        link.click();
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="orden-wrapper" id="orden-equipos-wrapper">
       <h4 className="page-title-orden">Inventario Orden {orden.codigo}</h4>
@@ -31,6 +53,7 @@ function InfoOrden(props) {
               ))}
           </tbody>
         </table>
+        <button onClick={savePDF}>Save as PDF</button>
       </div>
     </div>
   );

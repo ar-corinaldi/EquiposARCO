@@ -4,6 +4,8 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
+const puppeteer = require("puppeteer");
+
 // Activa la coneccion con la base de datos
 require("./src/db/mongoose");
 

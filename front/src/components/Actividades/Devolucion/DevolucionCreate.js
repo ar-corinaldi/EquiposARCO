@@ -83,15 +83,15 @@ function DevolucionCreate(props) {
 
   return (
     <div className="remision-registrar-wrapper">
-      <Modal
-        orden={orden}
-        show={[show, setShow]}
-        handleClose={hideModal}
-        equipoNota={[equipoNota, setEquipoNota]}
-        fields={fieldsNota}
-        formAction={formActionNota}
-      >
-        <CrearNotaInventario></CrearNotaInventario>
+      <Modal show={[show, setShow]} handleClose={hideModal}>
+        <CrearNotaInventario
+          orden={orden}
+          show={[show, setShow]}
+          handleClose={hideModal}
+          equipoNota={[equipoNota, setEquipoNota]}
+          fields={fieldsNota}
+          formAction={formActionNota}
+        ></CrearNotaInventario>
       </Modal>
       <DevolucionForm
         equipos={[equipos, setEquipos]}

@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
+import withFormHandling from "../../withFormHandling";
 
 function CrearNotaInventario(props) {
   const [equipoNota, setEquipoNota] = props.equipoNota;
   const orden = props.orden;
   const { fields, handleChange, handleSubmitPOST } = props;
+  const handleClose = props.handleClose;
   //console.log(equipo);
   useEffect(() => {
     console.log("cambio");
@@ -18,7 +20,7 @@ function CrearNotaInventario(props) {
       <h4 className="center"> Registrar un daño al equipo </h4>
       <form onSubmit={handleSubmitPOST}>
         <p className="capitalize">Equipo : {equipoNota.nombreEquipo}</p>
-        <span className="mt-3 mb-2">
+        <div className="mt-3 mb-2">
           <label htmlFor="cantidad">Cantidad :</label>
           <input
             name="cantidad"
@@ -26,8 +28,8 @@ function CrearNotaInventario(props) {
             value={fields.cantidad}
             onChange={handleChange}
           />
-        </span>
-        <span className="mt-3 mb-2">
+        </div>
+        <div className="mt-3 mb-2">
           <label htmlFor="descripcion">Descripcion :</label>
           <input
             name="descripcion"
@@ -35,12 +37,8 @@ function CrearNotaInventario(props) {
             value={fields.descripcion}
             onChange={handleChange}
           />
-        </span>
-        <button
-          type="submit"
-          className="buttonTercero"
-          onClick={handleNotaInventario}
-        >
+        </div>
+        <button type="submit" className="buttonTercero" onClick={handleClose}>
           Registrar
         </button>
       </form>
@@ -48,4 +46,4 @@ function CrearNotaInventario(props) {
   );
 }
 
-export default CrearNotaInventario;
+export default withFormHandling(CrearNotaInventario);

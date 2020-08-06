@@ -28,6 +28,7 @@ import DevolucionDetail from "./components/Actividades/Devolucion/DevolucionDeta
 import ActividadList from "./components/Actividades/Actividad/ActividadList";
 import Cotizar from "./components/Factura/Cotizar/Cotizar";
 import Prueba from "./components/Prueba";
+import InventarioPorOrden from "./components/Imprimir/InventarioPorOrden/InventarioPorOrden";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -146,6 +147,11 @@ function App() {
                   path="/facturacion/:idFactura"
                   exact
                   component={FacturaDetail}
+                />
+                <Route
+                  path="/imprimir/inventarioPorOrden"
+                  exact
+                  component={InventarioPorOrden}
                 />
                 <Route path="*"> Pagina no encontrada </Route>
               </Switch>

@@ -17,11 +17,21 @@ function InventarioPorOrden(props) {
   }, [ordenSelected]);
 
   const fetchInfoOrden = async () => {
-    let res = await fetch(`/ordenes/${ordenSelected._id}`);
-    const ord = await res.json();
-    //console.log("cotizacion", coti);
-    setOrdenFull(ord);
+    if (ordenSelected && !isEmpty(ordenSelected)) {
+      let res = await fetch(`/ordenes/${ordenSelected._id}`);
+      const ord = await res.json();
+      //console.log("cotizacion", coti);
+      setOrdenFull(ord);
+    }
   };
+
+  function isEmpty(obj) {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+    return true;
+  }
+
   if (ordenesAPI.loading) {
     return (
       <div className="spinner-border" role="status">
@@ -30,7 +40,7 @@ function InventarioPorOrden(props) {
     );
   }
   if (!ordenes) {
-    return ordenesAPI.notFound("No se encontro orden con este id");
+    return ordenesAPI.notFound("No se encontraron ordenes");
   }
   return (
     <Container fluid>

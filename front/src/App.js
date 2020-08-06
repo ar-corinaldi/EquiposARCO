@@ -29,6 +29,7 @@ import ActividadList from "./components/Actividades/Actividad/ActividadList";
 import Cotizar from "./components/Factura/Cotizar/Cotizar";
 import Prueba from "./components/Prueba";
 import InventarioPorOrden from "./components/Imprimir/InventarioPorOrden/InventarioPorOrden";
+import InventarioPorTercero from "./components/Imprimir/InventarioPorTercero/InventarioPorTercero";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -152,6 +153,11 @@ function App() {
                   path="/imprimir/inventarioPorOrden"
                   exact
                   component={InventarioPorOrden}
+                />
+                <Route
+                  path="/imprimir/inventarioPorTercero"
+                  exact
+                  component={InventarioPorTercero}
                 />
                 <Route path="*"> Pagina no encontrada </Route>
               </Switch>

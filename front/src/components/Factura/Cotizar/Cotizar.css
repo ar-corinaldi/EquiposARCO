@@ -99,3 +99,7 @@
 .fit-content{
   width: fit-content !important;
 }
+
+.display-block{
+  display: block !important;
+}

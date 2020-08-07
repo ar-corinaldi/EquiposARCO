@@ -20,11 +20,15 @@ const CotizarConOrden = (props) => {
     }, [terceroSeleccionado])
 
     return (
-        <div className="buscarEquiposWrapper display-block">
-            <EscogerBodega
-                bodegaSeleccionada={[bodega, setBodega]}
-                bodegas={[bodegasBack, setBodegasBack]}
-            />
+        <div 
+        className="buscarEquiposWrapper display-block"
+        >
+            <div className="width100">
+                <EscogerBodega
+                    bodegaSeleccionada={[bodega, setBodega]}
+                    bodegas={[bodegasBack, setBodegasBack]}
+                />
+            </div>
             <div className="bg-white fit-content">
                 <BodegaOrdenDetail bodegaSeleccionada={[bodega, setBodega]} />
             </div>

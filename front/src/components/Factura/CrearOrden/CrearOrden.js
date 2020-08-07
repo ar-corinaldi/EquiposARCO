@@ -1,5 +1,5 @@
 import "./CrearOrden.css";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import EscogerCotizacion from "./EscogerCotizacion";
 import ConfirmarTarifas from "./ConfirmarTarifas";
 import Row from "react-bootstrap/Row";
@@ -10,13 +10,16 @@ import priceLogoDark from "../../../assets/price-dark.svg";
 import sheetLogo from "../../../assets/sheet.svg";
 import sheetLogoDark from "../../../assets/sheetDark.svg";
 import BodegaOrdenDetail from "./BodegaOrdenDetail";
+import GlobalsContext from "../../GlobalsContext";
 
 function CrearOrden(props) {
+  const context = useContext(GlobalsContext);
+
   //Estados globales
-  const [firstStepState, setFirstStep] = useState("active");
-  const [secondStepState, setSecondStep] = useState("pending");
-  const [bodegaSeleccionada, setBodegaSeleccionada] = useState({});
-  const [cotizacionSeleccionada, setCotizacionSeleccionada] = useState({});
+  const [firstStepState, setFirstStep] = useState(context.globals.crearOrden.firstStep || "active");
+  const [secondStepState, setSecondStep] = useState(context.globals.crearOrden.secondStep || "pending");
+  const [bodegaSeleccionada, setBodegaSeleccionada] = useState(context.globals.crearOrden.bodega || {});
+  const [cotizacionSeleccionada, setCotizacionSeleccionada] = useState(context.globals.crearOrden.cotizacion || {});
 
   function stepOneHandler(params) {
     if (firstStepState === "complete" || firstStepState === "pending") {
@@ -45,6 +48,22 @@ function CrearOrden(props) {
       ? priceLogo
       : priceLogoDark;
   }
+
+  useEffect(() => {
+    const contextFrstStep = context.globals.crearOrden.firstStep
+    const contextScndStep = context.globals.crearOrden.secondStep
+    const contextBodega = context.globals.crearOrden.bodega;
+    const contextCotizacion = context.globals.crearOrden.cotizacion;
+    console.log('====================CONTEXTO ACTUALIZADO================');
+    console.log(context.globals);
+    console.log('====================================');
+    if (contextCotizacion && Object.keys(contextCotizacion).length > 0) {
+      setBodegaSeleccionada(contextBodega)
+      setCotizacionSeleccionada(contextCotizacion)
+      setFirstStep(contextFrstStep)
+      setSecondStep(contextScndStep)
+    }
+  }, [context.globals])
 
   return (
     <div id="create-order-wrapper">

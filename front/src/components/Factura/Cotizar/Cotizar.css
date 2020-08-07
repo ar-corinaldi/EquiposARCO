@@ -91,3 +91,11 @@
 .cotizarWrapper th form input, .cotizarWrapper th input{
   width: 13ch;
 }
+
+.rotate{
+  transform: rotate(90deg);
+}
+
+.fit-content{
+  width: fit-content !important;
+}

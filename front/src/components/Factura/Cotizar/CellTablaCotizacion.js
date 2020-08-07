@@ -35,9 +35,9 @@ function CellTablaCotizacion(props) {
 
     //Fuciones
     function body() {
-        console.log('==============miTarifa======================');
-        console.log(tarifa);
-        console.log('====================================');
+        // console.log('==============miTarifa======================');
+        // console.log(tarifa);
+        // console.log('====================================');
         if (tarifa && Object.keys(tarifa).length > 0 && equipoDetail.precios) {
             console.log('entró');
             return (
@@ -57,8 +57,9 @@ function CellTablaCotizacion(props) {
                                     }}
                                     renderValue={(value) => {
                                         const precio = equipoDetail.precios[value];
-                                        if(precio){
-                                        return precio.categoria + " - " + precio.tiempo}
+                                        if (precio) {
+                                            return precio.categoria + " - " + precio.tiempo
+                                        }
                                     }}
                                 >
                                     {equipoDetail.precios && equipoDetail.precios.map((precio, index) => {
@@ -77,15 +78,10 @@ function CellTablaCotizacion(props) {
                         <Row>
                             <Col>
                                 <Cleave
-                                    options={{
-                                        numeral: true,
-                                        // prefix: " " + formatoCategoria(tarifa.precioReferencia.categoria, true),
-                                        // rawValueTrimPrefix: true,
-                                        // tailPrefix: true
-                                    }}
+                                    options={{ numeral: true, }}
                                     onChange={handleChangeCantidad}
                                     value={tarifa.cantidad}
-                                    className = 'float-center'
+                                    className='float-center'
                                 >
                                 </Cleave>
                                 <span className='float-center'>
@@ -100,27 +96,14 @@ function CellTablaCotizacion(props) {
                             options={{ numeral: true, prefix: '$', rawValueTrimPrefix: true }}
                             onChange={handleChangePrecio}
                         ></Cleave>
-                        {/* {formatoPrecio(tarifa.valorTarifa).replace(" ", "\xa0")} */}
                     </th>
                     <th className='float-center'>
-                        {/* <InputBase
-                            defaultValue={0}
-                            classes={{
-                                input: "inputRoot",
-                            }}
-                            onChange={handleChangeTiempoCotizado}
-                        ></InputBase> */}
                         <form>
                             <input
-                                // options={{ numeral: true }}
                                 type='number'
                                 onChange={handleChangeTiempoCotizado}
-                                // onInit={onInitCantidad}
-                                // value={(tarifa && tarifa.precioReferencia) && (tarifa.precioReferencia.tiempoMinimo || 0)}
-
                                 min={(tarifa && tarifa.precioReferencia) && (tarifa.precioReferencia.tiempoMinimo || 0)}
                                 required
-
                             >
                             </input>
                             <span>{formatoTiempo(tarifa.precioReferencia.tiempo, true)}</span>
@@ -147,12 +130,12 @@ function CellTablaCotizacion(props) {
 
     function handleChangeCantidad(e) {
         // e.persist();
-        console.log('==============EVENTOOO======================');
-        console.log(e);
+        // console.log('==============EVENTOOO======================');
+        // console.log(e);
         const value = e.target.rawValue;
-        console.log(value);
-        console.log(e.target.value);
-        console.log('====================================');
+        // console.log(value);
+        // console.log(e.target.value);
+        // console.log('====================================');
         setTarifa(tarifa => {
             tarifa.cantidad = value ? value : 0;
             return Object.assign({}, tarifa)
@@ -162,8 +145,8 @@ function CellTablaCotizacion(props) {
     function handleChangeTiempoCotizado(e) {
         // e.persist();
         e.preventDefault();
-        console.log("anda entrando");
-        console.log(e.target.value);
+        // console.log("anda entrando");
+        // console.log(e.target.value);
         if (tarifa && tarifa.precioReferencia && tarifa.fechaInicio) {//Los que no tienen precio ref pailas?
             let newCantidad = e.target.value;
             // if (newCantidad < (newCantidad && tarifa.precioReferencia) && (tarifa.precioReferencia.tiempoMinimo || 0)) {
@@ -180,24 +163,16 @@ function CellTablaCotizacion(props) {
             else {
                 newFecha = calcularFechaFinalDiaHabil(tarifa.fechaInicio, newCantidad);
             }
-            console.log('===============Fechaaaaas =====================' + medidaTiempo);
-            console.log(tarifa.fechaInicio);
-            console.log(newFecha);
-            console.log('====================================');
+            // console.log('===============Fechaaaaas =====================' + medidaTiempo);
+            // console.log(tarifa.fechaInicio);
+            // console.log(newFecha);
+            // console.log('====================================');
             tarifa.fechaFin = newFecha;
             setTarifa(Object.assign({}, tarifa));
         }
     }
 
-    function InputPrecio(props) {
-        console.log('================INPUTTTT====================');
-        console.log(props);
-        console.log('====================================');
-        return formatoPrecios(props.value || 0);
-    }
-
     const handleRemoveEquipo = (e) => {
-        // tarifas[equipo.equipoID._id] = {};
         delete tarifas[equipo.equipoID._id];
         const myIndex = index;
         setTarifas(Object.assign({}, tarifas));
@@ -208,9 +183,9 @@ function CellTablaCotizacion(props) {
 
     //Effects
     useEffect(() => {
-        console.log('==============LA--Tarifa======================');
-        console.log(tarifas[equipo.equipoID._id]);
-        console.log('====================================');
+        // console.log('==============LA--Tarifa======================');
+        // console.log(tarifas[equipo.equipoID._id]);
+        // console.log('====================================');
         setTarifa(tarifas[equipo.equipoID._id]);
     }, [tarifas])
 
@@ -218,9 +193,9 @@ function CellTablaCotizacion(props) {
         async function equipoBack() {
             const equipoBack = await (await fetch("/equipos/" + equipo.equipoID._id)).json();
             setEquipoDetail(equipoBack);
-            console.log('===============IIIIntrooooo=====================');
-            console.log("");
-            console.log('====================================');
+            // console.log('===============IIIIntrooooo=====================');
+            // console.log("");
+            // console.log('====================================');
         }
         if (Object.keys(equipoDetail).length === 0 && tarifa) {
             equipoBack();
@@ -229,28 +204,28 @@ function CellTablaCotizacion(props) {
     })
 
     useEffect(() => {
-        console.log('==============Tarifaaas======================');
-        console.log(tarifa);
-        console.log('====================================');
+        // console.log('==============Tarifaaas======================');
+        // console.log(tarifa);
+        // console.log('====================================');
         tarifas[equipo.equipoID._id] = tarifa;
         setTarifas(Object.assign({}, tarifas));
     }, [tarifa])
 
     useEffect(() => {
-        console.log('==============Equipo detail======================');
-        console.log(equipoDetail);
-        console.log('====================================');
+        // console.log('==============Equipo detail======================');
+        // console.log(equipoDetail);
+        // console.log('====================================');
         if (equipoDetail.precios && equipoDetail.precios[0]) {
             tarifa.valorTarifa = equipoDetail.precios[indexPrecio].valorAlquiler;
             tarifa.precioReferencia = equipoDetail.precios[indexPrecio];
             setTarifa(Object.assign({}, tarifa));
-            console.log('===============Entrooooo=====================');
-            console.log("");
-            console.log('====================================');
+            // console.log('===============Entrooooo=====================');
+            // console.log("");
+            // console.log('====================================');
         }
-        console.log('==============Todas las tarifas======================');
-        console.log(tarifas);
-        console.log('====================================');
+        // console.log('==============Todas las tarifas======================');
+        // console.log(tarifas);
+        // console.log('====================================');
     }, [equipoDetail]);
 
     useEffect(() => {

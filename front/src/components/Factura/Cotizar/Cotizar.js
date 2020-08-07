@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Cotizar.css';
+import { useHistory } from "react-router-dom";
 import BuscarEquiposCotizados from './BuscarEquiposCotizados';
+import GlobalsContext from "../../GlobalsContext";
 import Escoger from '../../Escoger';
 import CellTableCotizazcion from './CellTablaCotizacion';
+import CotizarConOrden from './CotizarConOrden';
 import Table from 'react-bootstrap/Table';
 import { calcularTarifaObjeto } from '../../utils/CacularTarifas';
 import formatoPrecios from '../../utils/FormatoPrecios';
+import { FormControlLabel, Switch } from '@material-ui/core';
 
 const Cotizar = () => {
     let [equiposSeleccionados, setEquiposSeleccionados] = useState([]);
@@ -14,6 +18,14 @@ const Cotizar = () => {
     const [terceros, setTercereos] = useState([]);
     const [terceroSeleccionado, setTerceroSeleccionado] = useState({});
     const [equipos, setEquipos] = useState([]);
+    const [conOrden, setConOrden] = useState(false);
+    const [bodega, setBodega] = useState(null);
+
+    const history = useHistory();
+
+
+    //Contexto global
+    const context = useContext(GlobalsContext);
 
     //funciones
 
@@ -38,7 +50,11 @@ const Cotizar = () => {
     }
     //Funciones
 
-    async function guardarCotizacion() {
+    /**
+     * Guarda nua cotización en la base de datos
+     * @param {Boolean} crearOrden. Decide si al guardar la cotización se redirige a la página de crear orden
+     */
+    async function guardarCotizacion(crearOrden = false) {
         // if (equiposSeleccionados && tarifas && Object.keys(tarifas) > 0 && Object.keys(terceroSeleccionado) > 0) {
         let cotizacion = {};
 
@@ -49,54 +65,67 @@ const Cotizar = () => {
         console.log("-----------------------------------");
 
         if (Object.keys(tarifas).length && Object.keys(cobro).length && Object.keys(terceroSeleccionado).length) {
-            console.log(Object.keys(tarifas));
-            console.log(Object.keys(terceroSeleccionado));
-            console.log(Object.keys(cobro));
+            // console.log(Object.keys(tarifas));
+            // console.log(Object.keys(terceroSeleccionado));
+            // console.log(Object.keys(cobro));
 
 
             cotizacion.precioTotal = cobro.cobroCompleto;
             cotizacion.tercero = terceroSeleccionado._id;
             cotizacion.tarifasCotizadas = [];
-            console.log('=============COTIZANDO ANDO=======================');
-            console.log(cotizacion);
-            console.log('====================================');
+            // console.log('=============COTIZANDO ANDO=======================');
+            // console.log(cotizacion);
+            // console.log('====================================');
             const headers = { "Content-type": "application/json; charset=UTF-8" };
             for (let tarifa of Object.keys(tarifas)) {
-                console.log(JSON.stringify(tarifa));
+                // console.log(JSON.stringify(tarifa));
                 tarifa = tarifas[tarifa];
-                console.log(tarifa);
+                // console.log(tarifa);
                 await fetch("/tarifas/", {
                     method: "POST", headers: headers,
                     body: JSON.stringify(tarifa)
                 }).then(response => response.json())
                     .then(response => {
-                        console.log(response)
+                        // console.log(response)
                         cotizacion.tarifasCotizadas.push(response._id);
                     })
             }
-            console.log('=============COTIZACION CON TARIFITAS=======================');
-            console.log(cotizacion);
+            // console.log('=============COTIZACION CON TARIFITAS=======================');
+            // console.log(cotizacion);
             cotizacion.fecha = new Date();
             await fetch("/cotizaciones", {
                 method: "POST", headers: headers,
                 body: JSON.stringify(cotizacion)
             }).then(response => response.json())
-                .then(response => {
-                    console.log(response)
-                    document.location.href = "/terceros/" + response.tercero
-                        + "/cotizaciones/" + response._id;
+                .then(async response => {
+                    // console.log('===================RESPONSE=================');
+                    // console.log(response)
+                    // console.log('====================================');
+                    if (!crearOrden) {
+                        document.location.href = "/terceros/" + response.tercero
+                            + "/cotizaciones/" + response._id;
+                    }
+                    else {
+                        let cotizacionDetail = await (await fetch(`/cotizaciones/all/${response._id}`)).json()
+                        const crearOrdenContext =
+                        {
+                            crearOrden: {
+                                firstStep: "complete",
+                                secondStep: "active",
+                                bodega: bodega,
+                                cotizacion: cotizacionDetail
+                            }
+                        }
+                        context.setter(Object.assign(context.globals, crearOrdenContext))
+                        history.push("/facturacion/crear_orden/")
+                    }
                 })
         }
-
-
-
-        // }
-
     }
 
 
     //Effects
-    useEffect((props) => {
+    useEffect(() => {
         if (equiposSeleccionados) {
             for (let equipo of equiposSeleccionados) {
                 if (!tarifas[equipo.equipoID._id] || Object.keys(tarifas[equipo.equipoID._id]).length === 0) {//Si se agrega un nuevo equipo 
@@ -116,28 +145,23 @@ const Cotizar = () => {
                         }
                     }
                     tarifas[equipo.equipoID._id] = newTarifa;
-                    if (equipo.nombreEquipo == 'prueba nota inventario') {
-                        console.log('=================EQQUIPO JODON===================');
-                        console.log(equipo);
-                        console.log('====================================');
-                    }
                 }
             }
-            console.log('=========Tarifas===========================');
-            console.log(tarifas);
-            console.log('====================================');
+            // console.log('=========Tarifas===========================');
+            // console.log(tarifas);
+            // console.log('====================================');
             setTarifas(Object.assign({}, tarifas));
         }
 
     }, [equiposSeleccionados]);
 
     useEffect(() => {
-        console.log('=================COBROOOO===================');
-        console.log(tarifas);
-        console.log(cobro);
+        // console.log('=================COBROOOO===================');
+        // console.log(tarifas);
+        // console.log(cobro);
         let cobroNuevo = calcularTarifaObjeto(tarifas);
-        console.log(cobroNuevo);
-        console.log('====================================');
+        // console.log(cobroNuevo);
+        // console.log('====================================');
         setCobro(cobroNuevo);
     }, [tarifas]);
 
@@ -198,9 +222,37 @@ const Cotizar = () => {
                     </tbody>
                 </Table>
             </div>
-            <button type="button" className="buttonEnabled" onClick={guardarCotizacion}>
+            {conOrden &&
+                <div>
+                    <CotizarConOrden
+                        bodega={[bodega, setBodega]}
+                        tercero={[terceroSeleccionado, setTerceroSeleccionado]}
+                    />
+                </div>}
+            <button type="button" className="buttonEnabled" onClick={() => guardarCotizacion(conOrden)}
+                disabled=
+                {(
+                    conOrden &&
+                    (!bodega || (bodega && Object.keys(bodega).length == 0))
+                )}>
                 Confirmar y Crear Cotización
             </button>
+            <FormControlLabel
+                label={("¿Crear con Orden?").toString().replace(" ", "\xa0")}
+                className="px13-nunito"
+                control={
+                    <Switch
+                        size="small"
+                        className="rotate"
+                        checked={conOrden}
+                        onChange={() => setConOrden(!conOrden)}
+                        color="secondary"
+                        name="Fecha Límite"
+                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    />
+                }
+            >
+            </FormControlLabel>
         </div>
     );
 };

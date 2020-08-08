@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EscogerEquipos from "../../Actividades/Remision/EscogerEquipos";
 import FilterLogo from "../../../assets/options.svg";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+
 function BuscarEquiposCotizados(props) {
   //Estados globales
   const [

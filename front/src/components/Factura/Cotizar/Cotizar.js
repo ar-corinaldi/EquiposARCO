@@ -55,52 +55,32 @@ const Cotizar = () => {
      * @param {Boolean} crearOrden. Decide si al guardar la cotización se redirige a la página de crear orden
      */
     async function guardarCotizacion(crearOrden = false) {
-        // if (equiposSeleccionados && tarifas && Object.keys(tarifas) > 0 && Object.keys(terceroSeleccionado) > 0) {
+
         let cotizacion = {};
 
-        console.log("Guardaaaar cotization-----------------------------------");
-        console.log(tarifas);
-        console.log(terceroSeleccionado);
-        console.log(cobro);
-        console.log("-----------------------------------");
-
         if (Object.keys(tarifas).length && Object.keys(cobro).length && Object.keys(terceroSeleccionado).length) {
-            // console.log(Object.keys(tarifas));
-            // console.log(Object.keys(terceroSeleccionado));
-            // console.log(Object.keys(cobro));
 
 
             cotizacion.precioTotal = cobro.cobroCompleto;
             cotizacion.tercero = terceroSeleccionado._id;
             cotizacion.tarifasCotizadas = [];
-            // console.log('=============COTIZANDO ANDO=======================');
-            // console.log(cotizacion);
-            // console.log('====================================');
             const headers = { "Content-type": "application/json; charset=UTF-8" };
             for (let tarifa of Object.keys(tarifas)) {
-                // console.log(JSON.stringify(tarifa));
                 tarifa = tarifas[tarifa];
-                // console.log(tarifa);
                 await fetch("/tarifas/", {
                     method: "POST", headers: headers,
                     body: JSON.stringify(tarifa)
                 }).then(response => response.json())
                     .then(response => {
-                        // console.log(response)
                         cotizacion.tarifasCotizadas.push(response._id);
                     })
             }
-            // console.log('=============COTIZACION CON TARIFITAS=======================');
-            // console.log(cotizacion);
             cotizacion.fecha = new Date();
             await fetch("/cotizaciones", {
                 method: "POST", headers: headers,
                 body: JSON.stringify(cotizacion)
             }).then(response => response.json())
                 .then(async response => {
-                    // console.log('===================RESPONSE=================');
-                    // console.log(response)
-                    // console.log('====================================');
                     if (!crearOrden) {
                         document.location.href = "/terceros/" + response.tercero
                             + "/cotizaciones/" + response._id;

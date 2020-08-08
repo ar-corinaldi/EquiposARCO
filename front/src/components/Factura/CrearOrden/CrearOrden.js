@@ -4,12 +4,10 @@ import EscogerCotizacion from "./EscogerCotizacion";
 import ConfirmarTarifas from "./ConfirmarTarifas";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import priceLogo from "../../../assets/price.svg";
 import priceLogoDark from "../../../assets/price-dark.svg";
 import sheetLogo from "../../../assets/sheet.svg";
 import sheetLogoDark from "../../../assets/sheetDark.svg";
-import BodegaOrdenDetail from "./BodegaOrdenDetail";
 import GlobalsContext from "../../GlobalsContext";
 
 function CrearOrden(props) {

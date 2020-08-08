@@ -58,7 +58,6 @@ router.post("/bodegas/:idB/ordenes", async (req, res) => {
   let orden = req.body;
   let tarifasNuevas = [];
   try {
-    console.log(req.body);
     for (let tarifasPorEquipo of req.body.tarifasDefinitivas) {
       let tarifasAgrupadas = { tarifasPorEquipo: [] };
       for (let tarifa of tarifasPorEquipo.tarifasPorEquipo) {
@@ -82,6 +81,14 @@ router.post("/bodegas/:idB/ordenes", async (req, res) => {
     bodega.ordenes.push(orden._id);
     await bodega.save();
     console.log("Orden aniadida a bodega con exito");
+
+    let cotizacion = await Cotizacion.findById(orden.cotizacion._id || orden.cotizacion);
+    if (!cotizacion) {
+      return res.status(404).send("Ninguna cotización coincidio con ese id");
+    }
+    cotizacion.orden = orden._id;
+    await cotizacion.save()
+    console.log("Orden aniadida a Cotización con exito");
     orden = orden.toObject();
     orden.bodega = bodega;
     res.status(201).json(orden);

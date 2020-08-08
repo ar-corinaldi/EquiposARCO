@@ -17,8 +17,7 @@ function EscogerCotizacionDetail(props) {
 
     useEffect(() => {
         async function fetchCotizaciones() {
-            const cotizacionesBack = await (await fetch("/cotizaciones/all")).json();
-            // console.log(cotizacionesBack);
+            const cotizacionesBack = await (await fetch("/cotizaciones/sin_orden/all")).json();
             setCotizaciones(cotizacionesBack);
         }
         fetchCotizaciones();

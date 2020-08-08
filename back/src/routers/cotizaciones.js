@@ -153,6 +153,38 @@ router.get("/cotizaciones/all", async (req, res) => {
 });
 
 /**
+ * Lista todas las cotizaciones que no tienen ordenes asociadas.
+ * Los objetos devueltos tienen los campos de las tarifas, precios de referencia y equipos populados.
+ */
+router.get("/cotizaciones/sin_orden/all", async (req, res) => {
+  try {
+    const cotizaciones = await Cotizacion.find({
+      orden: { $exists: false }
+    })
+      .populate("tarifasCotizadas").populate({
+        path: "tarifasCotizadas",
+        populate: {
+          path: "precioReferencia",
+        },
+      })
+      .populate({
+        path: "tarifasCotizadas",
+        populate: {
+          path: "equipo",
+        },
+      })
+      .populate("tercero");
+    console.log("llegó aquí")
+    res.json(cotizaciones);
+
+  } catch (e) {
+    console.error("error", e);
+
+  }
+})
+
+
+/**
  * Obtiene una cotizacion con sus tarifas, precios de referencia y equipos asociados
  */
 

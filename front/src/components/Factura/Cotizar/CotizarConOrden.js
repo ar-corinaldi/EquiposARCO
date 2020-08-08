@@ -10,18 +10,22 @@ const CotizarConOrden = (props) => {
 
     useEffect(() => {
         async function fetchBodegas() {
-            const bodegasFetched = await (await fetch("/bodegas/all")).json();
+            const bodegasFetched = await (await fetch(`/bodegas/${terceroSeleccionado._id}/all`)).json();
             setBodegasBack(bodegasFetched);
 
         }
         if (terceroSeleccionado && Object.keys(terceroSeleccionado).length > 0) {
             fetchBodegas();
         }
+        else {
+            setBodegasBack([]);
+            setBodega(null);
+        }
     }, [terceroSeleccionado])
 
     return (
-        <div 
-        className="buscarEquiposWrapper display-block"
+        <div
+            className="buscarEquiposWrapper display-block"
         >
             <div className="width100">
                 <EscogerBodega

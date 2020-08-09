@@ -88,7 +88,9 @@ function EquipoForm(props) {
       <Row>
         <Col xs={6}>
           <div className="form-group">
-            <label htmlFor="tipoEquipo">Tipo Equipo:</label>
+            <label htmlFor="tipoEquipo">
+              <strong>Tipo Equipo:</strong>
+            </label>
             <select
               name="tipoEquipo"
               value={fields.tipoEquipo}
@@ -106,7 +108,9 @@ function EquipoForm(props) {
         </Col>
         <Col xs={6}>
           <div className="form-group">
-            <label htmlFor="nombreEquipo">Nombre Equipo:</label>
+            <label htmlFor="nombreEquipo">
+              <strong>Nombre Equipo:</strong>
+            </label>
             <input
               name="nombreEquipo"
               type="text"
@@ -119,7 +123,9 @@ function EquipoForm(props) {
       <Row>
         <Col xs={6}>
           <div className="form-group">
-            <label htmlFor="nombreFamilia">Familia Grupo:</label>
+            <label htmlFor="nombreFamilia">
+              <strong>Familia Grupo:</strong>
+            </label>
             <select
               name="nombreFamilia"
               value={fields.nombreFamilia}
@@ -137,7 +143,9 @@ function EquipoForm(props) {
         </Col>
         <Col xs={6}>
           <div className="form-group">
-            <label htmlFor="precioReposicion">Precio Reposicion:</label>
+            <label htmlFor="precioReposicion">
+              <strong>Precio Reposicion:</strong>
+            </label>
             <input
               name="precioReposicion"
               type="text"
@@ -150,7 +158,9 @@ function EquipoForm(props) {
       <Row>
         <Col xs={6}>
           <div className="form-group">
-            <label htmlFor="nombreGrupo">Nombre Grupo:</label>
+            <label htmlFor="nombreGrupo">
+              <strong>Nombre Grupo:</strong>
+            </label>
             <select
               name="nombreGrupo"
               value={fields.nombreGrupo}
@@ -169,7 +179,9 @@ function EquipoForm(props) {
 
         <Col xs={6}>
           <div className="form-group">
-            <label htmlFor="costoEquipo">Costo Equipo:</label>
+            <label htmlFor="costoEquipo">
+              <strong>Costo Equipo:</strong>
+            </label>
             <input
               name="costoEquipo"
               type="text"
@@ -182,7 +194,9 @@ function EquipoForm(props) {
       <Row>
         <Col xs={6}>
           <div className="form-group">
-            <label htmlFor="codigo">Código:</label>
+            <label htmlFor="codigo">
+              <strong>Código:</strong>
+            </label>
             <input
               name="codigo"
               type="text"

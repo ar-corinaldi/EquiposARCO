@@ -32,8 +32,8 @@ export default function EscogerBodega(props) {
       option.municipio +
       option.pais +
       option.telefono +
-      option.departamento+
-      (option.duenio? option.duenio.nombre + option.duenio.numeroDocumento: "")
+      option.departamento +
+      (option.duenio ? option.duenio.nombre + option.duenio.numeroDocumento : "")
   });
 
   return (
@@ -43,7 +43,7 @@ export default function EscogerBodega(props) {
         <div className="completeWrapper">
           <Autocomplete
             openOnFocus
-            autoHighlight 
+            autoHighlight
             disableCloseOnSelect
             open={open}
             value={pendingValue}
@@ -88,14 +88,14 @@ export default function EscogerBodega(props) {
             options={[...bodegas]
               .sort((a, b) => {
                 // Muestra la bodega seleccionada primero
-                let ai = (a == bodegaSeleccionada) || (a == pendingValue);
-                let bi = (b == bodegaSeleccionada) || (b == pendingValue);
+                let ai = (a === bodegaSeleccionada) || (a === pendingValue);
+                let bi = (b === bodegaSeleccionada) || (b === pendingValue);
                 return ai ? -1 : bi ? 1 : 0;
               })}
             renderOption={(option, { selected }) => (
               <React.Fragment>
                 <div className="nombreBodega">
-                  <span>{(option.duenio? option.duenio.nombre + " - ": "")+ option.nombreBodega}</span>
+                  <span>{(option.duenio ? option.duenio.nombre + " - " : "") + option.nombreBodega}</span>
                   <br />
                   <span className="bodegaDescripcion">
                     {option.municipio +

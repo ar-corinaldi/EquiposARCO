@@ -49,11 +49,12 @@ function App() {
   })
   // let GlobalsContext = React.createContext({ globals: globalContext, setter: setGlobalContext });
 
-  useEffect(async () => {
+  useEffect(() => {
+    let globals = []
     async function globalsBack() {
-      return await (await fetch("/globals/")).json();
+      globals = await (await fetch("/globals/")).json();
     }
-    const globals = await globalsBack();
+    globalsBack();
     for (const global of globals) {
       globalContext[global.nombre] = global.valor;
     }

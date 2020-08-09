@@ -16,10 +16,10 @@ import Col from 'react-bootstrap/Col';
 function CellTablaCotizacion(props) {
     //Estados globales
     const equipo = props.equipo;
-    console.log('Equipo');
-    console.log(equipo);
+    // console.log('Equipo');
+    // console.log(equipo);
     const index = props.index;
-    console.log(index);
+    // console.log(index);
     const [tarifas, setTarifas] = props.tarifas;
     let [equiposSeleccionados, setEquiposSeleccionados] = props.seleccionados;
     const [cobro, setCobro] = props.cobro;

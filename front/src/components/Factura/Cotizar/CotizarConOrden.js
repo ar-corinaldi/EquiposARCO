@@ -9,6 +9,7 @@ const CotizarConOrden = (props) => {
 
 
     useEffect(() => {
+        setBodega(null);
         async function fetchBodegas() {
             const bodegasFetched = await (await fetch(`/bodegas/${terceroSeleccionado._id}/all`)).json();
             setBodegasBack(bodegasFetched);
@@ -19,7 +20,6 @@ const CotizarConOrden = (props) => {
         }
         else {
             setBodegasBack([]);
-            setBodega(null);
         }
     }, [terceroSeleccionado])
 

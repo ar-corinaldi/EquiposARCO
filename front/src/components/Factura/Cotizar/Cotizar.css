@@ -87,6 +87,11 @@
   font-weight: 600;
 }
 
+.equipo-filter-wrapper{
+  padding: 5px;
+  width: auto;
+}
+
 
 .cotizarWrapper th form input, .cotizarWrapper th input{
   width: 13ch;

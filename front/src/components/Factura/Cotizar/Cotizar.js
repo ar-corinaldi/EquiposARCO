@@ -45,9 +45,25 @@ const Cotizar = () => {
                 </thead>)
         }
         else {
-            return <p className="mt-0 mb-0 pt-0 pb-0">No ha seleccionado ningún equipo</p >
+            return <caption className="mt-0 mb-0 pt-0 pb-0">No ha seleccionado ningún equipo</caption >
         }
     }
+
+    function tableTotal() {
+        if (equiposSeleccionados.length > 0) {
+            return (
+                <tbody>
+                    <tr>
+                        <th>Total</th>
+                        <th></th><th></th><th></th><th></th>
+                        <th className='center'>{cobro && formatoPrecios(cobro.cobroCompleto)}</th>
+                        <th></th>
+                    </tr>
+                </tbody>
+            )
+        }
+    }
+
     //Funciones
 
     /**
@@ -191,15 +207,7 @@ const Cotizar = () => {
                             cobro={[cobro, setCobro]}
                         />)
                     )}
-                    <tbody>
-                        <tr>
-                            <th>Total</th>
-                            <th></th><th></th><th></th><th></th>
-                            <th className='center'>{cobro && formatoPrecios(cobro.cobroCompleto)}</th>
-                            <th></th>
-                        </tr>
-
-                    </tbody>
+                    {tableTotal()}
                 </Table>
             </div>
             {conOrden &&

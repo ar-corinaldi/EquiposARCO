@@ -44,10 +44,10 @@ function ConfirmarTarifaDetail(props) {
 
   // console.log([...tarifasFinales]);
 
-  console.log('==================Mi tarifa==================');
-  console.log(miTarifa);
-  console.log(tarifa);
-  console.log('====================================');
+  // console.log('==================Mi tarifa==================');
+  // console.log(miTarifa);
+  // console.log(tarifa);
+  // console.log('====================================');
 
   //Funciones
   function labelDates(date) {

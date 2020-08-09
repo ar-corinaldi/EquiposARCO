@@ -42,9 +42,12 @@ function CotizacionDetailTable(props) {
 
   function tableBody() {
     if (cotizacionSeleccionada && cotizacionSeleccionada.tarifasCotizadas) {
+      // console.log(`El cobro entero es: `);
+      // console.log(cobro)
       return (
         <tbody className="cotizacion-table">
           {cotizacionSeleccionada.tarifasCotizadas.map((tarifa, index) => {
+            // console.log(`Mi cobro completo es: ${cobro[tarifa._id].cobroTotal}. Mi id: ${tarifa._id}. Mi fechaFin: ${tarifa.fechaFin}`);
             return (
               <tr key={index}>
                 <th>{tarifa.equipo.nombreEquipo}</th>
@@ -60,7 +63,7 @@ function CotizacionDetailTable(props) {
                       cobro[tarifa._id].tiempoTotal != 1
                     )}
                 </th>
-                <th>{formatoPrecio(cobro[tarifa._id].cobroTotal)}</th>
+                <th>{formatoPrecio(cobro[tarifa._id].cobroTotal).replace(" ","\xa0")}</th>
               </tr>
             );
           })}

@@ -136,8 +136,10 @@ export function calcularTarifaDiaHabil(
   const fechaInicial = fechaInicio || (tarifa && new Date(tarifa.fechaInicio));
   const fechaFinal = fechaFin || (tarifa && new Date(tarifa.fechaFin));
   const cantidadUsada = cantidad || (tarifa && tarifa.cantidad);
-  if (!fechaFinal || !fechaInicial || (cantidadUsada !== 0 && !cantidadUsada)) {
-    return null;
+  if (!fechaFinal || !fechaInicial || (cantidadUsada !== 0 && !cantidadUsada) || !isValidDate(fechaFinal) || !isValidDate(fechaInicial)) {
+    return conFestivos
+      ? { precioTotal: 0, diasTotales: 0, festivosEnMedio: [] }
+      : { precioTotal: 0, diasTotales: 0 };
   } else {
     let festivosEnMedio = [];
     let dias = 0;
@@ -184,9 +186,10 @@ export function calcularTarifa(
     !fechaFinal ||
     !fechaInicial ||
     !conversion[medidaTiempo] ||
-    (cantidadUsada !== 0 && !cantidadUsada)
+    (cantidadUsada !== 0 && !cantidadUsada) ||
+    !isValidDate(fechaFinal) || !isValidDate(fechaInicial)
   ) {
-    return { precioTotal: null, tiempoTotal: null };
+    return { precioTotal: 0, tiempoTotal: 0 };
   } else {
     const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
     const tiempoConvertido = Math.ceil(
@@ -323,4 +326,12 @@ export function calcularFechaFinalDiaHabil(
     }
     return fechaFin;
   }
+}
+
+/**
+ * Verifica si una fecha es valida.
+ * @param {Date} d. Fecha
+ */
+export function isValidDate(d) {
+  return d instanceof Date && !isNaN(d);
 }

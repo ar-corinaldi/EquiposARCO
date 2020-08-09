@@ -35,14 +35,9 @@ function Prefacturas(props) {
     fechaPrimeraOrden,
     fechaInicial,
     fechaCorte,
-    ordenes
+    ordenes,
+    setPrecioTotal
   );
-
-  useEffect(() => {
-    // console.log(prefacturas);
-    // console.log(fechaCorte);
-    // console.log(fechaPrimeraOrden);
-  }, [prefacturas]);
 
   useEffect(() => {
     let shouldRender =

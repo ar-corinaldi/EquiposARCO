@@ -37,7 +37,6 @@ function FacturaDetail() {
       data.fechaCorte = new Date(fechaCorte);
       data.fechaInicial = new Date(fechaInicial);
       data.fechaPrimeraOrden = new Date(fechaPrimeraOrden);
-      console.log(data.fechaPrimeraOrden);
       data.fechaEmision = new Date(fechaEmision);
       let ordenes = factura.ordenes || [];
       factura.ordenes = ordenes.map((orden) => {

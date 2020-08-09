@@ -60,7 +60,6 @@ function FacturaFechas(props) {
         <label htmlFor="fechaInicial">Fecha de Inicial</label>
         <input
           required
-          disabled
           name="fechaInicial"
           value={renderInicial}
           type="date"

@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import Toast from "../Toast";
 import { calcularTarifa } from "../utils/CacularTarifas";
-function useFactura(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
+function useFactura(
+  fechaPrimeraOrden,
+  fechaInicial,
+  fechaCorte,
+  ordenes,
+  setPrecioTotal
+) {
   /**
    * Una prefactura es mensual
    * Una prefactura mapea el _id de un equipo a dos objetos;
@@ -14,6 +20,7 @@ function useFactura(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
 
   useEffect(() => {
     setFacturas([]);
+    setPrecioTotal(0);
     loadOrdenes(ordenes);
   }, [fechaCorte, fechaPrimeraOrden, fechaInicial, ordenes]);
 
@@ -66,12 +73,11 @@ function useFactura(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
       let facturasXOrden = loadFacturas(movimientos);
       let curFacturas = facturas;
       curFacturas = curFacturas.concat(facturasXOrden);
-      curFacturas.sort((a, b) => a.periodo.localeCompare(b.periodo));
+      curFacturas.sort((a, b) => a.fecha.getTime() - b.fecha.getTime());
       setFacturas(curFacturas);
     }
   };
 
-  let precioTotalFinal = 0;
   const loadFacturas = (movimientos) => {
     let items = [];
 
@@ -118,8 +124,6 @@ function useFactura(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
         }
       }
     }
-    console.log(movimientos.transportes);
-    console.log(precioTotalFinal);
     items = items.concat(movimientos.transportes);
     return items;
   };
@@ -132,9 +136,10 @@ function useFactura(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
     let tiempo = "";
     let periodo = `${fecha.getDate()}/${fecha.getMonth()}/${fecha.getFullYear()}`;
     let total = valorUnitario;
-    precioTotalFinal += total;
+    setPrecioTotal((prev) => prev + total);
     return {
       rem,
+      fecha,
       cantidad,
       nombreEquipo,
       valorUnitario,
@@ -192,9 +197,10 @@ function useFactura(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
     }/${fechaFin.getFullYear()}`;
 
     let total = cantidad * valorUnitario * num;
-    precioTotalFinal += total;
+    setPrecioTotal((prev) => prev + total);
     let item = {
       rem,
+      fecha: remision.fecha,
       cantidad,
       nombreEquipo,
       valorUnitario,
@@ -233,17 +239,15 @@ function useFactura(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
             undefined,
           codigo: remision.codigo,
         });
-        if (!remision.asumidoTercero) {
-          let trans = addTransporte(
-            new Date(fechaSalida),
-            remision.costoTransporte,
-            remision.codigo
-          );
-          transportes.push(trans);
-        }
-
-        console.log(remision.costoTransporte, remision.codigo);
         equipos[equipo.equipoID._id] = objEquipo;
+      }
+      if (!remision.asumidoTercero) {
+        let trans = addTransporte(
+          new Date(fechaSalida),
+          remision.costoTransporte,
+          remision.codigo
+        );
+        transportes.push(trans);
       }
     }
 
@@ -265,16 +269,16 @@ function useFactura(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
             undefined,
           codigo: devolucion.codigo,
         });
-        if (!devolucion.asumidoTercero) {
-          let trans = addTransporte(
-            new Date(fechaLlegada),
-            devolucion.costoTransporte,
-            devolucion.codigo
-          );
-          transportes.push(trans);
-        }
 
         equipos[equipo.equipoID._id] = objEquipo;
+      }
+      if (!devolucion.asumidoTercero) {
+        let trans = addTransporte(
+          new Date(fechaLlegada),
+          devolucion.costoTransporte,
+          devolucion.codigo
+        );
+        transportes.push(trans);
       }
     }
     equipos.transportes = transportes;

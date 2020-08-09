@@ -13,16 +13,19 @@ function Factura(props) {
     fechaInicial,
     ordenes,
     setPrecioTotal,
-    setCanFacturar,
-    fechasValida,
   } = props;
 
   let { facturas } = useFacturas(
     fechaPrimeraOrden,
     fechaInicial,
     fechaCorte,
-    ordenes
+    ordenes,
+    setPrecioTotal
   );
+
+  useEffect(() => {
+    // setPrecioTotal(precioTotal);
+  }, [ordenes, fechaInicial, fechaCorte, facturas]);
 
   return (
     <table className="table">

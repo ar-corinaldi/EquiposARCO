@@ -7,20 +7,20 @@ function InfoOrden(props) {
   const orden = props.orden;
   const tarifas = orden && orden.tarifasDefinitivas;
 
-  const input = document.getElementById("to-print");
+  const input = document.getElementById("to-print-2");
 
   const createPdf = () => {
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4", true);
       pdf.addImage(imgData, "PNG", 0, 0);
-      pdf.save("download.pdf");
+      pdf.save(`inventario_orden_${orden.codigo}.pdf`);
     });
   };
 
   return (
     <div className="orden-wrapper-inventario">
-      <div id="to-print">
+      <div id="to-print-2">
         <h4 className="page-title-orden">Inventario Orden {orden.codigo}</h4>
         <div className="table-responsive">
           <table className="table">

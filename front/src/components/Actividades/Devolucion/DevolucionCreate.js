@@ -4,6 +4,7 @@ import DevolucionForm from "./DevolucionForm";
 import "./Devolucion.css";
 import { calcularDisponiblesDevolucion } from "../CalcularEquipos";
 import Modal from "./Modal";
+import CrearNotaInventario from "./CrearNotaInventario";
 
 function DevolucionCreate(props) {
   const { id, idB, idOr } = useParams();
@@ -82,14 +83,16 @@ function DevolucionCreate(props) {
 
   return (
     <div className="remision-registrar-wrapper">
-      <Modal
-        orden={orden}
-        show={[show, setShow]}
-        handleClose={hideModal}
-        equipoNota={[equipoNota, setEquipoNota]}
-        fields={fieldsNota}
-        formAction={formActionNota}
-      ></Modal>
+      <Modal show={[show, setShow]} handleClose={hideModal}>
+        <CrearNotaInventario
+          orden={orden}
+          show={[show, setShow]}
+          handleClose={hideModal}
+          equipoNota={[equipoNota, setEquipoNota]}
+          fields={fieldsNota}
+          formAction={formActionNota}
+        ></CrearNotaInventario>
+      </Modal>
       <DevolucionForm
         equipos={[equipos, setEquipos]}
         conductores={[conductores, setConductores]}

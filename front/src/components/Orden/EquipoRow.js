@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import formatoFechas from "../utils/FormatoFechas";
 import formatoPrecios from "../utils/FormatoPrecios";
-import {
-  FaPlusCircle,
-  FaChevronDown,
-  FaChevronUp,
-  FaRegCheckCircle,
-} from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaRegCheckCircle } from "react-icons/fa";
 import { RiErrorWarningLine } from "react-icons/ri";
 import {
   formatoCategoriaHTML,

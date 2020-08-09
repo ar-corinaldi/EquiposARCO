@@ -21,8 +21,8 @@ function NavBar(params) {
       ref: "/facturacion",
     },
     {
-      nombre: "Cartera",
-      ref: "/cartera",
+      nombre: "Imprimir",
+      ref: "/imprimir",
     },
     {
       nombre: "Contabilidad",

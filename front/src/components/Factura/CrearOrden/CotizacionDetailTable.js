@@ -60,7 +60,7 @@ function CotizacionDetailTable(props) {
                       cobro[tarifa._id].tiempoTotal != 1
                     )}
                 </th>
-                <th>{formatoPrecio(cobro[tarifa._id].cobroTotal).replace(" ","\xa0")}</th>
+                <th>{formatoPrecio(cobro[tarifa._id].cobroTotal)}</th>
               </tr>
             );
           })}

@@ -10,7 +10,8 @@ function ConfirmarTarifas(props) {
     const [primerEstado, setPrimerEstado] = props.primerEstado;
     const [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;
     const [cotizacionSeleccionada, setCotizacionSeleccionada] = props.cotizacionSeleccionada;
-    let [inventario, setInventario] = useState({}); //Aquí se almacenarán las existencias necesarias de cada equipo individual para que esta ordens sea exitosa
+    let [inventario, setInventario] = useState({}); //Aquí se almacenarán las existencias necesarias de cada equipo individual (no compuestos) para que esta ordens sea exitosa
+    let [raicesSinInventario, setRaicesSinInventario] = useState({});//Acá están los equipos de la orden que tienen problemas con existencias en inventario
 
     //Estados propios
     const [tarifasFinales, setTarifasFinales] = useState([]);
@@ -30,9 +31,12 @@ function ConfirmarTarifas(props) {
         inventario = {};
         tarifasFinales.forEach((tarifaAgrupada) => {
             const cantidad = tarifaAgrupada.tarifasPorEquipo[0].cantidad;
-            inventarioRequeridoPorEquipo(inventario, tarifaAgrupada.tarifasPorEquipo[0].equipo, cantidad);
+            let equipo = tarifaAgrupada.tarifasPorEquipo[0].equipo;
+            inventarioRequeridoPorEquipo(inventario, equipo, cantidad, equipo);
         })
+        console.log('==============INVENTARIO======================');
         console.log(inventario);
+        console.log('====================================');
         setInventario(inventario);
     }
     // calcularInventarioRequerido();
@@ -43,20 +47,44 @@ function ConfirmarTarifas(props) {
      * @param {Object} inventario. Objeto que almacenará la cantidad requerida por cada equipo individual
      * @param {Object} equipo. Objeto con la información de un equipo
      * @param {Number} cantidad. Cantidad requerida del equipo anterior
+     * @param {Object} equipoRaiz. Equipo padre de todo el arbol de componentes
      */
-    function inventarioRequeridoPorEquipo(inventario, equipo, cantidad) {
+    function inventarioRequeridoPorEquipo(inventario, equipo, cantidad, equipoRaiz) {
         if (!equipo.componentes || equipo.componentes.length === 0) {
             const id = equipo.equipoID ? equipo.equipoID : equipo._id; //Si es un componente se usa EquipoID, si no, el _id es precisamente el id del equipo.
-            const valorActual = inventario[id] ? inventario[id] : 0;
-            inventario[id] = valorActual + new Number(cantidad);
+            const idRaiz = equipoRaiz.equipoID ? equipoRaiz.equipoID : equipoRaiz._id;
+
+            //Actualizar cantidad requerida de esste equipo
+            const cantidadPrevia = inventario[id] && inventario[id].cantidadRequerida ? inventario[id].cantidadRequerida : 0;
+            if (inventario[id])
+                inventario[id].cantidadRequerida = new Number(cantidadPrevia) + new Number(cantidad);
+            else
+                inventario[id] = { cantidadRequerida: cantidadPrevia + cantidad }
+
+            agregarRaizAInventario(idRaiz, id);
+
         }
         else if (equipo.componentes.length > 0) {
             equipo.componentes.forEach((componente) => {
-                inventarioRequeridoPorEquipo(inventario, componente, cantidad * componente.cantidad);
+                inventarioRequeridoPorEquipo(inventario, componente, cantidad * componente.cantidad, equipoRaiz);
             })
         }
 
 
+    }
+
+    /**
+     * Agrega una equipo raiz al arreglo de raices de un equipo del inventario
+     * @param {*} idRaiz. Id de un equipo raiz
+     * @param {*} idEquipo. idEquipo en inventario
+     */
+    function agregarRaizAInventario(idRaiz, idEquipo) {
+        if (inventario[idEquipo] && inventario[idEquipo].raices) {
+            inventario[idEquipo].raices.push({ id: idRaiz })
+        }
+        else if (inventario[idEquipo]) {
+            inventario[idEquipo].raices = [{ id: idRaiz }]
+        }
     }
 
     //TODO
@@ -73,16 +101,19 @@ function ConfirmarTarifas(props) {
         }
         else {
             let inventarioFaltante = [];
-            for (const equipo of Object.keys(inventario)) {
+            raicesSinInventario = {};
+            for (const idEquipo of Object.keys(inventario)) {
                 //verfificar en el back la cantidad de equipo en inventario
-                let cantidadRequerida = inventario[equipo];
-                const cantidadDisponible = await (await fetch("/equipos/" + equipo + "/cantidadBodega")).json();
+                let cantidadRequerida = inventario[idEquipo].cantidadRequerida;
+                const cantidadDisponible = await (await fetch("/equipos/" + idEquipo + "/cantidadBodega")).json();
                 console.log("CantidadDisponible");
                 console.log(cantidadDisponible);
                 if (cantidadDisponible < cantidadRequerida) {
                     //Errorcito, ojo con eso manito
-                    inventarioFaltante.push({ equipo: equipo, requerido: cantidadRequerida, disponible: cantidadDisponible })
+                    inventarioFaltante.push({ equipo: idEquipo, requerido: cantidadRequerida, disponible: cantidadDisponible })
                     //Señalar las tarifas que tienen equipos faltantes
+                    agregarRaicesFaltantes(inventario[idEquipo]);
+
                 }
                 else {
                     //todo good, continúe
@@ -104,8 +135,21 @@ function ConfirmarTarifas(props) {
             // setInventarioFaltante(Object.assign({}, inventarioFaltante));
             console.log("inventario Faltante");
             console.log(inventarioFaltante);
+            console.log(raicesSinInventario);
         }
 
+    }
+
+    /**
+     * Agrega al objeto de raices faltantes las raices dentro del arreglo de equipoFaltante
+     * @param {*} equipoFaltante. Un objeto de arreglo de inventario para el cuál no hay disponibilidad suficiente en inventario
+     */
+    function agregarRaicesFaltantes(equipoFaltante) {
+        let raicesFaltantes = {};
+        for (const raiz of equipoFaltante.raices) {
+            raicesFaltantes[raiz.id] = true;
+        }
+        setRaicesSinInventario(Object.assign(raicesSinInventario, raicesFaltantes));
     }
 
     /**
@@ -187,7 +231,7 @@ function ConfirmarTarifas(props) {
 
             }
         }
-        else{
+        else {
             Toast(["Termine de editar los campos antes de continuar"], 5000, 500);
         }
     }
@@ -258,7 +302,8 @@ function ConfirmarTarifas(props) {
                         cobro={{}}
                         inventario={[inventario, setInventario]}
                         camposCorrectos={setCamposCorrectos}
-                        editando = {setEditando}
+                        editando={setEditando}
+                        raicesSinInventario={raicesSinInventario}
                     />
                 })}
             </Table>

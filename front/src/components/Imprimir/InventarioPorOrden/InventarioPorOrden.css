@@ -11,13 +11,9 @@
   box-shadow: 0px 0px 20px 1px rgba(134, 118, 118, 0.12);
   font-family: "Nunito", "sans-serif";
   color: #6c757d;
-  width: 97%;
+  width: 1050px;
   margin: 10px 10px 10px 10px;
   border-radius: 5px;
-}
-
-#to-print {
-  padding: 35px;
 }
 
 .button-print {

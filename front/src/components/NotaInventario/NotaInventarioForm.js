@@ -8,8 +8,7 @@ const categorias = ["", "compra", "venta", "fabricación", "reparación", "daño
 function NotaInventarioForm(props) {
   const { fields, handleChange } = props;
   const [proveedor, setProveedor] = useState({});
-  const objProveedor = useFetchAPI(`/proveedores`);
-
+  const proveedorAPI = useFetchAPI(`/proveedores`);
   return (
     <React.Fragment>
       <div className="group-form">
@@ -61,7 +60,11 @@ function NotaInventarioForm(props) {
           camposBuscar={["nombre", "email", "telefono", "celular"]}
           campos={["nombre", "email", "telefono", "celular"]}
           elementoSelected={[proveedor, setProveedor]}
-          elementos={objProveedor.resource}
+          elementos={
+            typeof proveedorAPI.resource === typeof {}
+              ? []
+              : proveedorAPI.resource
+          }
         />
       </div>
     </React.Fragment>

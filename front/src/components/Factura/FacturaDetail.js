@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useAPIDetail from "../../hooks/useFetchAPI";
 import Prefacturas from "./Prefacturas";
+import Factura from "./Factura";
 import InfoFactura from "./InfoFactura";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -125,6 +126,23 @@ function FacturaDetail() {
           canFacturar={[true, null]}
         />
       </Col>
+      <Factura
+        echaPrimeraOrden={
+          factura.fechaPrimeraOrden ||
+          new Date(
+            factura.fechaInicial && factura.fechaInicial.getFullYear(),
+            0,
+            1,
+            1
+          ) ||
+          new Date()
+        }
+        fechaCorte={factura.fechaCorte || new Date()}
+        fechaInicial={factura.fechaInicial || new Date()}
+        ordenes={factura.ordenes || []}
+        setPrecioTotal={null}
+        setCanFacturar={null}
+      />
     </Container>
   );
 }

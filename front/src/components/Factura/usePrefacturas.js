@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Toast from "../Toast";
-function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
+function usePrefacturas(fechaPrimeraOrden, fechaInicial, fechaCorte, ordenes) {
   /**
    * Una prefactura es mensual
    * Una prefactura mapea el _id de un equipo a dos objetos;
@@ -17,7 +17,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
   useEffect(() => {
     setPrefacturas([]);
     loadPrefacturas(ordenes);
-  }, [fechaCorte, fechaInicial, ordenes]);
+  }, [fechaCorte, fechaPrimeraOrden, fechaInicial, ordenes]);
 
   /**
    * Metodo principal para cargar todas las prefacturas mes a mes,
@@ -25,8 +25,8 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
    * @param ordenes: de una factura
    */
   const loadPrefacturas = (ordenes) => {
-    let mesInicial = fechaInicial.getMonth();
-    let anioInicial = fechaInicial.getFullYear();
+    let mesInicial = fechaPrimeraOrden.getMonth();
+    let anioInicial = fechaPrimeraOrden.getFullYear();
     let anioFinal = fechaCorte.getFullYear();
     // Calcula la cantidad de meses para anios distintos
     let mesesDifAnios =
@@ -55,7 +55,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
         devolucionesMes,
         tarifasMes,
       } = loadRemisionesYDevoluciones(ordenes, inicioMes, finMes);
-
+      console.log(tarifasMes);
       const prefacturaMes = loadPrefacturaMes(
         remisionesMes,
         devolucionesMes,
@@ -217,7 +217,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
           prefacturaMes[idEquipo].equipo = equipoID;
           Toast(
             [`No existe la remision del equipo ${equipoID.nombreEquipo}`],
-            100,
+            1000,
             400
           );
         } else {
@@ -230,7 +230,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
             [
               `No coincide la cantidad devuelta del equipo ${equipoID.nombreEquipo} en la fecha ${day}/${mes}/${anio}`,
             ],
-            false,
+            true,
             400
           );
         }
@@ -273,6 +273,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
     let remisionesMes = [];
     let devolucionesMes = [];
     let tarifasMes = [];
+    let tarifas = [];
     for (let orden of ordenes) {
       const remisionesMesOrden = filtrarListaPorFecha(
         orden.remisiones,
@@ -293,6 +294,14 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
 
       let newTarifas = {};
       let tarifasDefinitivas = orden.tarifasDefinitivas || [];
+      //tarifas = tarifas.concat(tarifasDefinitivas);
+
+      tarifas.sort((a, b) => {
+        let fechaA = new Date(a.fechaInicio);
+        let fechaB = new Date(b.fechaInicio);
+        return fechaB.getTime() - fechaA.getTime();
+      });
+
       tarifasDefinitivas.forEach((tarifa) => {
         const tarifasPorEquipo = tarifa.tarifasPorEquipo;
         if (tarifasPorEquipo && tarifasPorEquipo.length > 0) {
@@ -303,14 +312,13 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
             let fechaB = new Date(b.fechaInicio);
             return fechaB.getTime() - fechaA.getTime();
           });
-
+          tarifas = tarifas.concat(tarifasPorEquipo);
           newTarifas[equipoTarifa._id] = tarifasPorEquipo;
         }
       });
       tarifasMes = newTarifas;
     }
-
-    return { remisionesMes, devolucionesMes, tarifasMes };
+    return { remisionesMes, devolucionesMes, tarifasMes, tarifas };
   };
 
   /**
@@ -330,6 +338,7 @@ function usePrefacturas(fechaInicial, fechaCorte, ordenes) {
       let fechaFinTar = equipoTarifas[len - 1].fechaFin;
       let fechaFinTarifa = (fechaFinTar && new Date(fechaFinTar)) || false;
       const fechaRemision = new Date(remision.fechaLlegada);
+      console.log(equipoTarifas);
       while (
         fechaFinTarifa &&
         fechaFinTarifa.getTime() < fechaRemision.getTime() &&

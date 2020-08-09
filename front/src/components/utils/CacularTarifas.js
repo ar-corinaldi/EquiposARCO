@@ -169,6 +169,8 @@ export function calcularTarifaDiaHabil(
  * @param {Date} fechaInicio. Fecha de inicio del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
  * @param {Date} fechaFin. Fecha fin del periodo de tiempo a calcular, si no se le pasa se usa la de tarifa.
  * @param {Number} cantidad. Cantidad de equipos para los cuales sacar el cobro total, si no se pasa se usa la de tarifa.
+ * @param {Boolean} conFestivos. Si se quiere la respuesta con un arreglo de festivos entre las dos fechas o sin él. Por defecto es true
+ * @param {Boolean} sabado. Si se quiere contar al sábado como día hábil o no. Por defecto es true
  */
 export function calcularTarifa(
   tarifa,
@@ -176,7 +178,9 @@ export function calcularTarifa(
   tiempoMinimo = 0,
   fechaInicio,
   fechaFin,
-  cantidad
+  cantidad,
+  conFestivos = true,
+  sabado = true
 ) {
   tarifa = tarifa || {};
   const fechaInicial = fechaInicio || new Date(tarifa.fechaInicio);
@@ -191,13 +195,25 @@ export function calcularTarifa(
   ) {
     return { precioTotal: 0, tiempoTotal: 0 };
   } else {
-    const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
-    const tiempoConvertido = Math.ceil(
-      timeDifference / conversion[medidaTiempo]
-    );
-    const tiempoTotal = Math.max(tiempoConvertido, tiempoMinimo);
-    const precioTotal = tiempoTotal * tarifa.valorTarifa * cantidadUsada || 0;
-    return { precioTotal, tiempoTotal };
+    if (medidaTiempo === "dia habil") {
+      return calcularTarifaDiaHabil(
+        tarifa,
+        tiempoMinimo,
+        fechaInicio,
+        fechaFin,
+        cantidad,
+        conFestivos,
+        sabado
+      );
+    } else {
+      const timeDifference = fechaFinal.getTime() - fechaInicial.getTime();
+      const tiempoConvertido = Math.ceil(
+        timeDifference / conversion[medidaTiempo]
+      );
+      const tiempoTotal = Math.max(tiempoConvertido, tiempoMinimo);
+      const precioTotal = tiempoTotal * tarifa.valorTarifa * cantidadUsada || 0;
+      return { precioTotal, tiempoTotal };
+    }
   }
 }
 

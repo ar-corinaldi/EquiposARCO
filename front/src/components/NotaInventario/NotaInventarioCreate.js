@@ -19,8 +19,8 @@ function NotaInventarioCreate(props) {
   const [orden, setOrden] = useState({});
   const history = useHistory();
 
-  const objEquipo = useFetchAPI("/equipos/darNoCompuestos");
-  const objOrden = useFetchAPI("/ordenes");
+  const equipoAPI = useFetchAPI("/equipos/darNoCompuestos");
+  const ordenAPI = useFetchAPI("/ordenes");
 
   const submit = async (e) => {
     e.preventDefault();
@@ -64,7 +64,11 @@ function NotaInventarioCreate(props) {
               camposBuscar={["nombreEquipo"]}
               campos={["nombreEquipo"]}
               elementoSelected={[equipo, setEquipo]}
-              elementos={objEquipo.resource}
+              elementos={
+                typeof equipoAPI.resource === typeof {}
+                  ? []
+                  : equipoAPI.resource
+              }
             />
           </div>
           <div className="group-form mt-3">
@@ -74,7 +78,9 @@ function NotaInventarioCreate(props) {
               camposBuscar={["codigo", "codigoObra"]}
               campos={["codigo", "codigoObra"]}
               elementoSelected={[orden, setOrden]}
-              elementos={objOrden.resource}
+              elementos={
+                typeof ordenAPI.resource === typeof {} ? [] : ordenAPI.resource
+              }
             />
           </div>
           <div id="button-wrapper">

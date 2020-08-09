@@ -38,14 +38,24 @@ function PrefacturaEquipo(props) {
           if (prev !== 0) {
             const fechaA = new Date(2020, mes, prevDay + 1, 1);
             const fechaB = new Date(2020, mes, i, 23);
-            const date = `${prevDay + 1}/${mes}/${anio} - ${i}/${mes}/${anio}`;
 
             let facturado = i - (prevDay + 1) + 1;
-            if (equipo.tiempo === "dia habil") {
-              facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
+            facturado = calcularTiempoFacturado(fechaA, fechaB);
+            let { tiempoTotal } = calcularTarifa(
+              null,
+              equipo.tiempo,
+              equipo.tiempoMinimo,
+              fechaInicial,
+              fechaB,
+              0
+            );
+            let tiempoMinimo = equipo.tiempoMinimo;
+            if (tiempoTotal > equipo.tiempoMinimo) {
+              tiempoMinimo = 0;
             }
             facturado = Math.max(equipo.tiempoMinimo, facturado);
 
+            const date = `${prevDay + 1}/${mes}/${anio} - ${i}/${mes}/${anio}`;
             const cantidad = prev;
             const total = equipo.precio * facturado * cantidad;
             newPrecioTotal += total;
@@ -76,9 +86,7 @@ function PrefacturaEquipo(props) {
         listaMes.length
       }/${mes}/${anio}`;
       let facturado = listaMes.length - (prevDay + 1) + 1;
-      if (equipo.tiempo === "dia habil") {
-        facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
-      }
+      facturado = calcularTiempoFacturado(equipo, fechaA, fechaB);
       let { tiempoTotal } = calcularTarifa(
         null,
         equipo.tiempo,
@@ -110,6 +118,18 @@ function PrefacturaEquipo(props) {
     }
     setPrecioTotal && setPrecioTotal((prevAcum) => prevAcum + newPrecioTotal);
     return newRender;
+  };
+
+  const calcularTiempoFacturado = (equipo, fechaA, fechaB) => {
+    let facturado = null,
+      obj;
+    if (equipo.tiempo === "dia habil") {
+      facturado = calcularDiasHabilesEntreFechas(fechaA, fechaB);
+    } else {
+      obj = calcularTarifa(null, equipo.tiempo, 0, fechaA, fechaB);
+      facturado = (obj && obj.tiempoTotal) || 0;
+    }
+    return facturado;
   };
 
   return <React.Fragment>{rows}</React.Fragment>;

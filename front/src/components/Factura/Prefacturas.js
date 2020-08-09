@@ -31,11 +31,17 @@ function Prefacturas(props) {
     fechasValida,
   } = props;
   const [renderPrefacturas, setRenderPrefacturas] = useState(null);
-  let { prefacturas } = usePrefacturas(fechaPrimeraOrden, fechaCorte, ordenes);
+  let { prefacturas } = usePrefacturas(
+    fechaPrimeraOrden,
+    fechaInicial,
+    fechaCorte,
+    ordenes
+  );
+
   useEffect(() => {
-    console.log(prefacturas);
-    console.log(fechaCorte);
-    console.log(fechaPrimeraOrden);
+    // console.log(prefacturas);
+    // console.log(fechaCorte);
+    // console.log(fechaPrimeraOrden);
   }, [prefacturas]);
 
   useEffect(() => {

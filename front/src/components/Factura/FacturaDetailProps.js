@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import Prefacturas from "./Prefacturas";
 import Toast from "../Toast";
 import FacturaPrecio from "./FacturaPrecio";
+import Factura from "./Factura";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 function FacturaDetail(props) {
@@ -13,6 +14,7 @@ function FacturaDetail(props) {
   const [canFacturar, setCanFacturar] = useState(true);
   const [precioTotal, setPrecioTotal] = useState(0);
   const [iva, setIva] = useState(19);
+  const [opcion, setOpcion] = useState(1);
 
   const history = useHistory();
 
@@ -21,6 +23,10 @@ function FacturaDetail(props) {
     newFechaPago.setDate(newFechaPago.getDate() + 5);
     setFechaPago(newFechaPago);
   }, [fechaCorte]);
+
+  const toggle = (value) => {
+    setOpcion(value);
+  };
 
   const facturar = async () => {
     setCanFacturar(false);
@@ -69,19 +75,66 @@ function FacturaDetail(props) {
 
   return (
     <React.Fragment>
-      <Row>
+      <Row id="info-wrapper">
         <Col>
-          <Prefacturas
-            fechaPrimeraOrden={
-              fechaPrimeraOrden || new Date(fechaInicial.getFullYear(), 0, 1, 1)
-            }
-            fechaCorte={fechaCorte}
-            fechaInicial={fechaInicial}
-            ordenes={ordenes || []}
-            setPrecioTotal={setPrecioTotal}
-            fechasValida={fechasValida}
-            setCanFacturar={setCanFacturar}
-          />
+          <ul className="nav nav-tabs nav-bordered box">
+            <li className="nav-item">
+              <a
+                className={
+                  opcion === 1
+                    ? "nav-link px-3 py-2 active"
+                    : "nav-link px-3 py-2"
+                }
+                onClick={() => toggle(1)}
+              >
+                <i className="mdi mdi-pencil-box-multiple font-18 d-md-none d-block"></i>
+                <span className="d-none d-md-block">Por remision</span>
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className={
+                  opcion === 2
+                    ? "nav-link px-3 py-2 active"
+                    : "nav-link px-3 py-2"
+                }
+                onClick={() => toggle(2)}
+              >
+                <i className="mdi mdi-image font-18 d-md-none d-block"></i>
+                <span className="d-none d-md-block">Por equipo</span>
+              </a>
+            </li>
+          </ul>
+          <br></br>
+          {opcion === 2 ? (
+            <Prefacturas
+              fechaPrimeraOrden={
+                fechaPrimeraOrden ||
+                new Date(fechaInicial.getFullYear(), 0, 1, 1)
+              }
+              fechaCorte={fechaCorte}
+              fechaInicial={fechaInicial}
+              ordenes={ordenes || []}
+              setPrecioTotal={setPrecioTotal}
+              fechasValida={fechasValida}
+              setCanFacturar={setCanFacturar}
+            />
+          ) : (
+            <Row id="info-wrapper">
+              <Factura
+                fechaPrimeraOrden={
+                  fechaPrimeraOrden ||
+                  new Date(fechaInicial.getFullYear(), 0, 1, 1)
+                }
+                fechaCorte={fechaCorte}
+                fechaInicial={fechaInicial}
+                ordenes={ordenes || []}
+                setPrecioTotal={setPrecioTotal}
+                fechasValida={fechasValida}
+                setCanFacturar={setCanFacturar}
+              />
+            </Row>
+          )}
         </Col>
       </Row>
       <FacturaPrecio

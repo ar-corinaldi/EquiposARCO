@@ -69,55 +69,61 @@ export function calcularDisponiblesRemision(orden) {
   let equipo;
   //  console.log("orden", orden);
   // Asegurar que los equipos compuestos queden al final para que no queden equipos repetidos
-  orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
+  orden &&
+    orden.tarifasDefinitivas &&
+    orden.tarifasDefinitivas.sort(tarifasCompuestaFinal);
   // Revisar las cantidades originales de acuerdo con la tarifa valida
-  orden.tarifasDefinitivas.forEach((tarifa) => {
-    tarifa.tarifasPorEquipo.forEach((tarifaEquipo) => {
-      //   console.log("tarifaEquipo", tarifa);
-      //   console.log("tarifaValida", tarifaValida(tarifa));
-      if (tarifaValida(tarifaEquipo)) {
-        equipo = tarifaEquipo.equipo;
-        if (equipo.componentes && equipo.componentes.length > 0) {
-          equipo.componentes.forEach((componente) => {
-            let yaEsta = false;
-            equipos.forEach((equipoYa) => {
-              if (equipoYa._id === componente.equipoID._id) {
-                equipoYa.porEnviar +=
+  orden &&
+    orden.tarifasDefinitivas &&
+    orden.tarifasDefinitivas.forEach((tarifa) => {
+      tarifa.tarifasPorEquipo.forEach((tarifaEquipo) => {
+        //   console.log("tarifaEquipo", tarifa);
+        //   console.log("tarifaValida", tarifaValida(tarifa));
+        if (tarifaValida(tarifaEquipo)) {
+          equipo = tarifaEquipo.equipo;
+          if (equipo.componentes && equipo.componentes.length > 0) {
+            equipo.componentes.forEach((componente) => {
+              let yaEsta = false;
+              equipos.forEach((equipoYa) => {
+                if (equipoYa._id === componente.equipoID._id) {
+                  equipoYa.porEnviar +=
+                    tarifaEquipo.cantidad * componente.cantidad;
+                  yaEsta = true;
+                  return;
+                }
+              });
+              if (!yaEsta) {
+                componente.equipoID.porEnviar =
                   tarifaEquipo.cantidad * componente.cantidad;
-                yaEsta = true;
-                return;
+                equipos.push(componente.equipoID);
               }
             });
-            if (!yaEsta) {
-              componente.equipoID.porEnviar =
-                tarifaEquipo.cantidad * componente.cantidad;
-              equipos.push(componente.equipoID);
-            }
-          });
-        } else {
-          equipo.porEnviar = tarifaEquipo.cantidad;
-          equipos.push(equipo);
-        }
-      }
-    });
-  });
-  // Restar las cantidades de las remisiones realizadas. Si se hace remision y devolucion y depués se hace una nueva remision se daña en el mismo equipo
-  orden.remisiones.forEach((remision) => {
-    remision.equiposEnRemision.forEach((equipoRemision) => {
-      for (let index = 0; index < equipos.length; index++) {
-        const equipo = equipos[index];
-        //       console.log("entra");
-        if (equipo._id === equipoRemision.equipoID._id) {
-          const newCant = equipo.porEnviar - equipoRemision.cantidad;
-          if (newCant === 0) {
-            equipos.splice(index, 1);
           } else {
-            equipo.porEnviar = newCant;
+            equipo.porEnviar = tarifaEquipo.cantidad;
+            equipos.push(equipo);
           }
         }
-      }
+      });
     });
-  });
+  // Restar las cantidades de las remisiones realizadas. Si se hace remision y devolucion y depués se hace una nueva remision se daña en el mismo equipo
+  orden &&
+    orden.remsisiones &&
+    orden.remisiones.forEach((remision) => {
+      remision.equiposEnRemision.forEach((equipoRemision) => {
+        for (let index = 0; index < equipos.length; index++) {
+          const equipo = equipos[index];
+          //       console.log("entra");
+          if (equipo._id === equipoRemision.equipoID._id) {
+            const newCant = equipo.porEnviar - equipoRemision.cantidad;
+            if (newCant === 0) {
+              equipos.splice(index, 1);
+            } else {
+              equipo.porEnviar = newCant;
+            }
+          }
+        }
+      });
+    });
   //  console.log("equipos", equipos);
   return equipos;
 }

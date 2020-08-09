@@ -12,14 +12,14 @@ function InfoOrden(props) {
   const createPdf = () => {
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
+      const pdf = new jsPDF("p", "mm", "a4", true);
       pdf.addImage(imgData, "PNG", 0, 0);
       pdf.save("download.pdf");
     });
   };
 
   return (
-    <div className="orden-wrapper-inventario" id="orden-equipos-wrapper">
+    <div className="orden-wrapper-inventario">
       <div id="to-print">
         <h4 className="page-title-orden">Inventario Orden {orden.codigo}</h4>
         <div className="table-responsive">

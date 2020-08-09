@@ -63,3 +63,11 @@ body {
 .titulo {
   margin: 0px 0px 6px -2px;
 }
+
+#to-print {
+  padding: 35px;
+}
+
+.w-auto {
+  width: auto;
+}

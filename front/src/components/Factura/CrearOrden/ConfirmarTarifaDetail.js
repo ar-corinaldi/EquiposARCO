@@ -26,6 +26,7 @@ function ConfirmarTarifaDetail(props) {
   const [inventario, setInventario] = props.inventario;
   const setCamposCorrectos = props.camposCorrectos;
   const setEnEdicion = props.editando;
+  const raicesSinInventario = props.raicesSinInventario;
 
   //Estados propios
   const [tarifa, setTarifa] = useState(() => {
@@ -44,10 +45,15 @@ function ConfirmarTarifaDetail(props) {
 
   // console.log([...tarifasFinales]);
 
-  // console.log('==================Mi tarifa==================');
-  // console.log(miTarifa);
-  // console.log(tarifa);
-  // console.log('====================================');
+  console.log('==================Mi tarifa==================');
+  console.log(miTarifa);
+  console.log(tarifa);
+  console.log('=======================Raices=============');
+  console.log(raicesSinInventario);
+  console.log('=======================Mi aices=============');
+  console.log(raicesSinInventario[miTarifa.equipo._id])
+  console.log(raicesSinInventario[miTarifa.equipo._id] == true)
+
 
   //Funciones
   function labelDates(date) {
@@ -95,31 +101,16 @@ function ConfirmarTarifaDetail(props) {
     setTarifa(miTarifa);
   }, [tarifasFinales])
 
-  // useEffect(() => {
-  //   let updateTarifa = Object.assign({}, tarifa)
-  //   updateTarifa.fechaInicio = fechaInicial;
-  //   if (fechaFinal >= moment("01/01/2000")) {
-  //     updateTarifa.fechaFin = fechaFinal;
-  //   }
-  //   else {
-  //     delete updateTarifa.fechaFin;
-  //   }
-  //   if (tarifa.fechaInicio != fechaInicial || tarifa.fechaFin != fechaFinal) {
-  //     setTarifa(updateTarifa);
-  //     console.log('==================tarifa==================');
-  //     console.log(updateTarifa);
-  //     console.log('====================================');
-  //   }
-
-  // }, [fechaInicial, fechaFinal])
-
   return (
     <>
       <tbody className={"cotizacion-table" + (editando ? " editando" : "")}>
         <tr className="borderedRow">
-          <th className="sticky-col">{tarifa.equipo.nombreEquipo}</th>
+          <th className={"sticky-col capitalize transitions-02 " 
+          + (raicesSinInventario[miTarifa.equipo._id]? " danger-field" : "")}>
+            {tarifa.equipo.nombreEquipo}</th>
           <th>
             <InputBase
+              type="number"
               defaultValue={tarifa.cantidad}
               value={tarifa.cantidad}
               disabled={!editando}

@@ -101,7 +101,7 @@ function ConfirmarTarifas(props) {
         }
         else {
             let inventarioFaltante = [];
-            raicesSinInventario = {};
+            setRaicesSinInventario({});
             for (const idEquipo of Object.keys(inventario)) {
                 //verfificar en el back la cantidad de equipo en inventario
                 let cantidadRequerida = inventario[idEquipo].cantidadRequerida;

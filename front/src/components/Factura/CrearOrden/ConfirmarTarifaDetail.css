@@ -1,67 +1,82 @@
-.confirmarTarifaDetailWrapper{
-    margin: 15px;
-    border: 1px solid gray;
-    padding: 15px;
-    border-radius: 4px;
-    width: auto;
-    display: flexbox;
+.confirmarTarifaDetailWrapper {
+  margin: 15px;
+  border: 1px solid gray;
+  padding: 15px;
+  border-radius: 4px;
+  width: auto;
+  display: flexbox;
 }
 
-
-.nombre-equipo{
-    text-transform: capitalize;
-    margin-right: 0.5%;
-    vertical-align: middle;
+.nombre-equipo {
+  text-transform: capitalize;
+  margin-right: 0.5%;
+  vertical-align: middle;
 }
 
-.confirmarTarifaDetailWrapper col{
-    display: flexbox;
+.confirmarTarifaDetailWrapper col {
+  display: flexbox;
 }
 
 .sticky-col {
-    position: sticky;
-    position: -webkit-sticky;
-    background-color: white;
-    left: 0px;
-    z-index: 0.9;
-  }
-
-.editando{
-    box-shadow: 0px 4px 3px 0px #5c5f7d1f;
-    /* #5c5f7d1f */
-    /* #0a20ff1f */
+  position: sticky;
+  position: -webkit-sticky;
+  background-color: white;
+  left: 0px;
+  z-index: 0.9;
 }
 
-.shadowCover{
-    width: 3px;
-    background-color: white;
+.editando {
+  box-shadow: 0px 4px 3px 0px #5c5f7d1f;
+  /* #5c5f7d1f */
+  /* #0a20ff1f */
 }
 
-.px13-nunito span{
-    font-family: 'Nunito';
-    font-size: 13px;
-    font-weight: 500;
-    color: #6c757d;
-
+.shadowCover {
+  width: 3px;
+  background-color: white;
 }
 
-.MuiInputBase-input{
-    font-family: 'Nunito'!important;
-    font-size: 13px !important;
-    font-weight: 630 !important;
-    color: #575e64 !important;
+.px13-nunito span {
+  font-family: "Nunito";
+  font-size: 13px;
+  font-weight: 500;
+  color: #6c757d;
 }
 
-input.inputRoot{
-    text-align: center;
-    /* position: static; */
+.MuiInputBase-input {
+  font-family: "Nunito" !important;
+  font-size: 13px !important;
+  font-weight: 630 !important;
+  color: #575e64 !important;
 }
 
-input.inputRoot:enabled{
-    font-family: 'Nunito';
-    font-size: 13px;
-    font-weight: 700;
-    color: #6c757d;
-    border: 1px solid #6c757d;
-    border-radius: 2px;
+input.inputRoot {
+  text-align: center;
+  /* position: static; */
+}
+
+input.inputRoot:enabled {
+  font-family: "Nunito";
+  font-size: 13px;
+  font-weight: 700;
+  color: #6c757d;
+  border: 1px solid #6c757d;
+  border-radius: 2px;
+}
+
+.danger-field {
+  transition: all 0.2s;
+  background-color: rgba(233, 92, 92, 0.76);
+  color: white;
+}
+
+.danger-field::after {
+  text-transform: none;
+  content: "\A Error de inventario";
+  color: rgb(255, 255, 122);
+  white-space: pre;
+}
+
+.transitions-02 {
+  transition: all 0.2s;
 }

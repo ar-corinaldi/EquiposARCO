@@ -29,6 +29,8 @@ import ActividadList from "./components/Actividades/Actividad/ActividadList";
 import Cotizar from "./components/Factura/Cotizar/Cotizar";
 import Prueba from "./components/Prueba";
 import GlobalsContext from "./components/GlobalsContext";
+import InventarioPorOrden from "./components/Imprimir/InventarioPorOrden/InventarioPorOrden";
+import InventarioPorTercero from "./components/Imprimir/InventarioPorTercero/InventarioPorTercero";
 
 // Bootstrap
 import Row from "react-bootstrap/Row";
@@ -44,13 +46,13 @@ function App() {
       firstStep: "active",
       secondStep: "pending",
       bodega: {},
-      cotizacion: {}
-    }
-  })
+      cotizacion: {},
+    },
+  });
   // let GlobalsContext = React.createContext({ globals: globalContext, setter: setGlobalContext });
 
   useEffect(() => {
-    let globals = []
+    let globals = [];
     async function globalsBack() {
       globals = await (await fetch("/globals/")).json();
     }
@@ -67,14 +69,20 @@ function App() {
   //   console.log('====================================');
   // }, [globalContext])
 
-
   return (
-    <GlobalsContext.Provider value={{ globals: globalContext, setter: setGlobalContext }}>
+    <GlobalsContext.Provider
+      value={{ globals: globalContext, setter: setGlobalContext }}
+    >
       <Router>
         <div id="contenido">
           <Navbar></Navbar>
           <Row id="rowWrapper">
-            <Col md={3} xl={2} id="sidebar-column" className="d-none d-md-block">
+            <Col
+              md={3}
+              xl={2}
+              id="sidebar-column"
+              className="d-none d-md-block"
+            >
               <Sidebar />
             </Col>
             <Col id="content-column">
@@ -168,7 +176,11 @@ function App() {
                     exact
                   />
                   <Route path="/facturacion/prueba" exact component={Prueba} />
-                  <Route path="/facturacion/cotizar" component={Cotizar} exact />
+                  <Route
+                    path="/facturacion/cotizar"
+                    component={Cotizar}
+                    exact
+                  />
                   <Route
                     path="/facturacion/listar_facturas"
                     exact
@@ -178,6 +190,16 @@ function App() {
                     path="/facturacion/:idFactura"
                     exact
                     component={FacturaDetail}
+                  />
+                  <Route
+                    path="/imprimir/inventarioPorOrden"
+                    exact
+                    component={InventarioPorOrden}
+                  />
+                  <Route
+                    path="/imprimir/inventarioPorTercero"
+                    exact
+                    component={InventarioPorTercero}
                   />
                   <Route path="*"> Pagina no encontrada </Route>
                 </Switch>

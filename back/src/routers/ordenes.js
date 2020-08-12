@@ -82,12 +82,14 @@ router.post("/bodegas/:idB/ordenes", async (req, res) => {
     await bodega.save();
     console.log("Orden aniadida a bodega con exito");
 
-    let cotizacion = await Cotizacion.findById(orden.cotizacion._id || orden.cotizacion);
+    let cotizacion = await Cotizacion.findById(
+      orden.cotizacion._id || orden.cotizacion
+    );
     if (!cotizacion) {
       return res.status(404).send("Ninguna cotización coincidio con ese id");
     }
     cotizacion.orden = orden._id;
-    await cotizacion.save()
+    await cotizacion.save();
     console.log("Orden aniadida a Cotización con exito");
     orden = orden.toObject();
     orden.bodega = bodega;
@@ -219,10 +221,11 @@ router.get("/ordenes/groupBy/:idObra", async (req, res) => {
         },
       })
       .populate("cotizacion")
-      .sort({ fechaInicio: 1 });
+      .sort({ "remisiones.fechaSalida": 1 });
     let fechaInicio = null;
+    console.log(ordenesAgrupadas);
     if (ordenesAgrupadas && ordenesAgrupadas.length > 0) {
-      fechaInicio = ordenesAgrupadas[0].fechaInicio;
+      fechaInicio = ordenesAgrupadas[0].remisiones[0].fechaSalida;
     }
     res.send({ ordenes: ordenesAgrupadas, fecha: fechaInicio });
   } catch (e) {

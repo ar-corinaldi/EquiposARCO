@@ -24,13 +24,8 @@ function ObraDetail() {
     fecha = resource && new Date(resource.fecha);
     ordenes = resource && resource.ordenes;
     setFechaInicial(fecha);
+    setFechaCorte(fecha);
   }, [resource]);
-
-  useEffect(() => {
-    const newFechaCorte = new Date(fechaInicial);
-    newFechaCorte.setMonth(newFechaCorte.getMonth() + 1);
-    setFechaCorte(newFechaCorte);
-  }, [fechaInicial]);
 
   ordenes = (ordenes && ordenes.length > 0 && ordenes) || [];
   const bodega = ordenes.length > 0 && ordenes[0].bodega;

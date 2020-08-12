@@ -21,6 +21,22 @@ router.get("/equipos/cantidadNoCompuesta", async (req, res) => {
 });
 
 /**
+ *  Get de equipo sin los campos populados
+ */
+router.get("/equipos/:id/simple", async (req, res) => {
+  try {
+    const equipo = await Equipo.findById(req.params.id)
+    if (!equipo) {
+      return res.status(404).send(["No se encontró el equipo"]);
+    }
+    console.log("Se mandó bien el equipo");
+    res.json(equipo);
+  } catch (e) {
+    res.status(500).send("Hubo un error en el sistema");
+  }
+});
+
+/**
  * Cantidad de documentos que hay en equipo
  */
 router.get("/equipos/cantidad", async (req, res) => {

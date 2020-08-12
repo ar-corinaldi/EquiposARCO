@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './ConfirmarTarifas.css'
 import ConfirmarTarifaDetail from './ConfirmarTarifaDetail';
+import ArbolInventarioFaltante from './ArbolInventarioFaltante';
+import { TreeView, TreeItem } from '@material-ui/lab';
+import { ExpandMore, ChevronRight } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from "react-bootstrap/Table";
 import Toast from "../../Toast";
+import Infinity from '../../../assets/infinity.svg'
 
 function ConfirmarTarifas(props) {
     //Estados globales
@@ -16,7 +21,9 @@ function ConfirmarTarifas(props) {
     //Estados propios
     const [tarifasFinales, setTarifasFinales] = useState([]);
     const [camposCorrectos, setCamposCorrectos] = useState(false);
-    let [toastRender, setToastRender] = useState({ tiempo: new Date().getTime(), mensajePrevio: "" });
+    let [inventarioFaltante, setInventarioFaltane] = useState([]);
+    let [loading, setLoading] = useState(true);
+    // let [toastRender, setToastRender] = useState({ tiempo: new Date().getTime(), mensajePrevio: "" });
     const [editando, setEditando] = useState(0);
 
     //variables
@@ -110,7 +117,12 @@ function ConfirmarTarifas(props) {
                 console.log(cantidadDisponible);
                 if (cantidadDisponible < cantidadRequerida) {
                     //Errorcito, ojo con eso manito
-                    inventarioFaltante.push({ equipo: idEquipo, requerido: cantidadRequerida, disponible: cantidadDisponible })
+                    inventarioFaltante.push({
+                        idEquipo: idEquipo,
+                        equipo: inventario[idEquipo],
+                        requerido: cantidadRequerida,
+                        disponible: cantidadDisponible
+                    })
                     //Señalar las tarifas que tienen equipos faltantes
                     agregarRaicesFaltantes(inventario[idEquipo]);
 
@@ -124,18 +136,19 @@ function ConfirmarTarifas(props) {
             //y reducir el número de equipos disponibles (subrutina a parte).
             //Mensaje de confirmación y se les redirige a orden detail. Recuerda guardar tarifas agrupadas.
             //Opcional, meter nombre de obra (esto va a ser algo complejo)
-            if (inventarioFaltante.length === 0) {
-                setCamposCorrectos(true);
-            }
-            else {
-                console.log('falta inventario muchote');
-                setCamposCorrectos(false);
-                mostrarError(inventarioFaltante);
-            }
-            // setInventarioFaltante(Object.assign({}, inventarioFaltante));
-            console.log("inventario Faltante");
-            console.log(inventarioFaltante);
-            console.log(raicesSinInventario);
+            setLoading(inventarioFaltante.length)
+            setInventarioFaltane([...inventarioFaltante]);
+            // if (inventarioFaltante.length === 0) {
+            //     setCamposCorrectos(true);
+            // }
+            // else {
+            //     console.log('falta inventario muchote');
+            //     setCamposCorrectos(false);
+            //     mostrarError(inventarioFaltante);
+            // }
+            // console.log("inventario Faltante");
+            // console.log(inventarioFaltante);
+            // console.log(raicesSinInventario);
         }
 
     }
@@ -152,47 +165,47 @@ function ConfirmarTarifas(props) {
         setRaicesSinInventario(Object.assign(raicesSinInventario, raicesFaltantes));
     }
 
-    /**
-     * Muestra hasta 4 mensajes de error por cada equipo del cual no hayan las existencias requeridas para
-     * hacer la orden
-     * @param {Array} inventarioFaltante. Arreglo con información de cuánto falta por equipo.
-     */
-    function mostrarError(inventarioFaltante) {
-        //Solo renderiza el Toast si han pasado más de 150ms desde el último render
-        let now = new Date().getTime();
-        const diff = now - toastRender.tiempo;
-        if (diff > 150 && primerEstado === "complete") {
-            if (inventarioFaltante.length > 0) {
-                let errores = "";
-                let erroresSobrantes = 0;
-                console.log('====================================');
-                console.log(inventarioFaltante);
-                console.log('====================================');
-                inventarioFaltante.forEach((equipoFaltante, index) => {
-                    if (index < 3) {
-                        let error = ("Falta " + (equipoFaltante.requerido - equipoFaltante.disponible) + " existencias de "
-                            + equipoFaltante.equipo + " en inventario." + "\n");
-                        errores += error;
-                    }
-                    else {
-                        erroresSobrantes += 1;
-                    }
-                })
-                if (erroresSobrantes) {
-                    errores += ("Hay otros" + erroresSobrantes + " equipos en esta orden con errores." + "\n")
-                }
-                if ((errores != toastRender.mensajePrevio) || (errores === toastRender.mensajePrevio && diff > 2000)) {
-                    //Renderiza solo si el mensaje es distinto o si es igual y ha pasado más de dos segundos desde el último render
-                    console.log("previo: " + toastRender.mensajePrevio);
-                    console.log("actual: " + errores);
-                    Toast([errores], 5000, 500);
-                }
-                setToastRender({ tiempo: new Date().getTime(), mensajePrevio: errores });
-                console.log("previo ahora: " + toastRender.mensajePrevio);
-            }
-        }
+    // /**
+    //  * Muestra hasta 4 mensajes de error por cada equipo del cual no hayan las existencias requeridas para
+    //  * hacer la orden
+    //  * @param {Array} inventarioFaltante. Arreglo con información de cuánto falta por equipo.
+    //  */
+    // function mostrarError(inventarioFaltante) {
+    //     //Solo renderiza el Toast si han pasado más de 150ms desde el último render
+    //     let now = new Date().getTime();
+    //     const diff = now - toastRender.tiempo;
+    //     if (diff > 150 && primerEstado === "complete") {
+    //         if (inventarioFaltante.length > 0) {
+    //             let errores = "";
+    //             let erroresSobrantes = 0;
+    //             console.log('====================================');
+    //             console.log(inventarioFaltante);
+    //             console.log('====================================');
+    //             inventarioFaltante.forEach((equipoFaltante, index) => {
+    //                 if (index < 3) {
+    //                     let error = ("Falta " + (equipoFaltante.requerido - equipoFaltante.disponible) + " existencias de "
+    //                         + equipoFaltante.equipo + " en inventario." + "\n");
+    //                     errores += error;
+    //                 }
+    //                 else {
+    //                     erroresSobrantes += 1;
+    //                 }
+    //             })
+    //             if (erroresSobrantes) {
+    //                 errores += ("Hay otros" + erroresSobrantes + " equipos en esta orden con errores." + "\n")
+    //             }
+    //             if ((errores != toastRender.mensajePrevio) || (errores === toastRender.mensajePrevio && diff > 2000)) {
+    //                 //Renderiza solo si el mensaje es distinto o si es igual y ha pasado más de dos segundos desde el último render
+    //                 console.log("previo: " + toastRender.mensajePrevio);
+    //                 console.log("actual: " + errores);
+    //                 Toast([errores], 5000, 500);
+    //             }
+    //             setToastRender({ tiempo: new Date().getTime(), mensajePrevio: errores });
+    //             console.log("previo ahora: " + toastRender.mensajePrevio);
+    //         }
+    //     }
 
-    }
+    // }
 
     /**
      * Se activa cuando se le da click a confirmar y guardar orden. Este botón solo está activo cuando los campos son correctos.
@@ -271,6 +284,43 @@ function ConfirmarTarifas(props) {
         }
     }, [cotizacionSeleccionada]);
 
+    useEffect(() => {
+        console.log('================INVENTARIO FALTANTE====================');
+        console.log("inventario Faltante");
+        console.log(inventarioFaltante);
+        console.log(raicesSinInventario);
+        console.log('====================================');
+    }, [inventarioFaltante])
+
+    const useStyles = makeStyles({
+        root: {
+            height: 240,
+            flexGrow: 1,
+            maxWidth: 400,
+        },
+    });
+    const classes = useStyles();
+
+    function treeChilds() {
+        let renders = [];
+        if (inventarioFaltante) {
+            inventarioFaltante.forEach((equipoInventario, index) => {
+                const hijo = (<ArbolInventarioFaltante
+                    key={index}
+                    nodeId={index}
+                    equipoInventario={equipoInventario}
+                />)
+                renders.push(hijo);
+
+            })
+        }
+        console.log('==========RENDERS===================');
+        console.log(renders);
+        console.log('====================================');
+        return renders;
+
+    }
+
     //TODO
     return (
         <div className={(miEstado === "active" && cotizacionSeleccionada ? "show" : "hide") + " width100"}>
@@ -308,9 +358,40 @@ function ConfirmarTarifas(props) {
                 })}
             </Table>
             {/*Agregar una tarifa */}
-            <button type="button" className="buttonEnabled" disabled={!camposCorrectos} onClick={guardarOrden}>
+            <button type="button" className="buttonEnabled" disabled={inventarioFaltante.length > 0} onClick={guardarOrden}>
                 Confirmar y Crear orden
             </button>
+            <div>
+                <object type="image/svg+xml" data={Infinity}
+                    className={loading? "display-block" : "display-none"}
+                ></object>
+                <TreeView
+                    // className={classes.root}
+                    defaultCollapseIcon={<ExpandMore />}
+                    defaultExpandIcon={<ChevronRight />}
+                >
+                    {inventarioFaltante && inventarioFaltante.map((equipoInventario, index) => {
+                        return <ArbolInventarioFaltante
+                            key={index}
+                            nodeId={`${index}1`}
+                            equipoInventario={equipoInventario}
+                        />
+
+                    })
+                    }
+                    {/* {treeChilds()} */}
+                    {/* 
+                    {inventarioFaltante && inventarioFaltante.map((equipoInventario, index) => {
+                        return <TreeItem
+                            key={index}
+                            nodeId={index}
+                            label="abrazadera"
+                        />
+
+                    })
+                    } */}
+                </TreeView>
+            </div>
         </div >
     );
 }

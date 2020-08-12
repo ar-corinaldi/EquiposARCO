@@ -45,14 +45,14 @@ function ConfirmarTarifaDetail(props) {
 
   // console.log([...tarifasFinales]);
 
-  console.log('==================Mi tarifa==================');
-  console.log(miTarifa);
-  console.log(tarifa);
-  console.log('=======================Raices=============');
-  console.log(raicesSinInventario);
-  console.log('=======================Mi aices=============');
-  console.log(raicesSinInventario[miTarifa.equipo._id])
-  console.log(raicesSinInventario[miTarifa.equipo._id] == true)
+  // console.log('==================Mi tarifa==================');
+  // console.log(miTarifa);
+  // console.log(tarifa);
+  // console.log('=======================Raices=============');
+  // console.log(raicesSinInventario);
+  // console.log('=======================Mi aices=============');
+  // console.log(raicesSinInventario[miTarifa.equipo._id])
+  // console.log(raicesSinInventario[miTarifa.equipo._id] == true)
 
 
   //Funciones
@@ -104,7 +104,7 @@ function ConfirmarTarifaDetail(props) {
   return (
     <>
       <tbody className={"cotizacion-table" + (editando ? " editando" : "")}>
-        <tr className="borderedRow">
+        <tr className="borderedRow z-index-05">
           <th className={"sticky-col capitalize transitions-02 " 
           + (raicesSinInventario[miTarifa.equipo._id]? " danger-field" : "")}>
             {tarifa.equipo.nombreEquipo}</th>

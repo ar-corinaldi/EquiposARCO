@@ -80,3 +80,7 @@ input.inputRoot:enabled {
 .transitions-02 {
   transition: all 0.2s;
 }
+
+.z-index-05{
+    z-index: 0.5;
+}

@@ -1,6 +1,4 @@
-/* eslint-disable no-use-before-define */
 import React, { useState } from "react";
-import "./EscogerBodega.css";
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
 import Autocomplete, {

@@ -1,0 +1,282 @@
+/* 
+----------------------------------------------------------------------------------------------------------------------------------
+-------------Escoger Cotizacion Styles
+----------------------------------------------------------------------------------------------------------------------------------
+*/
+.escoger-cotizacion-wrapper {
+  margin-top: 50px;
+  width: 100%;
+}
+
+.buttonEnabled {
+  background-color: #ec2224;
+  border: none;
+  color: white;
+  padding: 9px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.45;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px 0 rgba(250, 92, 124, 0.5);
+}
+
+.buttonEnabled:enabled {
+  opacity: 0.8;
+}
+
+.buttonEnabled:enabled:hover {
+  opacity: 1;
+  box-shadow: 0 0 14px 0 rgba(248, 26, 70, 0.5);
+}
+
+/* 
+----------------------------------------------------------------------------------------------------------------------------------
+-------------Escoger Bodega Styles
+----------------------------------------------------------------------------------------------------------------------------------
+*/
+
+.rootBodega {
+  width: 100%;
+  font-size: 18px;
+}
+
+.paper {
+  box-shadow: none !important;
+  margin: 0px !important;
+}
+
+.popper {
+  position: relative;
+  box-shadow: 0px 3px 12px rgba(27, 31, 35, 0.15) !important;
+}
+
+.inputBodega {
+  padding: 10px;
+  width: 100%;
+  position: static !important;
+}
+
+.inputBodega input {
+  color: #6c757d;
+  font-family: "Karla";
+  font-weight: 700;
+  text-transform: capitalize;
+  /* border-radius: 0px; */
+  background-color: white;
+  font-size: 15px;
+  position: static;
+}
+
+.inputBodega input:focus {
+  box-shadow: 0 0 0 0.2rem #d6d8f1;
+  padding-left: 3px;
+  border-radius: 2px;
+}
+
+.optionBodega {
+  min-height: auto;
+  align-items: flex-start;
+  padding: 8px;
+}
+
+.optionBodega[aria-selected="true"] {
+  background-color: transparent !important;
+}
+
+.optionBodega[data-focus="true"] {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.completeWrapper {
+  display: flexbox;
+  box-shadow: 0px 0px 18px 0px rgba(134, 118, 118, 0.12);
+  border-radius: 3px;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+.nombreBodega {
+  font-family: "Nunito";
+  font-size: 17px;
+  color: #6c757d;
+  flex-grow: 1;
+  text-transform: capitalize;
+}
+
+.bodegaDescripcion {
+  font-family: "Karla";
+  font-size: 13px;
+  color: #6c757d;
+  text-transform: capitalize;
+  flex-grow: 1;
+}
+
+.iconSelected {
+  width: 24px;
+  height: 24px;
+  margin-right: 17px;
+  margin-left: -2px;
+}
+
+.iconSelected:hover {
+  background-color: #e1e5eb;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+@media (max-width: 570px) {
+  .completeWrapper {
+    width: 100%;
+  }
+}
+
+@media (min-width: 571px) and (max-width: 800px) {
+  .completeWrapper {
+    width: 70%;
+  }
+}
+
+@media (min-width: 801px) {
+  .completeWrapper {
+    width: 50%;
+  }
+}
+
+/* 
+----------------------------------------------------------------------------------------------------------------------------------
+-------------Escoger Cotización Styles
+----------------------------------------------------------------------------------------------------------------------------------
+*/
+
+.popperCotizacion{
+    width: 500px;
+    position: relative;
+    box-shadow: 0px 3px 12px rgba(27, 31, 35, 0.15) !important;
+}
+
+.rootCotizacion {
+    width: 221; 
+    font-size: 18px;
+  }
+
+.completeCotizacionWrapper{
+    display: flexbox;
+    box-shadow: 0px 0px 18px 0px rgba(134, 118, 118, 0.12);
+    border-radius: 3px;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    width: 50%;
+}
+
+.option-cotizacion-header{
+    width: 100%;
+    padding: 0px;
+    background-color: transparent;
+    font-family: 'Nunito';
+    font-size: 17px;
+    color: #6c757d;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.no-padding{
+    padding: 0px;
+}
+
+.float-right{
+    float: right;
+}
+
+.float-left{
+    float: left;
+}
+
+.rotate{
+    rotate: 180deg;
+}
+
+.icon-margin-left{
+    margin-left: 1%;
+}
+
+.icon-margin-right{
+    margin-right: 1%;
+}
+
+.no-border{
+    border-width: 0px;
+}
+
+/* 
+----------------------------------------------------------------------------------------------------------------------------------
+-------------Bodega Orden Detail Styles
+----------------------------------------------------------------------------------------------------------------------------------
+*/
+#BodegaOrdenDetailWrapper{
+    border-radius: 4px;
+    border: 3px solid #aaaee27a;
+    padding: 15px 45px 3px 25px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+
+    width: 70%;
+}
+
+.bodegaHeader{
+    text-transform: capitalize;
+}
+
+.descripcionBodega{
+    text-transform: capitalize;
+}
+
+.direccionBodega{
+    text-transform: capitalize;
+    font-family: 'Karla';
+    margin-top: -20px;
+    font-size: 14px;
+}
+
+.closeIcon{
+    float: right;
+    margin-right: -40px;
+    margin-top: -10px;
+}
+
+.closeIcon:hover{
+    background-color: #e1e5eb;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+@media(min-width: 769px){
+    #BodegaOrdenDetailWrapper{
+        width: fit-content;
+    }
+}
+
+@media(max-width: 768px){
+    #BodegaOrdenDetailWrapper{
+        width: 100%;
+    }
+}
+
+/* 
+----------------------------------------------------------------------------------------------------------------------------------
+-------------Cotizacion Detail Table Detail Styles
+----------------------------------------------------------------------------------------------------------------------------------
+*/
+.cotizacion-table th{
+    font-size: 13px;
+}
+
+.cotizacion-table th{
+    align-self: center;
+    text-align: start;
+}

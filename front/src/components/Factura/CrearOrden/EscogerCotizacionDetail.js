@@ -6,7 +6,6 @@ import Autocomplete, {
 } from "@material-ui/lab/Autocomplete";
 import InputBase from "@material-ui/core/InputBase";
 import Card from "react-bootstrap/Card";
-import './EscogerCotizacionDetail.css';
 
 function EscogerCotizacionDetail(props) {
     let [bodegaSeleccionada, setBodegaSeleccionada] = props.bodegaSeleccionada;

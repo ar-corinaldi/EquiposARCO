@@ -1,4 +1,4 @@
-import "./EscogerCotizacion.css";
+import "./first-step-styles.css";
 import React, { useState, useEffect } from "react";
 import EscogerBodega from "./EscogerBodega";
 import BodegaOrdenDetail from "./BodegaOrdenDetail";

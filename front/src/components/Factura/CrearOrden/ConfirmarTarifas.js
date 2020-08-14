@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './ConfirmarTarifas.css'
+// import './ConfirmarTarifas.css'
+import "./second-step-styles.css";
 import ConfirmarTarifaDetail from './ConfirmarTarifaDetail';
 import ArbolInventarioFaltante from './ArbolInventarioFaltante';
 import { TreeView, TreeItem } from '@material-ui/lab';
@@ -363,7 +364,7 @@ function ConfirmarTarifas(props) {
             </button>
             <div>
                 <object type="image/svg+xml" data={Infinity}
-                    className={loading? "display-block" : "display-none"}
+                    className={loading ? "display-block" : "display-none"}
                 ></object>
                 <TreeView
                     // className={classes.root}
@@ -379,17 +380,7 @@ function ConfirmarTarifas(props) {
 
                     })
                     }
-                    {/* {treeChilds()} */}
-                    {/* 
-                    {inventarioFaltante && inventarioFaltante.map((equipoInventario, index) => {
-                        return <TreeItem
-                            key={index}
-                            nodeId={index}
-                            label="abrazadera"
-                        />
 
-                    })
-                    } */}
                 </TreeView>
             </div>
         </div >

@@ -6,7 +6,6 @@ import {
   formatoCategoriaHTML,
   formatoTiempo,
 } from "../../utils/FormatoInfoPrecios";
-import "./CotizacionDetailTable.css";
 
 function CotizacionDetailTable(props) {
   const [

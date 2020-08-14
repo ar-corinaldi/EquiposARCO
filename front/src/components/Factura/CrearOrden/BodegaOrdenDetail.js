@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./BodegaOrdenDetail.css";
 import holiday from "../../utils/CacularTarifas";
 import CloseIcon from "@material-ui/icons/Close";
 

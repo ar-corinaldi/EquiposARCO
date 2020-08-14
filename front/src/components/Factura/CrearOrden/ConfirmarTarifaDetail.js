@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./ConfirmarTarifaDetail.css";
+// import "./ConfirmarTarifaDetail.css";
 import formatoPrecio from "../../utils/FormatoPrecios";
 import CalcularTarifa from "../../utils/CacularTarifas";
 import InputBase from "@material-ui/core/InputBase";

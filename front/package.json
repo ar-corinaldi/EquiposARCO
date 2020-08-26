@@ -9,7 +9,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^4.5.1",
     "html2canvas": "^1.0.0-rc.5",
     "javascript-time-ago": "^2.0.13",
     "jspdf": "^1.5.3",

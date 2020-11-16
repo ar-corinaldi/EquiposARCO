@@ -3,7 +3,6 @@ import Table from "react-bootstrap/Table";
 import Col from "react-bootstrap/Col";
 
 function ComponenteDetail(props) {
-  console.log(props.componentes);
   if (!props.componentes || props.componentes.length === 0) {
     return <h5 className="m-4">No se compone de ningun equipo</h5>;
   }

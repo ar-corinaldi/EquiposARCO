@@ -154,6 +154,7 @@ router.get("/equipos/:page/:elementsPerPage", async (req, res) => {
       equipos = await Equipo.find({});
     } else {
       equipos = await Equipo.find({})
+        .sort({nombreEquipo: 1})
         .limit(elementsPerPage)
         .skip((page - 1) * elementsPerPage);
     }
@@ -242,10 +243,7 @@ router.patch("/equipos/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
 
   try {
-    if (!Equipo.fieldsNotAllowedUpdates(req.body)) {
-      return res.status(400).send({ error: "Invalid updates" });
-    }
-    ("console.log(req.body)");
+    
     const equipo = await Equipo.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,

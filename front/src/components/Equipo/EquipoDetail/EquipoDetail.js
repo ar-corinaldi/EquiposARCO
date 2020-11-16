@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import PrecioTable from "./PrecioTable";
 import EquipoDetailBadges from "./EquipoDetailBadges";
@@ -6,15 +6,66 @@ import Container2Components from "../../Container2Components";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 import formatoPrecios from "../../utils/FormatoPrecios";
 import PropiedadesDetail from "./PropiedadDetail";
 import ComponenteDetail from "./ComponenteDetail";
 import useFetchAPI from "../../../hooks/useFetchAPI";
+import EditField from "../../EditField";
 function EquipoDetail() {
   let { idEquipo } = useParams();
-  const { resource, loading, notFound } = useFetchAPI(`/equipos/${idEquipo}`);
+  const [loading, setLoading] = useState(true);
+  const [equipo, setEquipo] = useState({});
+  const costoEquipo = useRef();
+  const precioReposicion = useRef();
+  const nombreEquipo = useRef();
+  
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    const newEquipo = {...equipo};
+    newEquipo[name] = value;
+    setEquipo(newEquipo);
+  }
 
-  const equipo = resource;
+  const deleteEquipoActual = async () => {
+    const options = {
+      method: "DELETE",
+    };
+    const res = await fetch("/equipos/" + idEquipo, options);
+    const equipoActualizado = await res.json();
+    setEquipo({});
+  }
+
+  const guardarEquipoActual = async () => {
+    const options = {
+      method: "PATCH",
+      body: JSON.stringify(equipo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const res = await fetch("/equipos/" + idEquipo, options);
+    const equipoActualizado = await res.json();
+    setEquipo(equipoActualizado);
+  }
+
+
+
+  useEffect(() => {
+    console.log(equipo);
+  }, [equipo])
+
+  useEffect(() => {
+    const fetchEquipo = async () => {
+      const res = await fetch("/equipos/" + idEquipo);
+      const newEquipo = await res.json();
+      setEquipo(newEquipo);
+      setLoading(false);
+
+    }
+    fetchEquipo();
+  }, [])
 
   if (loading) {
     return (
@@ -24,16 +75,14 @@ function EquipoDetail() {
     );
   }
   if (!equipo) {
-    return notFound("No se encontro equipo con este id");
+    return <h1>No se encontro equipo con este id</h1>;
   }
   return (
     <Container>
       <Row>
         <Col>
           <h3>
-            {equipo.nombreEquipo &&
-              equipo.nombreEquipo[0].toUpperCase() +
-                equipo.nombreEquipo.slice(1)}
+               <EditField value={equipo} name={"nombreEquipo"} reference={nombreEquipo} handleChange={handleChange} />
             ({equipo.codigo && equipo.codigo.toUpperCase()})
           </h3>
         </Col>
@@ -43,13 +92,13 @@ function EquipoDetail() {
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
               <h6>
-                Costo Equipo: {formatoPrecios(equipo.costoEquipo) || "$0.00"}
+                Costo Equipo <EditField value={equipo} name={"costoEquipo"} reference={costoEquipo} handleChange={handleChange} />
               </h6>
             </li>
             <li className="breadcrumb-item">
               <h6>
                 Precio Reposicion:{" "}
-                {formatoPrecios(equipo.precioReposicion) || "$0.00"}
+                <EditField value={equipo} name={"precioReposicion"} reference={precioReposicion} handleChange={handleChange}/>
               </h6>
             </li>
           </ol>
@@ -70,6 +119,8 @@ function EquipoDetail() {
       </Row>
       <Row className="d-flex justify-content-around">
         <EquipoDetailBadges
+          equipo={equipo}
+          handleChange={handleChange}
           cantidadTotal={equipo.cantidadTotal}
           cantidadBodega={equipo.cantidadBodega}
           cantidadUsado={equipo.cantidadTotal - equipo.cantidadBodega}
@@ -77,7 +128,7 @@ function EquipoDetail() {
       </Row>
       <Row>
         <Col>
-          <PrecioTable precios={equipo.precios || []} />
+          <PrecioTable precios={equipo.precios || []} equipo={equipo} setEquipo={setEquipo}/>
         </Col>
       </Row>
       <Row>
@@ -89,6 +140,12 @@ function EquipoDetail() {
             ]}
             nombres={["Componentes", "Propiedades"]}
           />
+        </Col>
+        <Col>
+        <div className="d-flex justify-content-around">
+            <Button onClick={guardarEquipoActual}>Guardar</Button>
+            <Button onClick={deleteEquipoActual} className="btn btn-danger">Eliminar</Button>
+            </div>
         </Col>
       </Row>
     </Container>

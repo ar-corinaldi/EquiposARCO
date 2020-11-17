@@ -24,7 +24,7 @@ const Cotizar = () => {
     const history = useHistory();
 
 
-    //Contexto global
+    //Contexto global trial
     const context = useContext(GlobalsContext);
 
     //funciones

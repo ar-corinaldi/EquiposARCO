@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Sync fork
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  sync:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout master forked repo
+        uses: TobKed/github-forks-sync-action@master
+        with:
+          github_token: ${{ secrets.PERSONAL_KEY}}
+          upstream_repository: ar-corinaldi/EquiposARCO
+          target_repository: diegommezp28/EquiposARCO
+          upstream_branch: master
+          target_branch: master
+          force: false
+          tags: false
+      
+      
+      - name: Checkout master forked repo
+        uses: actions/checkout@v2
+        with:
+          repository: diegommezp28/EquiposARCO
+          token: ${{ secrets.PERSONAL_KEY}}
+          ref: master
+
+
+      - uses: actions/checkout@master
+
+      - name: Deploy Back
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: trialBranch
+          FOLDER: front
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

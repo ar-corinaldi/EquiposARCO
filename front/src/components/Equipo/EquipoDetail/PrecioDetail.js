@@ -17,6 +17,9 @@ function PrecioDetail(props) {
   const valorVenta = useRef();
   const valorAlquiler = useRef();
   const tiempoMinimo = useRef();
+  const tiempoMinimo2 = useRef();
+  const categoria = useRef();
+  const tiempo = useRef();
 
   return (
     <tr>
@@ -27,11 +30,12 @@ function PrecioDetail(props) {
         <EditField value={precio} name="valorAlquiler" reference={valorAlquiler} handleChange={handleChange}/>
       </td>
       <td>
-        {precio.categoria} / {precio.tiempo}
+      <EditField value={precio} name="categoria" reference={categoria} handleChange={handleChange}/> / <EditField value={precio} name="tiempo" reference={tiempo} handleChange={handleChange}/>
       </td>
       <td>
         <EditField value={precio} name="tiempoMinimo" reference={tiempoMinimo} handleChange={handleChange}/>
-        {precio.tiempo}
+        <EditField value={precio} name="tiempo" reference={tiempoMinimo2} handleChange={handleChange}/>
+
       </td>
     </tr>
   );

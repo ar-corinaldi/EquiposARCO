@@ -243,10 +243,23 @@ router.patch("/equipos/:id", async (req, res) => {
   // Se pueden pasar por parametro los campos no modificables
 
   try {
-    
+    console.log(req.body);
+    const updatedEquipo = req.body;
+    for(let precio of updatedEquipo.precios){
+      await Precio.findByIdAndUpdate(precio._id, precio, {new: true, runValidators: true });
+
+    }
     const equipo = await Equipo.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
+    })
+    .populate("precios")
+    .populate("propiedades")
+    .populate({
+      path: "componentes",
+      populate: {
+        path: "equipoID",
+      },
     });
     if (!equipo) {
       return res.status(404).send();

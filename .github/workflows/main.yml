@@ -22,7 +22,7 @@ jobs:
         with:
           repository: diegommezp28/EquiposArco
           token: ${{ secrets.PERSONAL_KEY}}
-          ref: master
+          path: master
           
           
       - name: Pull upstream changes

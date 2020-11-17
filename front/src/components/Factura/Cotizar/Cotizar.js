@@ -23,7 +23,7 @@ const Cotizar = () => {
 
     const history = useHistory();
 
-
+// test
     //Contexto global
     const context = useContext(GlobalsContext);
 

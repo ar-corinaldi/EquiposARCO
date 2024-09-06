@@ -26,6 +26,6 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
     "cleave.js": "^1.6.0",
-    "date-holidays": "^1.6.1"
+    "date-holidays": "^3.19.2"
   }
 }

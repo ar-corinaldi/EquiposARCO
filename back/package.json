@@ -7,9 +7,9 @@
     "dev": "nodemon bin/www"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "~1.4.7",
     "debug": "~2.6.9",
-    "express": "~4.17.1",
+    "express": "~4.21.1",
     "mongoose": "^5.9.25",
     "morgan": "~1.10.0"
   },
